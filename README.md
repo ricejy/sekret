@@ -31,7 +31,7 @@ On iOS, sentence embeddings come from Apple's Natural Language framework and OCR
 
 Windows development uses a deterministic fake embedding implementation so quantization, persistence, dense retrieval, and reciprocal-rank fusion remain portable and testable. Production token-counting and language-model adapters are still pending. The SwiftUI guardrail harness under `spikes/` remains disposable and independent of the Flutter application.
 
-Library data is stored in the platform application-support directory as `sekret.sqlite3`. Imported PDF and photo bytes are held in the same protected local database as their page-aware chunks. Delete removes the selected document together with its source bytes, chunks, search index entries, and vectors. The production pickers, PDF processing, and OCR adapters operate only on local bytes and contain no application network calls.
+Library data is stored in the platform application-support directory. Imported PDF and photo bytes are held in the same protected local database as their page-aware chunks. Delete removes the selected document together with its source bytes, chunks, search index entries, and vectors. The production pickers, PDF processing, and OCR adapters operate only on local bytes and contain no application network calls.
 
 ## Retrieval quality benchmark
 
