@@ -442,4 +442,68 @@ void main() {
       expect(await workspace.history(), hasLength(2));
     },
   );
+
+  test(
+    'attaching adds to the latest target-chat scope and never switches chats',
+    () async {
+      Future<KnowledgeItemRecord> source(String title) =>
+          vault.knowledge.beginProcessing(
+            title: title,
+            sourceType: KnowledgeSourceType.pastedText,
+            sourceBytes: Uint8List.fromList([1]),
+            fingerprint: title,
+          );
+      final first = await source('first');
+      final second = await source('second');
+      final target = await workspace.newChat();
+      final current = await workspace.newChat();
+      await Future.wait([
+        workspace.addSource(target.id, first.id),
+        workspace.addSource(target.id, second.id),
+        workspace.addSource(target.id, first.id),
+      ]);
+      final selected = (await workspace.history()).firstWhere(
+        (chat) => chat.id == target.id,
+      );
+      expect(selected.selectedSourceIds, [first.id, second.id]);
+      expect(selected.mode, ChatMode.knowledgeBase);
+      expect(workspace.currentChatId, current.id);
+      await expectLater(
+        workspace.beginTurn(
+          chatId: target.id,
+          userText: 'Question',
+          model: model,
+        ),
+        throwsStateError,
+      );
+      expect(await workspace.transcript(target.id), isEmpty);
+    },
+  );
+
+  test(
+    'attachments reject deleted targets and do not reactivate inactive General sources',
+    () async {
+      Future<KnowledgeItemRecord> source(String title) =>
+          vault.knowledge.beginProcessing(
+            title: title,
+            sourceType: KnowledgeSourceType.pastedText,
+            sourceBytes: Uint8List.fromList([1]),
+            fingerprint: title,
+          );
+      final old = await source('inactive');
+      final added = await source('new');
+      final chat = await workspace.newChat();
+      await workspace.changeScope(chat.id, ChatMode.general, [old.id]);
+      await workspace.addSource(chat.id, added.id);
+      expect((await workspace.history()).single.selectedSourceIds, [added.id]);
+      await expectLater(
+        workspace.addSource(chat.id, 'missing'),
+        throwsStateError,
+      );
+      expect((await workspace.history()).single.selectedSourceIds, [added.id]);
+      await workspace.deleteChat(chat.id);
+      await expectLater(workspace.addSource(chat.id, old.id), throwsStateError);
+      expect(await workspace.history(), isEmpty);
+    },
+  );
 }
