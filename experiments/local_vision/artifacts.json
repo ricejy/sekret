@@ -1,0 +1,31 @@
+{
+  "qualification": "isolated-mac-feasibility-only",
+  "runtime": {
+    "reuse": "../local_generation/artifacts/build-apple/llama.xcframework",
+    "tag": "b11429",
+    "commit": "d81235049384534c167caea52b85a694f6103d14",
+    "license": "MIT",
+    "additional_runtime_download": false
+  },
+  "model_repository": "ggml-org/SmolVLM-500M-Instruct-GGUF",
+  "revision": "72e986006ef53e37cdd3f6d4241c90b0f01df376",
+  "publisher_repository": "HuggingFaceTB/SmolVLM-500M-Instruct",
+  "publisher_revision": "a7da5b986cb59b408707209984f360a5f4ad7e47",
+  "model_card_license": "Apache-2.0",
+  "verified_locally": true,
+  "artifacts": [
+    {
+      "file": "SmolVLM-500M-Instruct-Q8_0.gguf",
+      "bytes": 436806912,
+      "sha256": "9d4612de6a42214499e301494a3ecc2be0abdd9de44e663bda63f1152fad1bf4"
+    },
+    {
+      "file": "mmproj-SmolVLM-500M-Instruct-Q8_0.gguf",
+      "bytes": 108783360,
+      "sha256": "d1eb8b6b23979205fdf63703ed10f788131a3f812c7b1f72e0119d5d81295150"
+    }
+  ],
+  "total_weight_bytes": 545590272,
+  "metadata_source": "https://huggingface.co/api/models/ggml-org/SmolVLM-500M-Instruct-GGUF?blobs=true",
+  "license_screening": "GGUF and publisher cards declare Apache-2.0; cards and canonical Apache-2.0 text retained in ignored artifacts. This is not a completed redistribution audit."
+}
