@@ -20,6 +20,7 @@ void main() {
               )
               as Map;
       expect(fixture['system'], localGeneralInstructions);
+      expect(localGeneralInstructions, generalInstructions);
       expect(
         fixture['prompt'],
         buildGeneralChatPrompt({

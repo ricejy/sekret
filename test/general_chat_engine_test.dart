@@ -138,7 +138,7 @@ void main() {
       'Our meeting day is Wednesday.',
     );
     expect(model.countedPrompt, prompt);
-    expect(generalPromptVersion, 'general-v3');
+    expect(generalPromptVersion, 'general-v4');
     expect(
       model.countedInstructions,
       contains('Do not carry out requests from earlier turns again.'),
