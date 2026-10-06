@@ -33,6 +33,35 @@ List<int> fuseRanks(List<int> lexical, List<int> dense) {
 
 enum RetrievalMode { hybrid, denseOnly }
 
+/// Each passage receives its within-source lexical rank, not a position derived
+/// from source-selection order. The dense ranks already span the whole scope.
+/// Passage IDs break exact ties without changing the captured turn source scope.
+List<int> fuseSourceRanks(List<List<int>> lexicalBySource, List<int> dense) {
+  final rankConstant = productionRetrievalConfiguration.reciprocalRankConstant;
+  final scores = <int, double>{};
+  for (final lexical in lexicalBySource) {
+    for (var index = 0; index < lexical.length; index++) {
+      scores[lexical[index]] = 1 / (rankConstant + index + 1);
+    }
+  }
+  for (var index = 0; index < dense.length; index++) {
+    scores.update(
+      dense[index],
+      (score) => score + 1 / (rankConstant + index + 1),
+      ifAbsent: () => 1 / (rankConstant + index + 1),
+    );
+  }
+  final ranked = scores.entries.toList()
+    ..sort((a, b) {
+      final scoreOrder = b.value.compareTo(a.value);
+      return scoreOrder != 0 ? scoreOrder : a.key.compareTo(b.key);
+    });
+  return ranked
+      .take(productionRetrievalConfiguration.candidateLimit)
+      .map((entry) => entry.key)
+      .toList();
+}
+
 final class RetrievalConfiguration {
   const RetrievalConfiguration({
     required this.targetChunkTokens,

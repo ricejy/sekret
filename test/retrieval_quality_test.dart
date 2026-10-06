@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sekret/core/knowledge/knowledge_algorithms.dart'
+    show fuseSourceRanks;
 import 'package:sekret/core/knowledge/knowledge_base.dart';
 import 'package:sekret/core/storage/local_data_vault.dart';
 import 'package:sekret/core/library/document_library.dart';
@@ -11,6 +13,22 @@ import 'package:sekret/evaluation/retrieval_quality.dart';
 import 'package:sekret/evaluation/synthetic_retrieval_corpus.dart';
 
 void main() {
+  test(
+    'source-local lexical ranks have equal weight regardless of selection order',
+    () {
+      const lexical = [
+        [11, 12],
+        [21, 22],
+      ];
+      const dense = [22, 12, 21, 11];
+      final forward = fuseSourceRanks(lexical, dense);
+      expect(forward, [22, 21, 12, 11]);
+      expect(fuseSourceRanks(lexical.reversed.toList(), dense), forward);
+      // With no dense match, equally ranked lexical passages tie by passage ID.
+      expect(fuseSourceRanks(lexical, []), [11, 21, 12, 22]);
+      expect(fuseSourceRanks(lexical.reversed.toList(), []), [11, 21, 12, 22]);
+    },
+  );
   test(
     'v2 Knowledge Base retains all 30 hybrid and dense-only corpus hits',
     () async {

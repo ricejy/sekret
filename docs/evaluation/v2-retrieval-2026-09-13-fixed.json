@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 2,
+  "runAt": "2026-09-13T04:35:45.379479Z",
+  "candidate": "fe03a77+source-local-ranks-v1",
+  "retrievalSourceSha256": "2b638d11c9bba6e8bb1a46d05df89a0402b992423e8b2f22f851bce99ddfb70e",
+  "algorithmsSourceSha256": "0d45c4b75f451ab7655d5303da3215a5685d15a440668ff339b836bcc0b97c0c",
+  "runtime": "Version 26.6.2 (Build 23G90)",
+  "vaultSchema": 6,
+  "corpus": "synthetic-contract-and-policy-v1",
+  "questions": 30,
+  "embedding": {
+    "implementation": "Apple Natural Language",
+    "language": "en",
+    "dimensions": 512,
+    "revision": 1
+  },
+  "tokenCounter": "Apple Foundation Models native",
+  "contextSize": 4096,
+  "singleSourceAdmittedHits": 30,
+  "multiSourceAdmittedHits": 30,
+  "reversedMultiSourceAdmittedHits": 30,
+  "sourceOrderInvariant": true,
+  "denseOnlyCandidateHits": 29,
+  "elapsedMs": 11013,
+  "generationEvaluated": false,
+  "meetsV1SingleSourceBaseline": true,
+  "multiSourcePerfectRecall": true,
+  "cases": [
+    {
+      "questionId": "aster-notice",
+      "category": "deadline",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "aster-pay-date",
+      "category": "exact-term",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "aster-leave",
+      "category": "amount",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "aster-secrets",
+      "category": "obligation",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "aster-devices",
+      "category": "paraphrase",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "ember-incident",
+      "category": "deadline",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "ember-helmets",
+      "category": "exact-term",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "ember-assembly",
+      "category": "paraphrase",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "ember-training",
+      "category": "amount",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "ember-inspection",
+      "category": "obligation",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "northstar-payment",
+      "category": "deadline",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "northstar-delivery",
+      "category": "exact-term",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "northstar-warranty",
+      "category": "amount",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "northstar-breach",
+      "category": "paraphrase",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "northstar-dispute",
+      "category": "obligation",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "juniper-hotel",
+      "category": "amount",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": false
+    },
+    {
+      "questionId": "juniper-meals",
+      "category": "exact-term",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "juniper-approval",
+      "category": "obligation",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "juniper-mileage",
+      "category": "paraphrase",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "juniper-receipts",
+      "category": "deadline",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "cobalt-retention",
+      "category": "amount",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "cobalt-deletion",
+      "category": "paraphrase",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "cobalt-access",
+      "category": "exact-term",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "cobalt-exposure",
+      "category": "deadline",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "cobalt-media",
+      "category": "obligation",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "meridian-term",
+      "category": "amount",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "meridian-payment",
+      "category": "exact-term",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "meridian-guest",
+      "category": "obligation",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "meridian-cancel",
+      "category": "deadline",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    },
+    {
+      "questionId": "meridian-deposit",
+      "category": "paraphrase",
+      "singleSourceAdmittedHit": true,
+      "multiSourceAdmittedHit": true,
+      "reversedMultiSourceAdmittedHit": true,
+      "denseCandidateHit": true
+    }
+  ]
+}
