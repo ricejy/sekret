@@ -282,14 +282,14 @@ final class RunnerTests: XCTestCase {
   func testGeneralAndKnowledgeBaseUseDistinctRuntimeModes() async throws {
     let runtime = FakeFoundationModelRuntime(status: .available, snapshots: ["Answer"])
     let service = AppleFoundationModelService(runtime: runtime)
-    for mode in [FoundationModelMode.general, .knowledgeBase, .groundedChat] {
+    for mode in [FoundationModelMode.general, .knowledgeBase, .groundedChat, .groundedVerification] {
       var text = ""
       for try await snapshot in try service.responseStream(prompt: "Question", mode: mode) {
         text = snapshot
       }
       XCTAssertEqual(text, "Answer")
     }
-    XCTAssertEqual(runtime.requestedModes, [.general, .knowledgeBase, .groundedChat])
+    XCTAssertEqual(runtime.requestedModes, [.general, .knowledgeBase, .groundedChat, .groundedVerification])
   }
 
   func testGeneralRuntimeStreamFailureIsNotCompletion() async throws {
@@ -355,7 +355,7 @@ final class RunnerTests: XCTestCase {
 
   @available(iOS 26.0, *)
   func testGeneralInstructionsDoNotUseDocumentOnlyRules() {
-    XCTAssertEqual(SystemFoundationModelRuntime.generalPromptVersion, "general-v1")
+    XCTAssertEqual(SystemFoundationModelRuntime.generalPromptVersion, "general-v3")
     XCTAssertTrue(SystemFoundationModelRuntime.generalInstructions.contains("legal, medical, or financial"))
     XCTAssertFalse(SystemFoundationModelRuntime.generalInstructions.contains("only the supplied document"))
   }

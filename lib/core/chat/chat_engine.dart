@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import '../knowledge/knowledge_base.dart';
 import '../platform/embedder.dart';
@@ -104,6 +103,7 @@ final class ChatEngine {
         'promptVersion': grounded
             ? groundedPromptVersion
             : generalPromptVersion,
+        if (grounded) 'verificationVersion': groundedVerificationVersion,
       },
     );
     var turn = grounded
@@ -155,7 +155,7 @@ final class ChatEngine {
         ],
         'current_user_message': turn.userText,
       };
-      final prompt = jsonEncode(conversation);
+      final prompt = buildGeneralChatPrompt(conversation);
       final size = await active.wait(_contextProbe.contextWindowSize());
       final instructions = await active.wait(
         _contextProbe.countInstructionTokens(
@@ -163,27 +163,27 @@ final class ChatEngine {
         ),
       );
       String groundedPrompt(List<StoredEvidencePassage> passages) =>
-          jsonEncode({
-            'conversation_context': {
+          buildGroundedChatPrompt(
+            conversationContext: {
               'context_summary': context.summary?.text,
               'recent_turns': conversation['recent_turns'],
             },
-            'current_user_message': turn.userText,
-            'current_evidence': [
+            question: turn.userText,
+            evidence: [
               for (final passage in passages)
-                {
-                  'source_id': passage.knowledgeItemId,
-                  'source_title': turn.provenance.sourceScope
+                (
+                  sourceId: passage.knowledgeItemId,
+                  sourceTitle: turn.provenance.sourceScope
                       .firstWhere(
                         (source) => source.id == passage.knowledgeItemId,
                       )
                       .title,
-                  'page': passage.page,
-                  'section': passage.heading,
-                  'passage': passage.text,
-                },
+                  page: passage.page,
+                  section: passage.heading,
+                  text: passage.text,
+                ),
             ],
-          });
+          );
       final tokens = await active.wait(
         _contextProbe.countPromptTokens(grounded ? groundedPrompt([]) : prompt),
       );
@@ -261,8 +261,7 @@ final class ChatEngine {
       while (await active.wait(iterator.moveNext())) {
         active.check();
         lastSnapshot = iterator.current;
-        if (!grounded ||
-            _hasEvidenceSupport(lastSnapshot, turn.provenance.evidence)) {
+        if (!grounded) {
           response = lastSnapshot;
           await _workspace.saveResponse(turn.id, response);
         }
@@ -271,11 +270,61 @@ final class ChatEngine {
       if (lastSnapshot.trim().isEmpty) {
         throw const _TurnFailure(TurnFailure.streamFailure);
       }
-      if (grounded &&
-          lastSnapshot.trim().isNotEmpty &&
-          (lastSnapshot.trim() == insufficientEvidenceMessage ||
-              !_hasEvidenceSupport(lastSnapshot, turn.provenance.evidence))) {
-        throw const _InsufficientEvidence();
+      if (grounded) {
+        if (lastSnapshot.trim().replaceAll("'", '’') ==
+                insufficientEvidenceMessage ||
+            RegExp(r'\[\s*\d+(?:\s*,\s*\d+)*\s*\]').hasMatch(lastSnapshot)) {
+          throw const _InsufficientEvidence();
+        }
+        // Release native generation before the second, fresh-session call.
+        // No grounded draft is persisted or exposed before final verification.
+        await iterator.cancel();
+        iterator = null;
+        active.check();
+        final verificationPrompt = buildGroundedVerificationPrompt(
+          groundedPrompt: generationPrompt,
+          draft: lastSnapshot,
+        );
+        final verificationInstructions = await active.wait(
+          _contextProbe.countInstructionTokens(
+            groundedVerificationInstructions,
+          ),
+        );
+        final verificationTokens = await active.wait(
+          _contextProbe.countPromptTokens(verificationPrompt),
+        );
+        if (verificationInstructions <= 0 || verificationTokens <= 0) {
+          throw const _TurnFailure(TurnFailure.streamFailure);
+        }
+        if (verificationInstructions +
+                verificationTokens +
+                groundedVerificationOutputTokens +
+                128 >
+            size) {
+          throw const _TurnFailure(TurnFailure.contextOverflow);
+        }
+        iterator = StreamIterator(
+          groundedBackend!.verifyGrounded(prompt: verificationPrompt),
+        );
+        var verdict = '';
+        final verificationWatch = Stopwatch()..start();
+        while (await active.wait(
+          iterator.moveNext().timeout(
+            const Duration(seconds: 30) - verificationWatch.elapsed,
+            onTimeout: () => throw const LlmException(
+              LlmFailureCode.streamFailure,
+              'The on-device verifier timed out.',
+            ),
+          ),
+        )) {
+          verdict = iterator.current;
+        }
+        active.check();
+        if (parseGroundedVerification(verdict) !=
+            GroundedVerificationVerdict.supported) {
+          throw const _InsufficientEvidence();
+        }
+        response = lastSnapshot;
       }
       if (response.trim().isEmpty) {
         throw const _TurnFailure(TurnFailure.streamFailure);
@@ -395,70 +444,4 @@ final class _TurnFailure implements Exception {
 
 final class _InsufficientEvidence implements Exception {
   const _InsufficientEvidence();
-}
-
-/// Conservative evidence-presence screen, not a semantic entailment proof.
-/// Citations are source cards; this heuristic NEVER creates inline attribution.
-bool _hasEvidenceSupport(String answer, List<TurnEvidenceSnapshot> evidence) {
-  if (answer.trim().isEmpty || answer.trim() == insufficientEvidenceMessage) {
-    return false;
-  }
-  // Model-authored citation markers have no independently established meaning.
-  if (RegExp(r'\[\s*\d+(?:\s*,\s*\d+)*\s*\]').hasMatch(answer)) return false;
-  final source = evidence
-      .map(
-        (passage) =>
-            '${passage.sourceTitle}\n${passage.heading}\n${passage.passageText}',
-      )
-      .join('\n')
-      .toLowerCase();
-  final numbers = RegExp(r'\d+(?:[.,]\d+)*');
-  final sourceNumbers = numbers
-      .allMatches(source)
-      .map((match) => match.group(0))
-      .toSet();
-  if (numbers
-      .allMatches(answer)
-      .any((match) => !sourceNumbers.contains(match.group(0)))) {
-    return false;
-  }
-  const ignored = {
-    'a',
-    'an',
-    'and',
-    'are',
-    'as',
-    'at',
-    'be',
-    'by',
-    'for',
-    'from',
-    'in',
-    'is',
-    'it',
-    'of',
-    'on',
-    'or',
-    'that',
-    'the',
-    'this',
-    'to',
-    'was',
-    'with',
-    'answer',
-    'document',
-    'source',
-    'sources',
-  };
-  final terms = RegExp(r'[\p{L}\p{N}]+', unicode: true)
-      .allMatches(answer.toLowerCase())
-      .map((match) => match.group(0)!)
-      .where((term) => !ignored.contains(term))
-      .toSet();
-  final sourceTerms = RegExp(
-    r'[\p{L}\p{N}]+',
-    unicode: true,
-  ).allMatches(source).map((match) => match.group(0)).toSet();
-  return terms.isNotEmpty &&
-      terms.where(sourceTerms.contains).length / terms.length >= 0.5;
 }
