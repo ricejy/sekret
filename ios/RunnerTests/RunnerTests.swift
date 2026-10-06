@@ -354,8 +354,60 @@ final class RunnerTests: XCTestCase {
   }
 
   @available(iOS 26.0, *)
+  func testGeneralReplyFormattingOnDevice() async throws {
+    #if targetEnvironment(simulator)
+    throw XCTSkip("Requires the physical on-device Apple Intelligence model")
+    #else
+    let runtime = SystemFoundationModelRuntime()
+    XCTAssertEqual(runtime.availability(), .available)
+    for recentTurns in [
+      [],
+      [["user": "What is 2 + 2?", "assistant": "2 + 2 is 4.", "outcome": "completed"]],
+      [["user": "Hi", "assistant": "{\"status\":\"completed\",\"message\":\"Hi!\",\"acknowledgment\":\"Acknowledged: Hi\"}", "outcome": "completed"]],
+    ] {
+      let data: [String: Any] = [
+        "context_summary": NSNull(), "recent_turns": recentTurns,
+        "current_user_message": "Hi",
+      ]
+      let prompt = String(data: try JSONSerialization.data(withJSONObject: data, options: [.prettyPrinted, .sortedKeys]), encoding: .utf8)!
+      for _ in 0..<3 {
+        var output = ""
+        for try await snapshot in runtime.responseStream(prompt: prompt, mode: .general) { output = snapshot }
+        let reply = output.trimmingCharacters(in: .whitespacesAndNewlines)
+        XCTAssertFalse(reply.isEmpty)
+        XCTAssertFalse(reply.hasPrefix("{"), "Ordinary greeting leaked a JSON wrapper: \(reply)")
+        XCTAssertFalse(reply.hasPrefix("```"), "Ordinary greeting leaked a code fence: \(reply)")
+      }
+    }
+    #endif
+  }
+
+  @available(iOS 26.0, *)
+  func testGeneralReplyAllowsRequestedJSONOnDevice() async throws {
+    #if targetEnvironment(simulator)
+    throw XCTSkip("Requires the physical on-device Apple Intelligence model")
+    #else
+    let runtime = SystemFoundationModelRuntime()
+    let data: [String: Any] = [
+      "context_summary": NSNull(), "recent_turns": [],
+      "current_user_message": "Show a JSON object with key greeting and value Hi.",
+    ]
+    let prompt = String(data: try JSONSerialization.data(withJSONObject: data, options: [.prettyPrinted, .sortedKeys]), encoding: .utf8)!
+    var output = ""
+    for try await snapshot in runtime.responseStream(prompt: prompt, mode: .general) { output = snapshot }
+    // This control checks that explicitly requested JSON remains available,
+    // not strict raw-JSON generation. A Markdown JSON block is also valid here.
+    let lines = output.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: "\n")
+    let json = lines.first == "```json" && lines.last == "```"
+      ? lines.dropFirst().dropLast().joined(separator: "\n") : output
+    let result = (try? JSONSerialization.jsonObject(with: Data(json.utf8))) as? [String: String]
+    XCTAssertEqual(result, ["greeting": "Hi"], "Explicit JSON control returned: \(output)")
+    #endif
+  }
+
+  @available(iOS 26.0, *)
   func testGeneralInstructionsDoNotUseDocumentOnlyRules() {
-    XCTAssertEqual(SystemFoundationModelRuntime.generalPromptVersion, "general-v3")
+    XCTAssertEqual(SystemFoundationModelRuntime.generalPromptVersion, "general-v4")
     XCTAssertTrue(SystemFoundationModelRuntime.generalInstructions.contains("legal, medical, or financial"))
     XCTAssertFalse(SystemFoundationModelRuntime.generalInstructions.contains("only the supplied document"))
   }
