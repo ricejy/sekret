@@ -109,9 +109,18 @@ void main() {
       expect(find.text('Welcome to Sekret'), findsOneWidget);
       expect(device.requests, 0);
       expect(await app.workspace.history(), isEmpty);
-      await tapRow(tester, 'Continue to Sekret');
+      await tester.tap(find.text('Continue'));
+      await settleSettings(tester);
+      expect(find.text('Apple Intelligence'), findsOneWidget);
+      await tester.tap(find.text('Continue without AI'));
+      await settleSettings(tester);
+      expect(find.text('App lock'), findsOneWidget);
+      await tester.tap(find.text('Skip for now'));
+      await settleSettings(tester);
       expect(find.byType(CupertinoTabBar), findsOneWidget);
       expect((await app.vault.settings.get()).onboardingComplete, isTrue);
+      expect(device.requests, 0);
+      expect((await app.vault.settings.get()).biometricLockEnabled, isFalse);
       await settings(tester);
       expect(
         find.textContaining('does not support the required on-device model'),
