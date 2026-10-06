@@ -1,0 +1,6 @@
+artifacts/
+.build/
+.swiftpm/
+results/
+ios/build/
+ios/**/xcuserdata/
