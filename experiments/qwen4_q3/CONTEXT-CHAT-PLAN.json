@@ -1,0 +1,25 @@
+{
+  "scope": "Isolated build 10 boundary and eight-turn development checks; no shipping approval, no new models",
+  "boundarySuite": {
+    "pacingSeconds": 30,
+    "inputs": [
+      {"id": "boundary-1", "contextTokens": 2048, "inputTokens": 1884, "outputReservation": 128, "unusedTokens": 36},
+      {"id": "boundary-2", "contextTokens": 4096, "inputTokens": 3938, "outputReservation": 128, "unusedTokens": 30}
+    ],
+    "expectedAnswer": "Saffron: Niko, Birch, 21 November, 735 credits",
+    "negativeAdmission": "Native Mac check with the same runtime: 1922+128 must reject a 2048 context; 3977+128 must reject a 4096 context before generation. No truncation."
+  },
+  "longChatSuite": {
+    "turns": 8,
+    "pacingSeconds": 30,
+    "contextTokens": 2048,
+    "outputReservationPerTurn": 256,
+    "history": "All actual generated prior assistant responses and user updates, with publisher-subset role framing. No history truncation or summaries.",
+    "finalExpectedFacts": ["Sunday", "noon", "Birch Hall", "Niko", "free entry", "materials budget 75 credits", "ramp at side entrance", "label seed packets", "24 packets"],
+    "quality": "Each turn should preserve latest updates. Review exact final facts, no stale values or invented specifics. No success percentage inferred beyond these development prompts."
+  },
+  "unchangedSafeguards": ["Pinned full-model SHA256", "2.5 GiB pre-load headroom", "serious/critical thermal start refusal and cancellation", "OS memory-warning cancellation", "foreground-loss cancellation", "one native operation", "hard context admission"],
+  "resourceAcceptance": "Every intended answer completed, sampled footprint below 1.5 GiB, no memory-warning or thermal stop, thermal states below serious. Any failure ends that suite without automatic retry.",
+  "battery": "USB-connected tests are not battery-drain evidence. Dedicated unplugged testing and appropriate measurement design remain separate.",
+  "historyOfFailure": "Earlier back-to-back thermal failure remains a failed result regardless of these paced outcomes. Start only after checking current readiness."
+}

@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-06",
+  "status": "not-qualified-resource-warning-first-probe",
+  "candidate": "Qwen3-4B-Instruct-2507 Q3_K_M",
+  "device": "iPhone 15 Pro Max (iPhone16,2), iOS 27.0 (24A437)",
+  "model": {
+    "bytes": 2075618400,
+    "sha256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9"
+  },
+  "runtime": "llama.cpp b11429, 37/37 layers offloaded to GPU",
+  "signedExecutableSHA256": "cc461a0d8d8598fdd96a9be8bf8f60fbb3768ca86808d089ee549ad8e5984539",
+  "plan": {
+    "probes": 7,
+    "contextTokens": [
+      2048,
+      4096
+    ],
+    "outputCap": 128,
+    "minimumInitialAppHeadroomBytes": 3221225472
+  },
+  "observation": {
+    "attemptedProbes": 1,
+    "completedAnswers": 0,
+    "remainingProbesNotRun": 6,
+    "firstProbe": "phone-2k-1",
+    "contextTokens": 2048,
+    "promptTokens": 56,
+    "outputTokens": 0,
+    "initialAppHeadroomBytes": 3522312448,
+    "loadSeconds": 4.900372291667736,
+    "outcome": "cancelled",
+    "stopReason": "Memory warning",
+    "warningToWorkerReturnSeconds": 0.21014695832855068,
+    "peakSampledFootprintBytes": 2491536368,
+    "processLifetimePeakRSSBytes": 1690386432,
+    "thermalStateAtReturn": 0,
+    "foregroundAtReturn": true,
+    "processObservedAliveAfterCancellation": true,
+    "idleRelaunchSucceeded": true
+  },
+  "evidence": {
+    "report": "results/phone-attempt-1/Qwen4Q3Reports/B6E4FF1A-2E22-4016-B7DA-111A29DC128E/phone-2k-1.json",
+    "reportSHA256": "80bbb502f34176e52537e17a248c743cf4ac3675833a8b82dce6cca187e2dfba",
+    "lifecycle": "results/phone-attempt-1/q3-lifecycle-7735ADCE-156F-4EDF-BA4D-80E88CD3CC6A.json",
+    "lifecycleSHA256": "76f7e76fc4628d71c05e36f543385e480852d52bf9b9fbb93ffe116adeefec15",
+    "console": "results/phone-suite-console.log",
+    "priorReportBackup": "results/phone-prior-documents/EvaluationReports",
+    "priorReportsComparedByteForByte": true
+  },
+  "interpretation": [
+    "The OS memory-warning notification caused cooperative cancellation before any output token. No synthetic warning was sent.",
+    "The process survived and later relaunched normally. It was deliberately restarted without suite arguments after evidence export; the console command's final nonzero exit is from that intentional restart, not a spontaneous crash.",
+    "This is an unsuccessful resource admission under observed conditions, not an answer-quality failure or proof of universal device incompatibility.",
+    "Do not disable the memory-warning safeguard or label the model available based on its earlier Mac quality result.",
+    "No answer-speed measurement is available. Load timing excludes prior full-file hashing; footprint sampling and lifetime RSS differ and are not directly interchangeable.",
+    "Actual UI Stop/background/foreground generation recovery, 4K probes, sustained load and near-full context remain untested.",
+    "The suite's legacy completedProbes field means a terminal report was written; it does not mean the answer completed.",
+    "No memory entitlement was requested. Old model and reports, shipping Sekret and personal data were not deleted.",
+    "Q3 weights are retained temporarily as the current resource investigation candidate, not an approved catalogue model."
+  ],
+  "next": "Use the retained smaller Qwen0.6 Q4 as a phone-resource baseline, or investigate the 4B runtime memory profile before any further 4B pressure runs. Keep quality ratings separate from resource readiness."
+}

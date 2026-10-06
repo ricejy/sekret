@@ -1,0 +1,14 @@
+{
+  "purpose": "Compare Qwen3-4B-Instruct-2507 Q3_K_M with the saved Q4_K_M development run; no shipping approval or baseline replacement",
+  "baseline_directory": "../qwen4_text/results/broader-o6ogzahr",
+  "baseline_grades": "../qwen4_text/BROADER-GRADES-2026-10-06.json",
+  "baseline_full_task_passes": 26,
+  "suite_sha256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4",
+  "changed": "Pinned quantized artifact only: Q4_K_M 2,497,281,120 bytes to Q3_K_M 2,075,618,400 bytes, from the same converter revision",
+  "held_fixed": "Native runtime b11429; no-BOS/no-thinking-suffix template; top-k20/top-p0.8/temperature0.7/seed42; same complete prompts and native token IDs; 2048 context; 128 output cap; four threads; Metal GPU; existing manual grading rubric",
+  "procedure": "Separate harness with only model pins changed; five native tests; all-30 token parity admission; one serial generation per question, no favorable retries; compare every grade and preserve all outputs",
+  "timing_limit": "Saved Q4 run was interrupted by low disk space and had uncontrolled system conditions. Record Q3 latency but do not infer a speedup ratio or attribute differences solely to bit width.",
+  "memory_limit": "Report Mac process peak RSS and sampled footprint separately; neither is iPhone memory qualification or safe required RAM.",
+  "policy": "User accepts lower-quality general-chat options with clear disclosure. Historical cutoff remains unchanged evidence, not automatic approval or rejection of every capability. Device/resource/privacy checks and separate Knowledge Base qualification still apply.",
+  "storage": "Download Q3 only; do not re-download Q4 or any 27B model. Stop native work below a 3 GiB reserve. Preserve metadata/reports when retiring unused weights."
+}

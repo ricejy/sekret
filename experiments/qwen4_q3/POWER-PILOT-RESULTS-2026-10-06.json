@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-06",
+  "scope": "One exploratory unplugged foreground Qwen3-4B-Instruct-2507 Q3_K_M pilot, not catalogue approval",
+  "status": "Eight-turn content/resource checks passed; power protocol incomplete because profiler attached after baseline began",
+  "build": 11,
+  "executableSHA256": "4840a6cc810690cc3b1915cc7ad09db1ba8cea1514d107a070848362ea5f4f8c",
+  "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "evidence": {
+    "readiness": "results/build11-unplugged-readiness.json",
+    "nativeReports": "results/repeated-phone-ec605i08/reports/7B10FB74-C54F-46DA-8C8F-61E7DE7E0EC7",
+    "chatAudit": "results/repeated-phone-ec605i08/paced-audit.json",
+    "trace": "results/power-pilot-JTw3QI/pilot-coredevice.trace",
+    "toc": "results/power-pilot-JTw3QI/toc.xml",
+    "exportedTables": "results/power-pilot-JTw3QI/power.xml",
+    "powerAudit": "results/power-pilot-JTw3QI/power-summary.json",
+    "lifecycle": "results/power-pilot-JTw3QI/lifecycle.json"
+  },
+  "conditions": {
+    "device": "iPhone 15 Pro Max / iOS 27.0 (24A437)",
+    "connection": "Wireless Xcode profiling and periodic report inventory polling",
+    "allNativeMarkersUnplugged": true,
+    "allNativeMarkersLowPowerModeOff": true,
+    "brightness": "100% in trace, 1.0 in every native marker; settings not changed",
+    "reportedBatteryLevel": "100% at every native marker; this coarse unchanged reading does not imply zero drain",
+    "thermal": "Nominal in every native marker and all 430.606588 seconds of the captured thermal timeline",
+    "chargingExport": "Zero rows; not independently interpreted as proof of charging state. Native markers and successful guarded suite corroborate unplugged operation. Charging-refusal path still not independently verified.",
+    "maxNativeWallVersusUptimeDeltaSeconds": 0.0009136788794421591
+  },
+  "chat": {
+    "completed": 8,
+    "contentReview": "All eight responses preserve the requested updates. Final answer correctly gives Sunday, noon, Birch Hall, Niko, free entry, 75-credit materials budget, ramp at side entrance, label packets, and 24 total packets from 12 attendees times two.",
+    "actualHistoryAndPublisherTokenParity": true,
+    "finalInputTokens": 643,
+    "contextTokens": 2048,
+    "outputCap": 256,
+    "generationSecondsRange": [2.5635794999980135, 8.183780708328413],
+    "medianGenerationSeconds": 5.010333083329897,
+    "medianTurnWallSeconds": 6.8568665981292725,
+    "latencyScope": "Generation excludes hash/load/export/UI. Turn-wall markers bracket hash/load/generation/report export, not tap-to-render latency. Workload also includes seven 30-second reading pauses.",
+    "peakSampledFootprintBytes": 436326088,
+    "processLifetimePeakRSSBytes": 2523627520,
+    "lifecycleStopReason": "none",
+    "foregroundAtReturn": true
+  },
+  "power": {
+    "unit": "Time-weighted whole-device percent battery energy per hour, from explicitly labelled rounded Instruments values",
+    "baselineBefore": {"durationSeconds": 93.37254190444946, "capturedSeconds": 49.44313907623291, "coverageFraction": 0.5295254693486802, "observedRate": 5.424205490149665},
+    "workload": {"durationSeconds": 272.73965311050415, "coverageFraction": 0.999999961536882, "observedRate": 16.697387015403656},
+    "baselineAfter": {"durationSeconds": 93.21014499664307, "coverageFraction": 0.9999999488427833, "observedRate": 5.986738553694965},
+    "completeProtocolPass": false,
+    "captureIssue": "First UDID/PID attachment reported process unavailable despite devicectl showing a live PID. CoreDevice identifier was not accepted by xctrace; selecting the independently verified device name then attached successfully to the same PID. Trace started 42.18 seconds after baseline start; first system-power sample was later still. No workload restart or automatic repeat.",
+    "appImpact": "930 rows retained, but Swift-backed export lacks semantic column labels; not assigned to CPU/GPU or converted to watts.",
+    "interpretation": "Diagnostic only. Missing initial coverage violates the frozen protocol. Whole-device rates at full brightness under wireless instrumentation are not app-only drain, battery-life estimates, or UI-ready battery ratings. No baseline subtraction or extrapolation used."
+  },
+  "verification": {"powerAnalysisUnitTestsPassed": 4, "checks": ["Interval clipping and duration weighting", "Missing samples are not zero or pass", "Overlap rejection", "Global XML references and no guessing unlabelled fields"]},
+  "next": "Before assigning a battery rating, arrange profiler-ready confirmation before the baseline starts and run repeated same-duration baseline/workload pairs after cooldown. Do not silently rerun this pilot or erase the earlier sustained-load thermal failure.",
+  "dataScope": "No shipping changes, additional model downloads, user data deletion, or charging/settings changes. Trace and reports preserved; app left idle."
+}
