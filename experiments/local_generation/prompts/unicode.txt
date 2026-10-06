@@ -1,0 +1,1 @@
+Write one short French sentence that includes the exact words café and été, followed by one short Korean greeting. This is fictional text for a Unicode streaming smoke test.

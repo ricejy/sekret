@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-06",
+  "scope": "Isolated Qwen3-0.6B Q4 evaluation harness only; no shipping changes",
+  "skill": "diagnosing-bugs: reproduce, minimize, rank falsifiable hypotheses, measure phases, change one variable, rerun real-device regression, remove temporary instrumentation",
+  "status": "Repeated-run regression fixed; manual Stop/background/recovery passed and corroborated by native reports",
+  "originalFailure": "3 GiB pre-load headroom threshold refused third run after two completed 2K answers",
+  "redCommands": [
+    {
+      "command": "python3 experiments/qwen06_q4/diagnose_phone.py",
+      "evidence": "results/repeated-phone-70xugkit/verdict.json",
+      "pass": false
+    },
+    {
+      "command": "python3 experiments/qwen06_q4/diagnose_phone.py --count 3",
+      "evidence": "results/repeated-phone-c620nba2/verdict.json",
+      "pass": false
+    },
+    {
+      "command": "python3 experiments/qwen06_q4/diagnose_phone.py --count 2",
+      "evidence": "results/repeated-phone-n3uhq7dp/verdict.json",
+      "pass": true
+    }
+  ],
+  "findings": [
+    {
+      "finding": "Foundation hash-read temporaries accumulated across the whole GGUF despite 1 MiB reads",
+      "beforeHashFootprintBytes": 17893120,
+      "afterHashBeforeFixBytes": 416434208,
+      "afterHashWithPerChunkPoolBytes": 19007256,
+      "fix": "Drain an autorelease pool around each read-and-hash chunk. Exact SHA-256 verification and cancellation remain.",
+      "limitation": "This fix alone did not resolve the pre-load threshold refusal.",
+      "beforeEvidence": "results/repeated-phone-80imdnnf/reports/6CED14E5-D9E6-49CE-BCAF-07EF872B7071",
+      "afterEvidence": "results/repeated-phone-r4x1l4ap/reports/B67B33EF-56E1-4133-8CEB-09A5B62713E8"
+    },
+    {
+      "finding": "The inherited 3 GiB headroom rule refused loading despite remaining headroom exceeding this compact model's observed footprint",
+      "twoSecondSettleAfterSecondRunBytes": 333351040,
+      "headroomAfterSettleBytes": 3206641536,
+      "diagnostic": "With a bounded 2 GiB reserve, all 20 2K probes completed; post-cleanup footprint after warmup remained approximately 337–348 MB.",
+      "interpretation": "Bounded retained native/runtime memory over this test, not evidence of an unbounded leak. No exact allocation owner was established.",
+      "policy": "Use a 2 GiB pre-load reserve for this pinned 0.6B model only. Keep OS memory-warning cancellation; do not copy this policy to larger models.",
+      "diagnosticEvidence": "results/reserve-diagnostic-recovery/ECD0FE9F-42C0-4CFC-95EE-5EDE508177F1"
+    }
+  ],
+  "validation": {
+    "nativeUnitTestsPassed": 5,
+    "cleanedBuild": 5,
+    "executableSHA256": "583887f45d2b61d84b7075b89dec6f06c4a70489e01c5469e93f2c4a78dcd560",
+    "originalSevenProbeReplay": {
+      "pass": true,
+      "evidence": "results/repeated-phone-f4649fec/verdict.json",
+      "outcomes": "Six completed answers plus expected injected eight-token cancellation",
+      "peakSampledFootprintBytes": 837716696
+    },
+    "twentyProbeReplay": {
+      "pass": true,
+      "evidence": "results/repeated-phone-os__ri9b/verdict.json",
+      "outcomes": "20 completed answers in one process; no reset or settle delays",
+      "peakSampledFootprintBytes": 369559920,
+      "thermalStateEveryResult": 0
+    },
+    "caveats": "Finite resource and manual-lifecycle evaluation, not production release approval. Near-full context, extended multi-turn/thermal/energy behavior and shipping integration remain unqualified."
+  },
+  "uiLifecycle": {
+    "tests": "ios/SekretLocalEvalUITests/LifecycleTests.swift",
+    "intendedChecks": [
+      "Actual Stop tap during streaming, no overlapping run, native completion, next run",
+      "Actual Home-button background, activate app, cancellation, next run"
+    ],
+    "result": "Automated XCUITest runner remained blocked by the free-profile app limit. User manually passed both cases; native receipts corroborate real cancellation and successful later generation.",
+    "xcresult": "results/ui-lifecycle-20261006-attempt1.xcresult",
+    "fallback": "manual_lifecycle.sh completed with user-reported passing observations; raw phone reports exported and inspected",
+    "appDeletion": false,
+    "manual": {
+      "userReport": "both pass.",
+      "evidenceRoot": "results/manual-lifecycle-20261006/",
+      "pinnedModelVerifiedInAllSevenReports": true,
+      "stopTapCancellations": 4,
+      "stopRequestToWorkerReturnSeconds": [
+        0.03578291666781297,
+        0.02913612499833107,
+        0.035746666668273974,
+        0.038613666671153624
+      ],
+      "backgroundCancellations": 1,
+      "backgroundRequestToWorkerReturnSeconds": [
+        0.03430099999968661
+      ],
+      "laterCompletedRuns": 2,
+      "completedOutputTokens": [
+        407,
+        407
+      ],
+      "configuredContext": 2048,
+      "outputCap": 512,
+      "peakSampledFootprintBytes": 373868912,
+      "thermalStateInAllManualReports": 1,
+      "thermalInterpretation": "Fair (not nominal); causation and sustained thermal behavior were not measured.",
+      "timingCaveat": "App-recorded request-to-worker-return includes cleanup/export. Not an in-flight GPU abort latency guarantee.",
+      "lifecycleReceipts": [
+        {
+          "foregroundAtReturn": true,
+          "message": "cancelled: 105 output tokens. Not quality approval.",
+          "operation": "473DEB78-984F-4057-8077-45989A7C332E",
+          "stopReason": "Stop tapped",
+          "stopToReturnSeconds": 0.03578291666781297,
+          "time": "2026-10-06T12:21:15Z"
+        },
+        {
+          "foregroundAtReturn": true,
+          "message": "cancelled: 47 output tokens. Not quality approval.",
+          "operation": "EC81299C-F8D5-4E0B-B1AF-27DC24795EF1",
+          "stopReason": "Stop tapped",
+          "stopToReturnSeconds": 0.02913612499833107,
+          "time": "2026-10-06T12:21:21Z"
+        },
+        {
+          "foregroundAtReturn": true,
+          "message": "cancelled: 81 output tokens. Not quality approval.",
+          "operation": "EF72B1F0-584B-4A81-AE0E-1F9D76B5B0A0",
+          "stopReason": "Stop tapped",
+          "stopToReturnSeconds": 0.035746666668273974,
+          "time": "2026-10-06T12:21:25Z"
+        },
+        {
+          "foregroundAtReturn": true,
+          "message": "cancelled: 41 output tokens. Not quality approval.",
+          "operation": "7B25494E-14B8-43BD-AB3C-34E1908D43EA",
+          "stopReason": "Stop tapped",
+          "stopToReturnSeconds": 0.038613666671153624,
+          "time": "2026-10-06T12:21:27Z"
+        },
+        {
+          "foregroundAtReturn": true,
+          "message": "completed: 407 output tokens. Not quality approval.",
+          "operation": "5D14A3BB-5CC7-4CFA-927B-CDB702F87796",
+          "stopReason": "none",
+          "stopToReturnSeconds": -1,
+          "time": "2026-10-06T12:21:36Z"
+        },
+        {
+          "foregroundAtReturn": false,
+          "message": "cancelled: 42 output tokens. Not quality approval.",
+          "operation": "A7AE61B9-E88A-41E9-BCE0-10C9103E31A8",
+          "stopReason": "App left foreground",
+          "stopToReturnSeconds": 0.03430099999968661,
+          "time": "2026-10-06T12:21:43Z"
+        },
+        {
+          "foregroundAtReturn": true,
+          "message": "completed: 407 output tokens. Not quality approval.",
+          "operation": "313127CC-9885-4DA1-ACC4-68BBDFDBF984",
+          "stopReason": "none",
+          "stopToReturnSeconds": -1,
+          "time": "2026-10-06T12:21:57Z"
+        }
+      ]
+    }
+  },
+  "cleanup": "Temporary memoryTrace, debug phase logging and diagnostic threshold/settle switches removed from active source. Retained small raw evidence, regression harness and active model. No unrelated app/data deleted.",
+  "implications": "The older Qwen4 Q3 harness has the same whole-file temporary hashing pattern. Its prior OS memory warning remains a real observation, but it should be re-evaluated after bounded hashing before attributing failure solely to the model. No new 4B result is claimed."
+}
