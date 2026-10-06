@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'sekret_brand.dart';
 import 'package:flutter/material.dart' show DefaultMaterialLocalizations;
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,6 +19,8 @@ import '../core/storage/local_data_vault.dart';
 import 'chat/chat_screen.dart';
 import 'knowledge/source_preview.dart';
 import 'knowledge/knowledge_screen.dart';
+import 'knowledge/knowledge_import_actions.dart';
+import 'models/models_screen.dart';
 import 'settings/settings_screen.dart';
 import 'settings/onboarding_screen.dart';
 
@@ -105,6 +108,10 @@ class SekretChatApp extends StatefulWidget {
 
 class _SekretChatAppState extends State<SekretChatApp>
     with WidgetsBindingObserver {
+  static const _chatTab = 0;
+  static const _modelsTab = 1;
+  static const _knowledgeTab = 2;
+  static const _settingsTab = 3;
   ChatAppResources? _resources;
   late final Future<ChatAppResources> _resourcesFuture;
   final _tabs = CupertinoTabController();
@@ -268,7 +275,7 @@ class _SekretChatAppState extends State<SekretChatApp>
           'Deletion could not be fully completed. Check storage and retry.';
     } finally {
       if (mounted) {
-        _tabs.index = 2;
+        _tabs.index = _settingsTab;
         setState(() => _maintenance = false);
         if (!_obscured && !resources.protection.locked) {
           await resources.engine.resume();
@@ -296,31 +303,33 @@ class _SekretChatAppState extends State<SekretChatApp>
     localizationsDelegates: const [DefaultMaterialLocalizations.delegate],
     title: 'Sekret',
     debugShowCheckedModeBanner: false,
-    theme: const CupertinoThemeData(
-      primaryColor: CupertinoColors.systemBlue,
-      scaffoldBackgroundColor: CupertinoColors.systemBackground,
-    ),
+    theme: SekretBrand.theme,
     // Wrap the navigator, not only the home: modal dialogs and sheets must
     // disappear from snapshots and accessibility too.
-    builder: (context, child) => Stack(
-      children: [
-        ExcludeSemantics(
-          excluding: _obscured || (_resources?.protection.locked ?? false),
-          child: IgnorePointer(
-            ignoring: _obscured || (_resources?.protection.locked ?? false),
-            child: child,
-          ),
-        ),
-        if (!_obscured && (_resources?.protection.locked ?? false))
-          Positioned.fill(child: _lockScreen(_resources!)),
-        if (_obscured)
-          Positioned.fill(
-            child: ColoredBox(
-              color: CupertinoColors.systemBackground.resolveFrom(context),
-              child: const Center(child: Text('Sekret')),
+    builder: (context, child) => MediaQuery(
+      data: MediaQuery.of(
+        context,
+      ).copyWith(platformBrightness: Brightness.dark),
+      child: Stack(
+        children: [
+          ExcludeSemantics(
+            excluding: _obscured || (_resources?.protection.locked ?? false),
+            child: IgnorePointer(
+              ignoring: _obscured || (_resources?.protection.locked ?? false),
+              child: child,
             ),
           ),
-      ],
+          if (!_obscured && (_resources?.protection.locked ?? false))
+            Positioned.fill(child: _lockScreen(_resources!)),
+          if (_obscured)
+            Positioned.fill(
+              child: ColoredBox(
+                color: SekretBrand.background,
+                child: const Center(child: Text('Sekret')),
+              ),
+            ),
+        ],
+      ),
     ),
     home: FutureBuilder<ChatAppResources>(
       future: _resourcesFuture,
@@ -371,6 +380,10 @@ class _SekretChatAppState extends State<SekretChatApp>
                     label: 'Chat',
                   ),
                   BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.cube),
+                    label: 'Models',
+                  ),
+                  BottomNavigationBarItem(
                     icon: Icon(CupertinoIcons.folder),
                     label: 'Knowledge Base',
                   ),
@@ -382,12 +395,17 @@ class _SekretChatAppState extends State<SekretChatApp>
               ),
               tabBuilder: (_, index) => CupertinoTabView(
                 builder: (context) {
-                  if (index == 0) {
+                  if (index == _chatTab) {
                     return ChatScreen(
                       workspace: resources.workspace,
                       engine: resources.engine,
                       knowledge: resources.knowledge,
-                      onKnowledgeBase: () => _tabs.index = 1,
+                      onKnowledgeBase: () => _tabs.index = _knowledgeTab,
+                      onImportSource: (context, type) => importKnowledgeSource(
+                        context,
+                        resources.knowledge,
+                        type,
+                      ),
                       onPreview: (preview) => Navigator.of(context).push<void>(
                         CupertinoPageRoute(
                           builder: (_) => SourcePreview(
@@ -407,7 +425,13 @@ class _SekretChatAppState extends State<SekretChatApp>
                       onSettings: resources.models.openSettings,
                     );
                   }
-                  if (index == 1) {
+                  if (index == _modelsTab) {
+                    return ModelsScreen(
+                      model: resources.models,
+                      openSystemSettings: resources.models.openSettings,
+                    );
+                  }
+                  if (index == _knowledgeTab) {
                     return KnowledgeScreen(knowledge: resources.knowledge);
                   }
                   return SettingsScreen(
@@ -446,7 +470,7 @@ class _SekretChatAppState extends State<SekretChatApp>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(CupertinoIcons.lock_shield, size: 48),
+              const TuckMascot(size: 160),
               const SizedBox(height: 16),
               const Text('Sekret is locked'),
               if (resources.protection.error != null)
