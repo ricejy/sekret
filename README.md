@@ -1,4 +1,4 @@
-# Sekret Midget
+# Sekret
 
 Private, on-device document questions and grounded answers. The production app is iPhone-first; portable Dart logic and fake-backed UI are developed and tested on Windows.
 
