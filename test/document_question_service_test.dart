@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/platform/embedder.dart';
-import 'package:sekret_midget/core/platform/llm_backend.dart';
-import 'package:sekret_midget/core/question/document_question_service.dart';
-import 'package:sekret_midget/demo/demo_dependencies.dart';
-import 'package:sekret_midget/demo/fictional_document.dart';
+import 'package:sekret/core/platform/embedder.dart';
+import 'package:sekret/core/platform/llm_backend.dart';
+import 'package:sekret/core/question/document_question_service.dart';
+import 'package:sekret/demo/demo_dependencies.dart';
+import 'package:sekret/demo/fictional_document.dart';
 
 void main() {
   test(

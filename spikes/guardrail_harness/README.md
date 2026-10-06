@@ -1,6 +1,6 @@
 # Guardrail Harness
 
-> **Disposable spike.** This is not the production Sekret Midget app. Its job is to decide whether the product may proceed.
+> **Disposable spike.** This is not the production Sekret app. Its job is to decide whether the product may proceed.
 
 The harness calls Apple's on-device `SystemLanguageModel` using plain-string generation and `.permissiveContentTransformations`. It contains no network client, analytics SDK, crash reporter, feedback upload, database, or production document pipeline.
 
@@ -19,7 +19,7 @@ No third-party dependency or package manager is used.
 
 1. Pull the repository and open `GuardrailHarness.xcodeproj`.
 2. Select the **GuardrailHarness** target, then **Signing & Capabilities**.
-3. Select your development team. If Xcode reports a bundle-ID collision, replace `com.ricejy.sekretmidget.guardrailharness` with a unique local identifier.
+3. Select your development team. If Xcode reports a bundle-ID collision, replace `com.ricejy.sekret.guardrailharness` with a unique local identifier.
 4. Select the physical iPhone 15 Pro Max as the run destination.
 5. Run **Product → Test** and confirm the `GuardrailHarnessTests` suite passes. These tests keep the in-app importer aligned with `validate_guardrail_suite.ps1`, including domain distribution, excerpt-domain matching, excerpt length, sensitive-topic labels, and latency statistics.
 6. Confirm the project compiles before changing the prompt or fixtures.

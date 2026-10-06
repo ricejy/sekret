@@ -4,15 +4,15 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/app.dart';
-import 'package:sekret_midget/core/library/document_library.dart';
-import 'package:sekret_midget/core/platform/document_image_picker.dart';
-import 'package:sekret_midget/core/platform/embedder.dart';
-import 'package:sekret_midget/core/platform/llm_backend.dart';
-import 'package:sekret_midget/core/platform/ocr_engine.dart';
-import 'package:sekret_midget/core/platform/pdf_file_picker.dart';
-import 'package:sekret_midget/core/platform/pdf_text_extractor.dart';
-import 'package:sekret_midget/demo/fake_native_capabilities.dart';
+import 'package:sekret/app.dart';
+import 'package:sekret/core/library/document_library.dart';
+import 'package:sekret/core/platform/document_image_picker.dart';
+import 'package:sekret/core/platform/embedder.dart';
+import 'package:sekret/core/platform/llm_backend.dart';
+import 'package:sekret/core/platform/ocr_engine.dart';
+import 'package:sekret/core/platform/pdf_file_picker.dart';
+import 'package:sekret/core/platform/pdf_text_extractor.dart';
+import 'package:sekret/demo/fake_native_capabilities.dart';
 
 const _policyTitle = 'Fictional Orion Safety Policy';
 const _policyText = '''
@@ -29,7 +29,7 @@ void main() {
       final library = await _openTestLibrary();
       addTearDown(library.close);
 
-      await tester.pumpWidget(SekretMidgetApp(documentLibrary: library));
+      await tester.pumpWidget(SekretApp(documentLibrary: library));
       await tester.pumpAndSettle();
 
       expect(
@@ -82,7 +82,7 @@ void main() {
       addTearDown(library.close);
 
       await tester.pumpWidget(
-        SekretMidgetApp(
+        SekretApp(
           documentLibrary: library,
           pdfFilePicker: _FixturePdfPicker(fixtureBytes),
         ),
@@ -142,7 +142,7 @@ void main() {
       addTearDown(library.close);
 
       await tester.pumpWidget(
-        SekretMidgetApp(
+        SekretApp(
           documentLibrary: library,
           documentImagePicker: _FixtureImagePicker(fixtureBytes),
         ),
@@ -197,7 +197,7 @@ void main() {
     addTearDown(library.close);
 
     await tester.pumpWidget(
-      SekretMidgetApp(
+      SekretApp(
         documentLibrary: library,
         documentImagePicker: _FixtureImagePicker(fixtureBytes),
       ),
@@ -222,7 +222,7 @@ void main() {
     final library = await _openTestLibrary(pdfTextExtractor: extractor);
     addTearDown(library.close);
     await tester.pumpWidget(
-      SekretMidgetApp(
+      SekretApp(
         documentLibrary: library,
         pdfFilePicker: _FixturePdfPicker(
           Uint8List.fromList(const [0x25, 0x50, 0x44, 0x46]),
@@ -259,7 +259,7 @@ void main() {
     addTearDown(tester.view.reset);
     final library = await _openTestLibrary();
     addTearDown(library.close);
-    await tester.pumpWidget(SekretMidgetApp(documentLibrary: library));
+    await tester.pumpWidget(SekretApp(documentLibrary: library));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('open-import')));
@@ -291,7 +291,7 @@ void main() {
           text: 'EQUIPMENT\n\nProtective equipment remains company property.',
         )
         .drain<void>();
-    await tester.pumpWidget(SekretMidgetApp(documentLibrary: library));
+    await tester.pumpWidget(SekretApp(documentLibrary: library));
     await tester.pumpAndSettle();
 
     await tester.tap(find.widgetWithText(InkWell, 'Document A'));
@@ -331,7 +331,7 @@ void main() {
     await library
         .importPastedText(title: _policyTitle, text: _policyText)
         .drain<void>();
-    await tester.pumpWidget(SekretMidgetApp(documentLibrary: library));
+    await tester.pumpWidget(SekretApp(documentLibrary: library));
     await tester.pumpAndSettle();
     await _selectPolicy(tester);
     await tester.enterText(
@@ -363,7 +363,7 @@ void main() {
   ) async {
     final startup = Completer<DocumentLibrary>();
     await tester.pumpWidget(
-      SekretMidgetApp(documentLibraryFuture: startup.future),
+      SekretApp(documentLibraryFuture: startup.future),
     );
     startup.completeError(StateError('synthetic corrupt database detail'));
     await tester.pumpAndSettle();
@@ -386,7 +386,7 @@ void main() {
       tokenCounter: const FakeTokenCounter(),
     );
     addTearDown(library.close);
-    await tester.pumpWidget(SekretMidgetApp(documentLibrary: library));
+    await tester.pumpWidget(SekretApp(documentLibrary: library));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('open-import')));
     await tester.pumpAndSettle();
@@ -410,7 +410,7 @@ void main() {
       final library = await _openLibraryWithPolicy();
       addTearDown(library.close);
       await tester.pumpWidget(
-        SekretMidgetApp(
+        SekretApp(
           documentLibrary: library,
           modelAvailability: const DeviceNotEligible(),
         ),
@@ -436,7 +436,7 @@ void main() {
     final library = await _openLibraryWithPolicy();
     addTearDown(library.close);
     await tester.pumpWidget(
-      SekretMidgetApp(
+      SekretApp(
         documentLibrary: library,
         modelAvailability: const AppleIntelligenceNotEnabled(),
       ),
@@ -455,7 +455,7 @@ void main() {
     final library = await _openLibraryWithPolicy();
     addTearDown(library.close);
     await tester.pumpWidget(
-      SekretMidgetApp(
+      SekretApp(
         documentLibrary: library,
         modelAvailability: const ModelNotReady(),
       ),
@@ -475,7 +475,7 @@ void main() {
   ) async {
     final library = await _openLibraryWithPolicy();
     addTearDown(library.close);
-    await tester.pumpWidget(SekretMidgetApp(documentLibrary: library));
+    await tester.pumpWidget(SekretApp(documentLibrary: library));
     await tester.pumpAndSettle();
     await _selectPolicy(tester);
 
@@ -508,7 +508,7 @@ void main() {
     await library
         .importPastedText(title: 'Fictional policy to keep', text: _policyText)
         .drain<void>();
-    await tester.pumpWidget(SekretMidgetApp(documentLibrary: library));
+    await tester.pumpWidget(SekretApp(documentLibrary: library));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byTooltip('Delete Fictional policy to delete'));

@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/platform/pdf_text_extractor.dart';
-import 'package:sekret_midget/core/platform/pdfrx_pdf_text_extractor.dart';
+import 'package:sekret/core/platform/pdf_text_extractor.dart';
+import 'package:sekret/core/platform/pdfrx_pdf_text_extractor.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

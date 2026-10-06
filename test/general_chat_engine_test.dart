@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/chat/chat_workspace.dart';
-import 'package:sekret_midget/core/chat/chat_engine.dart';
-import 'package:sekret_midget/core/platform/llm_backend.dart';
-import 'package:sekret_midget/core/platform/token_counter.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
+import 'package:sekret/core/chat/chat_workspace.dart';
+import 'package:sekret/core/chat/chat_engine.dart';
+import 'package:sekret/core/platform/llm_backend.dart';
+import 'package:sekret/core/platform/token_counter.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 void main() {

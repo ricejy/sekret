@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.ricejy" "\0"
-            VALUE "FileDescription", "sekret_midget" "\0"
+            VALUE "FileDescription", "sekret" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "sekret_midget" "\0"
+            VALUE "InternalName", "sekret" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.ricejy. All rights reserved." "\0"
-            VALUE "OriginalFilename", "sekret_midget.exe" "\0"
-            VALUE "ProductName", "sekret_midget" "\0"
+            VALUE "OriginalFilename", "sekret.exe" "\0"
+            VALUE "ProductName", "sekret" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

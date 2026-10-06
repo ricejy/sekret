@@ -3,14 +3,14 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/knowledge/knowledge_base.dart';
-import 'package:sekret_midget/core/platform/embedder.dart';
-import 'package:sekret_midget/core/platform/ocr_engine.dart';
-import 'package:sekret_midget/core/platform/pdf_page_rasterizer.dart';
-import 'package:sekret_midget/core/platform/pdf_text_extractor.dart';
-import 'package:sekret_midget/core/platform/token_counter.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
-import 'package:sekret_midget/demo/fake_native_capabilities.dart';
+import 'package:sekret/core/knowledge/knowledge_base.dart';
+import 'package:sekret/core/platform/embedder.dart';
+import 'package:sekret/core/platform/ocr_engine.dart';
+import 'package:sekret/core/platform/pdf_page_rasterizer.dart';
+import 'package:sekret/core/platform/pdf_text_extractor.dart';
+import 'package:sekret/core/platform/token_counter.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
+import 'package:sekret/demo/fake_native_capabilities.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 void main() {

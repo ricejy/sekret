@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/platform/device_protection.dart';
-import 'package:sekret_midget/core/settings/app_protection.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
+import 'package:sekret/core/platform/device_protection.dart';
+import 'package:sekret/core/settings/app_protection.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
 
 class FakeDeviceProtection implements DeviceProtection {
   bool success = true;

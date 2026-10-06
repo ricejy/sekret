@@ -401,7 +401,7 @@ private struct HarnessAboutView: View {
         NavigationStack {
             List {
                 Section("Purpose") {
-                    Text("This disposable app measures Foundation Models guardrail behavior before Sekret Midget’s Flutter application is created.")
+                    Text("This disposable app measures Foundation Models guardrail behavior before Sekret’s Flutter application is created.")
                 }
                 Section("Authoritative run") {
                     Text("Install a Release build on the iPhone 15 Pro Max, confirm Apple Intelligence is ready, disconnect the Mac, enable airplane mode, and run the suite.")

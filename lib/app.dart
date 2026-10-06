@@ -21,8 +21,8 @@ const _line = Color(0xFFDCE2E8);
 const _warningSurface = Color(0xFFFFF6E3);
 const _warningInk = Color(0xFF6B4708);
 
-final class SekretMidgetApp extends StatefulWidget {
-  const SekretMidgetApp({
+final class SekretApp extends StatefulWidget {
+  const SekretApp({
     super.key,
     this.documentLibrary,
     this.documentLibraryFuture,
@@ -41,10 +41,10 @@ final class SekretMidgetApp extends StatefulWidget {
   final DocumentImagePicker documentImagePicker;
 
   @override
-  State<SekretMidgetApp> createState() => _SekretMidgetAppState();
+  State<SekretApp> createState() => _SekretAppState();
 }
 
-final class _SekretMidgetAppState extends State<SekretMidgetApp> {
+final class _SekretAppState extends State<SekretApp> {
   late final Future<DocumentLibrary> _libraryFuture;
   DocumentLibrary? _ownedLibrary;
 

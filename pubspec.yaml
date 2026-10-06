@@ -1,4 +1,4 @@
-name: sekret_midget
+name: sekret
 description: "Private, on-device document questions and grounded answers."
 publish_to: 'none'
 version: 0.1.0+1

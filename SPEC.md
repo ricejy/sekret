@@ -42,7 +42,7 @@ This is not "chat with your documents." It is: *narrow question → answer groun
 
 ## Confirmed Product Decisions (2026-08-10)
 
-- **Product name:** Sekret Midget.
+- **Product name:** Sekret.
 - **Audience:** personal use first. Monetization and public distribution remain out of scope.
 - **Platform:** iPhone first. Android or desktop is a likely later project, so the domain and retrieval layers must remain portable, but v1 is not designed to the lowest common denominator.
 - **Framework:** Flutter for the production app, with narrow Swift implementations for Foundation Models, `NLEmbedding`, Vision, and token counting.

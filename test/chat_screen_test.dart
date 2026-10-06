@@ -7,16 +7,16 @@ import 'package:flutter/material.dart' show DefaultMaterialLocalizations;
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/chat/chat_engine.dart';
-import 'package:sekret_midget/core/chat/chat_workspace.dart';
-import 'package:sekret_midget/core/knowledge/knowledge_base.dart';
-import 'package:sekret_midget/core/platform/llm_backend.dart';
-import 'package:sekret_midget/core/platform/token_counter.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
-import 'package:sekret_midget/demo/fake_native_capabilities.dart';
-import 'package:sekret_midget/ui/chat/answer_content.dart';
-import 'package:sekret_midget/ui/chat/chat_screen.dart';
-import 'package:sekret_midget/ui/knowledge/source_preview.dart';
+import 'package:sekret/core/chat/chat_engine.dart';
+import 'package:sekret/core/chat/chat_workspace.dart';
+import 'package:sekret/core/knowledge/knowledge_base.dart';
+import 'package:sekret/core/platform/llm_backend.dart';
+import 'package:sekret/core/platform/token_counter.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
+import 'package:sekret/demo/fake_native_capabilities.dart';
+import 'package:sekret/ui/chat/answer_content.dart';
+import 'package:sekret/ui/chat/chat_screen.dart';
+import 'package:sekret/ui/knowledge/source_preview.dart';
 
 void main() => registerChatScreenTests();
 

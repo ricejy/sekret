@@ -57,7 +57,7 @@ final class DeviceProtectionPlugin: NSObject, FlutterPlugin {
 
   static func register(with registrar: FlutterPluginRegistrar) {
     registrar.addMethodCallDelegate(DeviceProtectionPlugin(), channel: FlutterMethodChannel(
-      name: "com.ricejy.sekret_midget/protection", binaryMessenger: registrar.messenger()
+      name: "com.ricejy.sekret/protection", binaryMessenger: registrar.messenger()
     ))
   }
 

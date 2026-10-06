@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/chat/chat_engine.dart';
-import 'package:sekret_midget/core/chat/chat_workspace.dart';
-import 'package:sekret_midget/core/knowledge/knowledge_base.dart';
-import 'package:sekret_midget/core/platform/apple_foundation_models.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
-import 'package:sekret_midget/demo/fake_native_capabilities.dart';
-import 'package:sekret_midget/ui/sekret_chat_app.dart';
+import 'package:sekret/core/chat/chat_engine.dart';
+import 'package:sekret/core/chat/chat_workspace.dart';
+import 'package:sekret/core/knowledge/knowledge_base.dart';
+import 'package:sekret/core/platform/apple_foundation_models.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
+import 'package:sekret/demo/fake_native_capabilities.dart';
+import 'package:sekret/ui/sekret_chat_app.dart';
 import 'chat_screen_test.dart' show UiModel;
 
 void main() {

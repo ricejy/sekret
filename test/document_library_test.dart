@@ -2,15 +2,15 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/library/document_library.dart';
-import 'package:sekret_midget/core/platform/embedder.dart';
-import 'package:sekret_midget/core/platform/llm_backend.dart';
-import 'package:sekret_midget/core/platform/ocr_engine.dart';
-import 'package:sekret_midget/core/platform/pdf_page_rasterizer.dart';
-import 'package:sekret_midget/core/platform/pdf_text_extractor.dart';
-import 'package:sekret_midget/core/platform/token_counter.dart';
-import 'package:sekret_midget/core/question/document_question_service.dart';
-import 'package:sekret_midget/demo/fake_native_capabilities.dart';
+import 'package:sekret/core/library/document_library.dart';
+import 'package:sekret/core/platform/embedder.dart';
+import 'package:sekret/core/platform/llm_backend.dart';
+import 'package:sekret/core/platform/ocr_engine.dart';
+import 'package:sekret/core/platform/pdf_page_rasterizer.dart';
+import 'package:sekret/core/platform/pdf_text_extractor.dart';
+import 'package:sekret/core/platform/token_counter.dart';
+import 'package:sekret/core/question/document_question_service.dart';
+import 'package:sekret/demo/fake_native_capabilities.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 void main() {
@@ -43,7 +43,7 @@ void main() {
     'upgrades an existing pasted-text library without losing documents',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-schema-upgrade-',
+        'sekret-schema-upgrade-',
       );
       final databasePath =
           '${temporaryDirectory.path}${Platform.pathSeparator}library.sqlite3';
@@ -101,7 +101,7 @@ void main() {
     'persists every chunk vector with a bounded quantized round trip',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-quantization-',
+        'sekret-quantization-',
       );
       final databasePath =
           '${temporaryDirectory.path}${Platform.pathSeparator}library.sqlite3';
@@ -165,7 +165,7 @@ The second fictional rule applies.
     'pasted text becomes a selectable document with a grounded answer',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-library-',
+        'sekret-library-',
       );
       final databasePath =
           '${temporaryDirectory.path}${Platform.pathSeparator}library.sqlite3';
@@ -234,7 +234,7 @@ Protective equipment remains the property of Orion Workshop and must be returned
     'a paraphrased question can retrieve evidence without shared terms',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-semantic-',
+        'sekret-semantic-',
       );
       final library = await openDocumentLibrary(
         databasePath:
@@ -279,7 +279,7 @@ Employees must report a workplace incident to the safety officer within 14 calen
     'PDF import persists its source and preserves page citations through deletion',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-pdf-library-',
+        'sekret-pdf-library-',
       );
       final databasePath =
           '${temporaryDirectory.path}${Platform.pathSeparator}library.sqlite3';
@@ -654,7 +654,7 @@ Employees must report a workplace incident to the safety officer within 14 calen
 
   test('an exact-term question can retrieve evidence without vectors', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-lexical-',
+      'sekret-lexical-',
     );
     final library = await openDocumentLibrary(
       databasePath:
@@ -689,7 +689,7 @@ Employees must report a workplace incident to the safety officer within 14 calen
 
   test('a mixed-topic document answers the topic in the question', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-mixed-topic-',
+      'sekret-mixed-topic-',
     );
     final library = await openDocumentLibrary(
       databasePath:
@@ -735,7 +735,7 @@ Employees must report a workplace incident within 14 calendar days.
 
   test('the citation identifies the chunk that supports the answer', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-citation-source-',
+      'sekret-citation-source-',
     );
     final library = await openDocumentLibrary(
       databasePath:
@@ -794,7 +794,7 @@ The incident deadline is fourteen days.
     'a numbered title-case clause is preserved as citation metadata',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-title-case-heading-',
+        'sekret-title-case-heading-',
       );
       final library = await openDocumentLibrary(
         databasePath:
@@ -837,7 +837,7 @@ Either party may end employment by giving 30 days' written notice.
 
   test('citation text preserves paragraph boundaries from the import', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-paragraphs-',
+      'sekret-paragraphs-',
     );
     final library = await openDocumentLibrary(
       databasePath:
@@ -881,7 +881,7 @@ The report must identify the date, location, and people involved.
 
   test('chunk boundaries use the injected model token counter', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-token-chunks-',
+      'sekret-token-chunks-',
     );
     final embedder = _RecordingEmbedder();
     final library = await openDocumentLibrary(
@@ -913,7 +913,7 @@ First compact clause covers workplace incident reports. Second compact clause co
 
   test('documents and retrieval data survive a library restart', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-restart-',
+      'sekret-restart-',
     );
     final databasePath =
         '${temporaryDirectory.path}${Platform.pathSeparator}library.sqlite3';
@@ -964,7 +964,7 @@ Employees must report a workplace incident to the safety officer within 14 calen
 
   test('a long trailing sentence is retained as chunk overlap', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-overlap-',
+      'sekret-overlap-',
     );
     final embedder = _RecordingEmbedder();
     final library = await openDocumentLibrary(
@@ -999,7 +999,7 @@ Alpha sentence establishes the initial rule. Bridge sentence carries essential c
 
   test('deleting one document leaves another document queryable', () async {
     final temporaryDirectory = await Directory.systemTemp.createTemp(
-      'sekret-midget-delete-',
+      'sekret-delete-',
     );
     final library = await openDocumentLibrary(
       databasePath:
@@ -1060,7 +1060,7 @@ Employees must report a workplace incident to the safety officer within 14 calen
     'an import failure is recoverable without exposing pasted text',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-failure-',
+        'sekret-failure-',
       );
       final library = await openDocumentLibrary(
         databasePath:
@@ -1247,7 +1247,7 @@ Either fictional party may end employment with forty-five days of written notice
     'a chunk is excluded whole when it cannot fit the context budget',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-context-',
+        'sekret-context-',
       );
       final library = await openDocumentLibrary(
         databasePath:
@@ -1285,7 +1285,7 @@ Employees must report a workplace incident to the safety officer within 14 calen
     'context budgeting includes serialized headings and separators',
     () async {
       final temporaryDirectory = await Directory.systemTemp.createTemp(
-        'sekret-midget-serialized-context-',
+        'sekret-serialized-context-',
       );
       final library = await openDocumentLibrary(
         databasePath:

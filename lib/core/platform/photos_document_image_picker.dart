@@ -7,7 +7,7 @@ import 'file_selector_document_image_picker.dart';
 /// with Sekret; no full-library permission or temporary file is needed.
 final class PhotosDocumentImagePicker implements DocumentImagePicker {
   const PhotosDocumentImagePicker();
-  static const _channel = MethodChannel('com.ricejy.sekret_midget/photos');
+  static const _channel = MethodChannel('com.ricejy.sekret/photos');
 
   @override
   Future<SelectedDocumentImage?> pickImage() async {

@@ -6,7 +6,7 @@ final class AppleVisionOcr implements OcrEngine {
   AppleVisionOcr({MethodChannel? channel})
     : _channel = channel ?? const MethodChannel(_channelName);
 
-  static const _channelName = 'com.ricejy.sekret_midget/vision_ocr';
+  static const _channelName = 'com.ricejy.sekret/vision_ocr';
 
   final MethodChannel _channel;
 
