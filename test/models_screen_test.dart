@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sekret/core/platform/llm_backend.dart';
 import 'package:sekret/ui/models/models_screen.dart';
 import 'package:sekret/ui/sekret_brand.dart';
+import 'package:sekret/core/models/model_store.dart';
+import 'model_store_test.dart' show Policy, Transport, fixture;
 
 class _Model implements LlmBackend {
   LlmAvailability status = const Available();
@@ -27,6 +30,109 @@ class _Model implements LlmBackend {
 }
 
 void main() {
+  testWidgets(
+    'download requires consent, verifies, and removal requires confirmation',
+    (tester) async {
+      final directory = (await tester.runAsync(
+        () => Directory.systemTemp.createTemp('sekret-model-ui-'),
+      ))!;
+      final transport = Transport();
+      final store = ModelStore(
+        directory: directory,
+        policy: Policy(),
+        transport: transport,
+        model: fixture,
+      );
+      await tester.runAsync(store.initialize);
+      addTearDown(
+        () => tester.runAsync(() => directory.delete(recursive: true)),
+      );
+      await tester.pumpWidget(
+        CupertinoApp(
+          theme: SekretBrand.theme,
+          home: ModelsScreen(
+            model: _Model(),
+            openSystemSettings: () async {},
+            store: store,
+            supportsLocalModel: () async => true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(transport.calls, 0);
+      await tester.scrollUntilVisible(find.text('Download · 2.08 GB'), 300);
+      await tester.ensureVisible(find.text('Download · 2.08 GB'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Download · 2.08 GB'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('IP address'), findsOneWidget);
+      await tester.tap(find.text('Not now'));
+      await tester.pumpAndSettle();
+      expect(transport.calls, 0);
+      await tester.tap(find.text('Download · 2.08 GB'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Download'));
+      for (
+        var i = 0;
+        i < 100 && store.state.phase != ModelInstallPhase.installed;
+        i++
+      ) {
+        await tester.pump();
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+      }
+      await tester.pumpAndSettle();
+      expect(store.state.phase, ModelInstallPhase.installed);
+      expect(transport.calls, 1);
+      // Publication is followed by closing transport/staging handles. Pump both
+      // real I/O and widget microtasks until the UI operation has completed.
+      for (var i = 0; i < 30; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 2)),
+        );
+        await tester.pump();
+      }
+      await tester.scrollUntilVisible(
+        find.text('Remove downloaded files'),
+        200,
+      );
+      await tester.ensureVisible(find.text('Remove downloaded files'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Remove downloaded files'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+      expect(store.state.phase, ModelInstallPhase.installed);
+      await tester.tap(find.text('Remove downloaded files'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Remove'));
+      for (
+        var i = 0;
+        i < 100 && store.state.phase != ModelInstallPhase.absent;
+        i++
+      ) {
+        await tester.pump();
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+      }
+      await tester.pumpAndSettle();
+      expect(store.state.phase, ModelInstallPhase.absent);
+      for (var i = 0; i < 30; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 2)),
+        );
+        await tester.pump();
+      }
+      await tester.pumpWidget(const SizedBox.shrink());
+      // Keep closure in the fake clock that owns the install/remove futures.
+      // Moving this into runAsync teardown deadlocks even after UI completion.
+      await store.close();
+    },
+    timeout: const Timeout(Duration(seconds: 15)),
+  );
+
   Future<void> show(
     WidgetTester tester,
     _Model model, {

@@ -135,7 +135,7 @@ void main() {
     );
     expect(
       find.text(
-        'Adding or downloading small open-source models to run locally is not available in this build yet.',
+        'A local text model preview is in Models on supported iPhones. Download only if you choose.',
       ),
       findsOneWidget,
     );

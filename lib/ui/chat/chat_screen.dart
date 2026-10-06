@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' show SelectableText;
 import 'package:flutter/services.dart';
 import '../../core/chat/chat_engine.dart';
 import '../../core/chat/chat_workspace.dart';
+import '../../core/models/model_catalogue.dart';
 import '../../core/knowledge/knowledge_base.dart';
 import '../../core/platform/llm_backend.dart';
 import '../../core/storage/local_data_vault.dart';
@@ -24,9 +25,11 @@ class ChatScreen extends StatefulWidget {
     required this.onLink,
     this.onSettings,
     this.onImportSource,
+    this.modelRevision,
   });
   final ChatWorkspace workspace;
   final ChatEngine engine;
+  final String? modelRevision;
   final KnowledgeBase knowledge;
   final VoidCallback onKnowledgeBase;
   final Future<void> Function(KnowledgePreview) onPreview;
@@ -77,6 +80,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   @override
+  void didUpdateWidget(covariant ChatScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.modelRevision != widget.modelRevision ||
+        oldWidget.engine != widget.engine) {
+      _availability = null;
+      _checkAvailability();
+    }
+  }
+
+  @override
   void didChangeMetrics() {
     if (!_scroll.hasClients || _scroll.position.extentAfter < 100) _toBottom();
   }
@@ -99,9 +112,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _checkAvailability() async {
+    final model = widget.engine.modelIdentifier;
     try {
       final value = await widget.engine.availability();
-      if (mounted) setState(() => _availability = value);
+      if (mounted && widget.engine.modelIdentifier == model) {
+        setState(() => _availability = value);
+      }
     } on Object {
       _report('Could not check the on-device model. Try again.');
     }
@@ -152,7 +168,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   bool get _busy => _submitting || widget.engine.isGenerating;
   bool get _sourcesReady =>
       _chat?.mode != ChatMode.knowledgeBase ||
-      (_chat!.selectedSourceIds.isNotEmpty &&
+      (widget.engine.supportsKnowledgeBase &&
+          _chat!.selectedSourceIds.isNotEmpty &&
           _chat!.selectedSourceIds.every(
             (id) => _items.any(
               (item) =>
@@ -681,6 +698,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             color: CupertinoColors.secondaryLabel.resolveFrom(context),
           ),
         ),
+        Text(
+          ModelCatalogue.entries
+                  .where((m) => m.id == turn.provenance.model.identifier)
+                  .firstOrNull
+                  ?.name ??
+              turn.provenance.model.identifier,
+          style: const TextStyle(fontSize: 12, color: SekretBrand.secondary),
+        ),
         if (turn.assistantText.isNotEmpty)
           AnswerContent(text: turn.assistantText, onLink: _openLink),
         if (turn.outcome != TurnOutcome.completed &&
@@ -853,6 +878,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           const Padding(
             padding: EdgeInsets.only(bottom: 8),
             child: Text('Adding source…', style: TextStyle(fontSize: 13)),
+          ),
+        if (!widget.engine.supportsKnowledgeBase &&
+            _chat?.mode == ChatMode.knowledgeBase)
+          const Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              'This model supports text chat only. Select Apple Intelligence in Models for Knowledge Base answers, or remove sources to use model knowledge.',
+              style: TextStyle(fontSize: 13),
+            ),
           ),
         if (_availability is! Available)
           Wrap(
