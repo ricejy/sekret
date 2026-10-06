@@ -1,0 +1,1014 @@
+{
+  "schemaVersion": 1,
+  "purpose": "development-fixture-generation-differential-diagnostic-not-acceptance",
+  "fictional": true,
+  "runtime": "Version 26.6.2 (Build 23G90)",
+  "startedAt": "2026-09-13T04:57:54.933332Z",
+  "sourceManifest": {
+    "base": "fe03a77e7b8ff607db12e30622d7b30105bf2236",
+    "workingTree": "source-local-ranks-v1; generation-unchanged",
+    "sha256": {
+      "lib/core/chat/chat_engine.dart": "5408404f44cab28763490a18c3008e7fb549b92776326e7dc8439b94b5eb0118",
+      "lib/core/knowledge/knowledge_base.dart": "2b638d11c9bba6e8bb1a46d05df89a0402b992423e8b2f22f851bce99ddfb70e",
+      "lib/core/knowledge/knowledge_algorithms.dart": "0d45c4b75f451ab7655d5303da3215a5685d15a440668ff339b836bcc0b97c0c",
+      "lib/core/platform/llm_backend.dart": "e916ff45cbc3fadc589f6fb6baeaae6be6b591adb698a8e07646e4796d647a94",
+      "ios/Runner/AppleFoundationModelsPlugin.swift": "a40cd118e42c64938ddfcf36aa6eb8539bab250a9d2cd287f2c820e36cd45eab",
+      "lib/evaluation/v2_generation_diagnostic_main.dart": "dacb33bc69160da0234ba2ca71c651d0229eb3e85a864ff2c19e1c954c017f3e"
+    }
+  },
+  "complete": true,
+  "results": [
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "appOutput": "Elena's employment begins on 3 February 2027.",
+      "appOutcome": "completed",
+      "latencyMs": 621
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 529
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 476
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 398
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 472
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 539
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 591
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 591
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 549
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 486
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 402
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 489
+    },
+    {
+      "caseID": "LEG-A01",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "When does Elena's employment begin?",
+      "expected": "Her employment begins on 3 February 2027.",
+      "output": "Elena's employment begins on 3 February 2027.",
+      "failure": null,
+      "latencyMs": 556
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "I couldn't find enough evidence in this document.",
+      "appOutput": "I couldn’t find enough evidence in this document.",
+      "appOutcome": "insufficientEvidence",
+      "latencyMs": 577
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 469
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 417
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 346
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 419
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 482
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 529
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 530
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 485
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 500
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 446
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "No, the annual performance bonus is not guaranteed.",
+      "failure": null,
+      "latencyMs": 539
+    },
+    {
+      "caseID": "LEG-A04",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "Is the annual performance bonus guaranteed?",
+      "expected": "No. It is discretionary and depends on company results, individual performance, and continued employment through payment.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 657
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "appOutput": "I couldn’t find enough evidence in this document.",
+      "appOutcome": "insufficientEvidence",
+      "latencyMs": 740
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 666
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 590
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's medical diagnosis cannot be shared with her manager.",
+      "failure": null,
+      "latencyMs": 527
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 588
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 668
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 721
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 715
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 666
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 581
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's medical diagnosis cannot be shared with her manager for benefits administration.",
+      "failure": null,
+      "latencyMs": 622
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 587
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's manager cannot receive her medical diagnosis for benefits administration. According to the fictional employment contract, medical information supplied for leave or benefits must be handled only by Human Resources or the benefits administrator and may be shared with a manager only as functional restrictions or required adjustments, not as a diagnosis.",
+      "failure": null,
+      "latencyMs": 1580
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "appOutput": "I couldn’t find enough evidence in this document.",
+      "appOutcome": "insufficientEvidence",
+      "latencyMs": 679
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 607
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 544
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician explicitly did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 489
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 546
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 607
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 668
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 667
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 609
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 540
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician explicitly did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 479
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 538
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 611
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "appOutput": "The fictional ferritin result was 8 micrograms/L.",
+      "appOutcome": "completed",
+      "latencyMs": 730
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 662
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 586
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 484
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 597
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 711
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 724
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 724
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 670
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 596
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 483
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 584
+    },
+    {
+      "caseID": "MED-A13",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "What was the fictional ferritin result?",
+      "expected": "8 micrograms/L, marked low by the fictional laboratory.",
+      "output": "The fictional ferritin result was 8 micrograms/L.",
+      "failure": null,
+      "latencyMs": 661
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "appOutput": "I couldn’t find enough evidence in this document.",
+      "appOutcome": "insufficientEvidence",
+      "latencyMs": 752
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 663
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 588
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 487
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 589
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 667
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 725
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 720
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 661
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 589
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 487
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 588
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "What is the exact street address of the Harbour Point office?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 667
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "appOutput": "I couldn’t find enough evidence in this document.",
+      "appOutcome": "insufficientEvidence",
+      "latencyMs": 699
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 609
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 542
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 486
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 543
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 606
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 668
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 666
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 609
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 539
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 482
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 538
+    },
+    {
+      "caseID": "MED-U01",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "What gastrointestinal disease was confirmed by biopsy?",
+      "expected": "I couldn’t find enough evidence in this document.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 609
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-json",
+      "repeat": 1,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Wednesday is our fictional meeting day.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-pretty-json",
+      "repeat": 1,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-role-text",
+      "repeat": 1,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Our fictional meeting day is Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-json",
+      "repeat": 2,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Wednesday is our fictional meeting day.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-pretty-json",
+      "repeat": 2,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Wednesday is our fictional meeting day.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-role-text",
+      "repeat": 2,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Our fictional meeting day is Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-json",
+      "repeat": 3,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Wednesday is our fictional meeting day.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-pretty-json",
+      "repeat": 3,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Wednesday is our fictional meeting day.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-role-text",
+      "repeat": 3,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Wednesday.",
+      "failure": null
+    }
+  ],
+  "fixtureHash": "292c56f1280b65d716d6132455ee32a06e4ec575def5be50b01019391c615fe6",
+  "suiteID": "fictional-development-v1",
+  "finishedAt": "2026-09-13T04:58:55.580799Z"
+}

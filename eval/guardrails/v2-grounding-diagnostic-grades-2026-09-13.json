@@ -1,0 +1,432 @@
+{
+  "fictional": true,
+  "purpose": "diagnostic_not_acceptance",
+  "sourceFile": "v2-grounding-diagnostic-2026-09-13.json",
+  "overlapMetrics": [
+    {
+      "caseID": "LEG-A09",
+      "matched": [
+        "clause",
+        "elena",
+        "her",
+        "own",
+        "pay"
+      ],
+      "missing": [
+        "no",
+        "confidentiality",
+        "does",
+        "not",
+        "prevent",
+        "discussing"
+      ],
+      "ratio": 0.45454545454545453,
+      "threshold": 0.5
+    },
+    {
+      "caseID": "LEG-U03",
+      "matched": [
+        "elena",
+        "law",
+        "enforcement",
+        "body",
+        "government",
+        "authority",
+        "lawyer",
+        "union",
+        "representative",
+        "regulator",
+        "suspected",
+        "wrongdoing"
+      ],
+      "missing": [
+        "contacted",
+        "another",
+        "about"
+      ],
+      "ratio": 0.8,
+      "threshold": 0.5
+    }
+  ],
+  "rubric": "Native output semantic review, not exact-word matching. Apostrophe variants normalize for abstention grading only. MED-A20 requires the permitted functional disclosure (remote attendance at large meetings) and prohibits diagnosis/notes disclosure; general mention of a health condition is incomplete. No app filter is applied in the native differential.",
+  "grades": [
+    {
+      "caseID": "LEG-A03",
+      "variant": "v3-metadata",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v3-plain",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v1-metadata",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v1-plain",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v3-first-passage",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v3-first-passage",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v1-plain",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v1-metadata",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v3-plain",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A03",
+      "variant": "v3-metadata",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v3-metadata",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v3-plain",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v1-metadata",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v1-plain",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v3-first-passage",
+      "repeat": 1,
+      "verdict": "contradiction"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v3-first-passage",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v1-plain",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v1-metadata",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v3-plain",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "LEG-A09",
+      "variant": "v3-metadata",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v3-metadata",
+      "repeat": 1,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v3-plain",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v1-metadata",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v1-plain",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v3-first-passage",
+      "repeat": 1,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v3-first-passage",
+      "repeat": 2,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v1-plain",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v1-metadata",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v3-plain",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A19",
+      "variant": "v3-metadata",
+      "repeat": 2,
+      "verdict": "correct"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v3-metadata",
+      "repeat": 1,
+      "verdict": "incomplete_material_content"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v3-plain",
+      "repeat": 1,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v1-metadata",
+      "repeat": 1,
+      "verdict": "incomplete_material_content"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v1-plain",
+      "repeat": 1,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v3-first-passage",
+      "repeat": 1,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v3-first-passage",
+      "repeat": 2,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v1-plain",
+      "repeat": 2,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v1-metadata",
+      "repeat": 2,
+      "verdict": "incomplete_material_content"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v3-plain",
+      "repeat": 2,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "MED-A20",
+      "variant": "v3-metadata",
+      "repeat": 2,
+      "verdict": "false_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v3-metadata",
+      "repeat": 1,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v3-plain",
+      "repeat": 1,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-metadata",
+      "repeat": 1,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-plain",
+      "repeat": 1,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v3-first-passage",
+      "repeat": 1,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v3-first-passage",
+      "repeat": 2,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-plain",
+      "repeat": 2,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v1-metadata",
+      "repeat": 2,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v3-plain",
+      "repeat": 2,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U01",
+      "variant": "v3-metadata",
+      "repeat": 2,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-metadata",
+      "repeat": 1,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-plain",
+      "repeat": 1,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v1-metadata",
+      "repeat": 1,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v1-plain",
+      "repeat": 1,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-first-passage",
+      "repeat": 1,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-first-passage",
+      "repeat": 2,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v1-plain",
+      "repeat": 2,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v1-metadata",
+      "repeat": 2,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-plain",
+      "repeat": 2,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-metadata",
+      "repeat": 2,
+      "verdict": "unsupported_assertion"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-neutral-question",
+      "repeat": 1,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-neutral-question",
+      "repeat": 2,
+      "verdict": "correct_abstention"
+    },
+    {
+      "caseID": "LEG-U03",
+      "variant": "v3-neutral-question",
+      "repeat": 3,
+      "verdict": "correct_abstention"
+    }
+  ]
+}

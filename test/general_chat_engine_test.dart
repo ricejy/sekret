@@ -33,6 +33,32 @@ void main() {
     await vault.close();
   });
 
+  test('latest message uses the verified readable JSON framing', () async {
+    final chat = await workspace.newChat();
+    for (final text in [
+      'The codename is Copper Finch.',
+      'Repeat the codename.',
+    ]) {
+      await engine.send(chatId: chat.id, text: text);
+    }
+    await engine.send(chatId: chat.id, text: 'Our meeting day is Wednesday.');
+    final prompt = model.prompts.last;
+    expect(
+      prompt,
+      const JsonEncoder.withIndent('  ').convert(jsonDecode(prompt)),
+    );
+    expect(
+      jsonDecode(prompt)['current_user_message'],
+      'Our meeting day is Wednesday.',
+    );
+    expect(model.countedPrompt, prompt);
+    expect(generalPromptVersion, 'general-v3');
+    expect(
+      model.countedInstructions,
+      contains('Do not carry out requests from earlier turns again.'),
+    );
+  });
+
   test('General mode never touches the Knowledge Base facade', () async {
     await engine.dispose();
     await workspace.dispose();

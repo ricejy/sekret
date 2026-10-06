@@ -1,0 +1,347 @@
+{
+  "schemaVersion": 1,
+  "purpose": "semantic-grades-of-immutable-initial-v2-comparator",
+  "reviewer": "Codex semantic review",
+  "rawReport": "v2-ios-26.6.2-initial-2026-09-13.json",
+  "initialSummary": {
+    "answerableCorrect": 9,
+    "answerableTotal": 40,
+    "falseAbstentions": 29,
+    "incorrectAnswerable": 2,
+    "unsupportedCorrectAbstentions": 9,
+    "unsupportedTotal": 10,
+    "unsupportedAssertions": 1,
+    "hardRefusals": 0,
+    "verbalRefusals": 0,
+    "runtimeFailures": 0,
+    "medianLatencyMs": 628.5,
+    "meetsBaseline": false
+  },
+  "grades": [
+    {
+      "caseID": "ACC1-LEG-A01",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A02",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A03",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-LEG-A04",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A05",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A06",
+      "grade": "false-abstention",
+      "reason": "Native output asserted an event not established by the evidence; app filtering converted it to abstention."
+    },
+    {
+      "caseID": "ACC1-LEG-A07",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A08",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-LEG-A09",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A10",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A11",
+      "grade": "incorrect",
+      "reason": "Reverses the explicit assistance-animal deposit exemption."
+    },
+    {
+      "caseID": "ACC1-LEG-A12",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A13",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A14",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A15",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A16",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A17",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A18",
+      "grade": "incorrect",
+      "reason": "Asserts family violence despite the excerpt explicitly saying no such event is established."
+    },
+    {
+      "caseID": "ACC1-LEG-A19",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-A20",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A01",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A02",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A03",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A04",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A05",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A06",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A07",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-MED-A08",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-MED-A09",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-MED-A10",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A11",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A12",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A13",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A14",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-MED-A15",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-MED-A16",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-MED-A17",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A18",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-MED-A19",
+      "grade": "correct",
+      "reason": "Answers the asked question accurately from the fictional evidence; semantically equivalent wording accepted."
+    },
+    {
+      "caseID": "ACC1-MED-A20",
+      "grade": "false-abstention",
+      "reason": "Answerable case returned insufficient evidence."
+    },
+    {
+      "caseID": "ACC1-LEG-U01",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-LEG-U02",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-LEG-U03",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-LEG-U04",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-LEG-U05",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-MED-U01",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-MED-U02",
+      "grade": "unsupported-assertion",
+      "reason": "Asserts a crisis-service call not established by the evidence."
+    },
+    {
+      "caseID": "ACC1-MED-U03",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-MED-U04",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    },
+    {
+      "caseID": "ACC1-MED-U05",
+      "grade": "correct-abstention",
+      "reason": "Exact app-visible insufficient-evidence wording."
+    }
+  ],
+  "smokeReview": {
+    "generalCodenameContinuity": "passed before/after summary and reopen",
+    "generalCurrentMessageFollowing": "failed: general-3, general-4, general-5 repeat codename instead of acknowledging latest information",
+    "freshChatIsolation": "passed",
+    "multiSourceInitial": "false abstention",
+    "multiSourceRegeneration": "correct; original scope retained",
+    "structuralChecks": {
+      "generalNoKnowledgeBaseEvidence": true,
+      "contextSummaryUsed": true,
+      "fullTranscriptSurvivesReopen": true,
+      "freshChatPromptHasNoPriorContext": true,
+      "regenerationPreservesOriginalScope": true,
+      "groundedNoGeneralFallback": true
+    }
+  },
+  "rerunSelection": {
+    "method": "All 32 non-passing cases plus Fisher-Yates sample of 10 passes, seeded LCG with random seed from openssl rand -hex 4.",
+    "seedHex": "3a5be6ae",
+    "randomPassingCaseIDs": [
+      "ACC1-MED-A19",
+      "ACC1-LEG-U02",
+      "ACC1-MED-U04",
+      "ACC1-LEG-U01",
+      "ACC1-MED-A08",
+      "ACC1-MED-U05",
+      "ACC1-LEG-A03",
+      "ACC1-MED-A07",
+      "ACC1-LEG-U05",
+      "ACC1-MED-A09"
+    ],
+    "caseIDs": [
+      "ACC1-LEG-A01",
+      "ACC1-LEG-A02",
+      "ACC1-LEG-A04",
+      "ACC1-LEG-A05",
+      "ACC1-LEG-A06",
+      "ACC1-LEG-A07",
+      "ACC1-LEG-A09",
+      "ACC1-LEG-A10",
+      "ACC1-LEG-A11",
+      "ACC1-LEG-A12",
+      "ACC1-LEG-A13",
+      "ACC1-LEG-A14",
+      "ACC1-LEG-A15",
+      "ACC1-LEG-A16",
+      "ACC1-LEG-A17",
+      "ACC1-LEG-A18",
+      "ACC1-LEG-A19",
+      "ACC1-LEG-A20",
+      "ACC1-MED-A01",
+      "ACC1-MED-A02",
+      "ACC1-MED-A03",
+      "ACC1-MED-A04",
+      "ACC1-MED-A05",
+      "ACC1-MED-A06",
+      "ACC1-MED-A10",
+      "ACC1-MED-A11",
+      "ACC1-MED-A12",
+      "ACC1-MED-A13",
+      "ACC1-MED-A17",
+      "ACC1-MED-A18",
+      "ACC1-MED-A20",
+      "ACC1-MED-U02",
+      "ACC1-MED-A19",
+      "ACC1-LEG-U02",
+      "ACC1-MED-U04",
+      "ACC1-LEG-U01",
+      "ACC1-MED-A08",
+      "ACC1-MED-U05",
+      "ACC1-LEG-A03",
+      "ACC1-MED-A07",
+      "ACC1-LEG-U05",
+      "ACC1-MED-A09"
+    ]
+  }
+}

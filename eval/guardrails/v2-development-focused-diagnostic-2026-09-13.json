@@ -1,0 +1,440 @@
+{
+  "schemaVersion": 1,
+  "purpose": "development-fixture-generation-differential-diagnostic-not-acceptance",
+  "fictional": true,
+  "diagnosticStage": "matched-passages-and-exact-general-pattern",
+  "runtime": "Version 26.6.2 (Build 23G90)",
+  "startedAt": "2026-09-13T05:02:14.157516Z",
+  "sourceManifest": {
+    "base": "fe03a77e7b8ff607db12e30622d7b30105bf2236",
+    "workingTree": "source-local-ranks-v1; generation-unchanged",
+    "sha256": {
+      "lib/core/chat/chat_engine.dart": "5408404f44cab28763490a18c3008e7fb549b92776326e7dc8439b94b5eb0118",
+      "lib/core/knowledge/knowledge_base.dart": "2b638d11c9bba6e8bb1a46d05df89a0402b992423e8b2f22f851bce99ddfb70e",
+      "lib/core/knowledge/knowledge_algorithms.dart": "0d45c4b75f451ab7655d5303da3215a5685d15a440668ff339b836bcc0b97c0c",
+      "lib/core/platform/llm_backend.dart": "e916ff45cbc3fadc589f6fb6baeaae6be6b591adb698a8e07646e4796d647a94",
+      "ios/Runner/AppleFoundationModelsPlugin.swift": "a40cd118e42c64938ddfcf36aa6eb8539bab250a9d2cd287f2c820e36cd45eab",
+      "lib/evaluation/v2_generation_diagnostic_main.dart": "d79bcfffb16c3dd05ed472226bbcdb1b2a48f1889027e3883a886a0d9b893322"
+    }
+  },
+  "complete": true,
+  "results": [
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "appOutput": "I couldn’t find enough evidence in this document.",
+      "appOutcome": "insufficientEvidence",
+      "latencyMs": 628
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 510
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 459
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's medical diagnosis cannot be shared with her manager.",
+      "failure": null,
+      "latencyMs": 403
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-matched-chunks",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's medical diagnosis cannot be shared with her manager for benefits administration.",
+      "failure": null,
+      "latencyMs": 434
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-intact-json",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "Elena's manager cannot receive her medical diagnosis for benefits administration.",
+      "failure": null,
+      "latencyMs": 436
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 448
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 527
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 577
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 579
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 533
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 458
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-intact-json",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 415
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-matched-chunks",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's medical diagnosis cannot be shared with her manager for benefits administration.",
+      "failure": null,
+      "latencyMs": 447
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's medical diagnosis cannot be shared with her manager.",
+      "failure": null,
+      "latencyMs": 416
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "No, Elena's manager cannot receive her medical diagnosis for benefits administration. The fictional employment contract states that medical information supplied for leave or benefits must be handled only by Human Resources or the benefits administrator and may be shared with a manager only as functional restrictions or required adjustments, not as a diagnosis.",
+      "failure": null,
+      "latencyMs": 1110
+    },
+    {
+      "caseID": "LEG-A08",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "May Elena's manager receive her medical diagnosis for benefits administration?",
+      "expected": "No. A manager may receive only functional restrictions or required adjustments, not the diagnosis.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 543
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-engine",
+      "repeat": 0,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "appOutput": "I couldn’t find enough evidence in this document.",
+      "appOutcome": "insufficientEvidence",
+      "latencyMs": 559
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-json-native",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 490
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 439
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-canonical",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician explicitly did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 375
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-matched-chunks",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician explicitly did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 399
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-intact-json",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 399
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-intact-evidence",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 438
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-evidence-first",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 509
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-pretty-json",
+      "repeat": 1,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 556
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-pretty-json",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 555
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-evidence-first",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 514
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-intact-evidence",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn’t find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 447
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-intact-json",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 399
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-matched-chunks",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician explicitly did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 395
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-canonical",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician explicitly did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 377
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v1-instructions-v2-json",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "No, the clinician did not diagnose a gastrointestinal disorder.",
+      "failure": null,
+      "latencyMs": 449
+    },
+    {
+      "caseID": "MED-A04",
+      "variant": "v2-json-native",
+      "repeat": 2,
+      "question": "Did the clinician diagnose a gastrointestinal disorder?",
+      "expected": "No. The record explicitly says no gastrointestinal disorder was diagnosed.",
+      "output": "I couldn't find enough evidence in this document.",
+      "failure": null,
+      "latencyMs": 511
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-json",
+      "repeat": 1,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-pretty-json",
+      "repeat": 1,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-role-text",
+      "repeat": 1,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-json",
+      "repeat": 2,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-pretty-json",
+      "repeat": 2,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-role-text",
+      "repeat": 2,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-json",
+      "repeat": 3,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-pretty-json",
+      "repeat": 3,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Wednesday.",
+      "failure": null
+    },
+    {
+      "caseID": "general-current-message",
+      "variant": "general-role-text",
+      "repeat": 3,
+      "expected": "Acknowledge Wednesday, not just repeat the old codename.",
+      "output": "Copper Finch. Wednesday.",
+      "failure": null
+    }
+  ],
+  "fixtureHash": "292c56f1280b65d716d6132455ee32a06e4ec575def5be50b01019391c615fe6",
+  "suiteID": "fictional-development-v1",
+  "finishedAt": "2026-09-13T05:02:35.356950Z"
+}
