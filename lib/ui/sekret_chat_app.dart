@@ -7,6 +7,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../core/chat/chat_engine.dart';
 import '../core/chat/chat_workspace.dart';
+import '../core/models/model_store.dart';
+import '../core/models/model_selection.dart';
+import '../core/models/model_catalogue.dart';
+import '../core/platform/local_model_backend.dart';
 import '../core/knowledge/knowledge_base.dart';
 import '../core/platform/apple_embedder.dart';
 import '../core/platform/apple_foundation_models.dart';
@@ -32,6 +36,8 @@ class ChatAppResources {
     this.engine,
     this.models, {
     DeviceProtection device = const AppleDeviceProtection(),
+    this.modelStore,
+    this.modelSelection,
   }) : protection = AppProtection(vault.settings, device);
   final AppProtection protection;
   final LocalDataVault vault;
@@ -39,9 +45,13 @@ class ChatAppResources {
   final KnowledgeBase knowledge;
   final ChatEngine engine;
   final AppleFoundationModels models;
+  final ModelStore? modelStore;
+  final ModelSelection? modelSelection;
   Future<void> close() async {
     protection.dispose();
     await engine.dispose();
+    await modelSelection?.close();
+    await modelStore?.close();
     await knowledge.dispose();
     await workspace.dispose();
     await vault.close();
@@ -64,6 +74,8 @@ Future<ChatAppResources> openChatApp() async {
   final vault = await openLocalDataVault(databasePath: path);
   ChatWorkspace? workspace;
   KnowledgeBase? knowledge;
+  ModelStore? modelStore;
+  ModelSelection? modelSelection;
   try {
     await models.protectStorage(
       directoryPath: directory.path,
@@ -89,8 +101,33 @@ Future<ChatAppResources> openChatApp() async {
         revision: Platform.operatingSystemVersion,
       ),
     );
-    return ChatAppResources(vault, workspace, knowledge, engine, models);
+    modelStore = ModelStore(
+      directory: Directory('${directory.path}/reviewed-models'),
+      policy: const AppleModelStoragePolicy(),
+    );
+    try {
+      await modelStore.initialize();
+    } on Object {
+      /* Models shows a recoverable storage error. */
+    }
+    modelSelection = ModelSelection(
+      store: modelStore,
+      engine: engine,
+      apple: models,
+    );
+    await modelSelection.restore();
+    return ChatAppResources(
+      vault,
+      workspace,
+      knowledge,
+      engine,
+      models,
+      modelStore: modelStore,
+      modelSelection: modelSelection,
+    );
   } on Object {
+    await modelSelection?.close();
+    await modelStore?.close();
     await knowledge?.dispose();
     await workspace?.dispose();
     await vault.close();
@@ -148,6 +185,7 @@ class _SekretChatAppState extends State<SekretChatApp>
       setState(() {});
       _wasLocked = resources.protection.locked;
       resources.protection.addListener(_protectionChanged);
+      resources.modelSelection?.addListener(_modelChanged);
       if (_obscured) resources.protection.inactive();
       if (!_obscured && !resources.protection.locked) {
         unawaited(resources.knowledge.resume().catchError((Object _) {}));
@@ -164,6 +202,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (state == AppLifecycleState.hidden ||
         state == AppLifecycleState.paused) {
       resources.protection.background();
+      unawaited(resources.modelStore?.cancel());
     }
     if (state == AppLifecycleState.resumed) resources.protection.resumed();
     // Pause admission immediately, even if a foreground resume is indexing.
@@ -205,6 +244,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (locked && !_wasLocked) {
       _rootNavigator.currentState?.popUntil((route) => route.isFirst);
       final resources = _resources!;
+      unawaited(resources.modelStore?.cancel());
       _lifecycle = Future.wait([
         _lifecycle,
         resources.engine.suspend(),
@@ -212,6 +252,10 @@ class _SekretChatAppState extends State<SekretChatApp>
       ]).then<void>((_) {}).catchError((Object _) {});
     }
     _wasLocked = locked;
+    if (mounted) setState(() {});
+  }
+
+  void _modelChanged() {
     if (mounted) setState(() {});
   }
 
@@ -265,6 +309,9 @@ class _SekretChatAppState extends State<SekretChatApp>
           }
           await resources.protection.device.purgeImportCopies();
         case LocalDataAction.everything:
+          await resources.modelStore?.cancel();
+          await resources.modelSelection?.select(ModelCatalogue.apple.id);
+          await resources.modelStore?.remove();
           await resources.workspace.deleteAllChats();
           await resources.vault.eraseAll();
           await resources.protection.device.purgeImportCopies();
@@ -292,6 +339,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     final resources = _resources;
     if (resources != null) {
       resources.protection.removeListener(_protectionChanged);
+      resources.modelSelection?.removeListener(_modelChanged);
       unawaited(_lifecycle.whenComplete(resources.close));
     }
     super.dispose();
@@ -399,6 +447,7 @@ class _SekretChatAppState extends State<SekretChatApp>
                     return ChatScreen(
                       workspace: resources.workspace,
                       engine: resources.engine,
+                      modelRevision: resources.modelSelection?.selected,
                       knowledge: resources.knowledge,
                       onKnowledgeBase: () => _tabs.index = _knowledgeTab,
                       onImportSource: (context, type) => importKnowledgeSource(
@@ -429,6 +478,8 @@ class _SekretChatAppState extends State<SekretChatApp>
                     return ModelsScreen(
                       model: resources.models,
                       openSystemSettings: resources.models.openSettings,
+                      store: resources.modelStore,
+                      selection: resources.modelSelection,
                     );
                   }
                   if (index == _knowledgeTab) {

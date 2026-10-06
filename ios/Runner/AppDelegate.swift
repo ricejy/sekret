@@ -14,6 +14,10 @@ import UniformTypeIdentifiers
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    if #available(iOS 17.0, *),
+      let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "LocalModelPlugin") {
+      LocalModelPlugin.register(with: registrar)
+    }
     if #available(iOS 14.0, *),
       let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "PhotosPickerPlugin") {
       PhotosPickerPlugin.register(with: registrar)

@@ -207,7 +207,7 @@ class _SettingsScreenState extends State<SettingsScreen>
       ),
       LocalDataAction.everything => (
         'Erase all local data?',
-        'Every chat, summary, source selection, original, index, processing artifact, and draft will be permanently removed from Sekret. This cannot be undone. App-lock and retention preferences are kept. Device authentication is required.',
+        'Permanently delete all chats, summaries, drafts, sources, indexes, processing files and downloaded models. Apple Intelligence will be selected. App-lock and retention settings stay. Requires device authentication.',
       ),
     };
     if (!await _confirm(
@@ -247,7 +247,7 @@ class _SettingsScreenState extends State<SettingsScreen>
             Padding(padding: const EdgeInsets.all(16), child: Text(_error!)),
           CupertinoListSection.insetGrouped(
             hasLeading: false,
-            header: _header('ON-DEVICE MODEL'),
+            header: _header('APPLE INTELLIGENCE READINESS'),
             children: [
               _detail(modelStatus(_model)),
               _button('Check readiness', () => _run(_refresh)),
@@ -268,6 +268,9 @@ class _SettingsScreenState extends State<SettingsScreen>
             children: [
               _detail(
                 'Your chats, knowledge, search, and processing stay on this device. No account, cloud model, or sync.',
+              ),
+              _detail(
+                'Optional model downloads contact Hugging Face and its delivery hosts only after you confirm. They see your IP address and model request, not your chats or Knowledge Base content. Downloaded model storage is shown in Models.',
               ),
               _detail(
                 'iOS sandbox and file protection protect stored data. App lock protects entry to Sekret; it is not database encryption. App-switcher snapshots are always hidden. Sekret sends no notifications.',
