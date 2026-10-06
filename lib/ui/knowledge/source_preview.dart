@@ -559,11 +559,11 @@ class _SelectableSourceTextState extends State<_SelectableSourceText>
         style: CupertinoTheme.of(context).textTheme.textStyle.copyWith(
           color: CupertinoColors.label.resolveFrom(context),
         ),
-        cursorColor: CupertinoColors.systemBlue.resolveFrom(context),
+        cursorColor: CupertinoTheme.of(context).primaryColor,
         backgroundCursorColor: CupertinoColors.systemGrey,
-        selectionColor: CupertinoColors.systemBlue
-            .resolveFrom(context)
-            .withValues(alpha: .22),
+        selectionColor: CupertinoTheme.of(
+          context,
+        ).primaryColor.withValues(alpha: .22),
         selectionControls: cupertinoTextSelectionHandleControls,
         contextMenuBuilder: (context, state) =>
             CupertinoAdaptiveTextSelectionToolbar.editableText(
