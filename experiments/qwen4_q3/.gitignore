@@ -1,0 +1,6 @@
+artifacts/
+.build/
+.swiftpm/
+results/
+__pycache__/
+ios/build/

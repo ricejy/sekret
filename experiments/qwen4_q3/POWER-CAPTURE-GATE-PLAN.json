@@ -1,0 +1,13 @@
+{
+  "scope": "One corrected exploratory pilot to verify complete capture; not repeated battery qualification",
+  "build": 12,
+  "executableSHA256": "7b7283e3dff2950f8aac9624bc9bf9192cc6137464b985fe950ac3cb321183e9",
+  "previousPlan": "POWER-PILOT-PLAN.json",
+  "previousFailure": "POWER-PILOT-RESULTS-2026-10-06.json",
+  "change": "Replace 45-second automatic release with run-specific capture-ready.json receipt. Wait expires at 300 seconds without baseline or inference. After receipt, settle 10 seconds and recheck nominal/unplugged/30%-battery/LPM-off eligibility before baseline.",
+  "receipt": {"runID": "Exact new report directory UUID", "captureReady": true},
+  "operatorProtocol": "Launch only after fresh eligible readiness. Verify the new directory still has no baseline/workload after >45 seconds without receipt. Attach Power Profiler to verified current PID and wait for actual recording confirmation. Only then copy the matching receipt to that directory. Export trace and require full coverage for all phases. Do not infer readiness from file creation or process existence alone.",
+  "unchanged": "Model/runtime pins, inference parameters, 90-second pre/post baselines, eight actual-history turns, 30-second reading pauses, memory/thermal/foreground/charging guards. No shipping changes.",
+  "verification": "10 native tests pass, including gate boundary/stale/malformed/false confirmation tests; signed device build succeeds. Phone waited 83.43 seconds for matching confirmation; final audit confirms complete phase coverage. See POWER-CAPTURE-GATE-RESULTS-2026-10-07.json.",
+  "limitations": "One unequal-duration exploratory run remains insufficient for battery rating or catalogue approval. Full coverage is a capture check, not a power-efficiency threshold. Preserve earlier thermal stress failure."
+}

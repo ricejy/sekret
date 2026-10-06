@@ -1,0 +1,96 @@
+// !$*UTF8*$!
+{
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 60;
+    objects = {
+        A10000000000000000000001 = {isa = PBXBuildFile; fileRef = A10000000000000000000011; };
+        A10000000000000000000002 = {isa = PBXBuildFile; fileRef = A10000000000000000000012; };
+        A10000000000000000000003 = {isa = PBXBuildFile; productRef = A10000000000000000000071; };
+        A10000000000000000000011 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SekretLocalEvalApp.swift; sourceTree = "<group>"; };
+        A10000000000000000000012 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationViewModel.swift; sourceTree = "<group>"; };
+        A10000000000000000000013 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SekretLocalEval.app; sourceTree = BUILT_PRODUCTS_DIR; };
+        A10000000000000000000020 = {isa = PBXGroup; children = (A10000000000000000000021, A10000000000000000000022); sourceTree = "<group>"; };
+        A10000000000000000000021 = {isa = PBXGroup; children = (A10000000000000000000011, A10000000000000000000012); path = SekretLocalEval; sourceTree = "<group>"; };
+        A10000000000000000000022 = {isa = PBXGroup; children = (A10000000000000000000013); name = Products; sourceTree = "<group>"; };
+        A10000000000000000000030 = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = A10000000000000000000061;
+            buildPhases = (A10000000000000000000040, A10000000000000000000041, A10000000000000000000042);
+            buildRules = ();
+            dependencies = ();
+            name = SekretLocalEval;
+            packageProductDependencies = (A10000000000000000000071);
+            productName = SekretLocalEval;
+            productReference = A10000000000000000000013;
+            productType = "com.apple.product-type.application";
+        };
+        A10000000000000000000040 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002); runOnlyForDeploymentPostprocessing = 0; };
+        A10000000000000000000041 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000003); runOnlyForDeploymentPostprocessing = 0; };
+        A10000000000000000000042 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+        A10000000000000000000050 = {
+            isa = PBXProject;
+            attributes = {BuildIndependentTargetsInParallel = YES; LastSwiftUpdateCheck = 2660; LastUpgradeCheck = 2660; };
+            buildConfigurationList = A10000000000000000000060;
+            compatibilityVersion = "Xcode 15.0";
+            developmentRegion = en;
+            hasScannedForEncodings = 0;
+            knownRegions = (en, Base);
+            mainGroup = A10000000000000000000020;
+            packageReferences = (A10000000000000000000070);
+            productRefGroup = A10000000000000000000022;
+            projectDirPath = "";
+            projectRoot = "";
+            targets = (A10000000000000000000030);
+        };
+        A10000000000000000000060 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000080, A10000000000000000000081); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+        A10000000000000000000061 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000082, A10000000000000000000083); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+        A10000000000000000000070 = {isa = XCLocalSwiftPackageReference; relativePath = ..; };
+        A10000000000000000000071 = {isa = XCSwiftPackageProductDependency; package = A10000000000000000000070; productName = QwenRuntime; };
+        A10000000000000000000080 = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; }; name = Debug; };
+        A10000000000000000000081 = {isa = XCBuildConfiguration; buildSettings = {CLANG_ENABLE_MODULES = YES; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; IPHONEOS_DEPLOYMENT_TARGET = 17.0; }; name = Release; };
+        A10000000000000000000082 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGN_STYLE = Manual;
+                CURRENT_PROJECT_VERSION = 13;
+                DEVELOPMENT_TEAM = "";
+                GENERATE_INFOPLIST_FILE = YES;
+                INFOPLIST_KEY_CFBundleDisplayName = "Sekret Local Eval";
+                INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+                INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+                INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+                MARKETING_VERSION = 0.1;
+                PRODUCT_BUNDLE_IDENTIFIER = com.ricejy.sekret.localeval;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = iphoneos;
+                SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+                TARGETED_DEVICE_FAMILY = "1,2";
+            };
+            name = Debug;
+        };
+        A10000000000000000000083 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGN_STYLE = Manual;
+                CURRENT_PROJECT_VERSION = 13;
+                DEVELOPMENT_TEAM = "";
+                GENERATE_INFOPLIST_FILE = YES;
+                INFOPLIST_KEY_CFBundleDisplayName = "Sekret Local Eval";
+                INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+                INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+                INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+                LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+                MARKETING_VERSION = 0.1;
+                PRODUCT_BUNDLE_IDENTIFIER = com.ricejy.sekret.localeval;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = iphoneos;
+                SWIFT_OPTIMIZATION_LEVEL = "-O";
+                TARGETED_DEVICE_FAMILY = "1,2";
+            };
+            name = Release;
+        };
+    };
+    rootObject = A10000000000000000000050;
+}
