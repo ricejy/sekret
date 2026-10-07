@@ -24,6 +24,21 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<void> waitForIo(WidgetTester tester, bool Function() completed) async {
+    final elapsed = Stopwatch()..start();
+    while (!completed()) {
+      expect(
+        elapsed.elapsed,
+        lessThan(const Duration(seconds: 10)),
+        reason: 'Real I/O did not finish while pumping widget microtasks',
+      );
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 5)),
+      );
+      await tester.pump();
+    }
+  }
+
   for (final lock in [false, true]) {
     testWidgets('model download survives background with app lock $lock', (
       tester,
@@ -75,42 +90,36 @@ void main() {
       await settle(tester);
       await app.protection.unlock();
       Object? failure;
-      final install = store.install().catchError((Object error) {
-        failure = error;
-      });
-      for (var i = 0; i < 20 && transport.calls == 0; i++) {
-        await tester.runAsync(
-          () => Future<void>.delayed(const Duration(milliseconds: 5)),
-        );
-        await tester.pump();
-      }
+      var finished = false;
+      final install = store
+          .install()
+          .catchError((Object error) {
+            failure = error;
+          })
+          .whenComplete(() => finished = true);
+      await waitForIo(tester, () => transport.calls > 0 || finished);
       expect(transport.calls, 1);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       await settle(tester);
       expect(store.state.phase, ModelInstallPhase.downloading);
-      chunks.add([1, 2, 3, 4]);
-      unawaited(chunks.close());
-      for (
-        var i = 0;
-        i < 30 && store.state.phase != ModelInstallPhase.installed;
-        i++
-      ) {
-        await tester.runAsync(
-          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+      // A slow completion must not be mistaken for cancellation or failure.
+      // Real time deliberately exceeds the old 150 ms polling budget.
+      await tester.runAsync(() async {
+        unawaited(
+          Future<void>.delayed(const Duration(seconds: 1)).then((_) {
+            chunks.add([1, 2, 3, 4]);
+            unawaited(chunks.close());
+          }),
         );
-        await tester.pump();
-      }
+      });
+      // Await the operation, including verification and cleanup, rather than
+      // assuming a fixed number of short host-time delays is enough.
+      await waitForIo(tester, () => finished);
+      await install;
       expect(failure, isNull);
       expect(store.state.phase, ModelInstallPhase.installed);
-      for (var i = 0; i < 10; i++) {
-        await tester.runAsync(
-          () => Future<void>.delayed(const Duration(milliseconds: 5)),
-        );
-        await tester.pump();
-      }
-      await install;
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
