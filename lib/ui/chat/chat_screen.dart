@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import '../sekret_brand.dart';
 import 'package:flutter/material.dart' show SelectableText;
 import 'package:flutter/services.dart';
 import '../../core/chat/chat_engine.dart';
 import '../../core/chat/chat_workspace.dart';
+import '../../core/models/model_catalogue.dart';
 import '../../core/knowledge/knowledge_base.dart';
 import '../../core/platform/llm_backend.dart';
 import '../../core/storage/local_data_vault.dart';
@@ -22,14 +24,24 @@ class ChatScreen extends StatefulWidget {
     required this.onPreview,
     required this.onLink,
     this.onSettings,
+    this.onImportSource,
+    this.modelRevision,
   });
   final ChatWorkspace workspace;
   final ChatEngine engine;
+  final String? modelRevision;
   final KnowledgeBase knowledge;
   final VoidCallback onKnowledgeBase;
   final Future<void> Function(KnowledgePreview) onPreview;
   final Future<void> Function(Uri) onLink;
   final Future<void> Function()? onSettings;
+
+  /// The app owns pickers and imports into the existing Knowledge Base.
+  final Future<KnowledgeImportResult?> Function(
+    BuildContext context,
+    KnowledgeSourceType type,
+  )?
+  onImportSource;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -48,6 +60,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   String? _error;
   bool _summary = false;
   bool _submitting = false;
+  bool _importing = false;
+  bool _changingSources = false;
+  bool _choosingSources = false;
   int _revision = 0;
 
   @override
@@ -55,8 +70,23 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _subscriptions.add(widget.workspace.changes.listen((_) => _load()));
-    _subscriptions.add(widget.knowledge.changes.listen((_) => _load()));
+    _subscriptions.add(
+      widget.knowledge.changes.listen(
+        (_) => _load(),
+        onError: (Object _) => _load(),
+      ),
+    );
     _initialize();
+  }
+
+  @override
+  void didUpdateWidget(covariant ChatScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.modelRevision != widget.modelRevision ||
+        oldWidget.engine != widget.engine) {
+      _availability = null;
+      _checkAvailability();
+    }
   }
 
   @override
@@ -82,9 +112,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _checkAvailability() async {
+    final model = widget.engine.modelIdentifier;
     try {
       final value = await widget.engine.availability();
-      if (mounted) setState(() => _availability = value);
+      if (mounted && widget.engine.modelIdentifier == model) {
+        setState(() => _availability = value);
+      }
     } on Object {
       _report('Could not check the on-device model. Try again.');
     }
@@ -135,7 +168,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   bool get _busy => _submitting || widget.engine.isGenerating;
   bool get _sourcesReady =>
       _chat?.mode != ChatMode.knowledgeBase ||
-      (_chat!.selectedSourceIds.isNotEmpty &&
+      (widget.engine.supportsKnowledgeBase &&
+          _chat!.selectedSourceIds.isNotEmpty &&
           _chat!.selectedSourceIds.every(
             (id) => _items.any(
               (item) =>
@@ -146,7 +180,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   Future<void> _send({TurnRecord? regenerate}) async {
     final chat = _chat;
-    if (chat == null || _busy) return;
+    if (chat == null ||
+        _busy ||
+        _changingSources ||
+        _importing ||
+        _choosingSources) {
+      return;
+    }
     final text = _input.text.trim();
     if (regenerate == null &&
         (text.isEmpty || !_sourcesReady || _availability is! Available)) {
@@ -194,30 +234,153 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _scope(ChatMode mode, List<String> ids) async {
-    final chat = _chat;
-    if (chat == null) return;
+  Future<void> _scope(String chatId, List<String> ids) async {
+    if (_busy || _changingSources || _importing) return;
+    setState(() => _changingSources = true);
     try {
-      await widget.workspace.changeScope(chat.id, mode, ids);
+      await widget.workspace.changeScope(
+        chatId,
+        ids.isEmpty ? ChatMode.general : ChatMode.knowledgeBase,
+        ids,
+      );
+      await _load();
     } on Object {
       _report('Could not change selected sources.');
+    } finally {
+      if (mounted) setState(() => _changingSources = false);
     }
   }
 
-  Future<void> _chooseSources() async {
+  Future<void> _chooseSources(ChatRecord chat) async {
+    setState(() => _choosingSources = true);
+    try {
+      final selected = await Navigator.of(context).push<List<String>>(
+        CupertinoPageRoute(
+          fullscreenDialog: true,
+          builder: (_) => SourceSelection(
+            knowledge: widget.knowledge,
+            selected: chat.mode == ChatMode.knowledgeBase
+                ? chat.selectedSourceIds
+                : const [],
+          ),
+        ),
+      );
+      if (selected != null && mounted) {
+        final latest = (await widget.workspace.history())
+            .where((candidate) => candidate.id == chat.id)
+            .firstOrNull;
+        if (!mounted) return;
+        if (latest == null ||
+            latest.mode != chat.mode ||
+            latest.selectedSourceIds.length != chat.selectedSourceIds.length ||
+            !latest.selectedSourceIds.toSet().containsAll(
+              chat.selectedSourceIds,
+            )) {
+          _report('Selected sources changed. Open the source chooser again.');
+          return;
+        }
+        await _scope(chat.id, selected);
+      }
+    } on Object {
+      _report('Could not choose sources. Try again.');
+    } finally {
+      if (mounted) setState(() => _choosingSources = false);
+    }
+  }
+
+  Future<void> _addSource() async {
     final chat = _chat;
-    if (chat == null) return;
-    final selected = await Navigator.of(context).push<List<String>>(
-      CupertinoPageRoute(
-        fullscreenDialog: true,
-        builder: (_) => SourceSelection(
-          knowledge: widget.knowledge,
-          selected: chat.selectedSourceIds,
+    if (chat == null ||
+        _busy ||
+        _importing ||
+        _changingSources ||
+        _choosingSources) {
+      return;
+    }
+    setState(() => _choosingSources = true);
+    _messageFocus.unfocus();
+    final action = await showCupertinoModalPopup<String>(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        title: const Text('Add sources to this chat'),
+        message: const Text(
+          'Imports stay on this device and are saved in your Knowledge Base.',
+        ),
+        actions: [
+          if (widget.onImportSource != null)
+            for (final type in [
+              KnowledgeSourceType.pdf,
+              KnowledgeSourceType.photo,
+              KnowledgeSourceType.pastedText,
+            ])
+              CupertinoActionSheetAction(
+                onPressed: () => Navigator.pop(context, type.name),
+                child: Text(switch (type) {
+                  KnowledgeSourceType.pdf => 'Import PDF',
+                  KnowledgeSourceType.photo => 'Choose photograph',
+                  KnowledgeSourceType.pastedText => 'Paste text',
+                }),
+              ),
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.pop(context, 'existing'),
+            child: const Text('Choose from Knowledge Base'),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
         ),
       ),
     );
-    if (selected != null && mounted && _chat?.id == chat.id) {
-      await _scope(ChatMode.knowledgeBase, selected);
+    if (mounted) setState(() => _choosingSources = false);
+    if (!mounted || action == null) return;
+    if (action == 'existing') {
+      await _chooseSources(chat);
+      return;
+    }
+    setState(() {
+      _importing = true;
+      _error = null;
+    });
+    try {
+      final result = await widget.onImportSource!(
+        context,
+        KnowledgeSourceType.values.byName(action),
+      );
+      if (result == null) return;
+      if (result.duplicate) {
+        if (!mounted) return;
+        final useExisting = await showCupertinoDialog<bool>(
+          context: context,
+          builder: (context) => CupertinoAlertDialog(
+            title: const Text('Already in your Knowledge Base'),
+            content: Text(
+              'Use “${result.item.title}” in this chat? No second copy was added.',
+            ),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancel'),
+              ),
+              CupertinoDialogAction(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Use existing source'),
+              ),
+            ],
+          ),
+        );
+        if (useExisting != true) return;
+      }
+      // Capture the initiating chat, not whichever chat is visible after a
+      // native picker returns. The workspace merges with its latest scope.
+      await widget.workspace.addSource(chat.id, result.item.id);
+      if (mounted) await _load();
+    } on Object {
+      _report(
+        'Could not add this source to the chat. Check your Knowledge Base and try again.',
+      );
+    } finally {
+      if (mounted) setState(() => _importing = false);
     }
   }
 
@@ -469,9 +632,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   Widget _empty() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      const SizedBox(height: 48),
+      const SizedBox(height: 20),
+      const TuckMascot(size: 120),
+      const SizedBox(height: 20),
       const Text(
-        'A little space to think.',
+        'A little space to think',
         style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
       ),
       const SizedBox(height: 12),
@@ -532,6 +697,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             fontWeight: FontWeight.w600,
             color: CupertinoColors.secondaryLabel.resolveFrom(context),
           ),
+        ),
+        Text(
+          ModelCatalogue.entries
+                  .where((m) => m.id == turn.provenance.model.identifier)
+                  .firstOrNull
+                  ?.name ??
+              turn.provenance.model.identifier,
+          style: const TextStyle(fontSize: 12, color: SekretBrand.secondary),
         ),
         if (turn.assistantText.isNotEmpty)
           AnswerContent(text: turn.assistantText, onLink: _openLink),
@@ -651,26 +824,43 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             'Another chat is responding. Stop it before sending.',
             style: TextStyle(fontSize: 13),
           ),
-        AccessibleChoice<ChatMode>(
-          value: _chat?.mode ?? ChatMode.general,
-          labels: const {
-            ChatMode.general: 'General',
-            ChatMode.knowledgeBase: 'Knowledge Base',
-          },
-          onChanged: (mode) {
-            _scope(mode, _chat?.selectedSourceIds ?? []);
-          },
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Text(
+            _chat?.mode == ChatMode.knowledgeBase
+                ? 'Answers only from selected sources'
+                : 'Model knowledge · no sources selected',
+            style: TextStyle(
+              fontSize: 13,
+              color: CupertinoColors.secondaryLabel.resolveFrom(context),
+            ),
+          ),
         ),
         if (_chat?.mode == ChatMode.knowledgeBase) ...[
+          if (_chat!.selectedSourceIds.isEmpty)
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                const Text(
+                  'No sources selected',
+                  style: TextStyle(fontSize: 13),
+                ),
+                CupertinoButton(
+                  onPressed:
+                      _busy ||
+                          _changingSources ||
+                          _importing ||
+                          _choosingSources
+                      ? null
+                      : () => _scope(_chat!.id, const []),
+                  child: const Text('Use model knowledge'),
+                ),
+              ],
+            ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                CupertinoButton(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  onPressed: _chooseSources,
-                  child: const Text('Select sources'),
-                ),
                 for (final id in _chat!.selectedSourceIds) _sourceChip(id),
               ],
             ),
@@ -679,11 +869,25 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             const Padding(
               padding: EdgeInsets.only(bottom: 8),
               child: Text(
-                'Select sources and wait until all are indexed.',
+                'Choose sources or remove unavailable ones. All selected sources must be indexed before sending.',
                 style: TextStyle(fontSize: 13),
               ),
             ),
         ],
+        if (_importing)
+          const Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text('Adding source…', style: TextStyle(fontSize: 13)),
+          ),
+        if (!widget.engine.supportsKnowledgeBase &&
+            _chat?.mode == ChatMode.knowledgeBase)
+          const Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              'This model supports text chat only. Select Apple Intelligence in Models for Knowledge Base answers, or remove sources to use model knowledge.',
+              style: TextStyle(fontSize: 13),
+            ),
+          ),
         if (_availability is! Available)
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -711,6 +915,21 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            CupertinoButton(
+              padding: const EdgeInsets.all(10),
+              onPressed:
+                  _chat == null ||
+                      _busy ||
+                      _importing ||
+                      _changingSources ||
+                      _choosingSources
+                  ? null
+                  : _addSource,
+              child: const Icon(
+                CupertinoIcons.paperclip,
+                semanticLabel: 'Add sources',
+              ),
+            ),
             Expanded(
               child: TextFieldTapRegion(
                 groupId: _messageFocus,
@@ -739,6 +958,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       if (mounted) setState(() {});
                     }
                   : _chat != null &&
+                        !_importing &&
+                        !_changingSources &&
+                        !_choosingSources &&
                         _availability is Available &&
                         _sourcesReady &&
                         _input.text.trim().isNotEmpty
@@ -763,32 +985,54 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     final status = item == null
         ? 'Source deleted'
         : processingLabel(item.processingState);
-    return Semantics(
-      label: '${item?.title ?? 'Source'} · $status',
-      excludeSemantics: true,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width * .65,
-        ),
-        margin: const EdgeInsets.only(left: 8),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        decoration: BoxDecoration(
-          color: CupertinoColors.tertiarySystemFill.resolveFrom(context),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (item != null)
-              Text(
-                item.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 13),
-              ),
-            Text(status, style: const TextStyle(fontSize: 13)),
-          ],
-        ),
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.sizeOf(context).width * .65,
+      ),
+      margin: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: CupertinoColors.tertiarySystemFill.resolveFrom(context),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item?.title ?? 'Unavailable source',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 13),
+                ),
+                Text(status, style: const TextStyle(fontSize: 13)),
+              ],
+            ),
+          ),
+          CupertinoButton(
+            padding: const EdgeInsets.only(left: 8),
+            onPressed:
+                _busy || _changingSources || _importing || _choosingSources
+                ? null
+                : () {
+                    final chat = _chat!;
+                    _scope(
+                      chat.id,
+                      chat.selectedSourceIds
+                          .where((source) => source != id)
+                          .toList(),
+                    );
+                  },
+            child: Icon(
+              CupertinoIcons.xmark_circle_fill,
+              size: 18,
+              semanticLabel: 'Remove ${item?.title ?? 'unavailable source'}',
+            ),
+          ),
+        ],
       ),
     );
   }

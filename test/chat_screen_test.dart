@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show DefaultMaterialLocalizations;
 import 'package:flutter/services.dart';
@@ -17,6 +18,8 @@ import 'package:sekret/demo/fake_native_capabilities.dart';
 import 'package:sekret/ui/chat/answer_content.dart';
 import 'package:sekret/ui/chat/chat_screen.dart';
 import 'package:sekret/ui/knowledge/source_preview.dart';
+
+import 'support/grounded_prompt_fixture.dart';
 
 void main() => registerChatScreenTests();
 
@@ -118,7 +121,12 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     });
   }
 
-  Future<void> mount(WidgetTester tester, {double scale = 1}) async {
+  Future<void> mount(
+    WidgetTester tester, {
+    double scale = 1,
+    Future<KnowledgeImportResult?> Function(BuildContext, KnowledgeSourceType)?
+    onImportSource,
+  }) async {
     if (!physicalDevice) {
       tester.view.physicalSize = const Size(390, 844);
       tester.view.devicePixelRatio = 1;
@@ -144,6 +152,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
             onKnowledgeBase: () => knowledgeNavigations++,
             onPreview: (preview) async => previews.add(preview),
             onLink: (uri) async => links.add(uri),
+            onImportSource: onImportSource,
           ),
         ),
       ),
@@ -193,7 +202,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     'empty state, General send, drafts and searchable persistent history',
     (tester) async {
       await mount(tester);
-      expect(find.text('A little space to think.'), findsOneWidget);
+      expect(find.text('A little space to think'), findsOneWidget);
       await tester.tap(find.text('Add to Knowledge Base'));
       expect(knowledgeNavigations, 1);
       await send(tester, 'Plan a fictional picnic');
@@ -269,9 +278,9 @@ void registerChatScreenTests({bool physicalDevice = false}) {
         fingerprint: 'fixture',
       );
       await mount(tester);
-      await tester.tap(find.text('Knowledge Base'));
+      await tester.tap(find.bySemanticsLabel('Add sources'));
       await settle(tester);
-      await tester.tap(find.text('Select sources'));
+      await tester.tap(find.text('Choose from Knowledge Base'));
       await settle(tester);
       await tester.tap(find.text('Return policy'));
       await tester.tap(find.text('Done'));
@@ -307,6 +316,207 @@ void registerChatScreenTests({bool physicalDevice = false}) {
         )).single.assistantText,
         contains('7 days'),
       );
+    },
+  );
+
+  runTest('paperclip imports to initiating chat and shows processing scope', (
+    tester,
+  ) async {
+    final completion = Completer<KnowledgeImportResult?>();
+    KnowledgeSourceType? requestedType;
+    await mount(
+      tester,
+      onImportSource: (context, type) {
+        requestedType = type;
+        return completion.future;
+      },
+    );
+    final initiatingId = workspace.currentChatId!;
+    expect(find.text('General'), findsNothing);
+    expect(find.text('Knowledge Base'), findsNothing);
+    await tester.tap(find.bySemanticsLabel('Add sources'));
+    await settle(tester);
+    expect(find.text('Import PDF'), findsOneWidget);
+    expect(find.text('Choose photograph'), findsOneWidget);
+    expect(find.text('Paste text'), findsOneWidget);
+    await tester.tap(find.text('Choose photograph'));
+    await settle(tester);
+    expect(requestedType, KnowledgeSourceType.photo);
+    final otherChat = await workspace.newChat();
+    final source = await vault.knowledge.beginProcessing(
+      title: 'Imported photograph',
+      sourceType: KnowledgeSourceType.photo,
+      sourceBytes: Uint8List.fromList([1, 2, 3]),
+      fingerprint: 'chat-photo',
+    );
+    completion.complete(KnowledgeImportResult(source, duplicate: false));
+    await settle(tester);
+    final chats = await workspace.history();
+    final initiating = chats.firstWhere((chat) => chat.id == initiatingId);
+    expect(initiating.mode, ChatMode.knowledgeBase);
+    expect(initiating.selectedSourceIds, [source.id]);
+    final other = chats.firstWhere((chat) => chat.id == otherChat.id);
+    expect(other.mode, ChatMode.general);
+    expect(other.selectedSourceIds, isEmpty);
+    await workspace.openChat(initiatingId);
+    await settle(tester);
+    expect(find.text('Processing'), findsOneWidget);
+    expect(find.text('Answers only from selected sources'), findsOneWidget);
+    await tester.enterText(message(), 'What is this?');
+    await settle(tester);
+    expect(
+      tester
+          .widget<CupertinoButton>(
+            find
+                .ancestor(
+                  of: find.bySemanticsLabel('Send'),
+                  matching: find.byType(CupertinoButton),
+                )
+                .first,
+          )
+          .onPressed,
+      isNull,
+    );
+    await tester.tap(find.bySemanticsLabel('Remove Imported photograph'));
+    await settle(tester);
+    expect(find.text('Model knowledge · no sources selected'), findsOneWidget);
+    expect(
+      (await workspace.history()).firstWhere((c) => c.id == initiatingId).mode,
+      ChatMode.general,
+    );
+  });
+
+  runTest('outstanding chooser cannot overwrite a changed source scope', (
+    tester,
+  ) async {
+    final imported = await knowledge.importText(
+      title: 'Added while choosing',
+      text: 'Keep the latest scope.',
+    );
+    await tester.runAsync(() => knowledge.process(imported.item.id));
+    await mount(tester);
+    final chatId = workspace.currentChatId!;
+    await tester.tap(find.bySemanticsLabel('Add sources'));
+    await settle(tester);
+    await tester.tap(find.text('Choose from Knowledge Base'));
+    await settle(tester);
+    await workspace.addSource(chatId, imported.item.id);
+    await settle(tester);
+    await tester.tap(find.text('Done'));
+    await settle(tester);
+    expect((await workspace.history()).single.selectedSourceIds, [
+      imported.item.id,
+    ]);
+    expect((await workspace.history()).single.mode, ChatMode.knowledgeBase);
+    expect(
+      find.text('Selected sources changed. Open the source chooser again.'),
+      findsOneWidget,
+    );
+  });
+
+  runTest('duplicate import attaches only after explicit confirmation', (
+    tester,
+  ) async {
+    final imported = await knowledge.importText(
+      title: 'Existing note',
+      text: 'Reuse this note.',
+    );
+    await tester.runAsync(() => knowledge.process(imported.item.id));
+    await mount(
+      tester,
+      onImportSource: (context, type) async =>
+          KnowledgeImportResult(imported.item, duplicate: true),
+    );
+    for (final accept in [false, true]) {
+      await tester.tap(find.bySemanticsLabel('Add sources'));
+      await settle(tester);
+      await tester.tap(find.text('Paste text'));
+      await settle(tester);
+      expect((await workspace.history()).single.mode, ChatMode.general);
+      await tester.tap(find.text(accept ? 'Use existing source' : 'Cancel'));
+      await settle(tester);
+      expect(
+        (await workspace.history()).single.mode,
+        accept ? ChatMode.knowledgeBase : ChatMode.general,
+      );
+    }
+    expect((await workspace.history()).single.selectedSourceIds, [
+      imported.item.id,
+    ]);
+    expect(await knowledge.catalogue(), hasLength(1));
+  });
+
+  runTest('cancelled and failed imports preserve existing selected sources', (
+    tester,
+  ) async {
+    final item = await vault.knowledge.beginProcessing(
+      title: 'Retained source',
+      sourceType: KnowledgeSourceType.pastedText,
+      sourceBytes: Uint8List.fromList(utf8.encode('Retain this selection.')),
+      fingerprint: 'retained-selection',
+    );
+    final chat = await workspace.newChat();
+    await workspace.changeScope(chat.id, ChatMode.knowledgeBase, [item.id]);
+    var fail = false;
+    await mount(
+      tester,
+      onImportSource: (context, type) async {
+        if (fail) throw StateError('Picker failed');
+        return null;
+      },
+    );
+    for (final failure in [false, true]) {
+      fail = failure;
+      await tester.tap(find.bySemanticsLabel('Add sources'));
+      await settle(tester);
+      await tester.tap(find.text('Import PDF'));
+      await settle(tester);
+      final current = (await workspace.history()).single;
+      expect(current.mode, ChatMode.knowledgeBase);
+      expect(current.selectedSourceIds, [item.id]);
+    }
+    expect(find.textContaining('Could not add this source'), findsOneWidget);
+  });
+
+  runTest(
+    'deleted source stays grounded and blocked until explicitly removed',
+    (tester) async {
+      final imported = await knowledge.importText(
+        title: 'Temporary source',
+        text: 'Keep scope explicit.',
+      );
+      await tester.runAsync(() => knowledge.process(imported.item.id));
+      final chat = await workspace.newChat();
+      await workspace.changeScope(chat.id, ChatMode.knowledgeBase, [
+        imported.item.id,
+      ]);
+      await mount(tester);
+      await knowledge.delete(imported.item.id);
+      await settle(tester);
+      expect(find.text('Answers only from selected sources'), findsOneWidget);
+      // Deletion cascades the selected ID out of storage, but deliberately
+      // leaves Knowledge Base mode in place instead of answering generally.
+      expect(find.text('No sources selected'), findsOneWidget);
+      expect((await workspace.history()).single.mode, ChatMode.knowledgeBase);
+      await tester.enterText(message(), 'Do not fall back');
+      await settle(tester);
+      expect(
+        tester
+            .widget<CupertinoButton>(
+              find
+                  .ancestor(
+                    of: find.bySemanticsLabel('Send'),
+                    matching: find.byType(CupertinoButton),
+                  )
+                  .first,
+            )
+            .onPressed,
+        isNull,
+      );
+      expect(await workspace.transcript(chat.id), isEmpty);
+      await tester.tap(find.text('Use model knowledge'));
+      await settle(tester);
+      expect((await workspace.history()).single.mode, ChatMode.general);
     },
   );
 
@@ -522,6 +732,9 @@ void registerChatScreenTests({bool physicalDevice = false}) {
 
 class UiModel
     implements GeneralLlmBackend, GroundedLlmBackend, ModelContextProbe {
+  @override
+  Stream<String> verifyGrounded({required String prompt}) =>
+      Stream.value('SUPPORTED');
   LlmAvailability status = const Available();
   String answer = 'General response.';
   String? groundedAnswer;
@@ -539,8 +752,7 @@ class UiModel
 
   @override
   Stream<String> generateGrounded({required String prompt}) async* {
-    final evidence = (jsonDecode(prompt) as Map)['current_evidence'] as List;
-    yield groundedAnswer ?? evidence.map((e) => e['passage']).join('\n');
+    yield groundedAnswer ?? groundedFixturePassages(prompt).join('\n');
   }
 
   @override

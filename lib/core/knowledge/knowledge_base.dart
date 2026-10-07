@@ -638,23 +638,17 @@ final class KnowledgeBase {
       );
       if (score > 0) scored.add((passage.id, score));
     }
-    scored.sort((a, b) => b.$2.compareTo(a.$2));
+    // Stabilize ties before truncation so scope permutations cannot change the
+    // candidate set, including when there are more than twenty equal vectors.
+    scored.sort((a, b) {
+      final scoreOrder = b.$2.compareTo(a.$2);
+      return scoreOrder != 0 ? scoreOrder : a.$1.compareTo(b.$1);
+    });
     final dense = scored
         .take(productionRetrievalConfiguration.candidateLimit)
         .map((item) => item.$1)
         .toList();
-    // BM25 scores from independent source queries are not directly comparable.
-    // Interleave their ranked lists before fusing with the global dense ranks.
-    final lexical = <int>[
-      for (
-        var rank = 0;
-        rank < productionRetrievalConfiguration.candidateLimit;
-        rank++
-      )
-        for (final source in lexicalBySource)
-          if (rank < source.length) source[rank],
-    ];
-    final ranked = fuseRanks(lexical, dense);
+    final ranked = fuseSourceRanks(lexicalBySource, dense);
     final byId = {for (final passage in passages) passage.id: passage};
     return [for (final id in ranked) byId[id]!];
   }

@@ -1,0 +1,298 @@
+{
+  "date": "2026-10-06",
+  "candidate": "Qwen3-4B-Instruct-2507 Q3_K_M",
+  "status": "Bounded-hash phone retest produces answers; repeated-run and real UI lifecycle qualification pending",
+  "model": {
+    "bytes": 2075618400,
+    "sha256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9"
+  },
+  "device": "iPhone 15 Pro Max, iOS 27.0 (24A437)",
+  "change": "Release Foundation hash-read temporary buffers after every 1 MiB chunk. Exact hash, model, generation, template, sampling, 3 GiB pre-load reserve and OS memory-warning cancellation unchanged.",
+  "builds": {
+    "firstRetest": 6,
+    "firstExecutableSHA256": "c81d29d8c489d45338ec73584175417f2676ea19012a1d241c8191ac9eb1d349",
+    "fixedProbeSelector": 7,
+    "selectorExecutableSHA256": "f41a76037b73f2e2e3cbb296267aacc51a372b22d90e54ee4cd7acdc00de0480",
+    "nativeUnitTestsPassed": 5,
+    "bothSignedBuildsSucceeded": true
+  },
+  "outcomes": {
+    "completedAnswers": 6,
+    "expectedEightTokenCancellations": 1,
+    "recordedOSMemoryWarningStops": 0,
+    "firstBatch": "Two 2K answers completed. The pre-load 3 GiB guard refused the next load with 3,133,716,256 bytes headroom. This was not an OS memory-warning cancellation.",
+    "remaining": "Five remaining probes ran in separate fresh processes; no favourable-result reruns, no reserve reduction. Do not call this a seven-probe one-process pass.",
+    "allResultThermalStates": [
+      0
+    ]
+  },
+  "observations": {
+    "completeAnswerGenerationSecondsRange": [
+      1.4227369583386462,
+      5.444813000001886
+    ],
+    "medianGenerationSeconds": 5.215236770833144,
+    "repeatedPlanning69TokenGenerationSecondsRange": [
+      5.195250291668344,
+      5.444813000001886
+    ],
+    "firstObservedNativeLoadSeconds": 2.8240772916688,
+    "largestSampledFootprintBytes": 744837000,
+    "largestProcessLifetimePeakRSSBytes": 2835890176,
+    "beforeFixFirstProbe": {
+      "outcome": "cancelled by real OS memory warning before first output token",
+      "sampledFootprintBytes": 2491536368
+    },
+    "afterFixFirstProbe": {
+      "outcome": "completed, 69 tokens",
+      "sampledFootprintBytes": 440258176
+    },
+    "caveats": "Footprint (charged memory) and resident set including file-backed pages are distinct. The model is not a 0.44 GB total-memory requirement. Generation timings exclude hashing, model load, final cleanup and UI; different output lengths make raw time comparisons misleading."
+  },
+  "qualityObservations": [
+    "Conditional notice correctly preserves Thursday/18:30/Room Cedar and festival-only Friday/17:00 in two sentences.",
+    "Unicode probe correctly provides French with café/été and a Korean greeting.",
+    "Planning response offers three actionable seed-exchange organization suggestions.",
+    "This is not a new broad quality benchmark. Historical Mac score remains 25/30 on the fixed development suite, not general accuracy or Knowledge Base approval."
+  ],
+  "evidence": [
+    "results/repeated-phone-tz57317y/verdict.json",
+    "results/repeated-phone-86q6807x/verdict.json",
+    "results/repeated-phone-bpbnphvr/verdict.json",
+    "results/repeated-phone-jfak4uh8/verdict.json",
+    "results/repeated-phone-itdtwve7/verdict.json",
+    "results/repeated-phone-4jk38bln/verdict.json",
+    "results/phone-retest-lifecycle/"
+  ],
+  "conclusion": "The original failure cannot be attributed solely to model size. Bounded hashing materially improved the observed phone behavior and restores this model as a candidate, not a release-approved model.",
+  "next": "Measure/calibrate 4B-specific repeated-run admission with bounded resource evidence; then test actual Stop/background/recovery. Do not simply inherit the 0.6B model's reserve or lifecycle pass.",
+  "scope": "No new download, no shipping Sekret changes, no data/app deletion. Existing reports preserved; evaluation app reopened idle.",
+  "lifecycleReceipts": [
+    {
+      "foregroundAtReturn": true,
+      "message": "Fixed suite finished: 1 probes. Reports are local.",
+      "operation": "11ED8E94-C923-4373-A200-934794F0BB4B",
+      "stopReason": "none",
+      "stopToReturnSeconds": -1,
+      "time": "2026-10-06T13:31:50Z"
+    },
+    {
+      "foregroundAtReturn": true,
+      "message": "Fixed suite finished: 1 probes. Reports are local.",
+      "operation": "36648543-EF58-448F-A726-3963A47A3398",
+      "stopReason": "none",
+      "stopToReturnSeconds": -1,
+      "time": "2026-10-06T13:31:55Z"
+    },
+    {
+      "foregroundAtReturn": true,
+      "message": "Suite ended: Less than 3 GiB reported app memory headroom; refusing this evaluation load.",
+      "operation": "4736A96D-3C15-4DEC-982F-FCE9FAE84B0D",
+      "stopReason": "none",
+      "stopToReturnSeconds": -1,
+      "time": "2026-10-06T13:29:55Z"
+    },
+    {
+      "foregroundAtReturn": true,
+      "message": "Fixed suite finished: 1 probes. Reports are local.",
+      "operation": "5A9BDEBD-3A18-4E7A-83B3-2AE023025E5F",
+      "stopReason": "none",
+      "stopToReturnSeconds": -1,
+      "time": "2026-10-06T13:31:31Z"
+    },
+    {
+      "foregroundAtReturn": true,
+      "message": "Fixed suite finished: 1 probes. Reports are local.",
+      "operation": "B58EDA28-7626-4DC5-9DCC-29F0D2ADD62F",
+      "stopReason": "none",
+      "stopToReturnSeconds": -1,
+      "time": "2026-10-06T13:31:41Z"
+    },
+    {
+      "foregroundAtReturn": true,
+      "message": "Fixed suite finished: 1 probes. Reports are local.",
+      "operation": "E5282629-F2E0-4161-B82C-0C6AE7C32DF3",
+      "stopReason": "none",
+      "stopToReturnSeconds": -1,
+      "time": "2026-10-06T13:31:46Z"
+    }
+  ],
+  "perProbeReports": [
+    {
+      "loadSeconds": 0.23062270833179355,
+      "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "cancellationObservationSeconds": 0.0000018749997252598405,
+        "configuredContext": 2048,
+        "elapsedSeconds": 0.9226529166699038,
+        "firstTokenSeconds": 0.43209500000375556,
+        "outcome": "cancelled",
+        "outputCap": 128,
+        "outputTokens": 8,
+        "peakObservedFootprintBytes": 440356480,
+        "processPeakRSSBytes": 2543861760,
+        "promptSHA256": "21e1d10ca5ad2e3b47dd81db1c3c114019d3c606ed797d7ccdf3362d5185c23d",
+        "promptTokens": 56,
+        "response": "1. Create a rotating schedule for weekly",
+        "thermalState": 0,
+        "tokenIDsSHA256": "0d9358ffd950fd70956103892664968a4fff12221c9bdadb49f4c91b6fe916dc"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1"
+    },
+    {
+      "loadSeconds": 0.22134158333938103,
+      "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 4096,
+        "configuredContext": 4096,
+        "elapsedSeconds": 5.195250291668344,
+        "firstTokenSeconds": 0.5109644999974989,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 69,
+        "peakObservedFootprintBytes": 744525632,
+        "processPeakRSSBytes": 2835890176,
+        "promptSHA256": "21e1d10ca5ad2e3b47dd81db1c3c114019d3c606ed797d7ccdf3362d5185c23d",
+        "promptTokens": 56,
+        "response": "1. Create a rotating schedule for weekly seed drops at a central community spot, ensuring each household contributes and receives a variety of seeds.  \n2. Develop a simple digital sign-up sheet for seed types and quantities to maintain transparency and fairness.  \n3. Host a quarterly seed-sharing event with workshops on seed saving and planting to build community engagement.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "0d9358ffd950fd70956103892664968a4fff12221c9bdadb49f4c91b6fe916dc"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1"
+    },
+    {
+      "loadSeconds": 0.2152262083327514,
+      "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 4096,
+        "configuredContext": 4096,
+        "elapsedSeconds": 5.411534749997372,
+        "firstTokenSeconds": 0.48940062500332715,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 69,
+        "peakObservedFootprintBytes": 744837000,
+        "processPeakRSSBytes": 2833924096,
+        "promptSHA256": "21e1d10ca5ad2e3b47dd81db1c3c114019d3c606ed797d7ccdf3362d5185c23d",
+        "promptTokens": 56,
+        "response": "1. Create a rotating schedule for weekly seed drops at a central community spot, ensuring each household contributes and receives a variety of seeds.  \n2. Develop a simple digital sign-up sheet for seed types and quantities to maintain transparency and fairness.  \n3. Host a quarterly seed-sharing event with workshops on seed saving and planting to build community engagement.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "0d9358ffd950fd70956103892664968a4fff12221c9bdadb49f4c91b6fe916dc"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1"
+    },
+    {
+      "loadSeconds": 0.24638750000303844,
+      "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 1.4227369583386462,
+        "firstTokenSeconds": 0.43817320833477424,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 14,
+        "peakObservedFootprintBytes": 441831088,
+        "processPeakRSSBytes": 2546302976,
+        "promptSHA256": "33046cb20eb5f8617327374eeb423f9b62035190d429b2e233f12ea35f156f26",
+        "promptTokens": 60,
+        "response": "Je vais au café pendant l'été.  \n안녕하세요!",
+        "thermalState": 0,
+        "tokenIDsSHA256": "341df5680b2154b4f242380aa220c8bcd772d878b52de9646e61a553fc463bf9"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1"
+    },
+    {
+      "loadSeconds": 0.2432267500043963,
+      "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 3.137881249997008,
+        "firstTokenSeconds": 0.6325623333323165,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 36,
+        "peakObservedFootprintBytes": 442519168,
+        "processPeakRSSBytes": 2531033088,
+        "promptSHA256": "d695dc29fb3f419213e50f2271e9bf62d65683c5718ed9f7907812d7d7a495ce",
+        "promptTokens": 87,
+        "response": "The Alder Club usually meets on Thursday at 18:30 in Room Cedar. On festival week, it meets on Friday at 17:00 instead.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "f79878bf51bbe1f82180b44ecab4efc625fc6885c1a0095a21031f28dbfe7779"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1"
+    },
+    {
+      "loadSeconds": 2.8240772916688,
+      "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 5.444813000001886,
+        "firstTokenSeconds": 0.6048402916640043,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 69,
+        "peakObservedFootprintBytes": 440258176,
+        "processPeakRSSBytes": 2004254720,
+        "promptSHA256": "21e1d10ca5ad2e3b47dd81db1c3c114019d3c606ed797d7ccdf3362d5185c23d",
+        "promptTokens": 56,
+        "response": "1. Create a rotating schedule for weekly seed drops at a central community spot, ensuring each household contributes and receives a variety of seeds.  \n2. Develop a simple digital sign-up sheet for seed types and quantities to maintain transparency and fairness.  \n3. Host a quarterly seed-sharing event with workshops on seed saving and planting to build community engagement.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "0d9358ffd950fd70956103892664968a4fff12221c9bdadb49f4c91b6fe916dc"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1"
+    },
+    {
+      "loadSeconds": 0.20925650000572205,
+      "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 5.235223249997944,
+        "firstTokenSeconds": 0.42923841666925,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 69,
+        "peakObservedFootprintBytes": 414944944,
+        "processPeakRSSBytes": 2511273984,
+        "promptSHA256": "21e1d10ca5ad2e3b47dd81db1c3c114019d3c606ed797d7ccdf3362d5185c23d",
+        "promptTokens": 56,
+        "response": "1. Create a rotating schedule for weekly seed drops at a central community spot, ensuring each household contributes and receives a variety of seeds.  \n2. Develop a simple digital sign-up sheet for seed types and quantities to maintain transparency and fairness.  \n3. Host a quarterly seed-sharing event with workshops on seed saving and planting to build community engagement.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "0d9358ffd950fd70956103892664968a4fff12221c9bdadb49f4c91b6fe916dc"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1"
+    }
+  ]
+}

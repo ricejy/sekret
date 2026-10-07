@@ -1,0 +1,149 @@
+{
+  "fixtureSha256": "737ba8a186362c8a30323370d0778b34e0e9007f8ea916df8f1bfa1d98a89169",
+  "fictional": true,
+  "purpose": "fixed-verifier-development-tokenizer-parity",
+  "method": "Publisher tokenizer.json versus local DebertaV2Tokenizer/SentencePiece; no iOS tokenizer tested.",
+  "allMatch": true,
+  "results": [
+    {
+      "caseID": "permission-supported",
+      "match": true,
+      "tokens": 38
+    },
+    {
+      "caseID": "permission-rejected",
+      "match": true,
+      "tokens": 32
+    },
+    {
+      "caseID": "negation-supported",
+      "match": true,
+      "tokens": 28
+    },
+    {
+      "caseID": "negation-rejected",
+      "match": true,
+      "tokens": 27
+    },
+    {
+      "caseID": "condition-supported",
+      "match": true,
+      "tokens": 32
+    },
+    {
+      "caseID": "condition-rejected",
+      "match": true,
+      "tokens": 27
+    },
+    {
+      "caseID": "amount-supported",
+      "match": true,
+      "tokens": 27
+    },
+    {
+      "caseID": "amount-rejected",
+      "match": true,
+      "tokens": 27
+    },
+    {
+      "caseID": "identity-supported",
+      "match": true,
+      "tokens": 27
+    },
+    {
+      "caseID": "identity-rejected",
+      "match": true,
+      "tokens": 27
+    },
+    {
+      "caseID": "paraphrase-supported",
+      "match": true,
+      "tokens": 29
+    },
+    {
+      "caseID": "paraphrase-rejected",
+      "match": true,
+      "tokens": 32
+    },
+    {
+      "caseID": "deadline-supported",
+      "match": true,
+      "tokens": 22
+    },
+    {
+      "caseID": "deadline-rejected",
+      "match": true,
+      "tokens": 26
+    },
+    {
+      "caseID": "privacy-supported",
+      "match": true,
+      "tokens": 46
+    },
+    {
+      "caseID": "privacy-rejected",
+      "match": true,
+      "tokens": 38
+    },
+    {
+      "caseID": "future-supported",
+      "match": true,
+      "tokens": 39
+    },
+    {
+      "caseID": "future-rejected",
+      "match": true,
+      "tokens": 33
+    },
+    {
+      "caseID": "unknown-supported",
+      "match": true,
+      "tokens": 38
+    },
+    {
+      "caseID": "unknown-rejected",
+      "match": true,
+      "tokens": 37
+    },
+    {
+      "caseID": "multiple-supported",
+      "match": true,
+      "tokens": 49
+    },
+    {
+      "caseID": "multiple-rejected",
+      "match": true,
+      "tokens": 49
+    },
+    {
+      "caseID": "untrusted-supported",
+      "match": true,
+      "tokens": 40
+    },
+    {
+      "caseID": "untrusted-rejected",
+      "match": true,
+      "tokens": 40
+    },
+    {
+      "caseID": "captured-LEG-A09",
+      "match": true,
+      "tokens": 250
+    },
+    {
+      "caseID": "captured-LEG-A19",
+      "match": true,
+      "tokens": 200
+    },
+    {
+      "caseID": "captured-MED-A20",
+      "match": true,
+      "tokens": 224
+    },
+    {
+      "caseID": "captured-LEG-U03",
+      "match": true,
+      "tokens": 256
+    }
+  ]
+}

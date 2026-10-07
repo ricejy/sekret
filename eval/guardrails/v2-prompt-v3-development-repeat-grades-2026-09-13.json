@@ -1,0 +1,229 @@
+{
+  "fictional": true,
+  "repeat": {
+    "promptVersion": "grounded-chat-v3",
+    "kind": "development_repeat_not_acceptance",
+    "sourceFile": "v2-prompt-v3-development-repeat-2026-09-13.json",
+    "rubric": "Semantic review against the actual question and evidence; concise answers need not repeat irrelevant expected-answer detail. Missing a material eligibility condition or calculation cap is incorrect. Native and app outputs are separately retained.",
+    "answerableCorrect": 33,
+    "answerableTotal": 40,
+    "unsupportedCorrect": 9,
+    "unsupportedTotal": 10,
+    "falseAbstentions": [
+      "LEG-A09",
+      "LEG-A13",
+      "MED-A04",
+      "MED-A06",
+      "MED-A19",
+      "MED-A20"
+    ],
+    "medianLatencyMs": 814.5,
+    "rows": [
+      {
+        "caseID": "LEG-A01",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A02",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A03",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A04",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A05",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A06",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A07",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A08",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A09",
+        "verdict": "false_abstention"
+      },
+      {
+        "caseID": "LEG-A10",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A11",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A12",
+        "verdict": "incomplete_material_condition"
+      },
+      {
+        "caseID": "LEG-A13",
+        "verdict": "false_abstention"
+      },
+      {
+        "caseID": "LEG-A14",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A15",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A16",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A17",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A18",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A19",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "LEG-A20",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A01",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A02",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A03",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A04",
+        "verdict": "false_abstention"
+      },
+      {
+        "caseID": "MED-A05",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A06",
+        "verdict": "false_abstention"
+      },
+      {
+        "caseID": "MED-A07",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A08",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A09",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A10",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A11",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A12",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A13",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A14",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A15",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A16",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A17",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A18",
+        "verdict": "correct"
+      },
+      {
+        "caseID": "MED-A19",
+        "verdict": "false_abstention"
+      },
+      {
+        "caseID": "MED-A20",
+        "verdict": "false_abstention"
+      },
+      {
+        "caseID": "LEG-U01",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "LEG-U02",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "LEG-U03",
+        "verdict": "unsupported_assertion"
+      },
+      {
+        "caseID": "LEG-U04",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "LEG-U05",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "MED-U01",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "MED-U02",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "MED-U03",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "MED-U04",
+        "verdict": "correct_abstention"
+      },
+      {
+        "caseID": "MED-U05",
+        "verdict": "correct_abstention"
+      }
+    ],
+    "runIdentity": {
+      "startedAt": "2026-09-13T05:20:29.645500Z",
+      "finishedAt": "2026-09-13T05:21:25.669019Z",
+      "note": "Unchanged binary relaunched into a separate run directory; embedded runNumber remains 1. This artifact is the repeat, not a replacement initial score."
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "candidate": "Qwen3-4B-Instruct-2507 Q4_K_M (Unsloth conversion)",
+  "model_sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+  "runtime": "llama.cpp b11429",
+  "original_binary_sha256": "5778be2d87c8ee9101b007a3f01d3180e6fa3762924c6a8ac9269b1ad04e37e8",
+  "control_binary_sha256": "2268324cec72b794244023de3259ea63e0128499bea7aa2fea9454f0e65e8be1",
+  "original_result": "26/30 full-task passes; unchanged; below predeclared 27/30 development gate",
+  "runs": {
+    "original_reproduction": "results/diagnostic-repro-2ec_xhe7",
+    "sampling_and_caller": "results/diagnostic-controls-vjgogpml",
+    "backend_and_api": "results/diagnostic-backend-_7akdxb7"
+  },
+  "method": "Four frozen failed prompts and one positive control. Same pinned model/runtime/template/token IDs/context/output budget. Separate independent C++ caller with original sampling versus greedy. Supplemental CPU-only and extended-native-API checks on one arithmetic prompt. All 14 diagnostic generations completed; none replaces an original answer.",
+  "reproduction": {
+    "command": "python3 experiments/qwen4_text/run_diagnostic.py repro",
+    "expected": "26",
+    "responses": ["30", "30"],
+    "exit_code": 1,
+    "interpretation": "Intentional red-capable correctness check: both unchanged original-executable repeats reproduce the wrong answer, not an infrastructure failure."
+  },
+  "comparisons": [
+    {
+      "id": "brief-reschedule",
+      "baseline_response": "Hi everyone, would you mind if we moved our team meeting to Tuesday? That works better for everyone, right?",
+      "baseline_matches_original": true,
+      "baseline_pass": false,
+      "greedy_response": "Hey everyone, would it be possible to move our team meeting to Tuesday? How does that work for everyone?",
+      "greedy_pass": true,
+      "interpretation": "Greedy removes the unsupported rationale while preserving two friendly questions and Tuesday. Baseline grade uses the same conservative judgment as the original screen."
+    },
+    {
+      "id": "packs-and-singles",
+      "baseline_response": "30",
+      "baseline_matches_original": true,
+      "baseline_pass": false,
+      "greedy_response": "30",
+      "greedy_pass": false,
+      "expected": "26",
+      "interpretation": "Wrong under both decoders. Raw first-token logits in both controls rank token '3' (47.731) ahead of token '2' (39.601); this is not merely selection of a lower-ranked initial token by stochastic sampling. This does not establish the cause of the incorrect logits."
+    },
+    {
+      "id": "remaining-budget",
+      "baseline_response": "50 - 18 - 12 = 20",
+      "baseline_matches_original": true,
+      "baseline_pass": false,
+      "greedy_response": "50 - 18 - 12 = 20",
+      "greedy_pass": false,
+      "expected": "20",
+      "interpretation": "Arithmetic is correct but both violate the number-only instruction."
+    },
+    {
+      "id": "finish-time",
+      "baseline_response": "16:50",
+      "baseline_matches_original": true,
+      "baseline_pass": false,
+      "greedy_response": "16:50",
+      "greedy_pass": false,
+      "expected": "15:50",
+      "interpretation": "Wrong time under both decoders, despite correct HH:MM formatting."
+    },
+    {
+      "id": "missing-phone",
+      "baseline_response": "Not given.",
+      "baseline_matches_original": true,
+      "baseline_pass": true,
+      "greedy_response": "Not given.",
+      "greedy_pass": true,
+      "interpretation": "Positive control remains correct under both decoders."
+    }
+  ],
+  "supplemental_controls": [
+    {"case":"packs-and-singles","backend":"cpu","sampling":"greedy","decode_api":"legacy","response":"30","pass":false,"gpu_layers_offloaded":0},
+    {"case":"packs-and-singles","backend":"metal","sampling":"greedy","decode_api":"ext","response":"30","pass":false,"gpu_layers_offloaded":37}
+  ],
+  "conclusions": [
+    "Greedy decoding fixes one of the four selected failures, not the arithmetic or exact-format failures. This subset is deliberately selected for failure diagnosis, not an accuracy sample.",
+    "The independent C++ baseline reproduces all five original answers exactly with matching prompt and token hashes, so a Swift-specific caller defect is not supported by these probes.",
+    "The selected arithmetic failure also occurs on CPU and with the extended native decoding API. It is not exclusive to Metal or the legacy batch API.",
+    "No simple tested configuration or caller fix was found. Model limitations, this conversion/quantization, and a shared runtime problem remain distinguishable possibilities; these controls cannot attribute the cause among them.",
+    "Do not advance this artifact/profile to iPhone or catalogue qualification based on this run. No shipping code or baseline profile was changed; no higher accuracy score is claimed.",
+    "Further candidate or profile qualification must declare its own evaluation and fresh validation; do not tune prompts around these known answers or combine favorable diagnostic responses with the original screen."
+  ],
+  "cleanup": "Retire this evaluation model's 2,497,281,120-byte GGUF after evidence validation. Preserve original and diagnostic reports, exact model metadata, shared runtime, and harness. Removal is permanent locally but the pinned artifact can be re-downloaded with authorization if later required."
+}

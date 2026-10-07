@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import '../sekret_brand.dart';
 import '../../core/knowledge/knowledge_base.dart';
 import '../../core/storage/local_data_vault.dart';
 import '../../core/platform/pdf_file_picker.dart';
@@ -8,7 +9,7 @@ import '../../core/platform/file_selector_pdf_picker.dart';
 import '../../core/platform/photos_document_image_picker.dart';
 import '../chat/chat_sheets.dart' show processingLabel;
 import 'source_preview.dart';
-import 'import_sheet.dart';
+import 'knowledge_import_actions.dart';
 import 'rename_sheet.dart';
 import '../accessible_controls.dart';
 
@@ -279,34 +280,13 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
       _error = null;
     });
     try {
-      KnowledgeImportResult? result;
-      switch (type) {
-        case KnowledgeSourceType.pastedText:
-          result = await Navigator.of(context).push<KnowledgeImportResult>(
-            CupertinoPageRoute(
-              fullscreenDialog: true,
-              builder: (_) => PasteKnowledge(knowledge: widget.knowledge),
-            ),
-          );
-        case KnowledgeSourceType.pdf:
-          final picked = await widget.pdfPicker.pickPdf();
-          if (!mounted || picked == null) return;
-          result = await widget.knowledge.importSource(
-            title: picked.name,
-            sourceName: picked.name,
-            sourceType: type,
-            bytes: picked.bytes,
-          );
-        case KnowledgeSourceType.photo:
-          final picked = await widget.imagePicker.pickImage();
-          if (!mounted || picked == null) return;
-          result = await widget.knowledge.importSource(
-            title: picked.name,
-            sourceName: picked.name,
-            sourceType: type,
-            bytes: picked.bytes,
-          );
-      }
+      final result = await importKnowledgeSource(
+        context,
+        widget.knowledge,
+        type,
+        pdfPicker: widget.pdfPicker,
+        imagePicker: widget.imagePicker,
+      );
       if (!mounted || result == null) return;
       if (result.duplicate) {
         final open = await showCupertinoDialog<bool>(
@@ -314,7 +294,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
           builder: (context) => CupertinoAlertDialog(
             title: const Text('Already in your Knowledge Base'),
             content: Text(
-              'This content is already saved as “${result!.item.title}”. No second copy was added.',
+              'This content is already saved as “${result.item.title}”. No second copy was added.',
             ),
             actions: [
               CupertinoDialogAction(
@@ -516,13 +496,26 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
             ? const Center(child: CupertinoActivityIndicator())
             : _matches!.isEmpty
             ? Center(
-                child: Padding(
+                child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
-                  child: Text(
-                    _search.text.isNotEmpty || _type != null || _state != null
-                        ? 'No matching items'
-                        : 'Your knowledge, on device.\nAdd text, a PDF, or a photograph to get started.',
-                    textAlign: TextAlign.center,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_search.text.isEmpty &&
+                          _type == null &&
+                          _state == null) ...[
+                        const TuckMascot(size: 144),
+                        const SizedBox(height: 20),
+                      ],
+                      Text(
+                        _search.text.isNotEmpty ||
+                                _type != null ||
+                                _state != null
+                            ? 'No matching items'
+                            : 'Your knowledge, on device.\nAdd text, a PDF, or a photograph to get started.',
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
               )
@@ -568,12 +561,12 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
                           return false;
                         },
                         background: Container(
-                          color: CupertinoColors.systemBlue,
+                          color: SekretBrand.accent,
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.all(20),
                           child: const Text(
                             'Rename',
-                            style: TextStyle(color: CupertinoColors.white),
+                            style: TextStyle(color: SekretBrand.background),
                           ),
                         ),
                         secondaryBackground: Container(

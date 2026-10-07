@@ -22,25 +22,33 @@ object rewrite. The renamed repository may also retain a provider-managed redire
 from its former URL. Handle those surfaces separately, only where the provider
 supports editing or deletion and the owner explicitly approves it.
 
-## Compatibility exceptions during migration
+## Owner-approved identity migration
 
-Do not change the installed iPhone bundle identifiers as part of the source or
-repository rename. Keeping the bundle identifier stable allows the renamed app to
-update the existing installation and retain access to its current sandbox.
+The owner approved a data-preserving identity cutover for their single iPhone on
+2026-10-07. No Windows installation requires migration. The canonical app and test
+identifiers are `com.ricejy.sekret` and `com.ricejy.sekret.RunnerTests`; both startup
+paths now use `sekret.sqlite3`.
 
-The existing database filename must also remain readable until a tested in-place
-migration has completed. The migration should:
+A new bundle identifier is a separate installation, not an in-place update and
+not an automatic data migration. The owner's controlled transfer is:
 
-1. Open the existing database in the current application container.
-2. Create an atomic backup or copy before changing its filename or schema.
-3. Validate SQLite integrity, foreign keys, expected schema, and retained records.
-4. Reopen the migrated database through the production startup path.
-5. Retain a rollback path until the owner verifies the migrated installation.
+1. Stop the source app, back up its persistent files privately, and verify the
+   complete inventory, SQLite integrity, foreign keys and schema version.
+2. Install the new app alongside the source app. Do not launch it yet.
+3. Restore Documents and Application Support into the new sandbox, changing only
+   the database filename. Preserve the source database and compare its bytes with
+   the restored copy before first launch. Restore the selected model and its
+   pinned, checksum-verified artifact without downloading another copy.
+4. Launch the production v2 entry point and verify the retained records and
+   settings. The owner must confirm the visible chats and model selection.
+5. Retain the source installation and private backup until that confirmation;
+   removing the old installation is a separate explicitly approved action.
 
-These legacy identifiers are approved, explicit compatibility exceptions. Do not
-obfuscate or assemble strings dynamically merely to produce a misleading zero-match
-scan. Remove an exception only after the user's data has migrated successfully and
-the compatibility path is no longer required.
+This owner-specific developer-tool transfer is not a general customer migration
+feature. Never ship a changed bundle identity to another existing installation
+and assume its data will follow. No string obfuscation is used to hide legacy
+identifiers; the private rollback data and historical Git objects are intentionally
+outside a current-source zero-match claim.
 
 ## Preconditions
 

@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "fixtureOnly": true,
+  "vaultSchema": 6,
+  "checks": [
+    {
+      "stage": "fresh_schema",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 0,
+        "turns": 0,
+        "turn_provenance": 0,
+        "turn_source_scope": 0,
+        "turn_evidence": 0,
+        "turn_citations": 0,
+        "context_summaries": 0,
+        "chat_selected_sources": 0,
+        "knowledge_items": 0,
+        "knowledge_pages": 0,
+        "knowledge_passages": 0,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 0
+      }
+    },
+    {
+      "stage": "populated",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 1,
+        "turns": 1,
+        "turn_provenance": 1,
+        "turn_source_scope": 1,
+        "turn_evidence": 1,
+        "turn_citations": 1,
+        "context_summaries": 1,
+        "chat_selected_sources": 1,
+        "knowledge_items": 1,
+        "knowledge_pages": 1,
+        "knowledge_passages": 1,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 1
+      }
+    },
+    {
+      "stage": "cancel_import",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 1,
+        "turns": 1,
+        "turn_provenance": 1,
+        "turn_source_scope": 1,
+        "turn_evidence": 1,
+        "turn_citations": 1,
+        "context_summaries": 1,
+        "chat_selected_sources": 1,
+        "knowledge_items": 1,
+        "knowledge_pages": 1,
+        "knowledge_passages": 1,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 1
+      }
+    },
+    {
+      "stage": "delete_source",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 1,
+        "turns": 1,
+        "turn_provenance": 1,
+        "turn_source_scope": 1,
+        "turn_evidence": 1,
+        "turn_citations": 1,
+        "context_summaries": 1,
+        "chat_selected_sources": 0,
+        "knowledge_items": 0,
+        "knowledge_pages": 0,
+        "knowledge_passages": 0,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 0
+      }
+    },
+    {
+      "stage": "delete_turn_tail",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 1,
+        "turns": 0,
+        "turn_provenance": 0,
+        "turn_source_scope": 0,
+        "turn_evidence": 0,
+        "turn_citations": 0,
+        "context_summaries": 0,
+        "chat_selected_sources": 0,
+        "knowledge_items": 0,
+        "knowledge_pages": 0,
+        "knowledge_passages": 0,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 0
+      }
+    },
+    {
+      "stage": "finalize_chat_deletion",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 0,
+        "turns": 0,
+        "turn_provenance": 0,
+        "turn_source_scope": 0,
+        "turn_evidence": 0,
+        "turn_citations": 0,
+        "context_summaries": 0,
+        "chat_selected_sources": 0,
+        "knowledge_items": 0,
+        "knowledge_pages": 0,
+        "knowledge_passages": 0,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 0
+      }
+    },
+    {
+      "stage": "retention_reap",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 0,
+        "turns": 0,
+        "turn_provenance": 0,
+        "turn_source_scope": 0,
+        "turn_evidence": 0,
+        "turn_citations": 0,
+        "context_summaries": 0,
+        "chat_selected_sources": 0,
+        "knowledge_items": 1,
+        "knowledge_pages": 1,
+        "knowledge_passages": 1,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 1
+      }
+    },
+    {
+      "stage": "delete_all_chats",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 0,
+        "turns": 0,
+        "turn_provenance": 0,
+        "turn_source_scope": 0,
+        "turn_evidence": 0,
+        "turn_citations": 0,
+        "context_summaries": 0,
+        "chat_selected_sources": 0,
+        "knowledge_items": 2,
+        "knowledge_pages": 2,
+        "knowledge_passages": 2,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 2
+      }
+    },
+    {
+      "stage": "delete_entire_knowledge_base",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 0,
+        "turns": 0,
+        "turn_provenance": 0,
+        "turn_source_scope": 0,
+        "turn_evidence": 0,
+        "turn_citations": 0,
+        "context_summaries": 0,
+        "chat_selected_sources": 0,
+        "knowledge_items": 0,
+        "knowledge_pages": 0,
+        "knowledge_passages": 0,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 0
+      }
+    },
+    {
+      "stage": "erase_all",
+      "sqliteIntegrity": "ok",
+      "foreignKeyViolations": 0,
+      "ftsMismatches": 0,
+      "counts": {
+        "chats": 0,
+        "turns": 0,
+        "turn_provenance": 0,
+        "turn_source_scope": 0,
+        "turn_evidence": 0,
+        "turn_citations": 0,
+        "context_summaries": 0,
+        "chat_selected_sources": 0,
+        "knowledge_items": 0,
+        "knowledge_pages": 0,
+        "knowledge_passages": 0,
+        "processing_checkpoints": 0,
+        "knowledge_passages_fts": 0
+      }
+    }
+  ]
+}

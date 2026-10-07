@@ -9,10 +9,11 @@ class SceneDelegate: FlutterSceneDelegate {
     // Native and synchronous: do not wait for a Flutter frame before snapshotting.
     if let windowScene = scene as? UIWindowScene, privacyWindow == nil {
       let cover = UIWindow(windowScene: windowScene)
+      cover.overrideUserInterfaceStyle = .dark
       cover.frame = windowScene.coordinateSpace.bounds
       cover.windowLevel = .alert + 1
       let controller = UIViewController()
-      controller.view.backgroundColor = .systemBackground
+      controller.view.backgroundColor = UIColor(red: 16/255, green: 27/255, blue: 33/255, alpha: 1)
       let label = UILabel()
       label.text = "Sekret"
       label.textColor = .label

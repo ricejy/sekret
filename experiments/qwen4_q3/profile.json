@@ -1,0 +1,13 @@
+{
+  "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "modelBytes": 2075618400,
+  "modelFile": "Qwen3-4B-Instruct-2507-Q3_K_M.gguf",
+  "runtimeTag": "b11429",
+  "templateVersion": "qwen3-4b-instruct-2507-single-turn-no-tools-no-thinking-v1",
+  "sampling": "top_k=20;top_p=0.8;temperature=0.7;dist_seed=42;min_p=0;no_penalties",
+  "context": 2048,
+  "output_cap": 128,
+  "sourceRevisionInspected": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "converterRevision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "qualification": "Approved isolated evaluation only; community conversion, not shipping approval"
+}

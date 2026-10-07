@@ -51,7 +51,7 @@ void main() {
 }
 
 Future<DocumentLibrary> _openPersistentLibrary() async {
-  return _openProtectedLibrary(databaseFilename: 'sekret-midget.sqlite3');
+  return _openProtectedLibrary(databaseFilename: 'sekret.sqlite3');
 }
 
 Future<DocumentLibrary> _openProtectedLibrary({
