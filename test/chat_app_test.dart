@@ -8,6 +8,7 @@ import 'package:sekret/core/platform/apple_foundation_models.dart';
 import 'package:sekret/core/storage/local_data_vault.dart';
 import 'package:sekret/demo/fake_native_capabilities.dart';
 import 'package:sekret/ui/sekret_chat_app.dart';
+import 'package:sekret/ui/sekret_brand.dart';
 import 'chat_screen_test.dart' show UiModel;
 
 void main() {
@@ -22,6 +23,8 @@ void main() {
   testWidgets(
     'tabs keep generation alive, while backgrounding obscures and interrupts',
     (tester) async {
+      tester.platformDispatcher.platformBrightnessTestValue = Brightness.light;
+      addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
       final vault = await openLocalDataVault(databasePath: ':memory:');
       await vault.settings.update(
         retentionPolicy: RetentionPolicy.manual,
@@ -55,6 +58,69 @@ void main() {
         SekretChatApp(openResources: () async => resources),
       );
       await settle(tester);
+      final pageContext = tester.element(
+        find.byType(CupertinoPageScaffold).first,
+      );
+      expect(CupertinoTheme.of(pageContext).brightness, Brightness.dark);
+      expect(MediaQuery.platformBrightnessOf(pageContext), Brightness.dark);
+      expect(
+        CupertinoTheme.of(pageContext).scaffoldBackgroundColor,
+        SekretBrand.background,
+      );
+      expect(
+        tester
+            .widget<CupertinoTabBar>(find.byType(CupertinoTabBar))
+            .items
+            .map((item) => item.label),
+        ['Chat', 'Models', 'Knowledge Base', 'Settings'],
+      );
+      await tester.tap(
+        find.descendant(
+          of: find.byType(CupertinoTabBar),
+          matching: find.text('Models'),
+        ),
+      );
+      await settle(tester);
+      expect(find.text('Not available in this version'), findsOneWidget);
+      await tester.tap(
+        find.descendant(
+          of: find.byType(CupertinoTabBar),
+          matching: find.text('Chat'),
+        ),
+      );
+      await settle(tester);
+      await tester.tap(find.bySemanticsLabel('Add sources'));
+      await settle(tester);
+      await tester.tap(find.text('Paste text'));
+      await settle(tester);
+      await tester.enterText(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is CupertinoTextField && widget.placeholder == 'Title',
+        ),
+        'Fixture source',
+      );
+      await tester.enterText(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is CupertinoTextField &&
+              widget.placeholder == 'Paste your text',
+        ),
+        'The fictional museum opens at noon.',
+      );
+      await settle(tester);
+      await tester.tap(find.text('Import'));
+      await settle(tester);
+      final imported = (await knowledge.catalogue()).single.item;
+      expect(imported.title, 'Fixture source');
+      expect((await workspace.history()).single.selectedSourceIds, [
+        imported.id,
+      ]);
+      expect((await workspace.history()).single.mode, ChatMode.knowledgeBase);
+      await tester.tap(find.bySemanticsLabel('Remove Fixture source'));
+      await settle(tester);
+      expect((await workspace.history()).single.mode, ChatMode.general);
+      expect((await knowledge.catalogue()).single.item.id, imported.id);
       await tester.enterText(
         find.byWidgetPredicate(
           (w) => w is CupertinoTextField && w.placeholder == 'Message',
