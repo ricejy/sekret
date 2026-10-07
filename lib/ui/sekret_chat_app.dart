@@ -64,7 +64,7 @@ Future<ChatAppResources> openChatApp() async {
   }
   final directory = await getApplicationSupportDirectory();
   final path =
-      '${directory.path}${Platform.pathSeparator}sekret-midget.sqlite3';
+      '${directory.path}${Platform.pathSeparator}sekret.sqlite3';
   final models = AppleFoundationModels();
   await models.protectStorage(
     directoryPath: directory.path,
