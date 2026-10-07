@@ -1,5 +1,7 @@
 # Approved Chat interface integration
 
+Historical integration-stage note. For the accepted application baseline and remaining limitations, see [current status](current-status.md).
+
 Issue #25 implements Variant A — Native Focus as native Flutter/Cupertino
 widgets, not copied prototype HTML. `ChatScreen` takes the app-lifetime
 `ChatWorkspace`, `KnowledgeBase`, and shared `ChatEngine`. SQL, retrieval,

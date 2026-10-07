@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/models/model_catalogue.dart';
+import '../../core/models/model_ratings.dart';
 import '../../core/models/model_store.dart';
 import '../../core/models/model_selection.dart';
 import '../../core/models/model_download.dart';
@@ -10,7 +11,7 @@ import '../../core/platform/llm_backend.dart';
 import '../sekret_brand.dart';
 import '../settings/settings_screen.dart' show modelStatus;
 
-/// Reports installed capabilities only; no download or compatibility is implied.
+/// Compact reviewed catalogue with explicit installation and model selection.
 class ModelsScreen extends StatefulWidget {
   const ModelsScreen({
     super.key,
@@ -41,6 +42,7 @@ class _ModelsScreenState extends State<ModelsScreen>
   bool _working = false;
   bool? _localSupported;
   String? _operationError;
+  String _query = '';
 
   @override
   void initState() {
@@ -120,7 +122,7 @@ class _ModelsScreenState extends State<ModelsScreen>
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Download Qwen · 2.08 GB?'),
         content: const Text(
-          'Hugging Face and its delivery hosts see your IP address and model choice, not your chats or Knowledge Base. Requires 2.62 GB free. Keep Sekret open; cancellation discards partial progress. Wi-Fi recommended. Answers then run offline.',
+          'Hugging Face and its delivery hosts see your IP address and model choice, never chats or sources. Needs 2.62 GB free; Wi-Fi recommended. Downloads continue while locked. Return to Sekret for verification. Cancel discards progress.',
         ),
         actions: [
           CupertinoDialogAction(
@@ -143,12 +145,15 @@ class _ModelsScreenState extends State<ModelsScreen>
   }
 
   Future<void> _remove() async {
+    final switchesModel = widget.selection?.selected == ModelCatalogue.qwen.id;
     final approved = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Remove downloaded model?'),
-        content: const Text(
-          'Only Qwen’s downloaded files are removed. Your chats and Knowledge Base stay intact. You can download it again later.',
+        content: Text(
+          '${switchesModel ? 'Switch to Apple Intelligence and remove Qwen’s downloaded files? ' : ''}'
+          '${switchesModel && _availability is! Available ? 'Apple Intelligence is not ready; chat will be unavailable until it is ready or you select another available model. ' : ''}'
+          'Your chats and Knowledge Base stay intact. You can download Qwen again later.',
         ),
         actions: [
           CupertinoDialogAction(
@@ -158,12 +163,22 @@ class _ModelsScreenState extends State<ModelsScreen>
           CupertinoDialogAction(
             isDestructiveAction: true,
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Remove'),
+            child: Text(switchesModel ? 'Switch & remove' : 'Remove'),
           ),
         ],
       ),
     );
-    if (approved == true && mounted) await _run(widget.store!.remove);
+    if (approved != true || !mounted) return;
+    await _run(() async {
+      final selection = widget.selection;
+      if (selection?.selected == ModelCatalogue.qwen.id) {
+        // Never remove an active lease or silently change the model. If the
+        // choice changed while the dialog was open, ask again next time.
+        if (!switchesModel) throw StateError('Model selection changed');
+        await selection!.select(ModelCatalogue.apple.id);
+      }
+      await widget.store!.remove();
+    });
   }
 
   Future<void> _licenses() => _run(() async {
@@ -184,7 +199,16 @@ class _ModelsScreenState extends State<ModelsScreen>
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Qwen3-4B-Instruct-2507 by Qwen\nQ3_K_M quantization by Unsloth\n'
+                'General text preview on the tested iPhone 15 Pro Max. No image understanding or Knowledge Base answers. Removing the selected model asks you to switch to Apple Intelligence first.\n\n'
+                '${ModelRatings.qwen.description}\n\n'
+                'Warm-start control: Qwen stopped when iOS reported serious thermal pressure. Rapid repeated use may be interrupted.\n\n'
+                'Earlier evaluations · 6–7 October 2026\n\n'
+                'Answer quality: 25 of 30 development tasks passed on Mac. Arithmetic and strict-format failures remain. This small development set is not an overall accuracy score.\n\n'
+                'Speed: 4.95 seconds median native generation in the paced iPhone workload; excludes model loading and UI overhead. The same eight-turn fixture was repeated three times, with all 24 answers correct.\n\n'
+                'Memory: 2.56 GB peak process RSS; 446 MB peak sampled footprint. These are different accounting measures, not a total-RAM requirement.\n\n'
+                'Battery: whole-device profiler averages were 4.32%/hour idle and 13.79%/hour during the paced workload. One phone at full brightness under wireless profiling; the coarse battery gauge was not reconciled. These are not app-only drain or battery-life estimates. Earlier sustained-load thermal stopping remains relevant.\n\n'
+                'The shared 1–5 scale requires matched phone measurements. These historical results used different workloads and are not substituted for that comparison. The completed battery study retained an unmeasured public battery rating.\n\n'
+                'License and provenance\n\nQwen3-4B-Instruct-2507 by Qwen\nQ3_K_M quantization by Unsloth\n'
                 'Publisher license revision: cdbee75f17c01a7cc42f958dc650907174af0554\n'
                 'Artifact revision: ${ModelCatalogue.qwen.artifact!.revision}\n'
                 'SHA-256: ${ModelCatalogue.qwen.artifact!.sha256}\n\n$qwen\n\n'
@@ -232,216 +256,360 @@ class _ModelsScreenState extends State<ModelsScreen>
     }
   }
 
+  Future<void> _appleInfo() => showCupertinoDialog<void>(
+    context: context,
+    builder: (context) => CupertinoAlertDialog(
+      title: const Text('Apple Intelligence'),
+      content: Text(
+        'Managed by iOS. Sekret does not download or remove this model. Text chat and Knowledge Base answers use the on-device model. Photo imports currently recognize text only.\n\n'
+        '${ModelRatings.apple.description}\n\n'
+        'The system model may change with iOS updates. Earlier grounded-answer tests remain separate from these General-mode ratings.',
+      ),
+      actions: [
+        CupertinoDialogAction(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Done'),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _ratingScale() => Navigator.of(context).push<void>(
+    CupertinoPageRoute(
+      builder: (_) => const CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(middle: Text('Rating scale')),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(20),
+            child: Text(ModelRatingScale.explanation),
+          ),
+        ),
+      ),
+    ),
+  );
+
   @override
-  Widget build(BuildContext context) => CupertinoPageScaffold(
-    backgroundColor: SekretBrand.background,
-    navigationBar: const CupertinoNavigationBar(middle: Text('Models')),
-    child: SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
-        children: [
-          const Text(
-            'Intelligence on your device',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            widget.store == null
-                ? 'Sekret currently uses Apple Foundation Models for generation.'
-                : 'Choose the model for future answers. Existing chats retain their original model labels. No automatic fallback.',
-            style: const TextStyle(color: SekretBrand.secondary),
-          ),
-          const SizedBox(height: 24),
-          if (_operationError != null) Text(_operationError!),
-          if (widget.selection?.selected == 'unavailable')
-            const Text(
-              'The saved model choice could not be restored. Choose a model explicitly to continue.',
+  Widget build(BuildContext context) {
+    final models = ModelCatalogue.entries.where(
+      (model) => model.name.toLowerCase().contains(_query.trim().toLowerCase()),
+    );
+    return CupertinoPageScaffold(
+      backgroundColor: SekretBrand.background,
+      navigationBar: const CupertinoNavigationBar(middle: Text('Models')),
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            CupertinoSearchTextField(
+              placeholder: 'Search models',
+              onChanged: (value) => setState(() => _query = value),
             ),
-          _card(
-            title: ModelCatalogue.apple.name,
+            const SizedBox(height: 16),
+            if (_operationError != null) _notice(_operationError!),
+            if (widget.selection?.selected == 'unavailable')
+              _notice('Choose a model to restore your saved selection.'),
+            for (final model in models) _modelRow(model),
+            if (models.isEmpty)
+              const Padding(
+                padding: EdgeInsets.all(24),
+                child: Text('No matching models'),
+              ),
+            const SizedBox(height: 8),
+            CupertinoButton(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.zero,
+              onPressed: _ratingScale,
+              child: const Text(
+                'Preliminary ratings · higher is better ⓘ',
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _notice(String text) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Semantics(
+      liveRegion: true,
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 13, color: SekretBrand.secondary),
+      ),
+    ),
+  );
+
+  Widget _modelRow(CatalogueModel model) {
+    final apple = model.kind == CatalogueModelKind.appleManaged;
+    final ratings = ModelRatings.forModel(model.id);
+    final store = widget.store;
+    final state = store?.state;
+    final installed = state?.phase == ModelInstallPhase.installed;
+    final selected = widget.selection?.selected == model.id;
+    final active =
+        selected && (apple || (widget.selection?.hasLocalLease ?? false));
+    final busy = _working || (widget.selection?.busy ?? false);
+    final selectable =
+        !busy &&
+        !active &&
+        widget.selection != null &&
+        (apple
+            ? _availability is Available
+            : installed && _localSupported == true);
+    final status = apple
+        ? (_checking
+              ? 'Checking readiness…'
+              : _error ?? modelStatus(_availability))
+        : store == null
+        ? 'Not available in this version'
+        : switch (state!.phase) {
+            ModelInstallPhase.absent =>
+              _localSupported == false
+                  ? 'Device not supported'
+                  : 'General text preview · 2.08 GB',
+            ModelInstallPhase.downloading =>
+              'Downloading · ${(100 * state.receivedBytes / store.model.artifact!.bytes).clamp(0, 100).toStringAsFixed(0)}%',
+            ModelInstallPhase.verifying => 'Verifying…',
+            ModelInstallPhase.installed =>
+              selected && !active
+                  ? 'Installed · Tap circle to activate'
+                  : 'General text preview · 2.08 GB',
+            ModelInstallPhase.removing => 'Removing…',
+            ModelInstallPhase.failed => state.message ?? 'Download failed',
+          };
+    return Container(
+      key: ValueKey(model.id),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.fromLTRB(8, 12, 12, 10),
+      decoration: BoxDecoration(
+        color: SekretBrand.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: selected ? SekretBrand.accent : SekretBrand.line,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Semantics(
-                liveRegion: true,
-                child: Text(
-                  _error ?? modelStatus(_availability),
-                  style: const TextStyle(color: SekretBrand.secondary),
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (widget.selection != null)
-                CupertinoButton(
-                  onPressed:
-                      _working ||
-                          widget.selection!.busy ||
-                          widget.selection!.selected == ModelCatalogue.apple.id
-                      ? null
-                      : () => _run(
-                          () =>
-                              widget.selection!.select(ModelCatalogue.apple.id),
-                        ),
-                  child: Text(
-                    widget.selection!.selected == ModelCatalogue.apple.id
-                        ? 'Selected'
-                        : 'Use Apple Intelligence',
+                label: 'Select ${model.name}',
+                selected: selected,
+                button: true,
+                child: CupertinoButton(
+                  padding: const EdgeInsets.all(10),
+                  onPressed: selectable
+                      ? () => _run(() => widget.selection!.select(model.id))
+                      : null,
+                  child: Icon(
+                    selected
+                        ? CupertinoIcons.checkmark_circle_fill
+                        : CupertinoIcons.circle,
+                    size: 22,
+                    color: selected
+                        ? SekretBrand.accent
+                        : SekretBrand.secondary,
                   ),
                 ),
-              const Text(
-                'Managed by iOS. Sekret does not download or remove this model.',
-                style: TextStyle(color: SekretBrand.secondary),
               ),
-              const SizedBox(height: 12),
-              CupertinoButton(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                onPressed: _checking ? null : _refresh,
-                child: const Text('Check readiness'),
-              ),
-              if (_availability is AppleIntelligenceNotEnabled ||
-                  _availability is ModelNotReady)
-                CupertinoButton(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  onPressed: _openingSettings ? null : _openSettings,
-                  child: const Text('Open iOS Settings'),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        model.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Semantics(
+                        liveRegion: true,
+                        child: Text(
+                          status,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: SekretBrand.secondary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+              ),
+              _icon(
+                'About ${model.name}',
+                CupertinoIcons.info_circle,
+                apple ? _appleInfo : _licenses,
+              ),
             ],
           ),
-          const SizedBox(height: 16),
-          _card(
-            title: ModelCatalogue.qwen.name,
-            children: widget.store != null
-                ? _downloadable()
-                : const [
-                    Text(
-                      'Not available in this version',
-                      style: TextStyle(color: SekretBrand.accent),
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'Selected for the first downloadable option: Q3_K_M, '
-                      '2.08 GB. General text chat only; no image understanding '
-                      'or Knowledge Base answers.',
-                      style: TextStyle(color: SekretBrand.secondary),
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'Integration is in progress. Downloads and model switching '
-                      'are not enabled yet. Device compatibility and performance '
-                      'ratings are not confirmed for this app.',
-                      style: TextStyle(color: SekretBrand.secondary),
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'Custom model imports are not supported. Your chats and '
-                      'Knowledge Base stay on this device.',
-                      style: TextStyle(color: SekretBrand.secondary),
-                    ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final wide =
+                    MediaQuery.textScalerOf(context).scale(12) <= 18 &&
+                    constraints.maxWidth >= 300;
+                return Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    for (final (label, score) in [
+                      ('Quality', ratings?.quality),
+                      ('Speed', ratings?.speed),
+                      ('Memory', null),
+                      ('Battery', null),
+                    ])
+                      SizedBox(
+                        width:
+                            (constraints.maxWidth - (wide ? 36 : 12)) /
+                            (wide ? 4 : 2),
+                        child: _rating(label, score),
+                      ),
                   ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            alignment: WrapAlignment.end,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 4,
+            children: [
+              Semantics(
+                label:
+                    'Image understanding not supported; text recognition only',
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Icon(
+                    CupertinoIcons.photo,
+                    size: 18,
+                    color: SekretBrand.secondary,
+                  ),
+                ),
+              ),
+              const Text(
+                'Text only',
+                style: TextStyle(fontSize: 12, color: SekretBrand.secondary),
+              ),
+              if (apple) ...[
+                CupertinoButton(
+                  onPressed: _checking || _availability is Available
+                      ? null
+                      : _refresh,
+                  child: Text(
+                    _checking
+                        ? 'Checking…'
+                        : _availability is Available
+                        ? 'Ready'
+                        : 'Check readiness',
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ),
+                if (_availability is AppleIntelligenceNotEnabled ||
+                    _availability is ModelNotReady)
+                  CupertinoButton(
+                    onPressed: _openingSettings ? null : _openSettings,
+                    child: const Text(
+                      'Open iOS Settings',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ),
+              ] else if (store != null) ...[
+                if (state!.busy)
+                  _icon(
+                    'Cancel download',
+                    CupertinoIcons.xmark_circle,
+                    store.cancel,
+                  )
+                else if (!installed)
+                  CupertinoButton(
+                    onPressed: busy || _localSupported != true
+                        ? null
+                        : _download,
+                    child: const Text(
+                      'Download · 2.08 GB',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ),
+                if (!state.busy &&
+                    (installed || state.phase == ModelInstallPhase.failed))
+                  _icon(
+                    'Remove downloaded files',
+                    CupertinoIcons.trash,
+                    busy ? null : _remove,
+                  ),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _icon(String label, IconData icon, VoidCallback? action) => Semantics(
+    label: label,
+    button: true,
+    child: CupertinoButton(
+      padding: const EdgeInsets.all(10),
+      onPressed: action,
+      child: Icon(icon, size: 20),
+    ),
+  );
+
+  Widget _rating(String label, int? score) => Semantics(
+    container: true,
+    label:
+        '${label == 'Quality'
+            ? 'Answer quality'
+            : label == 'Memory'
+            ? 'Memory efficiency'
+            : label == 'Battery'
+            ? 'Battery efficiency'
+            : label}: ${score == null ? 'not measured' : '$score out of 5, preliminary'}',
+    child: ExcludeSemantics(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 11, color: SekretBrand.secondary),
+          ),
+          const SizedBox(height: 5),
+          Row(
+            children: List.generate(
+              5,
+              (index) => Expanded(
+                child: Container(
+                  height: 4,
+                  margin: EdgeInsets.only(right: index == 4 ? 0 : 3),
+                  decoration: BoxDecoration(
+                    color: score != null && index < score
+                        ? SekretBrand.accent
+                        : SekretBrand.line,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            score == null ? 'Not measured' : '$score/5',
+            style: const TextStyle(fontSize: 10, color: SekretBrand.secondary),
           ),
         ],
       ),
     ),
   );
-
-  List<Widget> _downloadable() {
-    final store = widget.store!;
-    final state = store.state;
-    final selected = widget.selection?.selected == ModelCatalogue.qwen.id;
-    final active = selected && (widget.selection?.hasLocalLease ?? false);
-    final busy = _working || (widget.selection?.busy ?? false);
-    return [
-      const Text(
-        'Preview · General text chat only',
-        style: TextStyle(color: SekretBrand.accent),
-      ),
-      const SizedBox(height: 12),
-      const Text(
-        'No image understanding or Knowledge Base answers. This small model can make mistakes; check important answers.',
-      ),
-      const SizedBox(height: 12),
-      const Text(
-        'Answer quality · App assessment pending\nSpeed · Varies with the device and chat length\nStorage · 2.08 GB (Q3_K_M)',
-      ),
-      const SizedBox(height: 12),
-      Text(switch (state.phase) {
-        ModelInstallPhase.absent => 'Not downloaded',
-        ModelInstallPhase.downloading =>
-          'Downloading · ${(100 * state.receivedBytes / store.model.artifact!.bytes).toStringAsFixed(0)}%',
-        ModelInstallPhase.verifying => 'Verifying the downloaded file…',
-        ModelInstallPhase.installed =>
-          active
-              ? 'Selected · Installed on this device'
-              : 'Installed · Ready to select',
-        ModelInstallPhase.removing => 'Removing downloaded files…',
-        ModelInstallPhase.failed => state.message ?? 'Installation failed',
-      }),
-      if (_localSupported != true)
-        Text(
-          _localSupported == null
-              ? 'Checking device support…'
-              : 'This preview is limited to the tested iPhone 15 Pro Max. Other devices and simulators are not enabled yet.',
-        ),
-      if (state.busy)
-        CupertinoButton(
-          onPressed: store.cancel,
-          child: const Text('Cancel download'),
-        ),
-      if (!state.busy && state.phase != ModelInstallPhase.installed)
-        CupertinoButton(
-          onPressed: busy || _localSupported != true ? null : _download,
-          child: const Text('Download · 2.08 GB'),
-        ),
-      if (state.phase == ModelInstallPhase.installed &&
-          widget.selection != null) ...[
-        CupertinoButton(
-          onPressed: busy || active || _localSupported != true
-              ? null
-              : () => _run(
-                  () => widget.selection!.select(ModelCatalogue.qwen.id),
-                ),
-          child: Text(active ? 'Selected' : 'Use Qwen'),
-        ),
-        if (selected)
-          const Text(
-            'Select Apple Intelligence before removing Qwen. No model is switched automatically.',
-          ),
-      ],
-      if (!state.busy &&
-          (state.phase == ModelInstallPhase.installed ||
-              state.phase == ModelInstallPhase.failed))
-        CupertinoButton(
-          onPressed: busy || selected ? null : _remove,
-          child: const Text('Remove downloaded files'),
-        ),
-      CupertinoButton(
-        onPressed: busy ? null : _licenses,
-        child: const Text('License and provenance'),
-      ),
-    ];
-  }
-
-  Widget _card({required String title, required List<Widget> children}) =>
-      Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: SekretBrand.surface,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: SekretBrand.line),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Semantics(
-              header: true,
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ...children,
-          ],
-        ),
-      );
 }

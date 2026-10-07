@@ -1,5 +1,7 @@
 # Chat Workspace integration
 
+Historical integration-stage note. For the accepted application baseline and remaining limitations, see [current status](current-status.md).
+
 Ticket #21 supplies the local chat lifecycle in `lib/core/chat/chat_workspace.dart`.
 The v1 screen still runs until the v2 UI tickets connect the workspace.
 

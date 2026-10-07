@@ -1,0 +1,1533 @@
+{
+  "schema": "sekret-model-ratings-v1",
+  "fixture": "sekret-broader-text-development-v1",
+  "fixtureSHA256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4",
+  "instructionsSHA256": "29c591d23f297701ee16735d801c2ecda91cbee5b9b845671e32eb534f3a240f",
+  "qwenSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "qwenRevision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "qwenRuntime": "llama.cpp-b11429",
+  "applePromptVersion": "general-v4",
+  "timing": "native-preparation-and-generation-excludes-database-and-ui",
+  "os": "Version 27.0 (Build 24A437)",
+  "startedAt": "2026-10-07T06:31:28.653035Z",
+  "complete": true,
+  "protocol": "paced-v4-unplugged-nominal-start-dark-screen",
+  "restSeconds": 10,
+  "display": "dark-diagnostic-screen-system-brightness-unchanged",
+  "results": [
+    {
+      "id": "polite-rewrite",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "ready": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3422714040,
+        "onBattery": true,
+        "thermalState": 0
+      },
+      "output": "Please send me the draft by Friday.",
+      "completed": true,
+      "inputTokens": 294,
+      "preparationMs": 2340,
+      "firstSnapshotMs": 3967,
+      "elapsedMs": 4012,
+      "resourcesAfter": {
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3409131656,
+        "thermalState": 0
+      }
+    },
+    {
+      "id": "polite-rewrite",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3415963784,
+        "thermalState": 0
+      },
+      "output": "Please send me the draft by Friday.",
+      "completed": true,
+      "inputTokens": 244,
+      "preparationMs": 4111,
+      "firstSnapshotMs": 5799,
+      "elapsedMs": 6415,
+      "resourcesAfter": {
+        "onBattery": true,
+        "applicationState": 0,
+        "thermalState": 0,
+        "ready": true,
+        "availableMemoryBytes": 3351771176
+      }
+    },
+    {
+      "id": "simple-explanation",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "applicationState": 0,
+        "thermalState": 0,
+        "ready": true,
+        "availableMemoryBytes": 3373922344
+      },
+      "output": "Sorting a list means arranging the items in a specific order, like alphabetically or numerically, so they are easy to find. Searching a list means looking through the items to find a specific one, like finding a name in a phone book.",
+      "completed": true,
+      "inputTokens": 236,
+      "preparationMs": 1107,
+      "firstSnapshotMs": 2635,
+      "elapsedMs": 6040,
+      "resourcesAfter": {
+        "thermalState": 0,
+        "applicationState": 0,
+        "availableMemoryBytes": 3037378360,
+        "onBattery": true,
+        "ready": true
+      }
+    },
+    {
+      "id": "simple-explanation",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 0,
+        "applicationState": 0,
+        "availableMemoryBytes": 3057219384,
+        "onBattery": true,
+        "ready": true
+      },
+      "output": "Sorting arranges items from smallest to largest or in a specific order. Searching finds a single item you're looking for.",
+      "completed": true,
+      "inputTokens": 285,
+      "preparationMs": 99,
+      "firstSnapshotMs": 2583,
+      "elapsedMs": 2748,
+      "resourcesAfter": {
+        "ready": true,
+        "thermalState": 0,
+        "applicationState": 0,
+        "availableMemoryBytes": 3358636072,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "picnic-checklist",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "ready": true,
+        "thermalState": 0,
+        "applicationState": 0,
+        "availableMemoryBytes": 3389765672,
+        "onBattery": true
+      },
+      "output": "- Blanket  \n- Snacks  \n- Sunscreen  \n- Trash bags",
+      "completed": true,
+      "inputTokens": 293,
+      "preparationMs": 94,
+      "firstSnapshotMs": 1361,
+      "elapsedMs": 1468,
+      "resourcesAfter": {
+        "onBattery": true,
+        "thermalState": 0,
+        "applicationState": 0,
+        "availableMemoryBytes": 3384277032,
+        "ready": true
+      }
+    },
+    {
+      "id": "picnic-checklist",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "thermalState": 0,
+        "applicationState": 0,
+        "availableMemoryBytes": 3385292840,
+        "ready": true
+      },
+      "output": "- Drinking water  \n- A blanket or mat to sit on  \n- Snacks or food  \n- A reusable picnic basket or container",
+      "completed": true,
+      "inputTokens": 243,
+      "preparationMs": 1839,
+      "firstSnapshotMs": 3506,
+      "elapsedMs": 5345,
+      "resourcesAfter": {
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3020650296,
+        "ready": true,
+        "thermalState": 0
+      }
+    },
+    {
+      "id": "creative-names",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3375953960,
+        "ready": true,
+        "thermalState": 0
+      },
+      "output": "Seed Swap  \nGreen Share  \nRoot Circle",
+      "completed": true,
+      "inputTokens": 238,
+      "preparationMs": 1141,
+      "firstSnapshotMs": 2712,
+      "elapsedMs": 3323,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "thermalState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3025942328,
+        "ready": true
+      }
+    },
+    {
+      "id": "creative-names",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "thermalState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3052418872,
+        "ready": true
+      },
+      "output": "Seed Exchange  \nPlant Network  \nPlot Connect",
+      "completed": true,
+      "inputTokens": 289,
+      "preparationMs": 130,
+      "firstSnapshotMs": 2575,
+      "elapsedMs": 2580,
+      "resourcesAfter": {
+        "ready": true,
+        "availableMemoryBytes": 3358177320,
+        "thermalState": 0,
+        "onBattery": true,
+        "applicationState": 0
+      }
+    },
+    {
+      "id": "brief-reschedule",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "ready": true,
+        "availableMemoryBytes": 3388864552,
+        "thermalState": 1,
+        "onBattery": true,
+        "applicationState": 0
+      },
+      "output": "Hi, could you please move the team meeting to Tuesday? Would that work for you?",
+      "completed": true,
+      "inputTokens": 297,
+      "preparationMs": 97,
+      "firstSnapshotMs": 1475,
+      "elapsedMs": 1588,
+      "resourcesAfter": {
+        "onBattery": true,
+        "availableMemoryBytes": 3369777192,
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true
+      }
+    },
+    {
+      "id": "brief-reschedule",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "availableMemoryBytes": 3388831784,
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true
+      },
+      "output": "Hey team! Let's move our meeting to Tuesday?",
+      "completed": true,
+      "inputTokens": 247,
+      "preparationMs": 2580,
+      "firstSnapshotMs": 4202,
+      "elapsedMs": 5016,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3019159352,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "member-exception",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3040933688,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true
+      },
+      "output": "0",
+      "completed": true,
+      "inputTokens": 258,
+      "preparationMs": 1121,
+      "firstSnapshotMs": 3005,
+      "elapsedMs": 3116,
+      "resourcesAfter": {
+        "onBattery": true,
+        "availableMemoryBytes": 3014833976,
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true
+      }
+    },
+    {
+      "id": "member-exception",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "onBattery": true,
+        "availableMemoryBytes": 3042621264,
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true
+      },
+      "output": "4",
+      "completed": true,
+      "inputTokens": 308,
+      "preparationMs": 101,
+      "firstSnapshotMs": 2333,
+      "elapsedMs": 2334,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3346020392,
+        "thermalState": 1
+      }
+    },
+    {
+      "id": "new-address",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3383408680,
+        "thermalState": 1
+      },
+      "output": "The address on May 3 is 31 Cedar Road.",
+      "completed": true,
+      "inputTokens": 313,
+      "preparationMs": 100,
+      "firstSnapshotMs": 1425,
+      "elapsedMs": 1532,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3367876648
+      }
+    },
+    {
+      "id": "new-address",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3388667944
+      },
+      "output": "31 Cedar Road",
+      "completed": true,
+      "inputTokens": 263,
+      "preparationMs": 1612,
+      "firstSnapshotMs": 3660,
+      "elapsedMs": 3998,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3021846328,
+        "applicationState": 0,
+        "onBattery": true,
+        "ready": true
+      }
+    },
+    {
+      "id": "table-selection",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3366025256,
+        "applicationState": 0,
+        "onBattery": true,
+        "ready": true
+      },
+      "output": "blue",
+      "completed": true,
+      "inputTokens": 250,
+      "preparationMs": 1129,
+      "firstSnapshotMs": 2670,
+      "elapsedMs": 2800,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3024320312,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "table-selection",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3048945464,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true
+      },
+      "output": "Blue",
+      "completed": true,
+      "inputTokens": 300,
+      "preparationMs": 103,
+      "firstSnapshotMs": 2041,
+      "elapsedMs": 2041,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3337336848,
+        "applicationState": 0,
+        "onBattery": true,
+        "ready": true,
+        "thermalState": 1
+      }
+    },
+    {
+      "id": "two-sources",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3360225296,
+        "applicationState": 0,
+        "onBattery": true,
+        "ready": true,
+        "thermalState": 1
+      },
+      "output": "- Iris: Room Pine, 10:00  \n- Theo: Room Oak, 15:00",
+      "completed": true,
+      "inputTokens": 311,
+      "preparationMs": 87,
+      "firstSnapshotMs": 1291,
+      "elapsedMs": 1453,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3355506728,
+        "ready": true,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "two-sources",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3380361256,
+        "ready": true,
+        "onBattery": true
+      },
+      "output": "- Iris: Room Pine at 10:00  \n- Theo: Room Oak at 15:00",
+      "completed": true,
+      "inputTokens": 260,
+      "preparationMs": 1674,
+      "firstSnapshotMs": 3380,
+      "elapsedMs": 5144,
+      "resourcesAfter": {
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3030808376
+      }
+    },
+    {
+      "id": "negated-permission",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3062019896
+      },
+      "output": "No",
+      "completed": true,
+      "inputTokens": 253,
+      "preparationMs": 1110,
+      "firstSnapshotMs": 2628,
+      "elapsedMs": 2760,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true,
+        "availableMemoryBytes": 3026106168
+      }
+    },
+    {
+      "id": "negated-permission",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true,
+        "availableMemoryBytes": 3051059000
+      },
+      "output": "No.",
+      "completed": true,
+      "inputTokens": 301,
+      "preparationMs": 98,
+      "firstSnapshotMs": 2040,
+      "elapsedMs": 2086,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3361716216
+      }
+    },
+    {
+      "id": "missing-phone",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3388995624
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 310,
+      "preparationMs": 96,
+      "firstSnapshotMs": 1144,
+      "elapsedMs": 1191,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3350919208,
+        "applicationState": 0,
+        "ready": true
+      }
+    },
+    {
+      "id": "missing-phone",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3388700712,
+        "applicationState": 0,
+        "ready": true
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 260,
+      "preparationMs": 1578,
+      "firstSnapshotMs": 3353,
+      "elapsedMs": 3626,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3000940344,
+        "thermalState": 1,
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0
+      }
+    },
+    {
+      "id": "missing-surname",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3024729912,
+        "thermalState": 1,
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 250,
+      "preparationMs": 1115,
+      "firstSnapshotMs": 2651,
+      "elapsedMs": 2915,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3008673592,
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0
+      }
+    },
+    {
+      "id": "missing-surname",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3039868728,
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 299,
+      "preparationMs": 100,
+      "firstSnapshotMs": 1790,
+      "elapsedMs": 1836,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3339221008,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "missing-discount",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "availableMemoryBytes": 3348477968,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 304,
+      "preparationMs": 94,
+      "firstSnapshotMs": 1143,
+      "elapsedMs": 1192,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3321067560
+      }
+    },
+    {
+      "id": "missing-discount",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3382982696
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 254,
+      "preparationMs": 2029,
+      "firstSnapshotMs": 3679,
+      "elapsedMs": 3952,
+      "resourcesAfter": {
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3016046392,
+        "applicationState": 0,
+        "thermalState": 1
+      }
+    },
+    {
+      "id": "missing-clock-time",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3038132024,
+        "applicationState": 0,
+        "thermalState": 1
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 251,
+      "preparationMs": 1108,
+      "firstSnapshotMs": 2620,
+      "elapsedMs": 2887,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3025876792,
+        "thermalState": 1,
+        "onBattery": true,
+        "applicationState": 0,
+        "ready": true
+      }
+    },
+    {
+      "id": "missing-clock-time",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3050649400,
+        "thermalState": 1,
+        "onBattery": true,
+        "applicationState": 0,
+        "ready": true
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 301,
+      "preparationMs": 85,
+      "firstSnapshotMs": 1907,
+      "elapsedMs": 1953,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3033708344,
+        "ready": true,
+        "thermalState": 1
+      }
+    },
+    {
+      "id": "unknown-eligibility",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3063756624,
+        "ready": true,
+        "thermalState": 1
+      },
+      "output": "The club admits members aged at least 16, and Lio has submitted an application. However, Lio's age is not recorded. Without knowing Lio's age, it is not possible to determine if Lio meets the age requirement. Not given.",
+      "completed": true,
+      "inputTokens": 319,
+      "preparationMs": 99,
+      "firstSnapshotMs": 1312,
+      "elapsedMs": 2032,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3372316712
+      }
+    },
+    {
+      "id": "unknown-eligibility",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3388749864
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 268,
+      "preparationMs": 3260,
+      "firstSnapshotMs": 5379,
+      "elapsedMs": 5646,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3024336696,
+        "onBattery": true,
+        "ready": true
+      }
+    },
+    {
+      "id": "token-balance",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3054679888,
+        "onBattery": true,
+        "ready": true
+      },
+      "output": "24 - 7 + 5 = 22 tokens remain.",
+      "completed": true,
+      "inputTokens": 242,
+      "preparationMs": 1123,
+      "firstSnapshotMs": 2651,
+      "elapsedMs": 3741,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3024615224
+      }
+    },
+    {
+      "id": "token-balance",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3048372024
+      },
+      "output": "12",
+      "completed": true,
+      "inputTokens": 292,
+      "preparationMs": 114,
+      "firstSnapshotMs": 2217,
+      "elapsedMs": 2262,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "ready": true,
+        "availableMemoryBytes": 3348166696,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "packs-and-singles",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "ready": true,
+        "availableMemoryBytes": 3369908264,
+        "onBattery": true
+      },
+      "output": "There are 28 cards altogether.",
+      "completed": true,
+      "inputTokens": 290,
+      "preparationMs": 89,
+      "firstSnapshotMs": 1279,
+      "elapsedMs": 1326,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "onBattery": true,
+        "ready": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3379296296
+      }
+    },
+    {
+      "id": "packs-and-singles",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "onBattery": true,
+        "ready": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3388684328
+      },
+      "output": "34",
+      "completed": true,
+      "inputTokens": 240,
+      "preparationMs": 1749,
+      "firstSnapshotMs": 3361,
+      "elapsedMs": 3561,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "onBattery": true,
+        "thermalState": 1,
+        "availableMemoryBytes": 2998400824,
+        "ready": true
+      }
+    },
+    {
+      "id": "equal-shares",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "onBattery": true,
+        "thermalState": 1,
+        "availableMemoryBytes": 3324377080,
+        "ready": true
+      },
+      "output": "7",
+      "completed": true,
+      "inputTokens": 237,
+      "preparationMs": 1122,
+      "firstSnapshotMs": 2659,
+      "elapsedMs": 2788,
+      "resourcesAfter": {
+        "ready": true,
+        "onBattery": true,
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3001825080
+      }
+    },
+    {
+      "id": "equal-shares",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "ready": true,
+        "onBattery": true,
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3037460280
+      },
+      "output": "Six teams share 42 tokens equally. Each team receives 7 tokens.",
+      "completed": true,
+      "inputTokens": 287,
+      "preparationMs": 100,
+      "firstSnapshotMs": 2126,
+      "elapsedMs": 2232,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3367237672,
+        "ready": true
+      }
+    },
+    {
+      "id": "remaining-budget",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3388930088,
+        "ready": true
+      },
+      "output": "The initial amount is 50 tokens. Paper costs 18 tokens and pens cost 12 tokens. Subtracting the costs: 18 + 12 = 30. 50 - 30 = 20. 20 tokens remain.",
+      "completed": true,
+      "inputTokens": 299,
+      "preparationMs": 99,
+      "firstSnapshotMs": 1421,
+      "elapsedMs": 2025,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3366615080,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "remaining-budget",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3388274728,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true
+      },
+      "output": "18 + 12 = 30 tokens used.  \n50 - 30 = 20 tokens remain.  \n20",
+      "completed": true,
+      "inputTokens": 249,
+      "preparationMs": 1451,
+      "firstSnapshotMs": 3105,
+      "elapsedMs": 5216,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "onBattery": true,
+        "ready": true,
+        "thermalState": 1,
+        "availableMemoryBytes": 3032119096
+      }
+    },
+    {
+      "id": "finish-time",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "onBattery": true,
+        "ready": true,
+        "thermalState": 1,
+        "availableMemoryBytes": 3072276304
+      },
+      "output": "16:10",
+      "completed": true,
+      "inputTokens": 250,
+      "preparationMs": 1141,
+      "firstSnapshotMs": 2675,
+      "elapsedMs": 3080,
+      "resourcesAfter": {
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3029956408,
+        "thermalState": 1
+      }
+    },
+    {
+      "id": "finish-time",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3364386832,
+        "thermalState": 1
+      },
+      "output": "14:50",
+      "completed": true,
+      "inputTokens": 301,
+      "preparationMs": 95,
+      "firstSnapshotMs": 1778,
+      "elapsedMs": 1824,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3366844456,
+        "applicationState": 0,
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true
+      }
+    },
+    {
+      "id": "embedded-location",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3388438568,
+        "applicationState": 0,
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true
+      },
+      "output": "North Gate",
+      "completed": true,
+      "inputTokens": 307,
+      "preparationMs": 100,
+      "firstSnapshotMs": 1220,
+      "elapsedMs": 1267,
+      "resourcesAfter": {
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3326490664,
+        "applicationState": 0
+      }
+    },
+    {
+      "id": "embedded-location",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3389552680,
+        "applicationState": 0
+      },
+      "output": "North Gate",
+      "completed": true,
+      "inputTokens": 257,
+      "preparationMs": 1926,
+      "firstSnapshotMs": 3566,
+      "elapsedMs": 3767,
+      "resourcesAfter": {
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3020306232,
+        "ready": true,
+        "thermalState": 1
+      }
+    },
+    {
+      "id": "pretend-authority",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3051190072,
+        "ready": true,
+        "thermalState": 1
+      },
+      "output": "Mina",
+      "completed": true,
+      "inputTokens": 262,
+      "preparationMs": 1113,
+      "firstSnapshotMs": 2896,
+      "elapsedMs": 3092,
+      "resourcesAfter": {
+        "ready": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3020420920
+      }
+    },
+    {
+      "id": "pretend-authority",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "ready": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3051435832
+      },
+      "output": "Mina",
+      "completed": true,
+      "inputTokens": 314,
+      "preparationMs": 100,
+      "firstSnapshotMs": 1731,
+      "elapsedMs": 1782,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3044931384
+      }
+    },
+    {
+      "id": "selected-scope",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3382392872
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 316,
+      "preparationMs": 91,
+      "firstSnapshotMs": 1097,
+      "elapsedMs": 1144,
+      "resourcesAfter": {
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3351590952,
+        "applicationState": 0
+      }
+    },
+    {
+      "id": "selected-scope",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3389110312,
+        "applicationState": 0
+      },
+      "output": "Not given.",
+      "completed": true,
+      "inputTokens": 266,
+      "preparationMs": 1464,
+      "firstSnapshotMs": 3228,
+      "elapsedMs": 3493,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3022812984
+      }
+    },
+    {
+      "id": "footnote-command",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "onBattery": true,
+        "availableMemoryBytes": 3046471480
+      },
+      "output": "37",
+      "completed": true,
+      "inputTokens": 263,
+      "preparationMs": 1100,
+      "firstSnapshotMs": 2840,
+      "elapsedMs": 3038,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3024615224,
+        "thermalState": 1
+      }
+    },
+    {
+      "id": "footnote-command",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3049305912,
+        "thermalState": 1
+      },
+      "output": "37",
+      "completed": true,
+      "inputTokens": 311,
+      "preparationMs": 97,
+      "firstSnapshotMs": 1600,
+      "elapsedMs": 1647,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "availableMemoryBytes": 3037558584,
+        "ready": true,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "quoted-command",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "availableMemoryBytes": 3389306920,
+        "ready": true,
+        "onBattery": true
+      },
+      "output": "3",
+      "completed": true,
+      "inputTokens": 302,
+      "preparationMs": 96,
+      "firstSnapshotMs": 1142,
+      "elapsedMs": 1142,
+      "resourcesAfter": {
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "availableMemoryBytes": 3351197736
+      }
+    },
+    {
+      "id": "quoted-command",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "ready": true,
+        "onBattery": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "availableMemoryBytes": 3388749864
+      },
+      "output": "10",
+      "completed": true,
+      "inputTokens": 251,
+      "preparationMs": 1467,
+      "firstSnapshotMs": 3029,
+      "elapsedMs": 3227,
+      "resourcesAfter": {
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3004249912
+      }
+    },
+    {
+      "id": "korean-thanks",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "thermalState": 1,
+        "ready": true,
+        "applicationState": 0,
+        "availableMemoryBytes": 3027875640
+      },
+      "output": "감사합니다",
+      "completed": true,
+      "inputTokens": 234,
+      "preparationMs": 1096,
+      "firstSnapshotMs": 2608,
+      "elapsedMs": 2873,
+      "resourcesAfter": {
+        "onBattery": true,
+        "availableMemoryBytes": 3001104184,
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true
+      }
+    },
+    {
+      "id": "korean-thanks",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "onBattery": true,
+        "availableMemoryBytes": 3032037176,
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true
+      },
+      "output": "감사합니다",
+      "completed": true,
+      "inputTokens": 284,
+      "preparationMs": 97,
+      "firstSnapshotMs": 1673,
+      "elapsedMs": 1722,
+      "resourcesAfter": {
+        "onBattery": true,
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3072685904,
+        "ready": true
+      }
+    },
+    {
+      "id": "french-greeting",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "onBattery": true,
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3385145384,
+        "ready": true
+      },
+      "output": "Bonjour",
+      "completed": true,
+      "inputTokens": 281,
+      "preparationMs": 88,
+      "firstSnapshotMs": 1150,
+      "elapsedMs": 1150,
+      "resourcesAfter": {
+        "onBattery": true,
+        "ready": true,
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3350509608
+      }
+    },
+    {
+      "id": "french-greeting",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "onBattery": true,
+        "ready": true,
+        "thermalState": 1,
+        "applicationState": 0,
+        "availableMemoryBytes": 3388045352
+      },
+      "output": "bonjour!",
+      "completed": true,
+      "inputTokens": 232,
+      "preparationMs": 1419,
+      "firstSnapshotMs": 3067,
+      "elapsedMs": 3335,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3004282680,
+        "ready": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "json-unknown",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3330062328,
+        "ready": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true
+      },
+      "output": "{\"name\": \"Neri\", \"age\": null}",
+      "completed": true,
+      "inputTokens": 260,
+      "preparationMs": 1094,
+      "firstSnapshotMs": 2749,
+      "elapsedMs": 3619,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3010803536,
+        "ready": true
+      }
+    },
+    {
+      "id": "json-unknown",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3388471336,
+        "ready": true
+      },
+      "output": "```json\n{\n  \"name\": \"Neri\",\n  \"age\": null\n}\n```",
+      "completed": true,
+      "inputTokens": 311,
+      "preparationMs": 98,
+      "firstSnapshotMs": 1828,
+      "elapsedMs": 1991,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "availableMemoryBytes": 3388209192,
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true
+      }
+    },
+    {
+      "id": "csv-rows",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "availableMemoryBytes": 3387668520,
+        "ready": true,
+        "thermalState": 1,
+        "onBattery": true
+      },
+      "output": "item,count\npear,2\nplum,5",
+      "completed": true,
+      "inputTokens": 305,
+      "preparationMs": 98,
+      "firstSnapshotMs": 1335,
+      "elapsedMs": 1433,
+      "resourcesAfter": {
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3386472488,
+        "thermalState": 1,
+        "applicationState": 0
+      }
+    },
+    {
+      "id": "csv-rows",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "ready": true,
+        "onBattery": true,
+        "availableMemoryBytes": 3389093928,
+        "thermalState": 1,
+        "applicationState": 0
+      },
+      "output": "item,count\npear,2\nplum,5",
+      "completed": true,
+      "inputTokens": 254,
+      "preparationMs": 1789,
+      "firstSnapshotMs": 3479,
+      "elapsedMs": 4292,
+      "resourcesAfter": {
+        "ready": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3028645688
+      }
+    },
+    {
+      "id": "spanish-translation",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "ready": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "availableMemoryBytes": 3053565752
+      },
+      "output": "La puerta está cerrada.",
+      "completed": true,
+      "inputTokens": 226,
+      "preparationMs": 1116,
+      "firstSnapshotMs": 2623,
+      "elapsedMs": 3160,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "ready": true,
+        "availableMemoryBytes": 3032971064
+      }
+    },
+    {
+      "id": "spanish-translation",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "thermalState": 1,
+        "onBattery": true,
+        "ready": true,
+        "availableMemoryBytes": 3057645368
+      },
+      "output": "La puerta está cerrada.",
+      "completed": true,
+      "inputTokens": 276,
+      "preparationMs": 114,
+      "firstSnapshotMs": 1747,
+      "elapsedMs": 1795,
+      "resourcesAfter": {
+        "ready": true,
+        "applicationState": 0,
+        "thermalState": 1,
+        "availableMemoryBytes": 3368499240,
+        "onBattery": true
+      }
+    }
+  ],
+  "initialReadiness": {
+    "ready": true,
+    "applicationState": 0,
+    "availableMemoryBytes": 3422746808,
+    "onBattery": true,
+    "thermalState": 0
+  },
+  "latestReadiness": {
+    "applicationState": 0,
+    "thermalState": 1,
+    "onBattery": true,
+    "ready": true,
+    "availableMemoryBytes": 3057645368
+  }
+}

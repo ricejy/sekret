@@ -361,6 +361,10 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     await workspace.openChat(initiatingId);
     await settle(tester);
     expect(find.text('Processing'), findsOneWidget);
+    expect(
+      find.textContaining('Choose sources or remove unavailable ones'),
+      findsNothing,
+    );
     expect(find.text('Answers only from selected sources'), findsOneWidget);
     await tester.enterText(message(), 'What is this?');
     await settle(tester);
@@ -379,7 +383,8 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     );
     await tester.tap(find.bySemanticsLabel('Remove Imported photograph'));
     await settle(tester);
-    expect(find.text('Model knowledge · no sources selected'), findsOneWidget);
+    expect(find.text('Model knowledge · no sources selected'), findsNothing);
+    expect(find.text('Answers only from selected sources'), findsNothing);
     expect(
       (await workspace.history()).firstWhere((c) => c.id == initiatingId).mode,
       ChatMode.general,
@@ -493,10 +498,10 @@ void registerChatScreenTests({bool physicalDevice = false}) {
       await mount(tester);
       await knowledge.delete(imported.item.id);
       await settle(tester);
-      expect(find.text('Answers only from selected sources'), findsOneWidget);
+      expect(find.text('Answers only from selected sources'), findsNothing);
       // Deletion cascades the selected ID out of storage, but deliberately
       // leaves Knowledge Base mode in place instead of answering generally.
-      expect(find.text('No sources selected'), findsOneWidget);
+      expect(find.text('No sources selected'), findsNothing);
       expect((await workspace.history()).single.mode, ChatMode.knowledgeBase);
       await tester.enterText(message(), 'Do not fall back');
       await settle(tester);

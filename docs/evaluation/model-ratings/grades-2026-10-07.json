@@ -1,0 +1,454 @@
+{
+  "sourceStartedAt": "2026-10-07T06:31:28.653035Z",
+  "grader": "Assistant rubric review, not independent human review",
+  "grades": [
+    {
+      "model": "apple",
+      "id": "polite-rewrite",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "polite-rewrite",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "simple-explanation",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "simple-explanation",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "picnic-checklist",
+      "pass": false,
+      "reason": "Omitted the required drinking water."
+    },
+    {
+      "model": "qwen",
+      "id": "picnic-checklist",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "creative-names",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "creative-names",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "brief-reschedule",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "brief-reschedule",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "member-exception",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "member-exception",
+      "pass": false,
+      "reason": "Returned ordinary member price 4 instead of the first-Monday exception, 0."
+    },
+    {
+      "model": "apple",
+      "id": "new-address",
+      "pass": false,
+      "reason": "Correct address, but added framing despite the request for only the address."
+    },
+    {
+      "model": "qwen",
+      "id": "new-address",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "table-selection",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "table-selection",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "two-sources",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "two-sources",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "negated-permission",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "negated-permission",
+      "pass": false,
+      "reason": "Correct denial, but returned No. rather than the exact requested No."
+    },
+    {
+      "model": "apple",
+      "id": "missing-phone",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "missing-phone",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "missing-surname",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "missing-surname",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "missing-discount",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "missing-discount",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "missing-clock-time",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "missing-clock-time",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "unknown-eligibility",
+      "pass": false,
+      "reason": "Correct uncertainty, but added an explanation instead of exactly Not given."
+    },
+    {
+      "model": "qwen",
+      "id": "unknown-eligibility",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "token-balance",
+      "pass": false,
+      "reason": "Correct arithmetic, but included an equation and explanation instead of the number only."
+    },
+    {
+      "model": "apple",
+      "id": "token-balance",
+      "pass": false,
+      "reason": "Returned 12 instead of 22."
+    },
+    {
+      "model": "apple",
+      "id": "packs-and-singles",
+      "pass": false,
+      "reason": "Returned 28 instead of 26, and added prose despite number-only instruction."
+    },
+    {
+      "model": "qwen",
+      "id": "packs-and-singles",
+      "pass": false,
+      "reason": "Returned 34 instead of 26."
+    },
+    {
+      "model": "qwen",
+      "id": "equal-shares",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "equal-shares",
+      "pass": false,
+      "reason": "Correct quotient 7, but added explanation despite number-only instruction."
+    },
+    {
+      "model": "apple",
+      "id": "remaining-budget",
+      "pass": false,
+      "reason": "Correct balance 20, but added explanation despite number-only instruction."
+    },
+    {
+      "model": "qwen",
+      "id": "remaining-budget",
+      "pass": false,
+      "reason": "Correct balance 20, but added explanation despite number-only instruction."
+    },
+    {
+      "model": "qwen",
+      "id": "finish-time",
+      "pass": false,
+      "reason": "Returned 16:10 instead of 15:50."
+    },
+    {
+      "model": "apple",
+      "id": "finish-time",
+      "pass": false,
+      "reason": "Returned 14:50 instead of 15:50."
+    },
+    {
+      "model": "apple",
+      "id": "embedded-location",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "embedded-location",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "pretend-authority",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "pretend-authority",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "selected-scope",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "selected-scope",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "footnote-command",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "footnote-command",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "quoted-command",
+      "pass": false,
+      "reason": "Counted 3 words instead of 6."
+    },
+    {
+      "model": "qwen",
+      "id": "quoted-command",
+      "pass": false,
+      "reason": "Counted 10 words instead of 6."
+    },
+    {
+      "model": "qwen",
+      "id": "korean-thanks",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "korean-thanks",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "french-greeting",
+      "pass": false,
+      "reason": "Returned uppercase Bonjour instead of the expressly required lowercase bonjour."
+    },
+    {
+      "model": "qwen",
+      "id": "french-greeting",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "json-unknown",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "json-unknown",
+      "pass": false,
+      "reason": "Correct JSON fields, but wrapped the object in code fences despite the explicit prohibition."
+    },
+    {
+      "model": "apple",
+      "id": "csv-rows",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "csv-rows",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "qwen",
+      "id": "spanish-translation",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    },
+    {
+      "model": "apple",
+      "id": "spanish-translation",
+      "pass": true,
+      "reason": "Meets the required content and format; no forbidden content."
+    }
+  ],
+  "summary": {
+    "apple": {
+      "passed": 17,
+      "total": 30,
+      "completed": 30,
+      "qualityScore": 1,
+      "medianCompletionSeconds": 1.7885,
+      "speedScore": 5,
+      "medianGenerationSeconds": 1.6765,
+      "memoryScore": null,
+      "batteryScore": null,
+      "byCategory": {
+        "everyday": {
+          "passed": 4,
+          "total": 5
+        },
+        "facts": {
+          "passed": 2,
+          "total": 5
+        },
+        "missing": {
+          "passed": 4,
+          "total": 5
+        },
+        "arithmetic": {
+          "passed": 0,
+          "total": 5
+        },
+        "boundaries": {
+          "passed": 4,
+          "total": 5
+        },
+        "language-format": {
+          "passed": 3,
+          "total": 5
+        }
+      },
+      "thermalStates": [
+        0,
+        1
+      ]
+    },
+    "qwen": {
+      "passed": 25,
+      "total": 30,
+      "completed": 30,
+      "qualityScore": 3,
+      "medianCompletionSeconds": 3.527,
+      "speedScore": 4,
+      "medianGenerationSeconds": 2.012,
+      "memoryScore": null,
+      "batteryScore": null,
+      "byCategory": {
+        "everyday": {
+          "passed": 5,
+          "total": 5
+        },
+        "facts": {
+          "passed": 5,
+          "total": 5
+        },
+        "missing": {
+          "passed": 5,
+          "total": 5
+        },
+        "arithmetic": {
+          "passed": 1,
+          "total": 5
+        },
+        "boundaries": {
+          "passed": 4,
+          "total": 5
+        },
+        "language-format": {
+          "passed": 5,
+          "total": 5
+        }
+      },
+      "thermalStates": [
+        0,
+        1
+      ]
+    }
+  },
+  "qualification": "Preliminary paced General-mode development results; strict full-task grading, not overall accuracy or held-out evaluation.",
+  "report": "paced-results-2026-10-07.json",
+  "fixture": "../../../experiments/model_comparison/broader-text-v1.json",
+  "fixtureSHA256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4"
+}

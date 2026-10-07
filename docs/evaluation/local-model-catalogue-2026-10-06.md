@@ -1,5 +1,7 @@
 # Downloadable local model catalogue — 2026-10-06
 
+Historical research record: later ADR 0005 and the [current status](../product/current-status.md) supersede its production-integration and network-exception pending statements.
+
 Research and proposed production scope, followed by separately authorized isolated Mac and physical-iPhone smoke evaluations. The pinned weights/runtime were downloaded and verified under `experiments/local_generation`; no shipping-app native dependency, supported-device qualification, or production networking was added. This is not a release approval or an architecture decision. See the [harness](../../experiments/local_generation/README.md), [Mac results](../../experiments/local_generation/RESULTS-2026-10-06.md), and [iPhone results](../../experiments/local_generation/PHONE-RESULTS-2026-10-06.md). The phone completed all seven fixed probes but showed instruction-following limitations; the model is not approved for the reviewed catalogue.
 
 ## Recommendation

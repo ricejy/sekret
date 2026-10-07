@@ -1,5 +1,7 @@
 # Knowledge Base integration
 
+Historical integration-stage note. For the accepted application baseline and remaining limitations, see [current status](current-status.md).
+
 Issue #23 introduces the v2 `KnowledgeBase` module. Processing, recovery,
 catalogue search, preview descriptors and evidence readiness live here, rather
 than in the future tab widgets. It uses the shared local vault, not a second

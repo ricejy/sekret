@@ -1,5 +1,7 @@
 # Multi-source grounded chat integration
 
+Historical integration-stage note. For the accepted application baseline and remaining limitations, see [current status](current-status.md).
+
 Issue #24 extends the General controller into one app-lifetime `ChatEngine`.
 The visible v1 screen is unchanged; #25 wires this module into the v2 Chat tab.
 The existing guardrail-v1 document path remains separate and unchanged.

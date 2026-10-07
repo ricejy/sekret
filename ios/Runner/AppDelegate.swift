@@ -9,11 +9,31 @@ import UniformTypeIdentifiers
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    // Explicit diagnostic launch only; ordinary launches keep normal auto-lock.
+    if ProcessInfo.processInfo.arguments.contains("--sekret-model-rating-eval") {
+      application.isIdleTimerDisabled = true
+    }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  override func application(
+    _ application: UIApplication,
+    handleEventsForBackgroundURLSession identifier: String,
+    completionHandler: @escaping () -> Void
+  ) {
+    if identifier == ModelDownloadPlugin.identifier {
+      ModelDownloadPlugin.shared.backgroundCompletion = completionHandler
+      ModelDownloadPlugin.shared.reconnect()
+    } else {
+      super.application(application, handleEventsForBackgroundURLSession: identifier, completionHandler: completionHandler)
+    }
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "ModelDownloadPlugin") {
+      ModelDownloadPlugin.register(with: registrar)
+    }
     if #available(iOS 17.0, *),
       let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "LocalModelPlugin") {
       LocalModelPlugin.register(with: registrar)
