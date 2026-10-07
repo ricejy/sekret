@@ -47,7 +47,7 @@ void main() {
     runApp(const SekretChatApp(openResources: openChatApp));
     return;
   }
-  runApp(SekretMidgetApp(documentLibraryFuture: _openPersistentLibrary()));
+  runApp(SekretApp(documentLibraryFuture: _openPersistentLibrary()));
 }
 
 Future<DocumentLibrary> _openPersistentLibrary() async {

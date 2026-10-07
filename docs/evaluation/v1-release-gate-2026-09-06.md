@@ -25,7 +25,7 @@ This report contains only fictional test details and aggregate private-smoke res
 | Runner native bridge suite | Pass on iOS Simulator |
 | Guardrail harness suite | Pass, 5 tests on iOS Simulator |
 | Static network-client/dependency audit | Pass; no application network client, analytics, telemetry, or crash-reporting SDK found |
-| Release network-connection capture | Pass; zero connections attributed to Sekret Midget during a complete 84-second import-and-question cycle |
+| Release network-connection capture | Pass; zero connections attributed to Sekret during a complete 84-second import-and-question cycle |
 
 The Runner suite covered Foundation Models generation, streaming, error mapping, prompt freezing, Natural Language embeddings, Vision OCR fixtures, exact token counting, and availability mapping. Simulator-inapplicable file-protection behavior was skipped there and is covered by the production database configuration and physical-device gate.
 
@@ -70,9 +70,9 @@ The post-run physical database audit found zero document rows imported during th
 
 ## Privacy verification
 
-An Instruments 26.6 Network Connections recording targeted `Sekret Midget (20251, launched)` on the recorded iPhone and covered a complete Release import, question, answer/citation, and deletion cycle. The run lasted 1 minute 24 seconds. Filtering the connection summary for `Sekret Midget` returned `No Data`, so the capture found zero connections or outbound requests attributable to the app.
+An Instruments 26.6 Network Connections recording targeted the app (PID 20251) on the recorded iPhone and covered a complete Release import, question, answer/citation, and deletion cycle. The run lasted 1 minute 24 seconds. Filtering the connection summary for the recorded app returned `No Data`, so the capture found zero connections or outbound requests attributable to the app. Historical display-name references in this document were normalized during the product rename; the original trace evidence was not rewritten.
 
-Only the Network Connections instrument was enabled. The HTTP Traffic instrument was deliberately removed before recording, so request URLs, headers, bodies, and document content were not captured. Instruments listed unrelated device-level connections under `Unknown`; these were not attributed to Sekret Midget and are not counted as application traffic.
+Only the Network Connections instrument was enabled. The HTTP Traffic instrument was deliberately removed before recording, so request URLs, headers, bodies, and document content were not captured. Instruments listed unrelated device-level connections under `Unknown`; these were not attributed to Sekret and are not counted as application traffic.
 
 A second recording was attempted with Airplane Mode enabled and Wi-Fi disabled, but Instruments reported the target device offline and did not start or record a trace. The separately completed Airplane Mode acceptance run therefore remains the evidence that the complete workflow operates without connectivity, while the app-targeted Instruments run is the empirical traffic check.
 

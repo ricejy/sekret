@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/platform/ocr_engine.dart';
-import 'package:sekret_midget/core/platform/pdf_page_rasterizer.dart';
-import 'package:sekret_midget/core/platform/pdfrx_pdf_page_rasterizer.dart';
+import 'package:sekret/core/platform/ocr_engine.dart';
+import 'package:sekret/core/platform/pdf_page_rasterizer.dart';
+import 'package:sekret/core/platform/pdfrx_pdf_page_rasterizer.dart';
 
 void main() {
   test(

@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/knowledge/knowledge_base.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
-import 'package:sekret_midget/core/library/document_library.dart';
-import 'package:sekret_midget/core/platform/embedder.dart';
-import 'package:sekret_midget/core/platform/llm_backend.dart';
-import 'package:sekret_midget/demo/fake_native_capabilities.dart';
-import 'package:sekret_midget/evaluation/retrieval_quality.dart';
-import 'package:sekret_midget/evaluation/synthetic_retrieval_corpus.dart';
+import 'package:sekret/core/knowledge/knowledge_base.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
+import 'package:sekret/core/library/document_library.dart';
+import 'package:sekret/core/platform/embedder.dart';
+import 'package:sekret/core/platform/llm_backend.dart';
+import 'package:sekret/demo/fake_native_capabilities.dart';
+import 'package:sekret/evaluation/retrieval_quality.dart';
+import 'package:sekret/evaluation/synthetic_retrieval_corpus.dart';
 
 void main() {
   test(

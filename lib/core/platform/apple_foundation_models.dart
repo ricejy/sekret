@@ -20,9 +20,9 @@ final class AppleFoundationModels
           const EventChannel(_eventChannelName).receiveBroadcastStream();
 
   static const _methodChannelName =
-      'com.ricejy.sekret_midget/foundation_models';
+      'com.ricejy.sekret/foundation_models';
   static const _eventChannelName =
-      'com.ricejy.sekret_midget/foundation_models_stream';
+      'com.ricejy.sekret/foundation_models_stream';
   static var _requestSequence = 0;
 
   final MethodChannel _channel;

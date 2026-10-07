@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/platform/apple_vision_ocr.dart';
-import 'package:sekret_midget/core/platform/ocr_engine.dart';
+import 'package:sekret/core/platform/apple_vision_ocr.dart';
+import 'package:sekret/core/platform/ocr_engine.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  const channel = MethodChannel('com.ricejy.sekret_midget/vision_ocr');
+  const channel = MethodChannel('com.ricejy.sekret/vision_ocr');
 
   tearDown(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger

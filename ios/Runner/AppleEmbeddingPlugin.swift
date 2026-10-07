@@ -70,7 +70,7 @@ final class AppleSentenceEmbeddingService {
 }
 
 final class AppleEmbeddingPlugin: NSObject, FlutterPlugin {
-  private static let channelName = "com.ricejy.sekret_midget/embedding"
+  private static let channelName = "com.ricejy.sekret/embedding"
 
   private let service: AppleSentenceEmbeddingService
 

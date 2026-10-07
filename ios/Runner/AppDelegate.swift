@@ -55,7 +55,7 @@ final class PhotosPickerPlugin: NSObject, FlutterPlugin, PHPickerViewControllerD
   static func register(with registrar: FlutterPluginRegistrar) {
     let plugin = PhotosPickerPlugin(viewController: { registrar.viewController })
     registrar.addMethodCallDelegate(plugin, channel: FlutterMethodChannel(
-      name: "com.ricejy.sekret_midget/photos", binaryMessenger: registrar.messenger()
+      name: "com.ricejy.sekret/photos", binaryMessenger: registrar.messenger()
     ))
   }
 

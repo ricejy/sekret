@@ -228,9 +228,9 @@ final class AppleFoundationModelService {
 
 final class AppleFoundationModelsPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
   private static let methodChannelName =
-    "com.ricejy.sekret_midget/foundation_models"
+    "com.ricejy.sekret/foundation_models"
   private static let eventChannelName =
-    "com.ricejy.sekret_midget/foundation_models_stream"
+    "com.ricejy.sekret/foundation_models_stream"
 
   private let service: AppleFoundationModelService
   private var eventSink: FlutterEventSink?

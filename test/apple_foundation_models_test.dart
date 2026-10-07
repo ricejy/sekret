@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/platform/apple_foundation_models.dart';
-import 'package:sekret_midget/core/platform/llm_backend.dart';
+import 'package:sekret/core/platform/apple_foundation_models.dart';
+import 'package:sekret/core/platform/llm_backend.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ void main() {
   );
 
   const channel = MethodChannel(
-    'com.ricejy.sekret_midget/foundation_models-test',
+    'com.ricejy.sekret/foundation_models-test',
   );
 
   tearDown(() async {

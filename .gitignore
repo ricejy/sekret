@@ -73,3 +73,8 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 .venv/
+
+# Local creative exploration and its machine-specific provenance.
+output/mascot-concepts/
+assets/brand/prompts.json
+assets/brand/onboarding-poses-prompts.json

@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/chat/chat_workspace.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
+import 'package:sekret/core/chat/chat_workspace.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 const model = ModelSnapshot(identifier: 'test-local', revision: '1');

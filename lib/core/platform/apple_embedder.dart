@@ -6,7 +6,7 @@ final class AppleEmbedder implements Embedder, EmbeddingCapabilityProbe {
   AppleEmbedder({MethodChannel? channel})
     : _channel = channel ?? const MethodChannel(_channelName);
 
-  static const _channelName = 'com.ricejy.sekret_midget/embedding';
+  static const _channelName = 'com.ricejy.sekret/embedding';
 
   final MethodChannel _channel;
   EmbeddingModelStatus? _cachedStatus;

@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Issues and specs are tracked in GitHub Issues for `ricejy/sekret-midget`. See `docs/agents/issue-tracker.md`.
+Issues and specs are tracked in GitHub Issues for `ricejy/sekret`. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

@@ -9,7 +9,7 @@ abstract interface class DeviceProtection {
 
 final class AppleDeviceProtection implements DeviceProtection {
   const AppleDeviceProtection({
-    this._channel = const MethodChannel('com.ricejy.sekret_midget/protection'),
+    this._channel = const MethodChannel('com.ricejy.sekret/protection'),
   });
   final MethodChannel _channel;
 

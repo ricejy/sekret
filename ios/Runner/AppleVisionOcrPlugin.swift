@@ -130,7 +130,7 @@ final class AppleVisionOcrService {
 }
 
 final class AppleVisionOcrPlugin: NSObject, FlutterPlugin {
-  private static let channelName = "com.ricejy.sekret_midget/vision_ocr"
+  private static let channelName = "com.ricejy.sekret/vision_ocr"
 
   private let service: AppleVisionOcrService
 

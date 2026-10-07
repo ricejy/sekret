@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/chat/chat_workspace.dart';
-import 'package:sekret_midget/core/settings/app_protection.dart';
-import 'package:sekret_midget/core/storage/local_data_vault.dart';
-import 'package:sekret_midget/demo/fake_native_capabilities.dart';
-import 'package:sekret_midget/ui/settings/settings_screen.dart';
-import 'package:sekret_midget/ui/settings/onboarding_screen.dart';
+import 'package:sekret/core/chat/chat_workspace.dart';
+import 'package:sekret/core/settings/app_protection.dart';
+import 'package:sekret/core/storage/local_data_vault.dart';
+import 'package:sekret/demo/fake_native_capabilities.dart';
+import 'package:sekret/ui/settings/settings_screen.dart';
+import 'package:sekret/ui/settings/onboarding_screen.dart';
 import 'app_protection_test.dart' show FakeDeviceProtection;
 import 'settings_app_test.dart' show settleSettings;
 

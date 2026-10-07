@@ -1,14 +1,14 @@
 # Issue tracker: GitHub
 
 Issues and specs for this repo live as GitHub issues. Use the `gh` CLI with
-`--repo ricejy/sekret-midget` for all operations.
+`--repo ricejy/sekret` for all operations.
 
 ## Conventions
 
-- Create: `gh issue create --repo ricejy/sekret-midget --title "..." --body-file <file>`
-- Read: `gh issue view <number> --repo ricejy/sekret-midget --comments`
-- List: `gh issue list --repo ricejy/sekret-midget --state open --json number,title,body,labels,comments`
-- Comment: `gh issue comment <number> --repo ricejy/sekret-midget --body-file <file>`
+- Create: `gh issue create --repo ricejy/sekret --title "..." --body-file <file>`
+- Read: `gh issue view <number> --repo ricejy/sekret --comments`
+- List: `gh issue list --repo ricejy/sekret --state open --json number,title,body,labels,comments`
+- Comment: `gh issue comment <number> --repo ricejy/sekret --body-file <file>`
 - Add or remove labels with `gh issue edit`
 - Close with `gh issue close`
 

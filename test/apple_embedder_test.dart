@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sekret_midget/core/platform/apple_embedder.dart';
-import 'package:sekret_midget/core/platform/embedder.dart';
+import 'package:sekret/core/platform/apple_embedder.dart';
+import 'package:sekret/core/platform/embedder.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const channel = MethodChannel('com.ricejy.sekret_midget/embedding');
+  const channel = MethodChannel('com.ricejy.sekret/embedding');
 
   tearDown(() async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
