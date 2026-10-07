@@ -9,6 +9,18 @@ import 'package:sekret/core/platform/llm_backend.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  test(
+    'General replies default to prose but allow explicitly requested JSON',
+    () {
+      expect(
+        generalInstructions,
+        contains(
+          'Return a plain-text answer, not a JSON wrapper, unless current_user_message explicitly asks for JSON.',
+        ),
+      );
+    },
+  );
+
   test('verifier instructions match native and parsing fails closed', () {
     final native = File(
       'ios/Runner/AppleFoundationModelsPlugin.swift',
@@ -72,9 +84,7 @@ void main() {
     },
   );
 
-  const channel = MethodChannel(
-    'com.ricejy.sekret/foundation_models-test',
-  );
+  const channel = MethodChannel('com.ricejy.sekret/foundation_models-test');
 
   tearDown(() async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger

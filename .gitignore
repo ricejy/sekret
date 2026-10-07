@@ -56,6 +56,8 @@ assets/models/
 *.onnx
 *.tflite
 *.gguf
+native/**/.build/
+native/**/.swiftpm/
 *.mlmodelc/
 
 # ---- Editors ----

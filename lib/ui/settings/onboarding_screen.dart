@@ -283,7 +283,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       ),
       const SizedBox(height: 12),
       const Text(
-        'Adding or downloading small open-source models to run locally is not available in this build yet.',
+        'A local text model preview is in Models on supported iPhones. Download only if you choose.',
         style: TextStyle(height: 1.4, color: SekretBrand.secondary),
       ),
       const SizedBox(height: 20),
