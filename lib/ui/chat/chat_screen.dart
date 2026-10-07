@@ -824,27 +824,23 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             'Another chat is responding. Stop it before sending.',
             style: TextStyle(fontSize: 13),
           ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Text(
-            _chat?.mode == ChatMode.knowledgeBase
-                ? 'Answers only from selected sources'
-                : 'Model knowledge · no sources selected',
-            style: TextStyle(
-              fontSize: 13,
-              color: CupertinoColors.secondaryLabel.resolveFrom(context),
+        if (_chat?.mode == ChatMode.knowledgeBase &&
+            _chat!.selectedSourceIds.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              'Answers only from selected sources',
+              style: TextStyle(
+                fontSize: 13,
+                color: CupertinoColors.secondaryLabel.resolveFrom(context),
+              ),
             ),
           ),
-        ),
         if (_chat?.mode == ChatMode.knowledgeBase) ...[
           if (_chat!.selectedSourceIds.isEmpty)
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                const Text(
-                  'No sources selected',
-                  style: TextStyle(fontSize: 13),
-                ),
                 CupertinoButton(
                   onPressed:
                       _busy ||
@@ -865,14 +861,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               ],
             ),
           ),
-          if (!_sourcesReady)
-            const Padding(
-              padding: EdgeInsets.only(bottom: 8),
-              child: Text(
-                'Choose sources or remove unavailable ones. All selected sources must be indexed before sending.',
-                style: TextStyle(fontSize: 13),
-              ),
-            ),
         ],
         if (_importing)
           const Padding(

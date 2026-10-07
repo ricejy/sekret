@@ -1,0 +1,145 @@
+{
+  "schema": "sekret-model-ratings-v1",
+  "fixture": "sekret-broader-text-development-v1",
+  "fixtureSHA256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4",
+  "instructionsSHA256": "29c591d23f297701ee16735d801c2ecda91cbee5b9b845671e32eb534f3a240f",
+  "qwenSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "qwenRevision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "qwenRuntime": "llama.cpp-b11429",
+  "applePromptVersion": "general-v4",
+  "timing": "native-preparation-and-generation-excludes-database-and-ui",
+  "os": "Version 27.0 (Build 24A437)",
+  "startedAt": "2026-10-07T06:25:29.961088Z",
+  "complete": false,
+  "protocol": "paced-v3-ten-second-rest-production-readiness",
+  "results": [
+    {
+      "id": "polite-rewrite",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3450402976,
+        "applicationState": 0,
+        "thermalState": 1,
+        "ready": true
+      },
+      "output": "Please send me the draft by Friday.",
+      "completed": true,
+      "inputTokens": 294,
+      "preparationMs": 2806,
+      "firstSnapshotMs": 4604,
+      "elapsedMs": 4659,
+      "resourcesAfter": {
+        "availableMemoryBytes": 3421649056,
+        "applicationState": 0,
+        "thermalState": 1,
+        "ready": true
+      }
+    },
+    {
+      "id": "polite-rewrite",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "availableMemoryBytes": 3422353568,
+        "applicationState": 0,
+        "thermalState": 1,
+        "ready": true
+      },
+      "output": "Please send me the draft by Friday.",
+      "completed": true,
+      "inputTokens": 244,
+      "preparationMs": 6259,
+      "firstSnapshotMs": 7870,
+      "elapsedMs": 8521,
+      "resourcesAfter": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "availableMemoryBytes": 3353851896
+      }
+    },
+    {
+      "id": "simple-explanation",
+      "model": "qwen",
+      "outputCap": 256,
+      "resourcesBefore": {
+        "thermalState": 1,
+        "applicationState": 0,
+        "ready": true,
+        "availableMemoryBytes": 3390502904
+      },
+      "output": "Sorting a list means arranging the items in a specific order, like alphabetically or numerically, so they are easy to find. Searching a list means looking through the items to find a specific one, like finding a name in a phone book.",
+      "completed": true,
+      "inputTokens": 236,
+      "preparationMs": 1188,
+      "firstSnapshotMs": 3435,
+      "elapsedMs": 8231,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "availableMemoryBytes": 3009443544,
+        "thermalState": 1,
+        "ready": true
+      }
+    },
+    {
+      "id": "simple-explanation",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "availableMemoryBytes": 3390027768,
+        "thermalState": 2,
+        "ready": false
+      },
+      "output": "Sorting arranges items from smallest to largest or in a specific order. Searching finds a single item you're looking for.",
+      "completed": true,
+      "inputTokens": 285,
+      "preparationMs": 118,
+      "firstSnapshotMs": 2516,
+      "elapsedMs": 2704,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "availableMemoryBytes": 3389175800,
+        "thermalState": 2,
+        "ready": false
+      }
+    },
+    {
+      "id": "picnic-checklist",
+      "model": "apple",
+      "outputCap": 512,
+      "resourcesBefore": {
+        "applicationState": 0,
+        "availableMemoryBytes": 3389093880,
+        "thermalState": 2,
+        "ready": false
+      },
+      "output": "- Blanket  \n- Snacks  \n- Sunscreen  \n- Trash bags",
+      "completed": true,
+      "inputTokens": 293,
+      "preparationMs": 102,
+      "firstSnapshotMs": 1500,
+      "elapsedMs": 1607,
+      "resourcesAfter": {
+        "applicationState": 0,
+        "availableMemoryBytes": 3388946424,
+        "thermalState": 2,
+        "ready": false
+      }
+    }
+  ],
+  "initialReadiness": {
+    "availableMemoryBytes": 3450419360,
+    "applicationState": 0,
+    "thermalState": 1,
+    "ready": true
+  },
+  "latestReadiness": {
+    "applicationState": 0,
+    "availableMemoryBytes": 3388848120,
+    "thermalState": 2,
+    "ready": false
+  },
+  "stopped": "Bad state: qwen unavailable"
+}

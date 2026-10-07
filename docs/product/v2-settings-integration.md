@@ -1,5 +1,7 @@
 # Settings, onboarding, and app protection
 
+Historical integration-stage note. For the accepted application baseline and remaining limitations, see [current status](current-status.md).
+
 Issue #27 completes the opt-in v2 Settings tab. The default launch remains v1;
 `SEKRET_V2=true` still refuses an unrecognized v1 database without resetting it.
 The displayed name is Sekret. Package, bundle, repository, and database names

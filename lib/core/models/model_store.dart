@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import 'model_artifact_verifier.dart';
+import 'background_model_download.dart';
 import 'model_catalogue.dart';
 import 'model_download.dart';
 
@@ -36,12 +37,14 @@ abstract interface class ModelStoragePolicy {
 
 /// The store exclusively owns two fixed files in a dedicated app directory.
 /// Staging is never selectable. No manifest/path received from the network is
-/// interpreted. Cancellation discards partial bytes; retry is an explicit restart.
+/// interpreted. Explicit cancellation discards partial bytes. iOS-owned transfers
+/// survive lock/suspension and are reattached on startup before verification.
 final class ModelStore extends ChangeNotifier {
   ModelStore({
     required this.directory,
     required this.policy,
     this.transport = const HttpsModelTransport(),
+    this.backgroundDownload,
     this.model = ModelCatalogue.qwen,
   }) {
     final artifact = model.artifact;
@@ -55,6 +58,8 @@ final class ModelStore extends ChangeNotifier {
   final Directory directory;
   final ModelStoragePolicy policy;
   final ModelTransport transport;
+  final BackgroundModelDownload? backgroundDownload;
+  bool _recovering = false;
   final CatalogueModel model;
   static const freeSpaceReserve = 512 * 1024 * 1024;
   ModelInstallState _state = const ModelInstallState(ModelInstallPhase.absent);
@@ -94,29 +99,41 @@ final class ModelStore extends ChangeNotifier {
     if (await file.exists()) await file.delete();
   }
 
-  Future<void> initialize() => _run((cancel) async {
-    final type = await FileSystemEntity.type(
-      directory.path,
-      followLinks: false,
-    );
-    if (type == FileSystemEntityType.notFound) await directory.create();
-    await _assertOwned();
-    await policy.prepare(directory);
-    // Only this store's known staging name is reclaimed after interruption.
-    await _delete(_staged);
-    _initialized = true;
-    if (await _installed.exists()) {
-      _publish(ModelInstallPhase.verifying);
-      await verifyModelArtifact(
-        _read(_installed.openRead(), cancel),
-        _artifact,
-      );
-      cancel.check();
-      _publish(ModelInstallPhase.installed);
-    } else {
-      _publish(ModelInstallPhase.absent);
-    }
-  });
+  Future<void> initialize() =>
+      _run((cancel) async {
+        final type = await FileSystemEntity.type(
+          directory.path,
+          followLinks: false,
+        );
+        if (type == FileSystemEntityType.notFound) await directory.create();
+        await _assertOwned();
+        await policy.prepare(directory);
+        // Only this store's known staging name is reclaimed after interruption.
+        _recovering = await backgroundDownload?.hasPending() ?? false;
+        if (!_recovering) await _delete(_staged);
+        _initialized = true;
+        if (await _installed.exists()) {
+          if (_recovering) {
+            await backgroundDownload?.cancel();
+            await _delete(_staged);
+            _recovering = false;
+          }
+          _publish(ModelInstallPhase.verifying);
+          await verifyModelArtifact(
+            _read(_installed.openRead(), cancel),
+            _artifact,
+          );
+          cancel.check();
+          _publish(ModelInstallPhase.installed);
+        } else {
+          _publish(ModelInstallPhase.absent);
+        }
+      }).then((_) {
+        if (_recovering && _state.phase != ModelInstallPhase.installed) {
+          // Do not hold app startup behind a system-owned transfer.
+          unawaited(install().catchError((Object _) {}));
+        }
+      });
 
   Future<void> install() => _run((cancel) async {
     if (!_initialized) throw StateError('Model storage is not ready');
@@ -125,7 +142,7 @@ final class ModelStore extends ChangeNotifier {
     }
     await _assertOwned();
     final freeBytes = await policy.prepare(directory);
-    if (freeBytes < _artifact.bytes + freeSpaceReserve) {
+    if (freeBytes < (_recovering ? 0 : _artifact.bytes) + freeSpaceReserve) {
       throw StateError(
         'Not enough free space for this model and safety reserve',
       );
@@ -136,24 +153,36 @@ final class ModelStore extends ChangeNotifier {
     RandomAccessFile? sink;
     var received = 0;
     try {
-      await _delete(_staged);
-      sink = await _staged.open(mode: FileMode.writeOnly);
-      // Apply protection before any model bytes arrive.
-      await policy.prepare(directory);
-      download = await transport.open(_artifact, cancel);
-      await for (final chunk in _read(download.bytes, cancel)) {
-        if (chunk.length > _artifact.bytes - received) {
-          throw const ModelArtifactVerificationException(
-            'Artifact exceeds size',
-          );
+      if (backgroundDownload != null) {
+        await backgroundDownload!.transfer(
+          artifact: _artifact,
+          destination: _staged,
+          cancel: cancel,
+          onProgress: (bytes) {
+            received = bytes;
+            _publish(ModelInstallPhase.downloading, bytes: bytes);
+          },
+        );
+      } else {
+        await _delete(_staged);
+        sink = await _staged.open(mode: FileMode.writeOnly);
+        // Apply protection before any model bytes arrive.
+        await policy.prepare(directory);
+        download = await transport.open(_artifact, cancel);
+        await for (final chunk in _read(download.bytes, cancel)) {
+          if (chunk.length > _artifact.bytes - received) {
+            throw const ModelArtifactVerificationException(
+              'Artifact exceeds size',
+            );
+          }
+          await sink.writeFrom(chunk);
+          received += chunk.length;
+          _publish(ModelInstallPhase.downloading, bytes: received);
         }
-        await sink.writeFrom(chunk);
-        received += chunk.length;
-        _publish(ModelInstallPhase.downloading, bytes: received);
+        await sink.flush();
+        await sink.close();
+        sink = null;
       }
-      await sink.flush();
-      await sink.close();
-      sink = null;
       cancel.check();
       _publish(ModelInstallPhase.verifying, bytes: received);
       // Verify the bytes actually persisted, not just the network stream.
@@ -165,6 +194,7 @@ final class ModelStore extends ChangeNotifier {
       await _staged.rename(_installed.path);
       _publish(ModelInstallPhase.installed, bytes: received);
     } finally {
+      _recovering = false;
       await download?.close();
       await sink?.close();
       await _delete(_staged);
@@ -188,12 +218,14 @@ final class ModelStore extends ChangeNotifier {
       throw StateError('Switch away from this model before removing it');
     }
     _publish(ModelInstallPhase.removing);
+    await backgroundDownload?.cancel();
     await _delete(_staged);
     await _delete(_installed);
     _publish(ModelInstallPhase.absent);
   });
 
   Future<void> cancel() async {
+    if (_operation == null) await backgroundDownload?.cancel();
     _operation?.cancel();
     try {
       await _pending;

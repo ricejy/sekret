@@ -1,4 +1,8 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:sekret/core/models/model_store.dart';
+import 'model_store_test.dart' show Policy, Transport, fixture;
+import 'app_protection_test.dart' show FakeDeviceProtection;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sekret/core/chat/chat_engine.dart';
@@ -18,6 +22,102 @@ void main() {
       await tester.runAsync(() => Future<void>.delayed(Duration.zero));
     }
     await tester.pumpAndSettle();
+  }
+
+  for (final lock in [false, true]) {
+    testWidgets('model download survives background with app lock $lock', (
+      tester,
+    ) async {
+      final directory = (await tester.runAsync(
+        () => Directory.systemTemp.createTemp('sekret-lock-download-'),
+      ))!;
+      final chunks = StreamController<List<int>>();
+      final transport = Transport()..source = () => chunks.stream;
+      final store = ModelStore(
+        directory: directory,
+        policy: Policy(),
+        transport: transport,
+        model: fixture,
+      );
+      await tester.runAsync(store.initialize);
+      final vault = await openLocalDataVault(databasePath: ':memory:');
+      await vault.settings.update(
+        retentionPolicy: RetentionPolicy.manual,
+        biometricLockEnabled: lock,
+        lockDelay: AppLockDelay.immediate,
+        onboardingComplete: true,
+      );
+      final workspace = await ChatWorkspace.open(vault);
+      final knowledge = await KnowledgeBase.open(
+        vault: vault,
+        embedder: const FakeEmbedder(),
+        tokenCounter: const FakeTokenCounter(),
+      );
+      final model = UiModel();
+      final engine = ChatEngine(
+        workspace: workspace,
+        backend: model,
+        contextProbe: model,
+        knowledgeBase: knowledge,
+        model: const ModelSnapshot(identifier: 'test', revision: '1'),
+      );
+      final app = ChatAppResources(
+        vault,
+        workspace,
+        knowledge,
+        engine,
+        AppleFoundationModels(events: const Stream.empty()),
+        device: FakeDeviceProtection(),
+        modelStore: store,
+      );
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpWidget(SekretChatApp(openResources: () async => app));
+      await settle(tester);
+      await app.protection.unlock();
+      Object? failure;
+      final install = store.install().catchError((Object error) {
+        failure = error;
+      });
+      for (var i = 0; i < 20 && transport.calls == 0; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+        await tester.pump();
+      }
+      expect(transport.calls, 1);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      await settle(tester);
+      expect(store.state.phase, ModelInstallPhase.downloading);
+      chunks.add([1, 2, 3, 4]);
+      unawaited(chunks.close());
+      for (
+        var i = 0;
+        i < 30 && store.state.phase != ModelInstallPhase.installed;
+        i++
+      ) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+        await tester.pump();
+      }
+      expect(failure, isNull);
+      expect(store.state.phase, ModelInstallPhase.installed);
+      for (var i = 0; i < 10; i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+        await tester.pump();
+      }
+      await install;
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpWidget(const SizedBox.shrink());
+      await settle(tester);
+      await tester.runAsync(() => directory.delete(recursive: true));
+    });
   }
 
   testWidgets(
@@ -153,6 +253,7 @@ void main() {
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
       await settle(tester);
       expect(find.text('Private partial response').hitTestable(), findsNothing);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       await settle(tester);

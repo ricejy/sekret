@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../core/chat/chat_engine.dart';
 import '../core/chat/chat_workspace.dart';
 import '../core/models/model_store.dart';
+import '../core/platform/apple_model_download.dart';
 import '../core/models/model_selection.dart';
 import '../core/models/model_catalogue.dart';
 import '../core/platform/local_model_backend.dart';
@@ -63,8 +64,7 @@ Future<ChatAppResources> openChatApp() async {
     throw StateError('The production v2 app requires iPhone.');
   }
   final directory = await getApplicationSupportDirectory();
-  final path =
-      '${directory.path}${Platform.pathSeparator}sekret.sqlite3';
+  final path = '${directory.path}${Platform.pathSeparator}sekret.sqlite3';
   final models = AppleFoundationModels();
   await models.protectStorage(
     directoryPath: directory.path,
@@ -104,6 +104,7 @@ Future<ChatAppResources> openChatApp() async {
     modelStore = ModelStore(
       directory: Directory('${directory.path}/reviewed-models'),
       policy: const AppleModelStoragePolicy(),
+      backgroundDownload: const AppleModelDownload(),
     );
     try {
       await modelStore.initialize();
@@ -135,7 +136,7 @@ Future<ChatAppResources> openChatApp() async {
   }
 }
 
-/// Opt-in while the remaining v2 tabs are implemented. No silent v1 reset.
+/// Production local chat shell. Existing databases are never silently reset.
 class SekretChatApp extends StatefulWidget {
   const SekretChatApp({super.key, required this.openResources});
   final Future<ChatAppResources> Function() openResources;
@@ -202,7 +203,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (state == AppLifecycleState.hidden ||
         state == AppLifecycleState.paused) {
       resources.protection.background();
-      unawaited(resources.modelStore?.cancel());
+      // Public model transfers continue while private app content is locked.
     }
     if (state == AppLifecycleState.resumed) resources.protection.resumed();
     // Pause admission immediately, even if a foreground resume is indexing.
@@ -244,7 +245,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (locked && !_wasLocked) {
       _rootNavigator.currentState?.popUntil((route) => route.isFirst);
       final resources = _resources!;
-      unawaited(resources.modelStore?.cancel());
+      // Public model transfers continue while private app content is locked.
       _lifecycle = Future.wait([
         _lifecycle,
         resources.engine.suspend(),

@@ -1,5 +1,7 @@
 # Knowledge Base catalogue and preview
 
+Historical integration-stage note. For the accepted application baseline and remaining limitations, see [current status](current-status.md).
+
 Issue #26 replaces the opt-in v2 Knowledge Base landing screen with the
 Variant A native catalogue. The v1 default launch and production database are
 unchanged. Enable `SEKRET_V2` only against an existing v2 vault; an unrecognized
