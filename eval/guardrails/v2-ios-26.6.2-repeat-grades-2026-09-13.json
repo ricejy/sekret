@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "purpose": "repeatability-not-replacement-score",
+  "rawReport": "v2-ios-26.6.2-repeat-2026-09-13.json",
+  "counts": {
+    "selectedInitialFailures": 32,
+    "failuresPersisting": 31,
+    "recovered": 1,
+    "sampledInitialPasses": 10,
+    "sampledPassesRetained": 10
+  },
+  "recoveredCaseIDs": [
+    "ACC1-LEG-A12"
+  ],
+  "incorrectOrUnsupportedPersisting": [
+    "ACC1-LEG-A11",
+    "ACC1-LEG-A18",
+    "ACC1-MED-U02"
+  ],
+  "initialScoreUnchanged": {
+    "answerableCorrect": 9,
+    "answerableTotal": 40,
+    "falseAbstentions": 29,
+    "incorrectAnswerable": 2,
+    "unsupportedCorrectAbstentions": 9,
+    "unsupportedTotal": 10,
+    "unsupportedAssertions": 1,
+    "hardRefusals": 0,
+    "verbalRefusals": 0,
+    "runtimeFailures": 0,
+    "medianLatencyMs": 628.5,
+    "meetsBaseline": false
+  },
+  "grades": [
+    {
+      "caseID": "ACC1-LEG-A01",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A02",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A03",
+      "initialGrade": "correct",
+      "repeatGrade": "correct"
+    },
+    {
+      "caseID": "ACC1-LEG-A04",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A05",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A06",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A07",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A09",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A10",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A11",
+      "initialGrade": "incorrect",
+      "repeatGrade": "incorrect"
+    },
+    {
+      "caseID": "ACC1-LEG-A12",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "correct"
+    },
+    {
+      "caseID": "ACC1-LEG-A13",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A14",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A15",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A16",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A17",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A18",
+      "initialGrade": "incorrect",
+      "repeatGrade": "incorrect"
+    },
+    {
+      "caseID": "ACC1-LEG-A19",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-A20",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A01",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A02",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A03",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A04",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A05",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A06",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A07",
+      "initialGrade": "correct",
+      "repeatGrade": "correct"
+    },
+    {
+      "caseID": "ACC1-MED-A08",
+      "initialGrade": "correct",
+      "repeatGrade": "correct"
+    },
+    {
+      "caseID": "ACC1-MED-A09",
+      "initialGrade": "correct",
+      "repeatGrade": "correct"
+    },
+    {
+      "caseID": "ACC1-MED-A10",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A11",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A12",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A13",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A17",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A18",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-A19",
+      "initialGrade": "correct",
+      "repeatGrade": "correct"
+    },
+    {
+      "caseID": "ACC1-MED-A20",
+      "initialGrade": "false-abstention",
+      "repeatGrade": "false-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-U01",
+      "initialGrade": "correct-abstention",
+      "repeatGrade": "correct-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-U02",
+      "initialGrade": "correct-abstention",
+      "repeatGrade": "correct-abstention"
+    },
+    {
+      "caseID": "ACC1-LEG-U05",
+      "initialGrade": "correct-abstention",
+      "repeatGrade": "correct-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-U02",
+      "initialGrade": "unsupported-assertion",
+      "repeatGrade": "unsupported-assertion"
+    },
+    {
+      "caseID": "ACC1-MED-U04",
+      "initialGrade": "correct-abstention",
+      "repeatGrade": "correct-abstention"
+    },
+    {
+      "caseID": "ACC1-MED-U05",
+      "initialGrade": "correct-abstention",
+      "repeatGrade": "correct-abstention"
+    }
+  ]
+}

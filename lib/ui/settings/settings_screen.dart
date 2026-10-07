@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import '../sekret_brand.dart';
 import '../../core/chat/chat_workspace.dart';
 import '../../core/platform/llm_backend.dart';
 import '../../core/settings/app_protection.dart';
@@ -227,6 +228,21 @@ class _SettingsScreenState extends State<SettingsScreen>
     child: SafeArea(
       child: ListView(
         children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(24, 16, 24, 0),
+            child: Row(
+              children: [
+                TuckMascot(size: 72),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    'Sekret',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          ),
           if (_error != null)
             Padding(padding: const EdgeInsets.all(16), child: Text(_error!)),
           CupertinoListSection.insetGrouped(

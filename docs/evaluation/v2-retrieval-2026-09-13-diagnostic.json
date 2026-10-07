@@ -1,0 +1,1242 @@
+{
+  "schemaVersion": 1,
+  "purpose": "meridian-term-diagnostic-not-acceptance",
+  "runAt": "2026-09-13T04:24:36.439530Z",
+  "candidate": "fe03a77e7b8ff607db12e30622d7b30105bf2236",
+  "runtime": "Version 26.6.2 (Build 23G90)",
+  "generationEvaluated": false,
+  "contextSize": 4096,
+  "elapsedMs": 1942,
+  "runs": [
+    {
+      "label": "single",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": true,
+      "expectedCandidateRank": 1,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-06",
+          "heading": "DAMAGE DEPOSIT",
+          "tokenCount": 26
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "all-repeat-1",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-02",
+        "synthetic-doc-03",
+        "synthetic-doc-04",
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-02",
+        "synthetic-doc-03",
+        "synthetic-doc-04",
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": false,
+      "expectedCandidateRank": 5,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "tokenCount": 28
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "tokenCount": 25
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "tokenCount": 23
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-02",
+          "heading": "SAFETY TRAINING",
+          "tokenCount": 22
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-03",
+          "heading": "BREACH AND TERMINATION",
+          "tokenCount": 29
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-01",
+          "heading": "NOTICE PERIOD",
+          "tokenCount": 25
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-03",
+          "heading": "DISPUTE PROCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 11,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 12,
+          "source": "synthetic-doc-02",
+          "heading": "PROTECTIVE GEAR",
+          "tokenCount": 22
+        },
+        {
+          "rank": 13,
+          "source": "synthetic-doc-05",
+          "heading": "INCIDENT ESCALATION",
+          "tokenCount": 24
+        },
+        {
+          "rank": 14,
+          "source": "synthetic-doc-02",
+          "heading": "INCIDENT REPORTING",
+          "tokenCount": 26
+        },
+        {
+          "rank": 15,
+          "source": "synthetic-doc-01",
+          "heading": "COMPENSATION DATE",
+          "tokenCount": 23
+        },
+        {
+          "rank": 16,
+          "source": "synthetic-doc-03",
+          "heading": "PAYMENT TERMS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 17,
+          "source": "synthetic-doc-02",
+          "heading": "WEEKLY INSPECTIONS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 18,
+          "source": "synthetic-doc-04",
+          "heading": "ADVANCE APPROVAL",
+          "tokenCount": 21
+        },
+        {
+          "rank": 19,
+          "source": "synthetic-doc-05",
+          "heading": "SECURE DELETION",
+          "tokenCount": 23
+        },
+        {
+          "rank": 20,
+          "source": "synthetic-doc-03",
+          "heading": "COMPONENT WARRANTY",
+          "tokenCount": 21
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "all-repeat-2",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-02",
+        "synthetic-doc-03",
+        "synthetic-doc-04",
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-02",
+        "synthetic-doc-03",
+        "synthetic-doc-04",
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": false,
+      "expectedCandidateRank": 5,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "tokenCount": 28
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "tokenCount": 25
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "tokenCount": 23
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-02",
+          "heading": "SAFETY TRAINING",
+          "tokenCount": 22
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-03",
+          "heading": "BREACH AND TERMINATION",
+          "tokenCount": 29
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-01",
+          "heading": "NOTICE PERIOD",
+          "tokenCount": 25
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-03",
+          "heading": "DISPUTE PROCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 11,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 12,
+          "source": "synthetic-doc-02",
+          "heading": "PROTECTIVE GEAR",
+          "tokenCount": 22
+        },
+        {
+          "rank": 13,
+          "source": "synthetic-doc-05",
+          "heading": "INCIDENT ESCALATION",
+          "tokenCount": 24
+        },
+        {
+          "rank": 14,
+          "source": "synthetic-doc-02",
+          "heading": "INCIDENT REPORTING",
+          "tokenCount": 26
+        },
+        {
+          "rank": 15,
+          "source": "synthetic-doc-01",
+          "heading": "COMPENSATION DATE",
+          "tokenCount": 23
+        },
+        {
+          "rank": 16,
+          "source": "synthetic-doc-03",
+          "heading": "PAYMENT TERMS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 17,
+          "source": "synthetic-doc-02",
+          "heading": "WEEKLY INSPECTIONS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 18,
+          "source": "synthetic-doc-04",
+          "heading": "ADVANCE APPROVAL",
+          "tokenCount": 21
+        },
+        {
+          "rank": 19,
+          "source": "synthetic-doc-05",
+          "heading": "SECURE DELETION",
+          "tokenCount": 23
+        },
+        {
+          "rank": 20,
+          "source": "synthetic-doc-03",
+          "heading": "COMPONENT WARRANTY",
+          "tokenCount": 21
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "all-repeat-3",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-02",
+        "synthetic-doc-03",
+        "synthetic-doc-04",
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-02",
+        "synthetic-doc-03",
+        "synthetic-doc-04",
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": false,
+      "expectedCandidateRank": 5,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "tokenCount": 28
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "tokenCount": 25
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "tokenCount": 23
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-02",
+          "heading": "SAFETY TRAINING",
+          "tokenCount": 22
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-03",
+          "heading": "BREACH AND TERMINATION",
+          "tokenCount": 29
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-01",
+          "heading": "NOTICE PERIOD",
+          "tokenCount": 25
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-03",
+          "heading": "DISPUTE PROCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 11,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 12,
+          "source": "synthetic-doc-02",
+          "heading": "PROTECTIVE GEAR",
+          "tokenCount": 22
+        },
+        {
+          "rank": 13,
+          "source": "synthetic-doc-05",
+          "heading": "INCIDENT ESCALATION",
+          "tokenCount": 24
+        },
+        {
+          "rank": 14,
+          "source": "synthetic-doc-02",
+          "heading": "INCIDENT REPORTING",
+          "tokenCount": 26
+        },
+        {
+          "rank": 15,
+          "source": "synthetic-doc-01",
+          "heading": "COMPENSATION DATE",
+          "tokenCount": 23
+        },
+        {
+          "rank": 16,
+          "source": "synthetic-doc-03",
+          "heading": "PAYMENT TERMS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 17,
+          "source": "synthetic-doc-02",
+          "heading": "WEEKLY INSPECTIONS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 18,
+          "source": "synthetic-doc-04",
+          "heading": "ADVANCE APPROVAL",
+          "tokenCount": 21
+        },
+        {
+          "rank": 19,
+          "source": "synthetic-doc-05",
+          "heading": "SECURE DELETION",
+          "tokenCount": 23
+        },
+        {
+          "rank": 20,
+          "source": "synthetic-doc-03",
+          "heading": "COMPONENT WARRANTY",
+          "tokenCount": 21
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "all-reversed",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-06",
+        "synthetic-doc-05",
+        "synthetic-doc-04",
+        "synthetic-doc-03",
+        "synthetic-doc-02",
+        "synthetic-doc-01"
+      ],
+      "actualScope": [
+        "synthetic-doc-06",
+        "synthetic-doc-05",
+        "synthetic-doc-04",
+        "synthetic-doc-03",
+        "synthetic-doc-02",
+        "synthetic-doc-01"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": true,
+      "expectedCandidateRank": 3,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "tokenCount": 28
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "tokenCount": 25
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "tokenCount": 23
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-02",
+          "heading": "SAFETY TRAINING",
+          "tokenCount": 22
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-03",
+          "heading": "BREACH AND TERMINATION",
+          "tokenCount": 29
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-01",
+          "heading": "NOTICE PERIOD",
+          "tokenCount": 25
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-03",
+          "heading": "DISPUTE PROCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 11,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 12,
+          "source": "synthetic-doc-02",
+          "heading": "PROTECTIVE GEAR",
+          "tokenCount": 22
+        },
+        {
+          "rank": 13,
+          "source": "synthetic-doc-05",
+          "heading": "INCIDENT ESCALATION",
+          "tokenCount": 24
+        },
+        {
+          "rank": 14,
+          "source": "synthetic-doc-02",
+          "heading": "INCIDENT REPORTING",
+          "tokenCount": 26
+        },
+        {
+          "rank": 15,
+          "source": "synthetic-doc-01",
+          "heading": "COMPENSATION DATE",
+          "tokenCount": 23
+        },
+        {
+          "rank": 16,
+          "source": "synthetic-doc-03",
+          "heading": "PAYMENT TERMS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 17,
+          "source": "synthetic-doc-02",
+          "heading": "WEEKLY INSPECTIONS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 18,
+          "source": "synthetic-doc-04",
+          "heading": "ADVANCE APPROVAL",
+          "tokenCount": 21
+        },
+        {
+          "rank": 19,
+          "source": "synthetic-doc-05",
+          "heading": "SECURE DELETION",
+          "tokenCount": 23
+        },
+        {
+          "rank": 20,
+          "source": "synthetic-doc-03",
+          "heading": "COMPONENT WARRANTY",
+          "tokenCount": 21
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "pair-synthetic-doc-01",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-01",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": true,
+      "expectedCandidateRank": 4,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "tokenCount": 28
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "tokenCount": 23
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-01",
+          "heading": "NOTICE PERIOD",
+          "tokenCount": 25
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-01",
+          "heading": "COMPENSATION DATE",
+          "tokenCount": 23
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-06",
+          "heading": "DAMAGE DEPOSIT",
+          "tokenCount": 26
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-01",
+          "heading": "PERSONAL LEAVE",
+          "tokenCount": 21
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "EQUIPMENT RETURN",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-01",
+          "heading": "CONFIDENTIALITY",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "pair-synthetic-doc-02",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-02",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-02",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": true,
+      "expectedCandidateRank": 3,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "tokenCount": 25
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-02",
+          "heading": "SAFETY TRAINING",
+          "tokenCount": 22
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-02",
+          "heading": "PROTECTIVE GEAR",
+          "tokenCount": 22
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-02",
+          "heading": "INCIDENT REPORTING",
+          "tokenCount": 26
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-02",
+          "heading": "WEEKLY INSPECTIONS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-06",
+          "heading": "DAMAGE DEPOSIT",
+          "tokenCount": 26
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-02",
+          "heading": "EMERGENCY ASSEMBLY",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-02",
+          "heading": "SAFETY TRAINING",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "pair-synthetic-doc-03",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-03",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-03",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": true,
+      "expectedCandidateRank": 2,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-03",
+          "heading": "BREACH AND TERMINATION",
+          "tokenCount": 29
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-03",
+          "heading": "DISPUTE PROCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-03",
+          "heading": "PAYMENT TERMS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-03",
+          "heading": "COMPONENT WARRANTY",
+          "tokenCount": 21
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-03",
+          "heading": "DELIVERY LOCATION",
+          "tokenCount": 24
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-06",
+          "heading": "DAMAGE DEPOSIT",
+          "tokenCount": 26
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-03",
+          "heading": "BREACH AND TERMINATION",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "pair-synthetic-doc-04",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-04",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-04",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": true,
+      "expectedCandidateRank": 1,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-04",
+          "heading": "ADVANCE APPROVAL",
+          "tokenCount": 21
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-04",
+          "heading": "RECEIPT DEADLINE",
+          "tokenCount": 29
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-06",
+          "heading": "DAMAGE DEPOSIT",
+          "tokenCount": 26
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-04",
+          "heading": "HOTEL LIMIT",
+          "tokenCount": 29
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-04",
+          "heading": "MEAL ALLOWANCE",
+          "tokenCount": 24
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-04",
+          "heading": "MILEAGE RATE",
+          "tokenCount": 28
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "candidateRank": 4
+        }
+      ]
+    },
+    {
+      "label": "pair-synthetic-doc-05",
+      "questionId": "meridian-term",
+      "requestedScope": [
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "actualScope": [
+        "synthetic-doc-05",
+        "synthetic-doc-06"
+      ],
+      "outcome": "insufficientEvidence",
+      "admittedHit": true,
+      "expectedCandidateRank": 2,
+      "candidates": [
+        {
+          "rank": 1,
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "tokenCount": 23
+        },
+        {
+          "rank": 2,
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "tokenCount": 22
+        },
+        {
+          "rank": 3,
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 4,
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "tokenCount": 22
+        },
+        {
+          "rank": 5,
+          "source": "synthetic-doc-05",
+          "heading": "INCIDENT ESCALATION",
+          "tokenCount": 24
+        },
+        {
+          "rank": 6,
+          "source": "synthetic-doc-05",
+          "heading": "SECURE DELETION",
+          "tokenCount": 23
+        },
+        {
+          "rank": 7,
+          "source": "synthetic-doc-06",
+          "heading": "DAMAGE DEPOSIT",
+          "tokenCount": 26
+        },
+        {
+          "rank": 8,
+          "source": "synthetic-doc-05",
+          "heading": "RETENTION PERIOD",
+          "tokenCount": 28
+        },
+        {
+          "rank": 9,
+          "source": "synthetic-doc-05",
+          "heading": "ACCESS REVIEW",
+          "tokenCount": 22
+        },
+        {
+          "rank": 10,
+          "source": "synthetic-doc-05",
+          "heading": "PORTABLE MEDIA",
+          "tokenCount": 25
+        }
+      ],
+      "admitted": [
+        {
+          "source": "synthetic-doc-06",
+          "heading": "GUEST ACCESS",
+          "candidateRank": 1
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "MEMBERSHIP TERM",
+          "candidateRank": 2
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "PAYMENT DUE DATE",
+          "candidateRank": 3
+        },
+        {
+          "source": "synthetic-doc-06",
+          "heading": "CANCELLATION NOTICE",
+          "candidateRank": 4
+        }
+      ]
+    }
+  ]
+}
