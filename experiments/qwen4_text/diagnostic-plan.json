@@ -1,0 +1,17 @@
+{
+  "purpose": "Diagnose four failures; never replace or upgrade the original 26/30 result",
+  "suite_sha256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4",
+  "original_binary_sha256": "5778be2d87c8ee9101b007a3f01d3180e6fa3762924c6a8ac9269b1ad04e37e8",
+  "cases": ["brief-reschedule", "packs-and-singles", "remaining-budget", "finish-time", "missing-phone"],
+  "positive_control": "missing-phone",
+  "reproduction": "Two repeats of packs-and-singles with the original pinned Swift executable and unchanged prompt/profile; expected answer 26",
+  "controls": ["independent C++ caller with original sampling", "same C++ caller with greedy sampling only"],
+  "fixed": "Same model, runtime, template, token IDs, context 2048, output cap 128, Metal backend, four threads, frozen prompts. Do not alter wording to teach the answer.",
+  "predictions": [
+    "If fixed-seed stochastic decoding contributes, greedy may correct some failures while the independent baseline reproduces them.",
+    "If the Swift caller contributes, the independent C++ baseline may differ despite matching token IDs and sampling. Differences alone require further investigation, not attribution.",
+    "If errors persist in both controls, sampling and caller alone are insufficient; model, quantization, or shared runtime limitations remain unresolved."
+  ],
+  "interpretation": "Failure-focused probes cannot estimate accuracy. Even a perfect greedy subset would require a newly declared full-profile evaluation and fresh validation before iPhone qualification.",
+  "resource_safety": "At least 8 GB free initially; 3 GiB live reserve; 120-second timeout per process; preserve all outputs and do not automatically retry failures."
+}

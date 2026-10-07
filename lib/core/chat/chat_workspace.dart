@@ -129,6 +129,22 @@ final class ChatWorkspace {
     );
   }
 
+  /// Adds to the latest active selection, not a stale pre-picker snapshot.
+  /// Pending sources can be attached, but turn admission still requires indexing.
+  Future<void> addSource(String chatId, String sourceId) => _run(() async {
+    final chat = await _findChat(chatId);
+    await _vault.knowledge.get(sourceId);
+    final selected = <String>{
+      if (chat.mode == ChatMode.knowledgeBase) ...chat.selectedSourceIds,
+      sourceId,
+    };
+    await _vault.chats.updateScope(
+      chatId: chatId,
+      mode: ChatMode.knowledgeBase,
+      selectedSourceIds: selected.toList(),
+    );
+  });
+
   /// Captures mode and sources before the generation adapter starts.
   Future<TurnRecord> beginTurn({
     required String chatId,

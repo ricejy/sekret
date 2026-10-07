@@ -1,0 +1,39 @@
+{
+  "scope": "Three prespecified matched-duration, foreground, whole-device battery comparisons for the isolated Qwen3-4B-Instruct-2507 Q3_K_M harness. No shipping app or battery rating approval.",
+  "status": "Completed all three prespecified pairs with fresh readiness, retained capture diagnostics, full coverage and nominal thermals. See MATCHED-POWER-RESULTS-2026-10-07.json; not a user-facing battery rating.",
+  "build": 13,
+  "configuration": "Release",
+  "executableSHA256": "6ec3e5580b61865884a500563fce910bb165995a48dfe94e5795670a90c4c663",
+  "verification": "12 native runtime tests and nine Python power-analysis tests pass; signed Release build succeeds. Reanalysis preserves the previous complete unequal pilot and does not relabel it matched. All three ordinary matched physical phases completed; forced deadline/charging/low-battery edge cases were not newly induced.",
+  "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "runtime": "llama.cpp b11429; unchanged native model/template/sampling pins",
+  "device": "iPhone 15 Pro Max, iOS 27.0 (24A437), wireless Xcode instrumentation",
+  "attempts": [
+    {"pair": 1, "order": "baseline-first"},
+    {"pair": 2, "order": "workload-first"},
+    {"pair": 3, "order": "baseline-first"}
+  ],
+  "phases": {
+    "capture": "Run-specific capture-ready.json only after xctrace explicitly confirms recording the current verified app PID; 300-second bounded gate, then 10-second settling and renewed admission check",
+    "baseline": "300 seconds foreground idle with same harness open, output cleared, no model inference",
+    "workload": "300 seconds: same eight fictional actual-history turns, seven 30-second reading pauses, 2K context and 256-token output cap; include full hashing/loading/generation/report export/unload. Pad remaining time with foreground idle. Inference exceeding 300 seconds requests cancellation and invalidates the pair; never truncate and call it complete.",
+    "cooldown": "At least 120 seconds between pairs and fresh nominal native readiness before next launch. Do not automatically retry failed attempts. Stop if user returns to the phone or eligibility fails.",
+    "collector": "Same 15-second inventory polling cadence throughout both phases; acknowledge profiler and wireless transfer overhead. Collect only new run reports after terminal completion."
+  },
+  "conditions": {
+    "start": "User freshly confirms unlocked, app foreground, Wi-Fi, no USB/MagSafe, can leave phone alone for 35–45 minutes. Native battery >=30%, unplugged, nominal thermal state, LPM off, model present/pin unchanged. Never change settings automatically.",
+    "during": "Existing memory, serious/critical thermal, foreground-loss, user Stop, charging, battery<20%, LPM guards unchanged. Keep observed brightness unchanged across every phase/pair; changes invalidate comparison rather than silently adjusting it.",
+    "trace": "Time limit 12 minutes per pair after attachment; operator stops after native terminal receipt. Preserve failed traces and reports. Require full labelled SystemPowerLevel coverage of both 300-second phases and corroborating thermal/brightness/native snapshots; empty charging export is not evidence of zero charging.",
+    "analysis": "Require 300 ±0.25 seconds per phase, distinct run IDs, prespecified order, unchanged brightness, no clock jump >0.1 seconds. Separate native completion/history/content/lifecycle audits from power validity. Report each pair; average/range only if all three are valid. Never select best runs or replace failed attempts without a revised plan."
+  },
+  "limitations": [
+    "Rounded Instruments whole-device battery-energy percent/hour is not watts or app-only consumption.",
+    "Workload-minus-baseline is a within-pair diagnostic difference, not exact app energy attribution or predicted battery life.",
+    "Three short pairs on one phone are exploratory repeatability evidence, not statistical or all-device qualification.",
+    "Wireless pairing keeps hardware awake; this does not measure disconnected idle/sleep.",
+    "Native battery percentage is coarse and retained separately; do not infer answers per charge.",
+    "Full model rehash/reload per turn is evaluation behavior, not an optimized shipping runtime.",
+    "Earlier sustained-use thermal failure and earlier partial trace remain unchanged and retained."
+  ],
+  "evidenceToRetain": "Binary SHA, readiness/admission, run-specific capture receipt, all native turn inputs/results/markers, lifecycle, raw trace/TOC/power XML, per-pair power audit, chat audit and final three-pair comparison. No new weights, no personal data, no app deletion."
+}

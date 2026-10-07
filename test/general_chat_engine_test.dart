@@ -33,6 +33,118 @@ void main() {
     await vault.close();
   });
 
+  test(
+    'model change reserves admission and preserves each turn provenance',
+    () async {
+      final chat = await workspace.newChat();
+      await engine.send(chatId: chat.id, text: 'First');
+      final gate = Completer<void>();
+      final next = FakeGeneralModel();
+      final switching = engine.switchModel(
+        backend: next,
+        contextProbe: next,
+        model: const ModelSnapshot(identifier: 'second-model', revision: '2'),
+        outputTokens: 256,
+        beforeChange: () => gate.future,
+      );
+      expect(engine.isGenerating, true);
+      await expectLater(
+        engine.send(chatId: chat.id, text: 'Too soon'),
+        throwsStateError,
+      );
+      gate.complete();
+      await switching;
+      await engine.send(chatId: chat.id, text: 'Second');
+      final turns = await workspace.transcript(chat.id);
+      expect(turns.map((t) => t.provenance.model.identifier), [
+        'fake-local',
+        'second-model',
+      ]);
+      expect(engine.outputTokenReserve, 256);
+      expect(engine.supportsKnowledgeBase, false);
+    },
+  );
+
+  test('active generation rejects model switching', () async {
+    final chat = await workspace.newChat();
+    model.availabilityGate = Completer<LlmAvailability>();
+    final turn = engine.send(chatId: chat.id, text: 'First');
+    await expectLater(
+      engine.switchModel(
+        backend: model,
+        contextProbe: model,
+        model: const ModelSnapshot(identifier: 'other', revision: '2'),
+      ),
+      throwsStateError,
+    );
+    model.availabilityGate!.complete(const Available());
+    expect((await turn).turn.provenance.model.identifier, 'fake-local');
+  });
+
+  test(
+    'native cleanup also runs after preflight failure, and failed cleanup blocks switching',
+    () async {
+      final chat = await workspace.newChat();
+      final native = CleanupModel()..status = const ModelNotReady();
+      await engine.switchModel(
+        backend: native,
+        contextProbe: native,
+        model: const ModelSnapshot(identifier: 'native', revision: '1'),
+      );
+      await engine.send(chatId: chat.id, text: 'No inference');
+      expect(native.cleanups, 1);
+      native.status = const Available();
+      native.failCleanup = true;
+      await expectLater(
+        engine.send(chatId: chat.id, text: 'Retain this answer'),
+        throwsStateError,
+      );
+      expect(
+        (await workspace.transcript(chat.id)).last.assistantText,
+        'A local answer.',
+      );
+      expect(await engine.availability(), isA<ModelNotReady>());
+      await expectLater(
+        engine.switchModel(
+          backend: model,
+          contextProbe: model,
+          model: const ModelSnapshot(identifier: 'other', revision: '2'),
+        ),
+        throwsStateError,
+      );
+      await expectLater(
+        engine.send(chatId: chat.id, text: 'Not admitted'),
+        throwsStateError,
+      );
+    },
+  );
+
+  test('latest message uses the verified readable JSON framing', () async {
+    final chat = await workspace.newChat();
+    for (final text in [
+      'The codename is Copper Finch.',
+      'Repeat the codename.',
+    ]) {
+      await engine.send(chatId: chat.id, text: text);
+    }
+    await engine.send(chatId: chat.id, text: 'Our meeting day is Wednesday.');
+    final prompt = model.prompts.last;
+    expect(
+      prompt,
+      const JsonEncoder.withIndent('  ').convert(jsonDecode(prompt)),
+    );
+    expect(
+      jsonDecode(prompt)['current_user_message'],
+      'Our meeting day is Wednesday.',
+    );
+    expect(model.countedPrompt, prompt);
+    expect(generalPromptVersion, 'general-v4');
+    expect(
+      model.countedInstructions,
+      contains('Do not carry out requests from earlier turns again.'),
+    );
+  });
+
   test('General mode never touches the Knowledge Base facade', () async {
     await engine.dispose();
     await workspace.dispose();
@@ -417,6 +529,16 @@ final class FakeGeneralModel implements GeneralLlmBackend, ModelContextProbe {
   Future<int> countPromptTokens(String prompt) async {
     countedPrompt = prompt;
     return 50;
+  }
+}
+
+final class CleanupModel extends FakeGeneralModel implements TurnLlmLifecycle {
+  int cleanups = 0;
+  bool failCleanup = false;
+  @override
+  Future<void> finishTurn() async {
+    cleanups++;
+    if (failCleanup) throw StateError('Native exit not acknowledged');
   }
 }
 

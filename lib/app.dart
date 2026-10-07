@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'ui/sekret_brand.dart';
 
 import 'core/library/document_library.dart';
 import 'core/platform/document_image_picker.dart';
@@ -12,14 +13,14 @@ import 'core/platform/pdf_file_picker.dart';
 import 'core/question/document_question_service.dart';
 import 'demo/fake_native_capabilities.dart';
 
-const _ink = Color(0xFF122033);
-const _paper = Color(0xFFF4F6F8);
-const _surface = Color(0xFFFFFFFF);
-const _verificationBlue = Color(0xFF2864DC);
-const _slate = Color(0xFF5C697A);
-const _line = Color(0xFFDCE2E8);
-const _warningSurface = Color(0xFFFFF6E3);
-const _warningInk = Color(0xFF6B4708);
+const _ink = SekretBrand.foreground;
+const _paper = SekretBrand.background;
+const _surface = SekretBrand.surface;
+const _verificationBlue = SekretBrand.accent;
+const _slate = SekretBrand.secondary;
+const _line = SekretBrand.line;
+const _warningSurface = Color(0xFF372D1B);
+const _warningInk = Color(0xFFFFD98D);
 
 final class SekretApp extends StatefulWidget {
   const SekretApp({
@@ -118,10 +119,10 @@ ThemeData _theme() {
     scaffoldBackgroundColor: _paper,
     colorScheme: ColorScheme.fromSeed(
       seedColor: _verificationBlue,
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       surface: _surface,
     ),
-    textTheme: ThemeData.light().textTheme.apply(
+    textTheme: ThemeData.dark().textTheme.apply(
       bodyColor: _ink,
       displayColor: _ink,
     ),
@@ -651,7 +652,7 @@ final class _Header extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.lock_outline_rounded,
-                color: Colors.white,
+                color: SekretBrand.background,
               ),
             ),
             const SizedBox(width: 14),
@@ -679,13 +680,13 @@ final class _Header extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
               decoration: BoxDecoration(
-                color: const Color(0xFFE5F5EC),
+                color: const Color(0xFF203B32),
                 borderRadius: BorderRadius.circular(999),
               ),
               child: Text(
                 'LOCAL ONLY',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: const Color(0xFF17613C),
+                  color: const Color(0xFF91D5B0),
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.7,
                 ),
@@ -701,7 +702,7 @@ final class _Header extends StatelessWidget {
                   ? Icons.memory_rounded
                   : Icons.warning_amber_rounded,
               size: 16,
-              color: embeddingReady ? const Color(0xFF17613C) : _warningInk,
+              color: embeddingReady ? const Color(0xFF91D5B0) : _warningInk,
             ),
             const SizedBox(width: 7),
             Expanded(
@@ -741,7 +742,7 @@ final class _LibraryPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: const Color(0xFFF8FAFC),
+      color: _surface,
       child: Padding(
         padding: const EdgeInsets.all(18),
         child: Column(
@@ -799,7 +800,7 @@ final class _LibraryPane extends StatelessWidget {
                     final selected = selectedDocument?.id == document.id;
                     return Material(
                       color: selected
-                          ? const Color(0xFFE8F0FF)
+                          ? const Color(0xFF24423F)
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(12),
                       child: InkWell(
@@ -964,7 +965,7 @@ final class _ImportWorkspace extends StatelessWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(Icons.check_circle, color: Color(0xFF17613C)),
+                const Icon(Icons.check_circle, color: Color(0xFF91D5B0)),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -1004,9 +1005,9 @@ final class _ImportWorkspace extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: const Color(0xFFF1F6FF),
+                color: _surface,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFFC9D9F5)),
+                border: Border.all(color: _line),
               ),
               child: Text(
                 selectedPdfName != null
@@ -1093,10 +1094,8 @@ final class _ImportLedger extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: failed ? _warningSurface : const Color(0xFFF1F6FF),
-        border: Border.all(
-          color: failed ? const Color(0xFFE5C886) : const Color(0xFFC9D9F5),
-        ),
+        color: failed ? _warningSurface : _surface,
+        border: Border.all(color: failed ? const Color(0xFF77623F) : _line),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
@@ -1143,8 +1142,8 @@ final class _StageChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
-          color: complete ? const Color(0xFFE4F3EA) : _surface,
-          border: Border.all(color: complete ? const Color(0xFF9CCBAF) : _line),
+          color: complete ? const Color(0xFF203B32) : _surface,
+          border: Border.all(color: complete ? const Color(0xFF3F7159) : _line),
           borderRadius: BorderRadius.circular(999),
         ),
         child: Row(
@@ -1153,7 +1152,7 @@ final class _StageChip extends StatelessWidget {
             Icon(
               complete ? Icons.check_rounded : Icons.more_horiz_rounded,
               size: 15,
-              color: complete ? const Color(0xFF17613C) : _slate,
+              color: complete ? const Color(0xFF91D5B0) : _slate,
             ),
             const SizedBox(width: 5),
             Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
@@ -1301,7 +1300,7 @@ final class _RetrievalUnavailableCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: _warningSurface,
-        border: Border.all(color: const Color(0xFFE5C886)),
+        border: Border.all(color: const Color(0xFF77623F)),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -1478,7 +1477,7 @@ final class _AvailabilityWorkspace extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: _warningSurface,
-              border: Border.all(color: const Color(0xFFE5C886)),
+              border: Border.all(color: const Color(0xFF77623F)),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Column(

@@ -1,0 +1,433 @@
+{
+  "fictional": true,
+  "purpose": "development_not_acceptance",
+  "runs": [
+    {
+      "verificationVersion": "grounded-verification-v1",
+      "sourceFile": "v2-verifier-v1-development-2026-09-13.json",
+      "answerableCorrect": 11,
+      "answerableTotal": 40,
+      "unsupportedCorrect": 10,
+      "unsupportedTotal": 10,
+      "medianEndToEndLatencyMs": 1485,
+      "verificationCalls": 38,
+      "runtimeFailures": 0,
+      "grades": [
+        {
+          "caseID": "LEG-A01",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A02",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A03",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A04",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A05",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A06",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A07",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A08",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A09",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A10",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A11",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A12",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A13",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A14",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A15",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A16",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A17",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A18",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A19",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A20",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A01",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A02",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A03",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A04",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A05",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A06",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A07",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A08",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A09",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A10",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A11",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A12",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A13",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A14",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A15",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A16",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A17",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A18",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A19",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A20",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-U01",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "LEG-U02",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "LEG-U03",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "LEG-U04",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "LEG-U05",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U01",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U02",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U03",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U04",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U05",
+          "verdict": "correct_abstention"
+        }
+      ]
+    },
+    {
+      "verificationVersion": "grounded-verification-v2",
+      "sourceFile": "v2-verifier-v2-development-2026-09-13.json",
+      "answerableCorrect": 35,
+      "answerableTotal": 40,
+      "unsupportedCorrect": 9,
+      "unsupportedTotal": 10,
+      "medianEndToEndLatencyMs": 1419,
+      "verificationCalls": 40,
+      "runtimeFailures": 0,
+      "grades": [
+        {
+          "caseID": "LEG-A01",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A02",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A03",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A04",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A05",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A06",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A07",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A08",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A09",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A10",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A11",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A12",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A13",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A14",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A15",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A16",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A17",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A18",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "LEG-A19",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "LEG-A20",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A01",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A02",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A03",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A04",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A05",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A06",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A07",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A08",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A09",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A10",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A11",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A12",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A13",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A14",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A15",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A16",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A17",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A18",
+          "verdict": "correct"
+        },
+        {
+          "caseID": "MED-A19",
+          "verdict": "false_abstention"
+        },
+        {
+          "caseID": "MED-A20",
+          "verdict": "unsupported_or_incomplete",
+          "note": "Draft changes a statement that remote attendance may help into language describing actual attendance and omits the diagnosis/notes restriction."
+        },
+        {
+          "caseID": "LEG-U01",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "LEG-U02",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "LEG-U03",
+          "verdict": "unsupported_assertion"
+        },
+        {
+          "caseID": "LEG-U04",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "LEG-U05",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U01",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U02",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U03",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U04",
+          "verdict": "correct_abstention"
+        },
+        {
+          "caseID": "MED-U05",
+          "verdict": "correct_abstention"
+        }
+      ]
+    }
+  ]
+}

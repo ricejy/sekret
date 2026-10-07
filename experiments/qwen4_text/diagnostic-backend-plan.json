@@ -1,0 +1,12 @@
+{
+  "reason": "Both arithmetic errors persisted in independent baseline and greedy controls. Check one arithmetic case for backend/API sensitivity before closing the diagnostic.",
+  "case": "packs-and-singles",
+  "reference": "Metal / greedy / legacy result from diagnostic-controls-vjgogpml: 30, expected 26",
+  "controls": ["CPU / greedy / legacy", "Metal / greedy / extended API"],
+  "predictions": [
+    "If the observed card-count miss depends on the Metal path, CPU-only inference may change it.",
+    "If it depends on legacy batch decoding, the extended decoding API may change it."
+  ],
+  "fixed": "Same model, native runtime, complete prompt and token IDs, greedy selection, context 2048, output cap 128, four threads. Each control changes only the named execution path.",
+  "limits": "Two diagnostic generations only; do not alter the original score. Even matching results cannot distinguish model limitations from quantization or a shared runtime problem."
+}

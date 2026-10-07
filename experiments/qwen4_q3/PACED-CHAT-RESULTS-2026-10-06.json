@@ -1,0 +1,42 @@
+{
+  "status": "Paced six-probe resource/completion screening passed; content review found formatting and length limitations; not release approval",
+  "plan": "PACED-CHAT-PLAN.json",
+  "planSHA256": "6a0354a5da1659683851b250e04b18e681dfe985924bcc9740be9ae1fdfac3a4",
+  "fixtureSHA256": "8c3f24bd47d4aad5d014edb068e7d4f2fd4d84746ec6687a7a8edc9bd176be39",
+  "build": 9,
+  "executableSHA256": "a0e6e0b43aaebe0323d015da5b9941d67b4acaa651bdff03d39afb1af6d3ae10",
+  "device": "iPhone 15 Pro Max, A17 Pro, iOS 27.0 (24A437)",
+  "readinessEvidence": "results/build9-readiness.json",
+  "evidence": "results/repeated-phone-_4akxheg/reports/9F55E334-4853-4C6C-A1FA-13F00FB71F4E",
+  "audit": "results/repeated-phone-_4akxheg/paced-audit.json",
+  "lifecycle": "results/repeated-phone-_4akxheg/lifecycle.json",
+  "nativeUnitTestsPassed": 7,
+  "inputAndTokenParityPassed": 6,
+  "actualGeneratedHistoryVerified": true,
+  "templateVerification": "Native chatml text and token hashes match a separately written publisher-subset formatter plus the retained publisher tokenizer. Full Jinja execution was not available; no claim of arbitrary tools/templates support.",
+  "resourceResults": {
+    "allSixCompleted": true,
+    "startThermalState": 0,
+    "perProbeStartThermalStates": [0, 0, 1, 1, 1, 1],
+    "perProbeReturnThermalStates": [0, 0, 1, 1, 1, 1],
+    "recordedMemoryWarningStops": 0,
+    "recordedThermalStops": 0,
+    "peakSampledFootprintBytes": 438275712,
+    "processLifetimePeakRSSBytes": 2522136576,
+    "lowestPreLoadHeadroomBytes": 3487184936,
+    "caution": "Sampled charged footprint and RSS differ; neither makes this 2.08 GB model a 438 MB total-RAM model. No energy/battery-drain measurement."
+  },
+  "contentReview": [
+    {"id": "paced-1", "assessment": "Core details retained: Saturday, 10 am, Cedar Hall, label packets, free entry. Adds creative promotional wording including heirloom seeds; no invented calendar date in this phone response.", "outputTokens": 69, "generationSeconds": 5.450288083331543},
+    {"id": "paced-2", "assessment": "Uses updates Sunday, 11 am, Birch Hall and retains labelled packets/free entry; follows prior generated chat context.", "outputTokens": 65, "generationSeconds": 5.942678874998819},
+    {"id": "paced-3", "assessment": "FAIL exact-three checklist instruction: returns five labelled fields. Core latest details retained, but Today label is an unsupported temporal assertion.", "outputTokens": 39, "generationSeconds": 4.635197541669186},
+    {"id": "paced-4", "assessment": "Correct one-sentence final day/time/venue/cost recall after updates.", "outputTokens": 19, "generationSeconds": 3.6702336666712654},
+    {"id": "paced-5", "assessment": "Completed robot/seed story with beginning, problem and happy ending, no refusal. 199 whitespace-delimited words rather than requested 180; word-count compliance not passed.", "outputTokens": 273, "generationSeconds": 19.633898958330974},
+    {"id": "paced-6", "assessment": "Correct extraction of Niko, Birch, 21 November, 735 credits from a 1618-token input. This is supplied-context extraction, not Knowledge Base retrieval validation.", "promptTokens": 1618, "outputTokens": 29, "generationSeconds": 12.659977291667019, "firstTokenSeconds": 10.504706583335064}
+  ],
+  "timingCaution": "Generation times include native context setup/prefill but exclude full-file hashing, model load, export, UI overhead and the deliberate 30-second reading pauses. Not end-to-end answer latency. First model load was 3.86 seconds; later loads about 0.20-0.22 seconds.",
+  "preservedFailure": "The earlier 20-probe back-to-back workload still failed thermal screening and remains in RESERVE-LIFECYCLE-2026-10-06.json. A differently paced pass does not erase or fix that result.",
+  "next": "Near-full context and longer multi-turn boundaries, battery/energy and repeatable thermal characterization remain before catalogue approval. Quality limitations may be disclosed separately from operational gates.",
+  "shippingChanges": false,
+  "newModelDownloads": false
+}

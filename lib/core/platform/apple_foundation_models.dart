@@ -124,6 +124,10 @@ final class AppleFoundationModels
   Stream<String> generateGrounded({required String prompt}) =>
       _generate(prompt, mode: 'grounded-chat');
 
+  @override
+  Stream<String> verifyGrounded({required String prompt}) =>
+      _generate(prompt, mode: 'grounded-verification');
+
   Stream<String> _generate(String prompt, {required String mode}) {
     final requestId =
         '${DateTime.now().microsecondsSinceEpoch}-${_requestSequence++}';

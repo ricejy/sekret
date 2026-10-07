@@ -1,0 +1,63 @@
+{
+  "status": "Both near-full-context probes and all eight paced chat turns passed finite resource and content checks; not release or battery qualification",
+  "scope": "Isolated pinned Qwen4 Q3 evaluation, not catalogue approval",
+  "plan": "CONTEXT-CHAT-PLAN.json",
+  "planSHA256": "4f549003ad4a853a9067f24b7fa757bbbe6bbc82e53cb48cb0c16f6aef7033a5",
+  "fixtureSHA256": "46a0520dc9243a24602d7e724b102e937ad1e57d11d5fc6c7a79afff7e65c3fd",
+  "build": 10,
+  "executableSHA256": "1cfef5d6bcaff970f2c72908e4193d0e970faf29eb612cbe81dbf9f9a4c7bf3e",
+  "runtimeUnitTestsPassed": 8,
+  "boundary": {
+    "evidence": "results/repeated-phone-4b7p82ut/reports/90FD0605-880F-4B39-B7FB-1D105537D7A5",
+    "tokenAudit": "results/repeated-phone-4b7p82ut/paced-audit.json",
+    "lifecycle": "results/repeated-phone-4b7p82ut/lifecycle.json",
+    "negativeAdmissionEvidence": "results/build10-boundary-admission.json",
+    "bothCompleted": true,
+    "bothAnswersCorrect": true,
+    "publisherTokenParity": true,
+    "negativeAdmissionPassed": true,
+    "thermalStatesBefore": [0, 0],
+    "thermalStatesAtReturn": [0, 1],
+    "lifecycleStopReason": "none",
+    "peakSampledFootprintBytes": 739102600,
+    "processLifetimePeakRSSBytes": 2818883584,
+    "probes": [
+      {"contextTokens": 2048, "inputTokens": 1884, "reservedOutputTokens": 128, "actualOutputTokens": 27, "generationSeconds": 14.21796233333589, "firstTokenSeconds": 12.172164125004201},
+      {"contextTokens": 4096, "inputTokens": 3938, "reservedOutputTokens": 128, "actualOutputTokens": 29, "generationSeconds": 32.508334625003044, "firstTokenSeconds": 29.966801583337656}
+    ],
+    "qualityReview": "Both correctly extract Niko, Birch, 21 November, 735 credits for Saffron, without mixing the distractor projects. Supplied-context extraction is not Knowledge Base retrieval validation.",
+    "timingCaution": "First-token and generation timers exclude model hashing/load, export and UI. Near-full 4K input has approximately 30 seconds of native first-token latency; do not label this workload fast."
+  },
+  "longChat": {
+    "status": "Eight turns completed; all final facts correct",
+    "readiness": "results/build10-long-chat-readiness.json",
+    "startThermalState": 1,
+    "evidence": "results/repeated-phone-otsc55aa/reports/EE79302A-902C-4DB1-BF69-CFBE6298745D",
+    "tokenAndHistoryAudit": "results/repeated-phone-otsc55aa/paced-audit.json",
+    "lifecycle": "results/repeated-phone-otsc55aa/lifecycle.json",
+    "allEightCompleted": true,
+    "actualGeneratedHistoryAndPublisherTokensVerified": true,
+    "allBeforeAndReturnThermalStates": [1],
+    "recordedMemoryWarningStops": 0,
+    "recordedThermalStops": 0,
+    "lifecycleStopReason": "none",
+    "peakSampledFootprintBytes": 444616320,
+    "processLifetimePeakRSSBytes": 2555871232,
+    "lowestPreLoadHeadroomBytes": 3178788712,
+    "inputTokensByTurn": [75, 143, 213, 299, 380, 475, 568, 643],
+    "generationSecondsByTurn": [2.551889416667109, 3.1237897499959217, 4.800741541665047, 5.1257578333315905, 6.374258249998093, 6.696203750005225, 4.91632270833361, 8.326952625000558],
+    "medianGenerationSeconds": 5.0210402708326,
+    "finalAnswer": "Workshop on Sunday at noon in Birch Hall, coordinated by Niko. Entry is free; materials budget is 75 credits. Access via the ramp at the side entrance. Attendees must label seed packets. 12 attendees, each bringing 2 packets, totaling 24 packets.",
+    "manualContentReview": "Every turn preserves the latest supplied updates; final answer includes all nine requested facts, no stale day/time/venue/coordinator, correct 12 times 2 arithmetic, and remains under 100 words. No quality percentage beyond this fixture.",
+    "limits": "Eight turns is the bounded fixture length, not a claimed model or production chat limit. Final history uses 643 input tokens; this is not an eight-turn near-full-context test. No context summary, truncation or KV-cache reuse tested. Generation timers exclude hash/load/export/UI and deliberate pauses."
+  },
+  "battery": {
+    "measured": false,
+    "localToolDiscovery": "Installed xctrace templates include Power Profiler. Device recording support and useful energy counters have not yet been verified. No power recording started.",
+    "caution": "USB-connected inference and thermal observations are not battery-drain measurements."
+  },
+  "preservedFailure": "Earlier back-to-back thermal screening remains failed; paced passes do not replace it.",
+  "next": "Prepare a separate controlled unplugged energy/battery measurement before drawing battery-life conclusions or approving default catalogue use. Near-full 4K first-token latency needs clear UX treatment; do not advertise uniform response speed.",
+  "newModelDownloads": false,
+  "shippingChanges": false
+}

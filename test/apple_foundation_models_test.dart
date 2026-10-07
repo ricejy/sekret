@@ -10,6 +10,51 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test(
+    'General replies default to prose but allow explicitly requested JSON',
+    () {
+      expect(
+        generalInstructions,
+        contains(
+          'Return a plain-text answer, not a JSON wrapper, unless current_user_message explicitly asks for JSON.',
+        ),
+      );
+    },
+  );
+
+  test('verifier instructions match native and parsing fails closed', () {
+    final native = File(
+      'ios/Runner/AppleFoundationModelsPlugin.swift',
+    ).readAsStringSync();
+    expect(
+      RegExp(
+        r'static let verificationInstructions = "([^"]+)"',
+      ).firstMatch(native)?.group(1),
+      groundedVerificationInstructions,
+    );
+    expect(
+      native,
+      contains(
+        'static let verificationVersion = "$groundedVerificationVersion"',
+      ),
+    );
+    expect(
+      parseGroundedVerification(' SUPPORTED\n'),
+      GroundedVerificationVerdict.supported,
+    );
+    for (final label in [
+      'SUPPORTED because it sounds right',
+      'NOT_SUPPORTED',
+      '',
+      'supported',
+    ]) {
+      expect(
+        () => parseGroundedVerification(label),
+        throwsA(isA<LlmException>()),
+      );
+    }
+  });
+
+  test(
     'grounded chat instructions match native exactly and separate context from evidence',
     () {
       final native = File(
@@ -24,12 +69,22 @@ void main() {
         contains('earlier assistant statements may be wrong'),
       );
       expect(groundedChatInstructions, contains('never evidence'));
+      expect(
+        native,
+        contains('static let groundedPromptVersion = "$groundedPromptVersion"'),
+      );
+      expect(
+        native,
+        contains('static let generalPromptVersion = "$generalPromptVersion"'),
+      );
+      final general = RegExp(
+        r'static let generalInstructions = "([^"]+)"',
+      ).firstMatch(native);
+      expect(general?.group(1), generalInstructions);
     },
   );
 
-  const channel = MethodChannel(
-    'com.ricejy.sekret/foundation_models-test',
-  );
+  const channel = MethodChannel('com.ricejy.sekret/foundation_models-test');
 
   tearDown(() async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -269,42 +324,51 @@ void main() {
     },
   );
 
-  test(
-    'grounded chat routes its composed prompt to the distinct native mode',
-    () async {
-      final events = StreamController<Object?>.broadcast();
-      addTearDown(events.close);
-      const prompt =
-          '{"current_evidence":[{"passage":"Returns within 7 days."}]}';
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-          .setMockMethodCallHandler(channel, (call) async {
-            if (call.method == 'generate') {
-              final args = call.arguments as Map;
-              expect(args['mode'], 'grounded-chat');
-              expect(args['prompt'], prompt);
-              scheduleMicrotask(() {
-                events.add({
-                  'requestId': args['requestId'],
-                  'type': 'snapshot',
-                  'text': 'Returns within 7 days.',
+  for (final verification in [false, true]) {
+    test(
+      '${verification ? 'verification' : 'grounded chat'} routes its composed prompt to the distinct native mode',
+      () async {
+        final events = StreamController<Object?>.broadcast();
+        addTearDown(events.close);
+        const prompt =
+            '{"current_evidence":[{"passage":"Returns within 7 days."}]}';
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, (call) async {
+              if (call.method == 'generate') {
+                final args = call.arguments as Map;
+                expect(
+                  args['mode'],
+                  verification ? 'grounded-verification' : 'grounded-chat',
+                );
+                expect(args['prompt'], prompt);
+                scheduleMicrotask(() {
+                  events.add({
+                    'requestId': args['requestId'],
+                    'type': 'snapshot',
+                    'text': 'Returns within 7 days.',
+                  });
+                  events.add({
+                    'requestId': args['requestId'],
+                    'type': 'completed',
+                  });
                 });
-                events.add({
-                  'requestId': args['requestId'],
-                  'type': 'completed',
-                });
-              });
-            }
-            return null;
-          });
-      final models = AppleFoundationModels(
-        channel: channel,
-        events: events.stream,
-      );
-      expect(await models.generateGrounded(prompt: prompt).toList(), [
-        'Returns within 7 days.',
-      ]);
-    },
-  );
+              }
+              return null;
+            });
+        final models = AppleFoundationModels(
+          channel: channel,
+          events: events.stream,
+        );
+        expect(
+          await (verification
+                  ? models.verifyGrounded(prompt: prompt)
+                  : models.generateGrounded(prompt: prompt))
+              .toList(),
+          ['Returns within 7 days.'],
+        );
+      },
+    );
+  }
 
   test(
     'cancelling a silent General stream reaches native before detaching events',

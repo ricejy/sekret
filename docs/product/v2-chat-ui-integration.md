@@ -17,7 +17,7 @@ Opt in to the Chat shell on iOS with:
 flutter run --release --dart-define=SEKRET_V2=true
 ```
 
-`openChatApp` opens the existing `sekret.sqlite3` filename with the v2
+`openChatApp` opens `sekret.sqlite3` with the v2
 vault and explicit file protection. It **never** resets an unrecognized/v1
 database. If the development phone still contains the v1 database, startup
 explains that the transition needs separate confirmation. Disable the flag to

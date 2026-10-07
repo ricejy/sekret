@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'sekret_brand.dart';
 import 'package:flutter/material.dart' show DefaultMaterialLocalizations;
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../core/chat/chat_engine.dart';
 import '../core/chat/chat_workspace.dart';
+import '../core/models/model_store.dart';
+import '../core/models/model_selection.dart';
+import '../core/models/model_catalogue.dart';
+import '../core/platform/local_model_backend.dart';
 import '../core/knowledge/knowledge_base.dart';
 import '../core/platform/apple_embedder.dart';
 import '../core/platform/apple_foundation_models.dart';
@@ -18,6 +23,8 @@ import '../core/storage/local_data_vault.dart';
 import 'chat/chat_screen.dart';
 import 'knowledge/source_preview.dart';
 import 'knowledge/knowledge_screen.dart';
+import 'knowledge/knowledge_import_actions.dart';
+import 'models/models_screen.dart';
 import 'settings/settings_screen.dart';
 import 'settings/onboarding_screen.dart';
 
@@ -29,6 +36,8 @@ class ChatAppResources {
     this.engine,
     this.models, {
     DeviceProtection device = const AppleDeviceProtection(),
+    this.modelStore,
+    this.modelSelection,
   }) : protection = AppProtection(vault.settings, device);
   final AppProtection protection;
   final LocalDataVault vault;
@@ -36,9 +45,13 @@ class ChatAppResources {
   final KnowledgeBase knowledge;
   final ChatEngine engine;
   final AppleFoundationModels models;
+  final ModelStore? modelStore;
+  final ModelSelection? modelSelection;
   Future<void> close() async {
     protection.dispose();
     await engine.dispose();
+    await modelSelection?.close();
+    await modelStore?.close();
     await knowledge.dispose();
     await workspace.dispose();
     await vault.close();
@@ -61,6 +74,8 @@ Future<ChatAppResources> openChatApp() async {
   final vault = await openLocalDataVault(databasePath: path);
   ChatWorkspace? workspace;
   KnowledgeBase? knowledge;
+  ModelStore? modelStore;
+  ModelSelection? modelSelection;
   try {
     await models.protectStorage(
       directoryPath: directory.path,
@@ -86,8 +101,33 @@ Future<ChatAppResources> openChatApp() async {
         revision: Platform.operatingSystemVersion,
       ),
     );
-    return ChatAppResources(vault, workspace, knowledge, engine, models);
+    modelStore = ModelStore(
+      directory: Directory('${directory.path}/reviewed-models'),
+      policy: const AppleModelStoragePolicy(),
+    );
+    try {
+      await modelStore.initialize();
+    } on Object {
+      /* Models shows a recoverable storage error. */
+    }
+    modelSelection = ModelSelection(
+      store: modelStore,
+      engine: engine,
+      apple: models,
+    );
+    await modelSelection.restore();
+    return ChatAppResources(
+      vault,
+      workspace,
+      knowledge,
+      engine,
+      models,
+      modelStore: modelStore,
+      modelSelection: modelSelection,
+    );
   } on Object {
+    await modelSelection?.close();
+    await modelStore?.close();
     await knowledge?.dispose();
     await workspace?.dispose();
     await vault.close();
@@ -105,6 +145,10 @@ class SekretChatApp extends StatefulWidget {
 
 class _SekretChatAppState extends State<SekretChatApp>
     with WidgetsBindingObserver {
+  static const _chatTab = 0;
+  static const _modelsTab = 1;
+  static const _knowledgeTab = 2;
+  static const _settingsTab = 3;
   ChatAppResources? _resources;
   late final Future<ChatAppResources> _resourcesFuture;
   final _tabs = CupertinoTabController();
@@ -141,6 +185,7 @@ class _SekretChatAppState extends State<SekretChatApp>
       setState(() {});
       _wasLocked = resources.protection.locked;
       resources.protection.addListener(_protectionChanged);
+      resources.modelSelection?.addListener(_modelChanged);
       if (_obscured) resources.protection.inactive();
       if (!_obscured && !resources.protection.locked) {
         unawaited(resources.knowledge.resume().catchError((Object _) {}));
@@ -157,6 +202,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (state == AppLifecycleState.hidden ||
         state == AppLifecycleState.paused) {
       resources.protection.background();
+      unawaited(resources.modelStore?.cancel());
     }
     if (state == AppLifecycleState.resumed) resources.protection.resumed();
     // Pause admission immediately, even if a foreground resume is indexing.
@@ -198,6 +244,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (locked && !_wasLocked) {
       _rootNavigator.currentState?.popUntil((route) => route.isFirst);
       final resources = _resources!;
+      unawaited(resources.modelStore?.cancel());
       _lifecycle = Future.wait([
         _lifecycle,
         resources.engine.suspend(),
@@ -205,6 +252,10 @@ class _SekretChatAppState extends State<SekretChatApp>
       ]).then<void>((_) {}).catchError((Object _) {});
     }
     _wasLocked = locked;
+    if (mounted) setState(() {});
+  }
+
+  void _modelChanged() {
     if (mounted) setState(() {});
   }
 
@@ -258,6 +309,9 @@ class _SekretChatAppState extends State<SekretChatApp>
           }
           await resources.protection.device.purgeImportCopies();
         case LocalDataAction.everything:
+          await resources.modelStore?.cancel();
+          await resources.modelSelection?.select(ModelCatalogue.apple.id);
+          await resources.modelStore?.remove();
           await resources.workspace.deleteAllChats();
           await resources.vault.eraseAll();
           await resources.protection.device.purgeImportCopies();
@@ -268,7 +322,7 @@ class _SekretChatAppState extends State<SekretChatApp>
           'Deletion could not be fully completed. Check storage and retry.';
     } finally {
       if (mounted) {
-        _tabs.index = 2;
+        _tabs.index = _settingsTab;
         setState(() => _maintenance = false);
         if (!_obscured && !resources.protection.locked) {
           await resources.engine.resume();
@@ -285,6 +339,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     final resources = _resources;
     if (resources != null) {
       resources.protection.removeListener(_protectionChanged);
+      resources.modelSelection?.removeListener(_modelChanged);
       unawaited(_lifecycle.whenComplete(resources.close));
     }
     super.dispose();
@@ -296,31 +351,33 @@ class _SekretChatAppState extends State<SekretChatApp>
     localizationsDelegates: const [DefaultMaterialLocalizations.delegate],
     title: 'Sekret',
     debugShowCheckedModeBanner: false,
-    theme: const CupertinoThemeData(
-      primaryColor: CupertinoColors.systemBlue,
-      scaffoldBackgroundColor: CupertinoColors.systemBackground,
-    ),
+    theme: SekretBrand.theme,
     // Wrap the navigator, not only the home: modal dialogs and sheets must
     // disappear from snapshots and accessibility too.
-    builder: (context, child) => Stack(
-      children: [
-        ExcludeSemantics(
-          excluding: _obscured || (_resources?.protection.locked ?? false),
-          child: IgnorePointer(
-            ignoring: _obscured || (_resources?.protection.locked ?? false),
-            child: child,
-          ),
-        ),
-        if (!_obscured && (_resources?.protection.locked ?? false))
-          Positioned.fill(child: _lockScreen(_resources!)),
-        if (_obscured)
-          Positioned.fill(
-            child: ColoredBox(
-              color: CupertinoColors.systemBackground.resolveFrom(context),
-              child: const Center(child: Text('Sekret')),
+    builder: (context, child) => MediaQuery(
+      data: MediaQuery.of(
+        context,
+      ).copyWith(platformBrightness: Brightness.dark),
+      child: Stack(
+        children: [
+          ExcludeSemantics(
+            excluding: _obscured || (_resources?.protection.locked ?? false),
+            child: IgnorePointer(
+              ignoring: _obscured || (_resources?.protection.locked ?? false),
+              child: child,
             ),
           ),
-      ],
+          if (!_obscured && (_resources?.protection.locked ?? false))
+            Positioned.fill(child: _lockScreen(_resources!)),
+          if (_obscured)
+            Positioned.fill(
+              child: ColoredBox(
+                color: SekretBrand.background,
+                child: const Center(child: Text('Sekret')),
+              ),
+            ),
+        ],
+      ),
     ),
     home: FutureBuilder<ChatAppResources>(
       future: _resourcesFuture,
@@ -371,6 +428,10 @@ class _SekretChatAppState extends State<SekretChatApp>
                     label: 'Chat',
                   ),
                   BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.cube),
+                    label: 'Models',
+                  ),
+                  BottomNavigationBarItem(
                     icon: Icon(CupertinoIcons.folder),
                     label: 'Knowledge Base',
                   ),
@@ -382,12 +443,18 @@ class _SekretChatAppState extends State<SekretChatApp>
               ),
               tabBuilder: (_, index) => CupertinoTabView(
                 builder: (context) {
-                  if (index == 0) {
+                  if (index == _chatTab) {
                     return ChatScreen(
                       workspace: resources.workspace,
                       engine: resources.engine,
+                      modelRevision: resources.modelSelection?.selected,
                       knowledge: resources.knowledge,
-                      onKnowledgeBase: () => _tabs.index = 1,
+                      onKnowledgeBase: () => _tabs.index = _knowledgeTab,
+                      onImportSource: (context, type) => importKnowledgeSource(
+                        context,
+                        resources.knowledge,
+                        type,
+                      ),
                       onPreview: (preview) => Navigator.of(context).push<void>(
                         CupertinoPageRoute(
                           builder: (_) => SourcePreview(
@@ -407,7 +474,15 @@ class _SekretChatAppState extends State<SekretChatApp>
                       onSettings: resources.models.openSettings,
                     );
                   }
-                  if (index == 1) {
+                  if (index == _modelsTab) {
+                    return ModelsScreen(
+                      model: resources.models,
+                      openSystemSettings: resources.models.openSettings,
+                      store: resources.modelStore,
+                      selection: resources.modelSelection,
+                    );
+                  }
+                  if (index == _knowledgeTab) {
                     return KnowledgeScreen(knowledge: resources.knowledge);
                   }
                   return SettingsScreen(
@@ -446,7 +521,7 @@ class _SekretChatAppState extends State<SekretChatApp>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(CupertinoIcons.lock_shield, size: 48),
+              const TuckMascot(size: 160),
               const SizedBox(height: 16),
               const Text('Sekret is locked'),
               if (resources.protection.error != null)

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import '../knowledge/knowledge_base.dart';
 import '../platform/embedder.dart';
@@ -27,6 +26,7 @@ final class ChatEngine {
     required ModelSnapshot model,
     this.knowledgeBase,
     this.groundedBackend,
+    this.outputTokenReserve = 512,
   }) : _model = ModelSnapshot(
          identifier: model.identifier,
          revision: model.revision,
@@ -34,17 +34,56 @@ final class ChatEngine {
        );
 
   final ChatWorkspace _workspace;
-  final GeneralLlmBackend _backend;
-  final ModelContextProbe _contextProbe;
-  final ModelSnapshot _model;
+  GeneralLlmBackend _backend;
+  ModelContextProbe _contextProbe;
+  ModelSnapshot _model;
   final KnowledgeBase? knowledgeBase;
-  final GroundedLlmBackend? groundedBackend;
+  GroundedLlmBackend? groundedBackend;
+  int outputTokenReserve;
+  bool get supportsKnowledgeBase => groundedBackend != null;
+  String get modelIdentifier => _model.identifier;
+
+  /// Atomic idle-only change of backend, tokenizer and retained provenance.
+  /// Existing turns keep their original model; sources are never cleared here.
+  Future<void> switchModel({
+    required GeneralLlmBackend backend,
+    required ModelContextProbe contextProbe,
+    required ModelSnapshot model,
+    GroundedLlmBackend? grounded,
+    int outputTokens = 512,
+    Future<void> Function()? beforeChange,
+  }) async {
+    if (_disposed || _cleanupFailed || isGenerating) {
+      throw StateError('Finish the current response before switching models');
+    }
+    _changingModel = true;
+    try {
+      await beforeChange?.call();
+      if (_disposed) throw StateError('Chat generation is disposed');
+      _backend = backend;
+      _contextProbe = contextProbe;
+      _model = ModelSnapshot(
+        identifier: model.identifier,
+        revision: model.revision,
+        metadata: Map.unmodifiable(model.metadata),
+      );
+      groundedBackend = grounded;
+      outputTokenReserve = outputTokens;
+    } finally {
+      _changingModel = false;
+    }
+  }
+
   _ActiveTurn? _active;
   bool _disposed = false;
   bool _suspended = false;
+  bool _changingModel = false;
+  bool _cleanupFailed = false;
 
-  bool get isGenerating => _active != null;
-  Future<LlmAvailability> availability() => _backend.availability();
+  bool get isGenerating => _active != null || _changingModel;
+  Future<LlmAvailability> availability() => _cleanupFailed
+      ? Future.value(const ModelNotReady())
+      : _backend.availability();
 
   /// Returns the persisted terminal turn. Streamed snapshots are observable
   /// through workspace.changes/transcript. Busy submissions are never queued.
@@ -63,7 +102,7 @@ final class ChatEngine {
     String text, {
     String? regenerateTurnId,
   }) {
-    if (_disposed || _suspended || isGenerating) {
+    if (_disposed || _suspended || _cleanupFailed || isGenerating) {
       return Future.error(
         StateError('Chat generation is not available right now.'),
       );
@@ -71,10 +110,23 @@ final class ChatEngine {
     final active = _ActiveTurn();
     _active =
         active; // Reserve synchronously, including availability/preflight.
-    return _execute(active, chatId, text, regenerateTurnId).whenComplete(() {
-      _active = null;
-      active.done.complete();
-    });
+    return _execute(active, chatId, text, regenerateTurnId).whenComplete(
+      () async {
+        try {
+          final backend = _backend;
+          if (backend is TurnLlmLifecycle) {
+            await (backend as TurnLlmLifecycle).finishTurn();
+          }
+        } on Object {
+          // Never switch/unlink a model when native shutdown is unconfirmed.
+          _cleanupFailed = true;
+          rethrow;
+        } finally {
+          _active = null;
+          active.done.complete();
+        }
+      },
+    );
   }
 
   Future<ChatTurnResult> _execute(
@@ -104,6 +156,7 @@ final class ChatEngine {
         'promptVersion': grounded
             ? groundedPromptVersion
             : generalPromptVersion,
+        if (grounded) 'verificationVersion': groundedVerificationVersion,
       },
     );
     var turn = grounded
@@ -155,7 +208,7 @@ final class ChatEngine {
         ],
         'current_user_message': turn.userText,
       };
-      final prompt = jsonEncode(conversation);
+      final prompt = buildGeneralChatPrompt(conversation);
       final size = await active.wait(_contextProbe.contextWindowSize());
       final instructions = await active.wait(
         _contextProbe.countInstructionTokens(
@@ -163,36 +216,38 @@ final class ChatEngine {
         ),
       );
       String groundedPrompt(List<StoredEvidencePassage> passages) =>
-          jsonEncode({
-            'conversation_context': {
+          buildGroundedChatPrompt(
+            conversationContext: {
               'context_summary': context.summary?.text,
               'recent_turns': conversation['recent_turns'],
             },
-            'current_user_message': turn.userText,
-            'current_evidence': [
+            question: turn.userText,
+            evidence: [
               for (final passage in passages)
-                {
-                  'source_id': passage.knowledgeItemId,
-                  'source_title': turn.provenance.sourceScope
+                (
+                  sourceId: passage.knowledgeItemId,
+                  sourceTitle: turn.provenance.sourceScope
                       .firstWhere(
                         (source) => source.id == passage.knowledgeItemId,
                       )
                       .title,
-                  'page': passage.page,
-                  'section': passage.heading,
-                  'passage': passage.text,
-                },
+                  page: passage.page,
+                  section: passage.heading,
+                  text: passage.text,
+                ),
             ],
-          });
+          );
       final tokens = await active.wait(
         _contextProbe.countPromptTokens(grounded ? groundedPrompt([]) : prompt),
       );
-      if (size <= 0 || instructions <= 0 || tokens <= 0) {
+      // A probe may count the exact system/user template as one prompt, with
+      // zero separate instruction tokens. Negative counts remain invalid.
+      if (size <= 0 || instructions < 0 || tokens <= 0) {
         throw const _TurnFailure(TurnFailure.streamFailure);
       }
-      // Native output cap is 512 tokens. Reserve a further 128 for framing.
+      // Reserve the selected native output cap plus a framing safety margin.
       // Never silently truncate the current message or partial history sections.
-      if (instructions + tokens + 512 + 128 > size) {
+      if (instructions + tokens + outputTokenReserve + 128 > size) {
         throw const _TurnFailure(TurnFailure.contextOverflow);
       }
       var generationPrompt = prompt;
@@ -225,7 +280,9 @@ final class ChatEngine {
             ),
           );
           if (count <= 0) throw const _TurnFailure(TurnFailure.streamFailure);
-          if (instructions + count + 512 + 128 <= size) admitted.add(candidate);
+          if (instructions + count + outputTokenReserve + 128 <= size) {
+            admitted.add(candidate);
+          }
           if (admitted.length == 4) break;
         }
         if (candidates.isNotEmpty && admitted.isEmpty) {
@@ -261,8 +318,7 @@ final class ChatEngine {
       while (await active.wait(iterator.moveNext())) {
         active.check();
         lastSnapshot = iterator.current;
-        if (!grounded ||
-            _hasEvidenceSupport(lastSnapshot, turn.provenance.evidence)) {
+        if (!grounded) {
           response = lastSnapshot;
           await _workspace.saveResponse(turn.id, response);
         }
@@ -271,11 +327,61 @@ final class ChatEngine {
       if (lastSnapshot.trim().isEmpty) {
         throw const _TurnFailure(TurnFailure.streamFailure);
       }
-      if (grounded &&
-          lastSnapshot.trim().isNotEmpty &&
-          (lastSnapshot.trim() == insufficientEvidenceMessage ||
-              !_hasEvidenceSupport(lastSnapshot, turn.provenance.evidence))) {
-        throw const _InsufficientEvidence();
+      if (grounded) {
+        if (lastSnapshot.trim().replaceAll("'", '’') ==
+                insufficientEvidenceMessage ||
+            RegExp(r'\[\s*\d+(?:\s*,\s*\d+)*\s*\]').hasMatch(lastSnapshot)) {
+          throw const _InsufficientEvidence();
+        }
+        // Release native generation before the second, fresh-session call.
+        // No grounded draft is persisted or exposed before final verification.
+        await iterator.cancel();
+        iterator = null;
+        active.check();
+        final verificationPrompt = buildGroundedVerificationPrompt(
+          groundedPrompt: generationPrompt,
+          draft: lastSnapshot,
+        );
+        final verificationInstructions = await active.wait(
+          _contextProbe.countInstructionTokens(
+            groundedVerificationInstructions,
+          ),
+        );
+        final verificationTokens = await active.wait(
+          _contextProbe.countPromptTokens(verificationPrompt),
+        );
+        if (verificationInstructions <= 0 || verificationTokens <= 0) {
+          throw const _TurnFailure(TurnFailure.streamFailure);
+        }
+        if (verificationInstructions +
+                verificationTokens +
+                groundedVerificationOutputTokens +
+                128 >
+            size) {
+          throw const _TurnFailure(TurnFailure.contextOverflow);
+        }
+        iterator = StreamIterator(
+          groundedBackend!.verifyGrounded(prompt: verificationPrompt),
+        );
+        var verdict = '';
+        final verificationWatch = Stopwatch()..start();
+        while (await active.wait(
+          iterator.moveNext().timeout(
+            const Duration(seconds: 30) - verificationWatch.elapsed,
+            onTimeout: () => throw const LlmException(
+              LlmFailureCode.streamFailure,
+              'The on-device verifier timed out.',
+            ),
+          ),
+        )) {
+          verdict = iterator.current;
+        }
+        active.check();
+        if (parseGroundedVerification(verdict) !=
+            GroundedVerificationVerdict.supported) {
+          throw const _InsufficientEvidence();
+        }
+        response = lastSnapshot;
       }
       if (response.trim().isEmpty) {
         throw const _TurnFailure(TurnFailure.streamFailure);
@@ -395,70 +501,4 @@ final class _TurnFailure implements Exception {
 
 final class _InsufficientEvidence implements Exception {
   const _InsufficientEvidence();
-}
-
-/// Conservative evidence-presence screen, not a semantic entailment proof.
-/// Citations are source cards; this heuristic NEVER creates inline attribution.
-bool _hasEvidenceSupport(String answer, List<TurnEvidenceSnapshot> evidence) {
-  if (answer.trim().isEmpty || answer.trim() == insufficientEvidenceMessage) {
-    return false;
-  }
-  // Model-authored citation markers have no independently established meaning.
-  if (RegExp(r'\[\s*\d+(?:\s*,\s*\d+)*\s*\]').hasMatch(answer)) return false;
-  final source = evidence
-      .map(
-        (passage) =>
-            '${passage.sourceTitle}\n${passage.heading}\n${passage.passageText}',
-      )
-      .join('\n')
-      .toLowerCase();
-  final numbers = RegExp(r'\d+(?:[.,]\d+)*');
-  final sourceNumbers = numbers
-      .allMatches(source)
-      .map((match) => match.group(0))
-      .toSet();
-  if (numbers
-      .allMatches(answer)
-      .any((match) => !sourceNumbers.contains(match.group(0)))) {
-    return false;
-  }
-  const ignored = {
-    'a',
-    'an',
-    'and',
-    'are',
-    'as',
-    'at',
-    'be',
-    'by',
-    'for',
-    'from',
-    'in',
-    'is',
-    'it',
-    'of',
-    'on',
-    'or',
-    'that',
-    'the',
-    'this',
-    'to',
-    'was',
-    'with',
-    'answer',
-    'document',
-    'source',
-    'sources',
-  };
-  final terms = RegExp(r'[\p{L}\p{N}]+', unicode: true)
-      .allMatches(answer.toLowerCase())
-      .map((match) => match.group(0)!)
-      .where((term) => !ignored.contains(term))
-      .toSet();
-  final sourceTerms = RegExp(
-    r'[\p{L}\p{N}]+',
-    unicode: true,
-  ).allMatches(source).map((match) => match.group(0)).toSet();
-  return terms.isNotEmpty &&
-      terms.where(sourceTerms.contains).length / terms.length >= 0.5;
 }
