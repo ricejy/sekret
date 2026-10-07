@@ -1,0 +1,38 @@
+{
+  "scope": "Exploratory foreground power profile of the isolated Qwen4 Q3 harness; not battery-life or catalogue approval",
+  "methodReference": "../../docs/evaluation/power-measurement-method-2026-10-06.md",
+  "build": 11,
+  "executableSHA256": "4840a6cc810690cc3b1915cc7ad09db1ba8cea1514d107a070848362ea5f4f8c",
+  "setupVerification": {
+    "signedBuildSucceeded": true,
+    "nativeRuntimeTestsPassed": 8,
+    "readiness": "results/build11-readiness.json",
+    "readinessBatteryLevel": 1,
+    "readinessThermalState": 0,
+    "readinessLowPowerMode": false,
+    "powerGuards": "New UIKit battery and notification paths are build-verified; existing eight native tests do not exercise these UI notifications. Charging-refusal receipt requested separately.",
+    "transportCaution": "Readiness transfer was slow. Charging-admission receipt transfers timed out at 30 and 60 seconds; lock-state query timed out at 15 seconds, so current lock state is unknown. Final plain idle launch succeeded. Charging-refusal behavior has not been corroborated by the missing receipt. Verify connectivity/readiness again before starting a measured workload."
+  },
+  "capturePreflight": {
+    "trace": "results/power-pid-preflight-hFTOWl/idle.trace",
+    "toc": "results/power-pid-preflight-hFTOWl/toc.xml",
+    "tables": "results/power-pid-preflight-hFTOWl/power.xml",
+    "mode": "20-second plugged-in idle capability diagnostic only",
+    "finding": "PID attachment works; app-name attachment failed. SystemPowerLevel, ProcessSubsystemPowerImpact, charging and thermal tables export. System discharge is zero while charging and must not be interpreted as zero consumption.",
+    "exportLimit": "Some Swift-backed tables omit column labels in XML. Do not guess the meaning of unlabelled app-impact columns. System percent-per-hour and brightness have explicit engineering types."
+  },
+  "eligibility": "Unplugged from USB and MagSafe, battery >=30%, nominal thermals, Low Power Mode off. Keep same Wi-Fi, brightness, app foreground and other device conditions. Do not change user settings automatically.",
+  "workload": "Existing eight-turn long-chat fixture, 2048 context, 256-token output cap, actual generated history, same pins/sampling, 30-second inter-turn pauses",
+  "phases": [
+    {"name": "attach-wait", "seconds": 45, "measurement": "Excluded; attach Instruments by verified app PID"},
+    {"name": "baseline-before", "seconds": 90, "measurement": "Foreground idle harness, no inference"},
+    {"name": "workload", "seconds": "actual bounded eight-turn duration, previously about 270", "measurement": "Includes hashes, loads, generation, export, and reading pauses"},
+    {"name": "baseline-after", "seconds": 90, "measurement": "Foreground idle after model/context cleanup"}
+  ],
+  "collection": "Run retest_phone.py --long-chat --power-profile and attach xctrace Power Profiler by the current process ID during the initial 45-second allowance. Cap tracing at 10 minutes and stop after the suite ends. Export power/charging/thermal tables, TOC, native results and power-* phase markers. Reject missing baseline/workload coverage rather than extrapolating it.",
+  "markers": "Wall-clock Unix time and monotonic uptime, battery level/state, brightness, Low Power Mode, thermal state and memory headroom at phase/turn boundaries. Compare with trace timestamps; preserve any mismatch.",
+  "safeguards": "Existing model hash, memory reserve, foreground-loss, OS memory-warning and serious/critical thermal cancellation remain. Power pilot additionally refuses charging/low-battery/non-nominal/LPM start; cancels on charging changes, battery <20%, LPM enabled. Foreground idle timer temporarily disabled and restored on finish.",
+  "analysis": "Use time-weighted measured rates for the observed phases, report baseline-before and baseline-after separately, and verify charging state/coverage. Unequal-duration pilot phases are not a same-duration paired benchmark. Do not convert relative app scores into watts or short-run rates into battery life/answers per charge.",
+  "limitations": "One exploratory run is not the proposed repeated same-duration baseline/workload pairs. Wireless Xcode connection and trace overhead remain present; this cannot characterize disconnected sleep. Harness UI and per-turn model reload/hash behavior may differ from eventual shipping implementation. Earlier stress thermal failure remains failed.",
+  "status": "One unplugged pilot completed; see POWER-PILOT-RESULTS-2026-10-06.json. Eight-turn content/resource checks passed. Power protocol incomplete: late attachment captured only 52.95% of initial baseline. Preserve diagnostic rates without qualification or extrapolation. No automatic repeat."
+}

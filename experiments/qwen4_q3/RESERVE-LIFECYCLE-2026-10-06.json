@@ -1,0 +1,151 @@
+{
+  "date": "2026-10-06",
+  "status": "Build 8 regression/manual lifecycle passed; back-to-back thermal screening still failed. Build 9 paced checks and build 10 near-full-context/eight-turn checks passed finite resource screening. Battery qualification remains pending.",
+  "followUp": {
+    "refusalDiagnosis": "REFUSAL-DIAGNOSIS-2026-10-06.json",
+    "pacedWorkload": "PACED-CHAT-RESULTS-2026-10-06.json",
+    "contextAndLongChat": "CONTEXT-CHAT-RESULTS-2026-10-06.json",
+    "powerPilotPlan": "POWER-PILOT-PLAN.json",
+    "powerPilotResults": "POWER-PILOT-RESULTS-2026-10-06.json",
+    "captureGateResults": "POWER-CAPTURE-GATE-RESULTS-2026-10-07.json",
+    "installedBuild": 12,
+    "caution": "Historical records below remain unchanged; updated fixtures and separate paced passes do not fix the model's general quality gaps or erase the previous stress failure."
+  },
+  "scope": "Isolated Qwen3-4B-Instruct-2507 Q3_K_M evaluation only; not catalogue or shipping approval",
+  "workflow": "diagnosing-bugs: replay the actual guard failure, minimize to identical loads, compare a single reserve change, inspect a bounded mixed-context run, retain failed acceptance and remove temporary instrumentation",
+  "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "reproduction": {
+    "originalReserveBytes": 3221225472,
+    "threeIdentical2KLoads": {
+      "pass": false,
+      "evidence": "results/repeated-phone-_1vv3kfz/verdict.json",
+      "completed": 2
+    },
+    "twoIdentical2KLoads": {
+      "pass": true,
+      "evidence": "results/repeated-phone-0b0kt85c/verdict.json"
+    },
+    "candidateReserveBytes": 2684354560,
+    "threeLoadsWithCandidate": {
+      "pass": true,
+      "evidence": "results/repeated-phone-p_vcv08v/verdict.json"
+    },
+    "originalPostSecondRunFootprintBytes": 404621464,
+    "originalPostSecondRunHeadroomBytes": 3135371112
+  },
+  "boundedRun": {
+    "evidence": "results/repeated-phone-fs1w_bom/reports/2E0A7667-08D7-4929-A3D3-37A46E582D93",
+    "answers": 20,
+    "contextTokens": [
+      2048,
+      4096
+    ],
+    "outputCap": 128,
+    "allAnswersCompleted": true,
+    "cancellationRequested": false,
+    "largestSampledFootprintBytes": 1044320328,
+    "largestProcessLifetimePeakRSSBytes": 3121512448,
+    "minimumPostCleanupHeadroomBytes": 2801317472,
+    "withinContextCleanupAfterFourWarmupAnswers": [
+      {
+        "context": 4096,
+        "min": 727714208,
+        "max": 738675104,
+        "range": 10960896
+      },
+      {
+        "context": 2048,
+        "min": 425527496,
+        "max": 435095752,
+        "range": 9568256
+      }
+    ],
+    "allThermalStatesAtReturn": [
+      2
+    ],
+    "memoryCriteriaPass": true,
+    "thermalCriteriaPass": false,
+    "overallPlanPass": false,
+    "plan": "RESERVE-CALIBRATION-PLAN.json",
+    "caution": "CLI verdict checks terminal outcomes only and returned true. The separate thermal/resource acceptance plan returned false. Do not present 20 completed answers as full stability qualification."
+  },
+  "thermalEvidence": {
+    "earlierRedAndTwoRunControl": "Native reports were nominal (0).",
+    "threeRunCandidate": "Native reports were fair (1).",
+    "twentyRunCandidate": "Every terminal native report was serious (2). No before-run thermal sample was collected in that instrumented build, so precise onset and causation are not established.",
+    "idleBuild8": "results/thermal-readiness-build8.json",
+    "idleThermalState": 2,
+    "interpretation": "Whole-device thermal state; no measured Celsius temperature or proof of model-only causation. Do not weaken the thermal gate to mark this run passed."
+  },
+  "cleanBuildSevenProbeRegression": {
+    "evidence": "results/repeated-phone-u00nosbh/reports/5BC2B412-92B6-4B78-95AF-9BEFAB7B0F39",
+    "pass": true,
+    "completedAnswers": 6,
+    "expectedEightTokenCancellations": 1,
+    "thermalStatesAtReturn": [0, 1],
+    "largestSampledFootprintBytes": 1019531312,
+    "largestProcessLifetimePeakRSSBytes": 3114647552,
+    "postRunReadiness": "results/post-seven-readiness-build8.json",
+    "postRunThermalState": 1,
+    "caution": "Short-input smoke regression only. Injected cancellation is not a manual Stop/background test, and no serious thermal transition occurred in this run."
+  },
+  "cleanBuildRepeatedLoadRegression": {
+    "evidence": "results/repeated-phone-ff55ktyr/reports/48B23A6E-62EB-437D-BD66-3A09745D3C46",
+    "lifecycleEvidence": "results/build8-thermal-stop-lifecycle.json",
+    "plannedAnswers": 20,
+    "completedAnswers": 5,
+    "cancelledAnswer": 6,
+    "cancelledAnswerOutputTokens": 15,
+    "unattemptedAnswers": 14,
+    "completedAnswerThermalStates": [1],
+    "cancelledAnswerThermalState": 2,
+    "stopReason": "Device thermal pressure",
+    "stopRequestToWorkerReturnSeconds": 0.11187575000076322,
+    "foregroundAtReturn": true,
+    "largestSampledFootprintBytes": 1018581088,
+    "largestProcessLifetimePeakRSSBytes": 3151265792,
+    "recordedMemoryWarningStops": 0,
+    "twentyAnswerAcceptancePass": false,
+    "observedThermalCancellationWorked": true,
+    "limitations": "Fresh launch started at fair thermal state after the seven-probe suite, not a cold independent baseline. No exact thermal causation or measured Celsius temperature. Cleanup trend instrumentation was removed in build 8; do not infer new post-cleanup trend measurements from these results. Thermal-triggered cooperative cancellation is not proof of UI Stop/background recovery."
+  },
+  "manualLifecycle": {
+    "userReported": "Both manual Stop/retry and background/retry checks passed",
+    "evidence": "results/manual-lifecycle-20261006",
+    "nativeChronology": [
+      {"operation": "6724399D-FE17-47DE-803D-921842789999", "time": "2026-10-06T14:03:34Z", "outcome": "completed", "outputTokens": 49},
+      {"operation": "24D59506-1E14-4A54-859C-18781D65249C", "time": "2026-10-06T14:03:42Z", "outcome": "cancelled", "outputTokens": 29, "stopReason": "Stop tapped", "stopToReturnSeconds": 0.063662166663561948},
+      {"operation": "CC18785E-84BC-4BF2-A234-62F6136E102D", "time": "2026-10-06T14:03:47Z", "outcome": "cancelled", "outputTokens": 14, "stopReason": "App left foreground", "stopToReturnSeconds": 0.11146791667124489},
+      {"operation": "25D46EBF-6EFA-44F5-8430-6DE83C288E18", "time": "2026-10-06T14:06:02Z", "outcome": "completed", "outputTokens": 49, "stopReason": "none", "thermalState": 1, "generationSeconds": 3.9000712083288818, "contentAssessment": "Refuses the fictional story citing an output limit; native completion demonstrates recovery, not successful instruction following or long-output qualification."}
+    ],
+    "allRecordedThermalStates": [0, 1],
+    "nativeStopConfirmed": true,
+    "nativeBackgroundCancellationConfirmed": true,
+    "nativeCompletedRecoveryConfirmed": true,
+    "remaining": "Manual cancellation/recovery mechanics confirmed. The short refusal does not qualify sustained long generation or answer quality. User observations remain separately attributed."
+  },
+  "build8Harness": {
+    "build": 8,
+    "executableSHA256": "b28e47db7fdb2f067a6db7e4b16e75f43f270deeef66a624eadd307e8bdd80fd",
+    "signedBuildSucceeded": true,
+    "nativeRuntimeUnitTestsPassed": 5,
+    "reserve": "Candidate 2.5 GiB pre-load headroom policy; memory-screened and clean-build seven-probe regression passed; guarded repeated-load acceptance failed on thermal pressure",
+    "thermalGuard": "Refuse start and per-probe load if thermalState >= serious; request cooperative cancellation on serious/critical thermal-state notification.",
+    "guardVerification": "One real serious-state transition delivered the thermal notification, requested native cancellation and returned in approximately 112 ms. The five existing runtime tests do not test SwiftUI notification delivery. Refusal of a new user start while serious has not been separately exercised.",
+    "unchangedSafeguards": [
+      "Pinned full-file hash with bounded temporary buffers",
+      "OS memory-warning cancellation",
+      "Foreground-loss cancellation",
+      "Single native operation at a time"
+    ],
+    "temporaryDiagnosticsRemoved": true,
+    "appState": "Manual retry completed after both cancellations; latest recorded thermal state fair, with no lifecycle stop reason",
+    "remaining": [
+      "Sustained-load thermal acceptance remains failed; any future cooled or paced workload is a separate labelled test, not replacement evidence",
+      "Long-output instruction following is not established: manual story prompt returned a short refusal",
+      "Near-full context and sustained multi-turn/energy qualification"
+    ]
+  },
+  "userAction": "No further manual clicking required for the completed checks. Refer to followUp for the latest build 10 evaluation; battery measurement and catalogue approval remain pending.",
+  "dataScope": "No shipping Sekret changes, downloaded model removal or personal/app data deletion. Original evidence retained."
+}

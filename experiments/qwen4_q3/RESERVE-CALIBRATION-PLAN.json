@@ -1,0 +1,15 @@
+{
+  "scope": "Isolated Qwen4 Q3 evaluation, not a universal iPhone memory policy",
+  "candidateReserveBytes": 2684354560,
+  "unchangedSafeguards": ["Full pinned SHA-256 verification", "OS memory-warning cancellation", "Foreground-loss cancellation", "Single active native operation"],
+  "diagnosticReplay": {"answers": 20, "contexts": "Alternate 2048 and 4096", "outputCap": 128, "prompt": "Existing fixed fictional seed-exchange prompt"},
+  "boundedAcceptance": {
+    "allExpectedAnswersComplete": true,
+    "recordedMemoryWarningStops": 0,
+    "largestSampledFootprintBelowBytes": 1610612736,
+    "noSeriousOrCriticalThermalStateAtReturn": true,
+    "warmupAnswersExcludedFromCleanupTrend": 4,
+    "withinEachContextCleanupRangeBelowBytes": 134217728
+  },
+  "limitations": "These are finite screening bounds, not measured worst-case memory requirements. Compare same-context cleanup samples; alternating context allocations need not be identical. Require the original seven-probe replay and a clean build regression after diagnostic instrumentation is removed. Real Stop/background/recovery is a separate manual gate."
+}

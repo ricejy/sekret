@@ -1,0 +1,61 @@
+{
+  "comparison": "Qwen3-4B-Instruct-2507 Q3_K_M versus saved Q4_K_M",
+  "qualification": "Small development comparison, not overall accuracy, controlled speed benchmark, iPhone qualification, or catalogue approval",
+  "q3_artifact": {
+    "repository": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+    "revision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+    "filename": "Qwen3-4B-Instruct-2507-Q3_K_M.gguf",
+    "bytes": 2075618400,
+    "sha256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+    "manifest_source": "https://huggingface.co/api/models/unsloth/Qwen3-4B-Instruct-2507-GGUF/revision/a06e946bb6b655725eafa393f4a9745d460374c9?blobs=true",
+    "provenance_limit": "Same community converter repository/revision as Q4; converter identifies publisher model but does not attest exact source-weights revision/conversion procedure. Inspected publisher metadata is not proof of that conversion provenance."
+  },
+  "baseline": {
+    "profile": "../qwen4_text/profile.json",
+    "run": "../qwen4_text/results/broader-o6ogzahr",
+    "grades": "../qwen4_text/BROADER-GRADES-2026-10-06.json",
+    "model_bytes": 2497281120,
+    "full_task_passes": 26,
+    "largest_process_peak_rss_bytes": 5448024064,
+    "largest_sampled_footprint_bytes": 2917552592
+  },
+  "q3_run": {
+    "run": "results/broader-fdfj78ie",
+    "manifest_sha256": "ba1dad90fc107030a2010107486a4e8f08e90de3afeda9f50c3ba74605338896",
+    "profile_sha256": "c075ff37c06e15a259674fa34b4700c704d1460d505554532cf5a51b9c4c0239",
+    "runner_sha256": "bba648d8a059b082a5338564e86ef6b016ceb242a37d567d547ee0905d679a07",
+    "completed": 30,
+    "full_task_passes": 25,
+    "grades": "BROADER-GRADES-2026-10-06.json",
+    "largest_process_peak_rss_bytes": 4603920384,
+    "largest_sampled_footprint_bytes": 2494779352,
+    "generation_seconds_median": 0.8547236458107363,
+    "generation_seconds_range": [0.5167392083094455, 3.2908741666469723]
+  },
+  "validation": [
+    "Model exact bytes and SHA verified before native parsing; all five Swift harness tests passed.",
+    "Native generation source differs from Q4 only in model hash and byte count; native CLI source is identical. Runtime, context, output cap, template, sampler, CPU threads and GPU settings remain unchanged.",
+    "All 30 native prompt/token sequences match publisher tokenizer reference and saved Q4 sequences exactly. Publisher metadata hashes match the original Q4 manifest.",
+    "All 30 native reports completed normally; every report hash and input hash was validated; each log confirms 37/37 layers offloaded to Apple M2 GPU.",
+    "Four resource-guard tests and nine shared collector/report tests pass; no prompts, thresholds, or sampling seeds were changed after seeing outputs."
+  ],
+  "quality_findings": {
+    "category_passes_q4_then_q3": {"everyday":[4,4],"facts":[5,5],"missing":[5,5],"arithmetic":[2,1],"boundaries":[5,5],"language-format":[5,5]},
+    "only_pass_fail_change": "token-balance: Q4 returned exact 22; Q3 returned a correct equation and 22 but violated number-only formatting.",
+    "shared_arithmetic_errors": ["Three packs of eight cards plus two loose: both answer 30 instead of 26.","14:20 plus 90 minutes: both answer 16:50 instead of 15:50."],
+    "shared_format_error": "Both add an equation to remaining-budget despite number-only instruction; both calculate 20 correctly.",
+    "meeting_rewrite": "Both fail, for different reasons: Q4 introduces an unsupported rationale; Q3 uses a greeting plus two questions, exceeding two sentences. Do not describe all failures as identical.",
+    "no_observed_new_source_fact_or_injection_failure": "Both pass all 15 facts/missing/boundary cases in this suite. This does not establish Knowledge Base verifier reliability or protection across unseen inputs."
+  },
+  "storage_saving_bytes": 421662720,
+  "storage_saving_percent_rounded": 16.88,
+  "measurement_limits": [
+    "Mac M2 with 16 GiB; fixed 2048 context and 128 output cap; short fictional prompts, one generation per case.",
+    "Q4 was collected earlier with a low-storage interruption; caches, compilation and other host activity were uncontrolled. Do not report a Q3 speedup ratio or attribute timing/memory differences solely to quantization.",
+    "Q3 generation time includes context creation/prefill but excludes model load/hash, final cleanup and UI. It is not tap-to-answer latency or iPhone performance.",
+    "Peak process RSS and sampled footprint are different measurements; samples can miss transient peaks. Neither is an iPhone memory requirement or a safety admission threshold.",
+    "This is a known development suite, not fresh held-out validation. Historical Q4 grades and scores remain unchanged."
+  ],
+  "recommendation": "Prefer Q3 for the next bounded physical-iPhone resource/lifecycle evaluation as a limited General-chat candidate: 17% smaller download with only one additional full-task failure, a formatting miss, on this screen. Retain disclosed arithmetic limitations. Do not yet call it compatible, recommended/default, Knowledge Base-capable, or image-capable.",
+  "cleanup_status": "Retain the active 2.08 GB Q3 candidate and 397 MB compact candidate for possible phone qualification. Prior retired Q4 weights remain removed. Shared runtime and all result metadata preserved; no Q4 or 27B weights re-downloaded."
+}
