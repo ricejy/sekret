@@ -1,0 +1,62 @@
+{
+  "dateLocal": "2026-10-07",
+  "timezone": "Asia/Singapore",
+  "scope": "Capture-timing correction and one complete exploratory pilot; not repeated battery or catalogue qualification",
+  "build": 12,
+  "executableSHA256": "7b7283e3dff2950f8aac9624bc9bf9192cc6137464b985fe950ac3cb321183e9",
+  "modelSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "plan": "POWER-CAPTURE-GATE-PLAN.json",
+  "diagnosis": {
+    "originalFailure": "POWER-PILOT-RESULTS-2026-10-06.json",
+    "cause": "Fixed 45-second delay released the baseline without confirmation of actual profiler recording. Trace started after baseline start; native clock drift was below one millisecond.",
+    "fix": "Run-specific capture-ready receipt, bounded 300-second wait, then 10-second settling and fresh eligibility check. Elapsed time alone never starts a baseline or inference.",
+    "regression": "Original replay still reports incomplete coverage; corrected replay reports full coverage. Matching receipt, trace-before-release and baseline-after-release assertions pass.",
+    "actualWaitSeconds": 83.43117809295654,
+    "settlingSeconds": 10.4232759475708,
+    "heldGateEvidence": "results/power-gated-dAW4Dv/held-gate-inventory.json contains only attach-wait marker when inspected beyond 45 seconds",
+    "unitTests": "10 native runtime tests passed, including new absent/late/stale/malformed/false receipt and expiry assertions; four power-analysis tests passed. Native receipt tests first failed to compile before adding the gate; saved trace supplied the independently reproduced behavioral failure.",
+    "limits": "Gate timeout and wrong-receipt cases are unit-tested, not separately exercised for five minutes on the phone. The receipt is an operator assertion of observed capture readiness, not an automatic Instruments handshake. Final trace coverage remains mandatory."
+  },
+  "evidence": {
+    "reports": "results/repeated-phone-0oyq_0co/reports/FCBC67D4-7F2D-458F-A7D2-44A33C303BF5",
+    "chatAudit": "results/repeated-phone-0oyq_0co/paced-audit.json",
+    "trace": "results/power-gated-dAW4Dv/pilot.trace",
+    "toc": "results/power-gated-dAW4Dv/toc.xml",
+    "tables": "results/power-gated-dAW4Dv/power.xml",
+    "powerAudit": "results/power-gated-dAW4Dv/power-summary.json",
+    "lifecycle": "results/power-gated-dAW4Dv/lifecycle.json"
+  },
+  "conditions": {
+    "device": "iPhone 15 Pro Max / iOS 27.0 (24A437)",
+    "initialReadiness": "results/build12-readiness.json initially reported Low Power Mode true; later admission receipt results/build12-low-power-admission.json reported false and allowed=true. This is NOT evidence of a Low Power Mode rejection. No settings were changed by the agent.",
+    "measuredRun": "Every native marker: unplugged, Low Power Mode off, nominal thermal state, brightness 1.0. Trace brightness remained 100 and the full thermal timeline was Nominal.",
+    "batteryGauge": "Native battery level changed from approximately 95% to 90% in one coarse step. Retain this observation separately; it does not reconcile directly with integrated profiler rates and is not a calibrated app-only drain measurement.",
+    "chargingTable": "No rows. Unplugged state corroborated by native markers and guarded completion, not by interpreting empty export as zero charging.",
+    "nativeClockDeltaMaximumSeconds": 0.0018557065704953857,
+    "connection": "Wireless Xcode profiling plus periodic report inventory polling; foreground app, no charging"
+  },
+  "chat": {
+    "completed": 8,
+    "contentCorrect": 8,
+    "contentReview": "All responses exactly match the prior manually reviewed eight-turn responses: updates retained, free entry distinct from materials budget, and 12 times two packets correctly totaled as 24. Final answer contains every requested fact.",
+    "realHistoryAndTokenParity": true,
+    "medianGenerationSeconds": 4.9977912083304545,
+    "medianTurnWallSeconds": 6.871883392333984,
+    "latencyScope": "Generation excludes model hash/load/export; wall time brackets these harness operations but is not tap-to-render UI latency. Workload includes seven fixed 30-second reading pauses.",
+    "peakSampledFootprintBytes": 437210728,
+    "processLifetimePeakRSSBytes": 2521956352,
+    "lifecycleStopReason": "none",
+    "foregroundAtReturn": true
+  },
+  "power": {
+    "completeCoverage": true,
+    "units": "Rounded, explicitly labelled whole-device battery-energy percent per hour, time-weighted over each phase",
+    "baselineBefore": {"durationSeconds": 93.3222541809082, "fullCoverage": true, "rate": 4.463937663548115},
+    "workload": {"durationSeconds": 273.4729528427124, "fullCoverage": true, "rate": 15.727067648477414},
+    "baselineAfter": {"durationSeconds": 93.48454308509827, "fullCoverage": true, "rate": 6.06196098792291},
+    "interpretation": "Full capture fixes the measurement-timing defect, not a model capability or efficiency gap. Rates describe this short whole-device experiment at full brightness with profiler overhead. No app-only attribution, baseline subtraction, promised battery life, or catalogue battery rating.",
+    "appImpact": "1194 rows preserved; unlabeled Swift-backed columns not assigned to CPU/GPU or converted to watts."
+  },
+  "remaining": "Repeated same-duration baseline/workload pairs and disconnected real-use checks before any battery rating. Earlier sustained-load thermal failure remains failed. One complete unequal-duration pilot is not the proposed repeated comparison.",
+  "dataScope": "No shipping app changes, new model downloads, personal data deletion, or debug logs left behind. Trace and previous failures retained. App left idle; profiler stopped."
+}

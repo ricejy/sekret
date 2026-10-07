@@ -1,0 +1,24 @@
+{
+  "scope": "Development diagnosis of one harmless story refusal, not a held-out model quality benchmark",
+  "method": "diagnosing-bugs: exact reproduction, single-phrase ablations, bounded control requests, retain red evidence",
+  "reproduce": "python3 experiments/qwen4_q3/refusal_probe.py --case original --repeat 2",
+  "signal": "Exit 1 when a narrow refusal phrase appears; manual content review remains required. This is not a universal refusal detector.",
+  "originalEvidence": "results/refusal-ezujlm9t/summary.json",
+  "postChatFramingRegression": "results/refusal-78b27rnq/summary.json: unchanged 49-token refusal, exact original prompt/token hashes, confirming the single-turn behavior was preserved",
+  "reproduction": "Two fresh Mac processes reproduced the same 49-token refusal and exact prompt/token hashes as the manual iPhone report",
+  "ablations": [
+    {"case": "no-test-language", "evidence": "results/refusal-fpw7yjpj/summary.json", "outcome": "48-token refusal remains when Stop-button test disclaimer is removed but output-limit phrase remains"},
+    {"case": "no-limit-language", "evidence": "results/refusal-fsh4wa4_/summary.json", "outcome": "512-token story, output-limit termination, no refusal when only continuing-until-output-limit phrase is removed"},
+    {"case": "plain-long", "evidence": "results/refusal-rh602qci/summary.json", "outcome": "512-token story, output-limit termination, no refusal with neither test nor output-limit wording"},
+    {"case": "bounded-story", "evidence": "results/refusal-_5jhd8v_/summary.json", "outcome": "273-token completed story with beginning, problem and happy ending; requested word count is not exact"},
+    {"case": "everyday-draft", "evidence": "results/refusal-qmcsa4vx/summary.json", "outcome": "138-token completed email; invents June 15th although prompt supplies only Saturday. Separate fidelity failure, not a refusal."}
+  ],
+  "rankedHypotheses": [
+    "Output-limit wording triggers an unnecessary refusal: supported by phrase ablations",
+    "Unspecified long length also causes refusal: not supported by the plain-long result",
+    "Prompt/seed-sensitive model behavior rather than a general inability to generate: supported in this fixed configuration, not proof across other seeds/devices"
+  ],
+  "conclusion": "The harness prompt's output-limit wording triggers this reproducible model refusal in the tested configuration. There was ample input/output reservation and no runtime refusal rule. This does not mean the model is fixed or every ordinary request succeeds.",
+  "change": "Build 9 manual fixture asks for a bounded 180-word story instead. Old prompt and failed outputs are retained. No shipping prompts or runtime safety gates changed.",
+  "limits": "Same pinned quantization and seed, development prompts. Ablation isolates a causal phrase, not every possible word-minimal refusal prompt. Mac timings overlap build activity and thermal changes and must not be marketed as speed benchmarks."
+}

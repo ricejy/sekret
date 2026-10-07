@@ -1,0 +1,20 @@
+{
+  "scope": "Isolated build 9 development workload, not shipping approval or a replacement for failed back-to-back thermal screening",
+  "model": "Existing pinned Qwen3-4B-Instruct-2507 Q3_K_M",
+  "sampling": "Unchanged top_k=20, top_p=0.8, temperature=0.7, seed=42",
+  "contextTokens": 2048,
+  "probes": [
+    {"id": "paced-1", "outputCap": 256, "criterion": "Invitation retains Saturday, 10 am, Cedar Hall, labelled seed packets, free entry"},
+    {"id": "paced-2", "outputCap": 256, "criterion": "Revises to Sunday, 11 am, Birch Hall while retaining labelled packets and free entry"},
+    {"id": "paced-3", "outputCap": 256, "criterion": "Exactly three checklist items, all latest details retained"},
+    {"id": "paced-4", "outputCap": 256, "criterion": "One sentence giving Sunday, 11 am, Birch Hall, free entry"},
+    {"id": "paced-5", "outputCap": 512, "criterion": "Non-refusal story with robot, seeds, problem and happy ending; review length separately against requested 180 words"},
+    {"id": "paced-6", "outputCap": 128, "criterion": "Extracts Niko, Birch, 21 November, 735 credits for Saffron from the longer fictional brief"}
+  ],
+  "history": "First four probes feed actual generated assistant text back using alternating publisher-format roles. Story and brief start independent chats. Native model/context reloaded each turn; no KV-cache reuse claim.",
+  "pacing": "30-second foreground reading pause between requests; cancellation checked every second, no automatic retry on failures",
+  "resourceCriteria": "Start below serious thermal state, preserve 2.5 GiB pre-load headroom, pinned SHA verification, memory-warning and thermal cancellation. All six expected completions, no recorded memory-warning or thermal stop, each terminal thermal state below serious, sampled footprint below 1.5 GiB.",
+  "qualityCriteria": "Manual content review separately from CLI completion verdict; no aggregate quality percentage from these six development prompts",
+  "tokenParity": "Compare captured inputs and report prompt/token hashes with retained publisher tokenizer/template before claiming valid multi-turn results",
+  "limitations": "One A17 Pro iPhone, fictional development prompts, bounded run. Not near-full-context, energy measurement, all-device compatibility or release qualification. Mac prompt diagnostic timings include uncontrolled contention and are not benchmarks."
+}
