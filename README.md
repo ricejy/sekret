@@ -21,17 +21,25 @@ flutter test
 flutter run -d windows
 ```
 
-## Current application slice
+## iPhone production build
 
-The app imports pasted text, PDFs, and document photos into a persistent, app-private SQLite library. File selection uses the operating system picker. `pdfrx` extracts PDF text locally page by page; pages without a text layer are rasterized locally and routed through Apple Vision OCR, as are selected photos. Import visibly advances through extraction, OCR when needed, chunking, embedding, and indexing. A document must be selected explicitly before asking a question.
+The production v2 shell currently requires an explicit build define; omitting it selects the legacy entry point. Use:
 
-Retrieval combines SQLite FTS5/BM25 and quantized dense vectors with reciprocal-rank fusion. Only whole chunks that fit the context budget are sent to the on-device answer seam, and grounded answers display an application-owned source citation. Extracted and OCR-recognized PDF pages retain their page and section association; photos cite page one. OCR failures, low-confidence recognition, and insufficient recognized text are reported explicitly. Malformed, unsupported, failed, and cancelled imports leave no queryable partial document. Unsupported questions return the fixed insufficient-evidence response.
+```sh
+flutter build ios --release --dart-define=SEKRET_V2=true
+```
 
-On iOS, sentence embeddings come from Apple's Natural Language framework and OCR comes from Apple Vision through narrow method-channel adapters. The OCR bridge accepts only supplied encoded images or rendered page pixels, returns recognized text and confidence, and has no network path. The app reports the available English embedding model's runtime dimension and revision, validates native results, and keeps Apple framework types out of Dart. Imports and questions map native failures to explicit, recoverable application outcomes without exposing document text. These paths continue to work in airplane mode once the operating system provides the required models.
+Supply signing through the local development environment; do not commit personal signing settings. Install updates over `com.ricejy.sekret` to preserve its local container.
 
-Windows development uses a deterministic fake embedding implementation so quantization, persistence, dense retrieval, and reciprocal-rank fusion remain portable and testable. Production token-counting and language-model adapters are still pending. The SwiftUI guardrail harness under `spikes/` remains disposable and independent of the Flutter application.
+## Current application
 
-Library data is stored in the platform application-support directory. Imported PDF and photo bytes are held in the same protected local database as their page-aware chunks. Delete removes the selected document together with its source bytes, chunks, search index entries, and vectors. The production pickers, PDF processing, and OCR adapters operate only on local bytes and contain no application network calls.
+Sekret is an iPhone-first, local assistant with Chat, Models, Knowledge Base and Settings. It requires no account or hosted inference. Three-step onboarding introduces privacy, AI readiness and optional app lock. Chats retain their history locally without sharing context across chats.
+
+The chat paperclip imports sources or selects existing Knowledge Base items; removable source chips define the evidence scope for future turns. Pasted text, PDFs and document photos are processed locally using PDF extraction, Apple Vision OCR, embeddings and hybrid retrieval. Ordinary-photo understanding is not implemented: OCR is text recognition, not visual reasoning.
+
+Apple Intelligence is the first model option. The reviewed Qwen3-4B-Instruct-2507 Q3_K_M download supports General text chat as a device-limited preview. Installation verifies the pinned size and hash; switching preserves turn provenance. Qwen does not provide Knowledge Base answers or image understanding. Explicit model downloads are the narrow networking exception in ADR 0005; prompts, chats and knowledge remain local.
+
+See [current status](docs/product/current-status.md) for acceptance evidence, limitations and historical-document pointers. Earlier integration and research notes describe their dated stage, not the current shipping surface.
 
 ## Retrieval quality benchmark
 

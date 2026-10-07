@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E95100000000000000000001 /* ModelDownloadPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95100000000000000000002 /* ModelDownloadPlugin.swift */; };
 		E95000000000000000000001 /* LocalModelPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95000000000000000000002 /* LocalModelPlugin.swift */; };
 		E95000000000000000000003 /* SekretInference in Frameworks */ = {isa = PBXBuildFile; productRef = E95000000000000000000004 /* SekretInference */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
@@ -50,6 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E95100000000000000000002 /* ModelDownloadPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadPlugin.swift; sourceTree = "<group>"; };
 		E95000000000000000000002 /* LocalModelPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalModelPlugin.swift; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				E95000000000000000000002 /* LocalModelPlugin.swift */,
+				E95100000000000000000002 /* ModelDownloadPlugin.swift */,
 				A91000000000000000000002 /* AppleEmbeddingPlugin.swift */,
 				B92000000000000000000002 /* AppleFoundationModelsPlugin.swift */,
 				C93000000000000000000002 /* AppleVisionOcrPlugin.swift */,
@@ -311,6 +314,7 @@
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				E95000000000000000000001 /* LocalModelPlugin.swift in Sources */,
+				E95100000000000000000001 /* ModelDownloadPlugin.swift in Sources */,
 				A91000000000000000000001 /* AppleEmbeddingPlugin.swift in Sources */,
 				B92000000000000000000001 /* AppleFoundationModelsPlugin.swift in Sources */,
 				C93000000000000000000001 /* AppleVisionOcrPlugin.swift in Sources */,

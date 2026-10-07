@@ -72,6 +72,18 @@ final class LocalModelPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
     func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let args = call.arguments as? [String: Any] ?? [:]
         switch call.method {
+        case "diagnosticState":
+            guard ProcessInfo.processInfo.arguments.contains("--sekret-model-rating-eval") else {
+                result(FlutterMethodNotImplemented); return
+            }
+            UIDevice.current.isBatteryMonitoringEnabled = true
+            result([
+                "onBattery": UIDevice.current.batteryState == .unplugged,
+                "thermalState": ProcessInfo.processInfo.thermalState.rawValue,
+                "applicationState": UIApplication.shared.applicationState.rawValue,
+                "availableMemoryBytes": QwenRuntime.availableMemoryBytes,
+                "ready": Self.ready,
+            ])
         case "supported": result(Self.supported)
         case "ready": result(Self.ready)
         case "prepareStorage":
@@ -195,7 +207,7 @@ final class LocalModelPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         for var file in [root] + children {
             let values = try file.resourceValues(forKeys: [.isSymbolicLinkKey])
             guard values.isSymbolicLink != true else { throw LocalModelError.invalid("Linked model entry") }
-            try FileManager.default.setAttributes([.protectionKey: FileProtectionType.complete], ofItemAtPath: file.path)
+            try FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file.path)
             try file.setResourceValues(excluded)
         }
         guard let bytes = try root.resourceValues(forKeys: [.volumeAvailableCapacityKey]).volumeAvailableCapacity else {

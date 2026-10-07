@@ -1,5 +1,7 @@
 # General chat engine integration
 
+Historical integration-stage note. For the accepted application baseline and remaining limitations, see [current status](current-status.md).
+
 Issue #22 introduced the General engine; #24 renames and extends it as
 `ChatEngine`, used alongside the app-lifetime
 `ChatWorkspace`. It does not switch the visible v1 screen to the v2 Chat tab;

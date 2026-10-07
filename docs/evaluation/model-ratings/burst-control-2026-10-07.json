@@ -1,0 +1,128 @@
+{
+  "schema": "sekret-model-ratings-v1",
+  "fixture": "sekret-broader-text-development-v1",
+  "fixtureSHA256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4",
+  "instructionsSHA256": "29c591d23f297701ee16735d801c2ecda91cbee5b9b845671e32eb534f3a240f",
+  "qwenSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "qwenRevision": "a06e946bb6b655725eafa393f4a9745d460374c9",
+  "qwenRuntime": "llama.cpp-b11429",
+  "applePromptVersion": "general-v4",
+  "timing": "native-preparation-and-generation-excludes-database-and-ui",
+  "os": "Version 27.0 (Build 24A437)",
+  "startedAt": "2026-10-07T06:13:29.520448Z",
+  "complete": false,
+  "results": [
+    {
+      "id": "polite-rewrite",
+      "model": "apple",
+      "outputCap": 512,
+      "output": "Please send me the draft by Friday.",
+      "completed": true,
+      "inputTokens": 294,
+      "preparationMs": 2068,
+      "firstSnapshotMs": 3747,
+      "elapsedMs": 3792
+    },
+    {
+      "id": "polite-rewrite",
+      "model": "qwen",
+      "outputCap": 256,
+      "output": "Please send me the draft by Friday.",
+      "completed": true,
+      "inputTokens": 244,
+      "preparationMs": 6461,
+      "firstSnapshotMs": 8144,
+      "elapsedMs": 8793
+    },
+    {
+      "id": "simple-explanation",
+      "model": "qwen",
+      "outputCap": 256,
+      "output": "Sorting a list means arranging the items in a specific order, like alphabetically or numerically, so they are easy to find. Searching a list means looking through the items to find a specific one, like finding a name in a phone book.",
+      "completed": true,
+      "inputTokens": 236,
+      "preparationMs": 1133,
+      "firstSnapshotMs": 2667,
+      "elapsedMs": 6165
+    },
+    {
+      "id": "simple-explanation",
+      "model": "apple",
+      "outputCap": 512,
+      "output": "Sorting arranges items from smallest to largest or in a specific order. Searching finds a single item you're looking for.",
+      "completed": true,
+      "inputTokens": 285,
+      "preparationMs": 2065,
+      "firstSnapshotMs": 4072,
+      "elapsedMs": 4255
+    },
+    {
+      "id": "picnic-checklist",
+      "model": "apple",
+      "outputCap": 512,
+      "output": "- Blanket  \n- Snacks  \n- Sunscreen  \n- Trash bags",
+      "completed": true,
+      "inputTokens": 293,
+      "preparationMs": 56,
+      "firstSnapshotMs": 1226,
+      "elapsedMs": 1334
+    },
+    {
+      "id": "picnic-checklist",
+      "model": "qwen",
+      "outputCap": 256,
+      "output": "- Drinking water  \n- A blanket or mat to sit on  \n- Snacks or food  \n- A reusable picnic basket or container",
+      "completed": true,
+      "inputTokens": 243,
+      "preparationMs": 5867,
+      "firstSnapshotMs": 7513,
+      "elapsedMs": 9487
+    },
+    {
+      "id": "creative-names",
+      "model": "qwen",
+      "outputCap": 256,
+      "output": "Seed Swap  \nGreen Share  \nRoot Circle",
+      "completed": true,
+      "inputTokens": 238,
+      "preparationMs": 1511,
+      "firstSnapshotMs": 3240,
+      "elapsedMs": 3908
+    },
+    {
+      "id": "creative-names",
+      "model": "apple",
+      "outputCap": 512,
+      "output": "Seed Exchange  \nGermination Group  \nPlot Network",
+      "completed": true,
+      "inputTokens": 289,
+      "preparationMs": 177,
+      "firstSnapshotMs": 7902,
+      "elapsedMs": 8110
+    },
+    {
+      "id": "brief-reschedule",
+      "model": "apple",
+      "outputCap": 512,
+      "output": "Hi, could you please move the team meeting to Tuesday? How does that work?",
+      "completed": true,
+      "inputTokens": 297,
+      "preparationMs": 121,
+      "firstSnapshotMs": 3292,
+      "elapsedMs": 3438
+    },
+    {
+      "id": "brief-reschedule",
+      "model": "qwen",
+      "outputCap": 256,
+      "output": "Hey team!",
+      "completed": false,
+      "inputTokens": 247,
+      "preparationMs": 6681,
+      "firstSnapshotMs": 8579,
+      "error": "LlmException",
+      "elapsedMs": 8804
+    }
+  ],
+  "stopped": "Bad state: qwen unavailable"
+}
