@@ -70,7 +70,7 @@ The post-run physical database audit found zero document rows imported during th
 
 ## Privacy verification
 
-An Instruments 26.6 Network Connections recording targeted `Sekret (20251, launched)` on the recorded iPhone and covered a complete Release import, question, answer/citation, and deletion cycle. The run lasted 1 minute 24 seconds. Filtering the connection summary for `Sekret` returned `No Data`, so the capture found zero connections or outbound requests attributable to the app.
+An Instruments 26.6 Network Connections recording targeted the app (PID 20251) on the recorded iPhone and covered a complete Release import, question, answer/citation, and deletion cycle. The run lasted 1 minute 24 seconds. Filtering the connection summary for the recorded app returned `No Data`, so the capture found zero connections or outbound requests attributable to the app. Historical display-name references in this document were normalized during the product rename; the original trace evidence was not rewritten.
 
 Only the Network Connections instrument was enabled. The HTTP Traffic instrument was deliberately removed before recording, so request URLs, headers, bodies, and document content were not captured. Instruments listed unrelated device-level connections under `Unknown`; these were not attributed to Sekret and are not counted as application traffic.
 
