@@ -1,0 +1,254 @@
+{
+  "date": "2026-10-06",
+  "candidate": "Qwen3-0.6B Q4_K_M",
+  "status": "phone-smoke-results-recorded-not-catalogue-qualified",
+  "modelBytes": 396705472,
+  "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+  "device": "iPhone 15 Pro Max, iOS 27.0 (24A437)",
+  "runtime": "llama.cpp b11429; native logs confirm 29/29 layers offloaded to GPU for all seven generated reports",
+  "build3ExecutableSHA256": "dc3a682471bed86b421388e4b2425df24e1cfd225eb4ab5aab46e33c36c09439",
+  "build4ExecutableSHA256": "51d354bfc5fb0eaf47ac9ebee108eb7e356fc9da84d633c60efe8b0a4af3bc9c",
+  "validation": {
+    "nativeTestsPassed": 5,
+    "signedBuildsSucceeded": [
+      3,
+      4
+    ],
+    "artifactSizeAndHashVerified": true,
+    "priorQwen4AndQwenQ8ReportsBackedUpAndCompared": true,
+    "extraMemoryEntitlement": false
+  },
+  "outcome": {
+    "terminalReports": 7,
+    "completedAnswers": 6,
+    "expectedEightTokenCancellations": 1,
+    "memoryWarningReceipts": 0,
+    "thermalStateAtEveryReturn": "nominal",
+    "batchAdmissionRefusal": {
+      "before": "phone-4k-1",
+      "thresholdBytes": 3221225472,
+      "availableBytes": 3188619112,
+      "afterCompleted2KProbes": 2,
+      "meaning": "Application's conservative pre-load guard refused the next load; not an OS warning or proof of a leak."
+    },
+    "remainingProbes": "Five remaining fixed probes ran once each in fresh app processes, preserving the initial refusal. The model and generation algorithm did not change.",
+    "qualityObservations": [
+      "Conditional notice output omitted Thursday and Friday and used three sentences instead of two.",
+      "Unicode output was valid UTF-8 but lacked the requested Korean greeting.",
+      "No new 30-case phone quality score: earlier Mac result remains 13/30, not a general accuracy estimate."
+    ]
+  },
+  "measurements": {
+    "generationSecondsRange": [
+      0.48016545833525015,
+      0.9097572083337582
+    ],
+    "generationSecondsMedian": 0.5580948749993695,
+    "nativeLoadSecondsRange": [
+      0.12289766666071955,
+      0.1902393749987823
+    ],
+    "largestSampledFootprintBytes": 1005783864,
+    "largestProcessLifetimePeakRSSBytes": 1430863872,
+    "completedOutputTokensRange": [
+      28,
+      69
+    ],
+    "timingCaveat": "Short-answer generation includes context creation/prefill but excludes whole-file hashing, model load, cleanup and UI. Not end-to-end chat response time; fresh processes still have warmed OS caches.",
+    "memoryCaveat": "Sampled footprint and process-lifetime peak RSS measure different things; neither is a guaranteed memory requirement."
+  },
+  "comparison": {
+    "qwen4Q3": "Previous 4B Q3 first probe received a real memory warning at approximately 2.49 GB sampled footprint and produced no answer.",
+    "qwen06Q4": "Current 0.6B Q4 produced answers at approximately 0.74–0.77 GB sampled footprint for 2K and 1.00–1.01 GB for 4K, but continuous repeated-run admission remains unresolved."
+  },
+  "notTested": [
+    "Actual UI Stop and in-flight Metal abort",
+    "Background/foreground recovery during generation",
+    "Long-running repeated-turn resource stability",
+    "Nearly full 2K/4K input contexts and sustained 512-token output",
+    "Offline network audit and production download/install lifecycle"
+  ],
+  "evidenceRoot": "results/phone-final/",
+  "initialBatchEvidence": "results/phone-attempt-1/",
+  "evidencePreservation": "Original batch and all fresh-process reports retained. Console sessions ended with nonzero status on our intentional app replacement/restarts, not observed spontaneous crashes.",
+  "next": "Investigate repeated-run memory/headroom and qualify real Stop/background behavior before enabling this limited-quality General-chat catalogue option. Do not enable Knowledge Base or vision from these results.",
+  "appState": "Reopened idle without test arguments after export. Shipping Sekret and personal data untouched.",
+  "perProbeReports": [
+    {
+      "loadSeconds": 0.14398200000141514,
+      "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 4096,
+        "configuredContext": 4096,
+        "elapsedSeconds": 0.537692916666856,
+        "firstTokenSeconds": 0.13812541666266043,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 35,
+        "peakObservedFootprintBytes": 1004571424,
+        "processPeakRSSBytes": 1429520384,
+        "promptSHA256": "73afeeceb9e4a73d3d583489d4b2c8f95252652b870c9f7621106fdb3aa0c8d8",
+        "promptTokens": 60,
+        "response": "1. Establish a central hub for seed exchanges.  \n2. Encourage community gardening and shared seed plots.  \n3. Host monthly meetups to foster networking and exchange.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "cbf8645d0bbcfbe0d57029cf93ca5ad1c07c7f2d873dbc5a80436d6bf366f0b7"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-single-turn-no-tools-nonthinking-v1"
+    },
+    {
+      "loadSeconds": 0.1902393749987823,
+      "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 4096,
+        "configuredContext": 4096,
+        "elapsedSeconds": 0.578496833331883,
+        "firstTokenSeconds": 0.17421179166558431,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 35,
+        "peakObservedFootprintBytes": 1005783864,
+        "processPeakRSSBytes": 1430863872,
+        "promptSHA256": "73afeeceb9e4a73d3d583489d4b2c8f95252652b870c9f7621106fdb3aa0c8d8",
+        "promptTokens": 60,
+        "response": "1. Establish a central hub for seed exchanges.  \n2. Encourage community gardening and shared seed plots.  \n3. Host monthly meetups to foster networking and exchange.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "cbf8645d0bbcfbe0d57029cf93ca5ad1c07c7f2d873dbc5a80436d6bf366f0b7"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-single-turn-no-tools-nonthinking-v1"
+    },
+    {
+      "loadSeconds": 0.14404308333905647,
+      "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 0.9097572083337582,
+        "firstTokenSeconds": 0.10519983333506389,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 69,
+        "peakObservedFootprintBytes": 770411176,
+        "processPeakRSSBytes": 1194967040,
+        "promptSHA256": "65853fb644822b4c79baa55654763d01d25521354aa69c8462daaf9d44308962",
+        "promptTokens": 91,
+        "response": "The ordinary meeting of the Alder Club is scheduled for 18:30 in Room Cedar. On festival week, the meeting will take place at 17:00 instead.  \n\nThe exception is the meeting on festival week, which occurs at 17:00, replacing the usual 18:30.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "72575c99f3ce70cee9a5a28f0defb1526f077eec7e7eda20b94a771ea6185ed2"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-single-turn-no-tools-nonthinking-v1"
+    },
+    {
+      "loadSeconds": 0.1426126666701748,
+      "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 0.48016545833525015,
+        "firstTokenSeconds": 0.16485395833296934,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 28,
+        "peakObservedFootprintBytes": 769084048,
+        "processPeakRSSBytes": 1194213376,
+        "promptSHA256": "56c9fe88834f52e2fab2b208a9101cfd53fa2f43b8c86a20b708b6c59412dab0",
+        "promptTokens": 64,
+        "response": "« Le café du été est un moment idéal pour le déjeuner.»  \n« Bonjour, chère Amie !»",
+        "thermalState": 0,
+        "tokenIDsSHA256": "d8a15fb92ddfdf5cbacd1b1c07095413101b1a1d9f3bcfeee123880207a9a0cb"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-single-turn-no-tools-nonthinking-v1"
+    },
+    {
+      "loadSeconds": 0.1733736666647019,
+      "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 0.6374940833338769,
+        "firstTokenSeconds": 0.24114108333014883,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 35,
+        "peakObservedFootprintBytes": 770198160,
+        "processPeakRSSBytes": 1194999808,
+        "promptSHA256": "73afeeceb9e4a73d3d583489d4b2c8f95252652b870c9f7621106fdb3aa0c8d8",
+        "promptTokens": 60,
+        "response": "1. Establish a central hub for seed exchanges.  \n2. Encourage community gardening and shared seed plots.  \n3. Host monthly meetups to foster networking and exchange.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "cbf8645d0bbcfbe0d57029cf93ca5ad1c07c7f2d873dbc5a80436d6bf366f0b7"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-single-turn-no-tools-nonthinking-v1"
+    },
+    {
+      "loadSeconds": 0.12289766666071955,
+      "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "configuredContext": 2048,
+        "elapsedSeconds": 0.48411416666203877,
+        "firstTokenSeconds": 0.09008545833057724,
+        "outcome": "completed",
+        "outputCap": 128,
+        "outputTokens": 35,
+        "peakObservedFootprintBytes": 741608104,
+        "processPeakRSSBytes": 1197309952,
+        "promptSHA256": "73afeeceb9e4a73d3d583489d4b2c8f95252652b870c9f7621106fdb3aa0c8d8",
+        "promptTokens": 60,
+        "response": "1. Establish a central hub for seed exchanges.  \n2. Encourage community gardening and shared seed plots.  \n3. Host monthly meetups to foster networking and exchange.",
+        "thermalState": 0,
+        "tokenIDsSHA256": "cbf8645d0bbcfbe0d57029cf93ca5ad1c07c7f2d873dbc5a80436d6bf366f0b7"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-single-turn-no-tools-nonthinking-v1"
+    },
+    {
+      "loadSeconds": 0.14363562500511762,
+      "modelSHA256": "ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a",
+      "operatingSystem": "Version 27.0 (Build 24A437)",
+      "physicalMemoryBytes": 8027406336,
+      "qualification": "unqualified-physical-device-evaluation",
+      "result": {
+        "actualContext": 2048,
+        "cancellationObservationSeconds": 4.1666498873382807e-7,
+        "configuredContext": 2048,
+        "elapsedSeconds": 0.1705671249947045,
+        "firstTokenSeconds": 0.0910269999949378,
+        "outcome": "cancelled",
+        "outputCap": 128,
+        "outputTokens": 8,
+        "peakObservedFootprintBytes": 767347344,
+        "processPeakRSSBytes": 1192411136,
+        "promptSHA256": "73afeeceb9e4a73d3d583489d4b2c8f95252652b870c9f7621106fdb3aa0c8d8",
+        "promptTokens": 60,
+        "response": "1. Establish a central hub for seed",
+        "thermalState": 0,
+        "tokenIDsSHA256": "cbf8645d0bbcfbe0d57029cf93ca5ad1c07c7f2d873dbc5a80436d6bf366f0b7"
+      },
+      "runtime": "llama.cpp-b11429",
+      "templateVersion": "qwen3-single-turn-no-tools-nonthinking-v1"
+    }
+  ]
+}

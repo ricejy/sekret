@@ -1,0 +1,2 @@
+This is a fictional notice: The Alder Club meets every Thursday at 18:30 in Room Cedar. On festival week only, it meets on Friday at 17:00 instead. Mira brings the green notebook.
+Restate the ordinary meeting day and time and the festival-week exception in two sentences. This is a formatting smoke test, not an accuracy certification.
