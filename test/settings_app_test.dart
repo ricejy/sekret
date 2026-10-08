@@ -122,20 +122,21 @@ void main() {
       expect(device.requests, 0);
       expect((await app.vault.settings.get()).biometricLockEnabled, isFalse);
       await settings(tester);
+      // Model readiness lives in Models, not Settings.
       expect(
         find.textContaining('does not support the required on-device model'),
-        findsOneWidget,
+        findsNothing,
       );
-      await tapRow(tester, 'Refresh storage');
+      expect(find.text('Keep Chats'), findsOneWidget);
       await tester.pumpWidget(const SizedBox.shrink());
       await settleSettings(tester);
     },
   );
 
   for (final action in [
-    'Delete all chats',
-    'Delete entire Knowledge Vault',
-    'Erase all local data',
+    'Delete All Chats',
+    'Delete Knowledge Vault',
+    'Erase All Data',
   ]) {
     testWidgets(
       '$action cancels safely, then removes only its confirmed scope',
@@ -165,13 +166,13 @@ void main() {
           ),
         );
         await settleSettings(tester);
-        if (action == 'Delete entire Knowledge Vault') {
+        if (action == 'Delete Knowledge Vault') {
           expect((await app.workspace.history()).single.id, chat.id);
         } else {
           expect(await app.workspace.history(), isEmpty);
           expect(app.workspace.currentChatId, isNull);
         }
-        if (action == 'Delete all chats') {
+        if (action == 'Delete All Chats') {
           expect((await app.vault.knowledge.list()).single.id, source.item.id);
         } else {
           expect(await app.vault.knowledge.list(), isEmpty);
@@ -203,7 +204,7 @@ void main() {
     await tester.enterText(composer, 'Private unsent draft');
     await settleSettings(tester);
     await settings(tester);
-    await tapRow(tester, 'Delete all chats');
+    await tapRow(tester, 'Delete All Chats');
     await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Delete'));
     await settleSettings(tester);
     expect(app.engine.isGenerating, isFalse);
@@ -239,7 +240,7 @@ void main() {
       await tester.pumpWidget(SekretChatApp(openResources: () async => app));
       await settleSettings(tester);
       await settings(tester);
-      await tapRow(tester, 'Delete entire Knowledge Vault');
+      await tapRow(tester, 'Delete Knowledge Vault');
       await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Delete'));
       await tester.pump(const Duration(milliseconds: 100));
       await expectLater(
@@ -264,7 +265,7 @@ void main() {
     await tester.pumpWidget(SekretChatApp(openResources: () async => app));
     await settleSettings(tester);
     await settings(tester);
-    await tapRow(tester, 'Erase all local data');
+    await tapRow(tester, 'Erase All Data');
     await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Erase All'));
     await settleSettings(tester);
     expect(await app.workspace.history(), hasLength(1));
@@ -294,7 +295,7 @@ void main() {
       await tester.tap(find.text('Unlock Sekret'));
       await settleSettings(tester);
       await settings(tester);
-      await tapRow(tester, 'Erase all local data');
+      await tapRow(tester, 'Erase All Data');
       // Observe concealment while inactive, when iOS still permits a frame.
       // A live integration runner cannot pump while paused. Do not wait for
       // rendering again until resumed; the native cover is a separate gate.
@@ -324,7 +325,7 @@ void main() {
       await tester.pumpWidget(SekretChatApp(openResources: () async => app));
       await settleSettings(tester);
       await settings(tester);
-      await tapRow(tester, 'Chat retention');
+      await tapRow(tester, 'Keep Chats');
       await tester.tap(
         find.widgetWithText(
           CupertinoActionSheetAction,
@@ -339,7 +340,7 @@ void main() {
       await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Cancel'));
       await settleSettings(tester);
       expect(await app.workspace.history(), hasLength(1));
-      await tapRow(tester, 'Chat retention');
+      await tapRow(tester, 'Keep Chats');
       await tester.tap(
         find.widgetWithText(
           CupertinoActionSheetAction,

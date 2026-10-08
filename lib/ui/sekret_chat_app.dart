@@ -496,8 +496,6 @@ class _SekretChatAppState extends State<SekretChatApp>
                     vault: resources.vault,
                     workspace: resources.workspace,
                     protection: resources.protection,
-                    model: resources.models,
-                    openSystemSettings: resources.models.openSettings,
                     deleteData: _deleteData,
                   );
                 },

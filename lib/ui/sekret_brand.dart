@@ -6,6 +6,7 @@ abstract final class SekretBrand {
   static const background = Color(0xFF101B21);
   static const surface = Color(0xFF1B2A31);
   static const accent = Color(0xFF72DECD);
+  static const accentDeep = Color(0xFF2A8C80);
   static const foreground = Color(0xFFF1F6F5);
   static const secondary = Color(0xFFB0C2C6);
   static const line = Color(0xFF31454D);

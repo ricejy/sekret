@@ -24,6 +24,12 @@ String retentionLabel(RetentionPolicy policy) => switch (policy) {
   RetentionPolicy.ninetyDays => '90 days after last activity',
 };
 
+String shortRetentionLabel(RetentionPolicy policy) => switch (policy) {
+  RetentionPolicy.manual => 'Forever',
+  RetentionPolicy.thirtyDays => '30 Days',
+  RetentionPolicy.ninetyDays => '90 Days',
+};
+
 String lockDelayLabel(AppLockDelay delay) => switch (delay) {
   AppLockDelay.immediate => 'Immediately',
   AppLockDelay.oneMinute => 'After 1 minute',
@@ -36,15 +42,11 @@ class SettingsScreen extends StatefulWidget {
     required this.vault,
     required this.workspace,
     required this.protection,
-    required this.model,
-    required this.openSystemSettings,
     required this.deleteData,
   });
   final LocalDataVault vault;
   final ChatWorkspace workspace;
   final AppProtection protection;
-  final LlmBackend model;
-  final Future<void> Function() openSystemSettings;
   final Future<void> Function(LocalDataAction) deleteData;
 
   @override
@@ -55,7 +57,6 @@ class _SettingsScreenState extends State<SettingsScreen>
     with WidgetsBindingObserver {
   VaultSettingsRecord? _settings;
   StorageUsage? _usage;
-  LlmAvailability? _model;
   Map<String, String> _diagnostics = const {};
   bool _busy = false;
   String? _error;
@@ -82,13 +83,11 @@ class _SettingsScreenState extends State<SettingsScreen>
     try {
       final settings = await widget.vault.settings.get();
       final usage = await widget.vault.storageUsage();
-      final model = await widget.model.availability();
       final diagnostics = await widget.protection.device.diagnostics();
       if (mounted) {
         setState(() {
           _settings = settings;
           _usage = usage;
-          _model = model;
           _diagnostics = diagnostics;
         });
       }
@@ -223,219 +222,297 @@ class _SettingsScreenState extends State<SettingsScreen>
   });
 
   @override
-  Widget build(BuildContext context) => CupertinoPageScaffold(
-    navigationBar: const CupertinoNavigationBar(middle: Text('Settings')),
-    child: SafeArea(
-      child: ListView(
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(24, 16, 24, 0),
-            child: Row(
+  Widget build(BuildContext context) {
+    final settings = _settings;
+    final usage = _usage;
+    final lockOn = settings?.biometricLockEnabled ?? false;
+    final authentication = _diagnostics['authentication'];
+    final secondary = CupertinoColors.secondaryLabel.resolveFrom(context);
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(middle: Text('Settings')),
+      child: SafeArea(
+        child: ListView(
+          children: [
+            if (_error != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(color: CupertinoColors.systemRed),
+                ),
+              ),
+            _section(
+              header: 'Chats & Storage',
+              footer: 'Sizes exclude system caches.',
               children: [
-                TuckMascot(size: 72),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Text(
-                    'Sekret',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
-                  ),
+                _tile(
+                  icon: CupertinoIcons.clock,
+                  color: CupertinoColors.systemIndigo,
+                  title: 'Keep Chats',
+                  value: settings == null
+                      ? null
+                      : shortRetentionLabel(settings.retentionPolicy),
+                  onTap: _retention,
+                ),
+                _tile(
+                  icon: CupertinoIcons.chat_bubble_2,
+                  color: CupertinoColors.systemGreen,
+                  title: 'Chats',
+                  value: usage == null ? '…' : _bytes(usage.chatBytes),
+                ),
+                _tile(
+                  iconWidget: const VaultIcon(),
+                  color: SekretBrand.accentDeep,
+                  title: 'Knowledge Vault',
+                  value: usage == null
+                      ? '…'
+                      : _bytes(
+                          usage.knowledgeSourceBytes +
+                              usage.knowledgeIndexBytes,
+                        ),
                 ),
               ],
             ),
-          ),
-          if (_error != null)
-            Padding(padding: const EdgeInsets.all(16), child: Text(_error!)),
-          CupertinoListSection.insetGrouped(
-            hasLeading: false,
-            header: _header('APPLE INTELLIGENCE READINESS'),
-            children: [
-              _detail(modelStatus(_model)),
-              _button('Check readiness', () => _run(_refresh)),
-              if (_model is! Available)
-                _button(
-                  'Open iOS Settings',
-                  () => _run(widget.openSystemSettings),
+            _section(
+              footer:
+                  'Erase All Data also removes downloaded models and needs Face ID, Touch ID or your passcode.',
+              children: [
+                _action(
+                  'Delete All Chats',
+                  () => _delete(LocalDataAction.chats),
                 ),
-              if (_model is! Available)
-                _detail(
-                  'History, preview, safe imports, Settings, and deletion remain available without generation.',
+                _action(
+                  'Delete Knowledge Vault',
+                  () => _delete(LocalDataAction.knowledge),
                 ),
-            ],
-          ),
-          CupertinoListSection.insetGrouped(
-            hasLeading: false,
-            header: _header('PRIVACY'),
-            children: [
-              _detail(
-                'Your chats, knowledge, search, and processing stay on this device. No account, cloud model, or sync.',
-              ),
-              _detail(
-                'Optional model downloads contact Hugging Face and its delivery hosts only after you confirm. They see your IP address and model request, not your chats or Knowledge Vault content. Downloaded model storage is shown in Models.',
-              ),
-              _detail(
-                'iOS sandbox and file protection protect stored data. App lock protects entry to Sekret; it is not database encryption. App-switcher snapshots are always hidden. Sekret sends no notifications.',
-              ),
-            ],
-          ),
-          CupertinoListSection.insetGrouped(
-            hasLeading: false,
-            header: _header('APP LOCK'),
-            children: [
-              MergeSemantics(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 14,
-                  ),
-                  child: Row(
-                    children: [
-                      const Expanded(child: Text('App lock')),
-                      CupertinoSwitch(
-                        value: _settings?.biometricLockEnabled ?? false,
-                        onChanged: _busy || _settings == null
-                            ? null
-                            : (value) => _run(() async {
-                                if (!await widget.protection.setEnabled(
-                                  value,
-                                )) {
-                                  if (mounted) {
-                                    await _report(widget.protection.error!);
-                                  }
-                                }
-                              }),
-                      ),
-                    ],
+                _action(
+                  'Erase All Data',
+                  () => _delete(LocalDataAction.everything),
+                ),
+              ],
+            ),
+            _section(
+              header: 'App Lock',
+              footer:
+                  authentication == null ||
+                      authentication.startsWith('Unavailable')
+                  ? (authentication ?? 'Device authentication is unavailable.')
+                  : 'Uses $authentication. Sekret always locks when it starts.',
+              children: [
+                _tile(
+                  icon: CupertinoIcons.lock_fill,
+                  color: CupertinoColors.systemBlue,
+                  title: 'App Lock',
+                  trailing: CupertinoSwitch(
+                    value: lockOn,
+                    onChanged: _busy || settings == null
+                        ? null
+                        : (value) => _run(() async {
+                            if (!await widget.protection.setEnabled(value)) {
+                              if (mounted) {
+                                await _report(widget.protection.error!);
+                              }
+                            }
+                          }),
                   ),
                 ),
+                if (lockOn)
+                  _tile(
+                    icon: CupertinoIcons.timer,
+                    color: CupertinoColors.systemOrange,
+                    title: 'Lock After Leaving',
+                    value: lockDelayLabel(settings!.lockDelay),
+                    onTap: () => _run(() async {
+                      final delay = await _choose(
+                        'Lock after leaving Sekret',
+                        AppLockDelay.values,
+                        lockDelayLabel,
+                      );
+                      if (delay != null) {
+                        await widget.protection.setDelay(delay);
+                      }
+                    }),
+                  ),
+              ],
+            ),
+            _section(
+              header: 'Privacy',
+              children: [
+                _fact(
+                  CupertinoIcons.device_phone_portrait,
+                  CupertinoColors.systemTeal,
+                  'Stays on this iPhone',
+                  'No account, cloud model or sync.',
+                ),
+                _fact(
+                  CupertinoIcons.arrow_down_circle_fill,
+                  CupertinoColors.systemPurple,
+                  'Downloads only when you ask',
+                  'Hugging Face sees your IP address, never your chats or vault.',
+                ),
+                _fact(
+                  CupertinoIcons.eye_slash_fill,
+                  CupertinoColors.systemGrey,
+                  'Hidden in the app switcher',
+                  'App Lock guards entry; iOS file protection secures stored data.',
+                ),
+              ],
+            ),
+            _section(
+              header: 'About Sekret',
+              footer: 'No analytics. Nothing is collected or sent.',
+              children: [
+                _tile(
+                  icon: CupertinoIcons.info,
+                  color: CupertinoColors.systemGrey,
+                  title: 'Version',
+                  value:
+                      '${_diagnostics['version'] ?? '—'} (${_diagnostics['build'] ?? '—'})',
+                ),
+                _tile(
+                  icon: CupertinoIcons.device_phone_portrait,
+                  color: CupertinoColors.systemGrey,
+                  title: 'System',
+                  value: _diagnostics['os'] ?? '—',
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+              child: Column(
+                children: [
+                  const TuckMascot(size: 64),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Sekret · private by design',
+                    style: TextStyle(fontSize: 13, color: secondary),
+                  ),
+                ],
               ),
-              _detail(
-                'Require Face ID, Touch ID, or your device passcode to enter Sekret. Cold launches always lock, regardless of delay.',
-              ),
-              _button(
-                'Lock delay',
-                () => _run(() async {
-                  final delay = await _choose(
-                    'Lock after leaving Sekret',
-                    AppLockDelay.values,
-                    lockDelayLabel,
-                  );
-                  if (delay != null) await widget.protection.setDelay(delay);
-                }),
-                subtitle: _settings == null
-                    ? null
-                    : lockDelayLabel(_settings!.lockDelay),
-              ),
-              _detail(
-                _diagnostics['authentication'] ??
-                    'Device authentication status unavailable.',
-              ),
-            ],
-          ),
-          CupertinoListSection.insetGrouped(
-            hasLeading: false,
-            header: _header('CHATS & STORAGE'),
-            children: [
-              _button(
-                'Chat retention',
-                _retention,
-                subtitle: _settings == null
-                    ? null
-                    : retentionLabel(_settings!.retentionPolicy),
-              ),
-              _detail(
-                _usage == null
-                    ? 'Reading storage…'
-                    : 'Chats: ${_bytes(_usage!.chatBytes)}\nKnowledge sources: ${_bytes(_usage!.knowledgeSourceBytes)}\nKnowledge indexes: ${_bytes(_usage!.knowledgeIndexBytes)}\nLogical content sizes; database overhead and system caches are not included.',
-              ),
-              _button('Refresh storage', () => _run(_refresh)),
-              _button(
-                'Delete all chats',
-                () => _delete(LocalDataAction.chats),
-                destructive: true,
-              ),
-              _button(
-                'Delete entire Knowledge Vault',
-                () => _delete(LocalDataAction.knowledge),
-                destructive: true,
-              ),
-              _button(
-                'Erase all local data',
-                () => _delete(LocalDataAction.everything),
-                destructive: true,
-              ),
-            ],
-          ),
-          CupertinoListSection.insetGrouped(
-            hasLeading: false,
-            header: _header('ABOUT SEKRET'),
-            children: [
-              _detail(
-                'Version ${_diagnostics['version'] ?? 'Unavailable'} (${_diagnostics['build'] ?? '—'})\n${_diagnostics['os'] ?? 'OS unavailable'}\nRuntime: Apple Foundation Models\nVault schema: $localDataVaultSchemaVersion',
-              ),
-              _detail(
-                'Diagnostics show only app, OS, runtime, and capability status. No prompts, filenames, source titles, content, or device identifiers are collected or sent.',
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _section({
+    String? header,
+    String? footer,
+    required List<Widget> children,
+  }) {
+    final secondary = CupertinoColors.secondaryLabel.resolveFrom(context);
+    return CupertinoListSection.insetGrouped(
+      backgroundColor: SekretBrand.background,
+      decoration: BoxDecoration(
+        color: SekretBrand.surface,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      separatorColor: SekretBrand.line,
+      header: header == null
+          ? null
+          : Semantics(
+              header: true,
+              child: Text(
+                header.toUpperCase(),
+                style: TextStyle(fontSize: 13, color: secondary),
+              ),
+            ),
+      footer: footer == null
+          ? null
+          : Text(footer, style: TextStyle(fontSize: 13, color: secondary)),
+      children: children,
+    );
+  }
+
+  /// iOS Settings-style coloured icon badge.
+  Widget _badge(Color color, {IconData? icon, Widget? child}) => Container(
+    width: 29,
+    height: 29,
+    decoration: BoxDecoration(
+      color: CupertinoDynamicColor.resolve(color, context),
+      borderRadius: BorderRadius.circular(7),
+    ),
+    child: IconTheme(
+      data: const IconThemeData(color: CupertinoColors.white, size: 18),
+      child: Center(child: child ?? Icon(icon)),
     ),
   );
 
-  Widget _header(String text) => Semantics(
-    header: true,
-    child: Text(
-      text,
-      style: TextStyle(
-        fontSize: 13,
-        fontWeight: FontWeight.normal,
-        color: CupertinoColors.secondaryLabel.resolveFrom(context),
+  Widget _tile({
+    IconData? icon,
+    Widget? iconWidget,
+    required Color color,
+    required String title,
+    String? value,
+    Widget? trailing,
+    VoidCallback? onTap,
+  }) => CupertinoListTile(
+    leading: _badge(color, icon: icon, child: iconWidget),
+    // Title and value share a line when they fit; large type wraps the value.
+    title: SizedBox(
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        spacing: 8,
+        children: [
+          Text(title),
+          if (value != null)
+            Text(
+              value,
+              style: TextStyle(
+                color: CupertinoColors.secondaryLabel.resolveFrom(context),
+              ),
+            ),
+        ],
       ),
     ),
+    trailing:
+        trailing ?? (onTap == null ? null : const CupertinoListTileChevron()),
+    onTap: onTap == null || _busy ? null : onTap,
   );
-  Widget _detail(String text) => SizedBox(
-    width: double.infinity,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-      child: Text(text),
+
+  Widget _action(String title, VoidCallback onTap) => CupertinoListTile(
+    title: Text(
+      title,
+      style: const TextStyle(color: CupertinoColors.systemRed),
     ),
+    onTap: _busy ? null : onTap,
   );
-  Widget _button(
-    String title,
-    VoidCallback action, {
-    String? subtitle,
-    bool destructive = false,
-  }) => CupertinoButton(
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-    onPressed: _busy ? null : action,
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
+
+  /// Multi-line, non-interactive statement row.
+  Widget _fact(IconData icon, Color color, String title, String detail) =>
+      MergeSemantics(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 11, 16, 11),
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: destructive ? CupertinoColors.systemRed : null,
+              _badge(color, icon: icon),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title),
+                    const SizedBox(height: 2),
+                    Text(
+                      detail,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: CupertinoColors.secondaryLabel.resolveFrom(
+                          context,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              if (subtitle != null)
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: CupertinoColors.secondaryLabel.resolveFrom(context),
-                  ),
-                ),
             ],
           ),
         ),
-        const SizedBox(width: 8),
-        const CupertinoListTileChevron(),
-      ],
-    ),
-  );
+      );
+
   String _bytes(int value) => value < 1024
       ? '$value B'
       : value < 1024 * 1024

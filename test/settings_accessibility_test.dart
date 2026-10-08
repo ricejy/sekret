@@ -87,8 +87,6 @@ void main() {
                       vault: vault,
                       workspace: workspace,
                       protection: protection,
-                      model: const FakeLlmBackend(),
-                      openSystemSettings: () async {},
                       deleteData: (_) async {},
                     ),
             ),
@@ -99,14 +97,14 @@ void main() {
 
       await mount();
       await capture('dark');
-      await tester.scrollUntilVisible(find.text('App lock'), 200);
+      await tester.scrollUntilVisible(find.text('App Lock'), 200);
       await settleSettings(tester);
       await capture('lock');
       await mount(scale: 2);
-      await tester.scrollUntilVisible(find.text('Lock delay'), 200);
+      await tester.scrollUntilVisible(find.text('Version'), 200);
       await settleSettings(tester);
       expect(tester.takeException(), isNull);
-      expect(find.text('Lock delay').hitTestable(), findsOneWidget);
+      expect(find.text('Version').hitTestable(), findsOneWidget);
       await capture('large-dark');
       await mount(onboarding: true);
       await capture('onboarding');

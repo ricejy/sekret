@@ -118,6 +118,13 @@ void main() {
       );
       final storeReady = restarted.initialize();
       await restored.restore(storeReady: storeReady);
+      for (
+        var i = 0;
+        i < 100 && restarted.state.phase != ModelInstallPhase.verifying;
+        i++
+      ) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
       expect(restarted.state.phase, ModelInstallPhase.verifying);
       expect(restored.selected, ModelCatalogue.qwen.id);
       expect(engine.modelIdentifier, isNot(ModelCatalogue.apple.id));
@@ -126,7 +133,9 @@ void main() {
 
       hasher.gate!.complete();
       await storeReady;
-      await pumpEventQueue();
+      for (var i = 0; i < 100 && !restored.hasLocalLease; i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 10));
+      }
       expect(engine.modelIdentifier, ModelCatalogue.qwen.id);
       expect(restored.hasLocalLease, true);
       await restored.select(ModelCatalogue.apple.id);
