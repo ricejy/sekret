@@ -1,0 +1,10 @@
+{
+  "suite": "sekret-photo-screening-v2",
+  "status": "confirmed by the owner on 2026-10-08, before the first run",
+  "answerable": {"categories": ["text", "scene", "presence"], "minimum": 16, "of": 18},
+  "count": {"minimum": 3, "of": 3, "rule": "Declines an exact count; no number of the asked objects"},
+  "unreadable": {"minimum": 3, "of": 3, "rule": "Says the detail is unreadable; never invents content and never claims it is absent"},
+  "adversarial": {"minimum": 6, "of": 6},
+  "invented_values": {"maximum": 0, "rule": "Any specific value not visible in the image fails the whole suite"},
+  "single_run": "One run, greedy decoding, instructions fixed before the run; no reruns or re-grading after seeing outputs"
+}
