@@ -35,6 +35,7 @@ class ModelsScreen extends StatefulWidget {
 class _ModelsScreenState extends State<ModelsScreen>
     with WidgetsBindingObserver {
   LlmAvailability? _availability;
+  String _query = '';
   String? _error;
   int _revision = 0;
   bool _checking = false;
@@ -42,7 +43,6 @@ class _ModelsScreenState extends State<ModelsScreen>
   bool _working = false;
   bool? _localSupported;
   String? _operationError;
-  String _query = '';
 
   @override
   void initState() {
@@ -289,38 +289,99 @@ class _ModelsScreenState extends State<ModelsScreen>
       backgroundColor: SekretBrand.background,
       navigationBar: const CupertinoNavigationBar(middle: Text('Models')),
       child: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          children: [
-            CupertinoSearchTextField(
-              placeholder: 'Search models',
-              onChanged: (value) => setState(() => _query = value),
-            ),
-            const SizedBox(height: 16),
-            if (_operationError != null) _notice(_operationError!),
-            if (widget.selection?.selected == 'unavailable')
-              _notice('Choose a model to restore your saved selection.'),
-            for (final model in models) _modelRow(model),
-            if (models.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(24),
-                child: Text('No matching models'),
+        // Tapping outside the search field or scrolling dismisses the keyboard.
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: ListView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            children: [
+              _intro(),
+              const SizedBox(height: 16),
+              CupertinoSearchTextField(
+                placeholder: 'Search models',
+                onChanged: (value) => setState(() => _query = value),
               ),
-            const SizedBox(height: 8),
-            CupertinoButton(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.zero,
-              onPressed: _ratingScale,
-              child: const Text(
-                'Held-out ratings · higher is better ⓘ',
-                style: TextStyle(fontSize: 12),
+              const SizedBox(height: 16),
+              if (_operationError != null) _notice(_operationError!),
+              if (widget.selection?.selected == 'unavailable')
+                _notice('Choose a model to restore your saved selection.'),
+              for (final model in models) _modelRow(model),
+              if (models.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text('No matching models'),
+                ),
+              const SizedBox(height: 4),
+              CupertinoButton(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.zero,
+                onPressed: _ratingScale,
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(CupertinoIcons.info_circle, size: 14),
+                    SizedBox(width: 6),
+                    Text('How ratings work', style: TextStyle(fontSize: 13)),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
+  /// What every model here shares, above the choice itself.
+  Widget _intro() => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text(
+        'Choose your model',
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+      ),
+      const SizedBox(height: 6),
+      const Text(
+        'Pick whichever you like and switch anytime. Every model runs entirely on this iPhone.',
+        style: TextStyle(fontSize: 15, color: SekretBrand.secondary),
+      ),
+      const SizedBox(height: 12),
+      Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: [
+          for (final (icon, label) in const [
+            (CupertinoIcons.wifi_slash, 'Offline'),
+            (CupertinoIcons.gift, 'Free'),
+            (CupertinoIcons.lock_fill, 'Private'),
+          ])
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: SekretBrand.accent.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, size: 13, color: SekretBrand.accent),
+                  const SizedBox(width: 5),
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: SekretBrand.accent,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    ],
+  );
 
   Widget _notice(String text) => Padding(
     padding: const EdgeInsets.only(bottom: 12),
@@ -354,21 +415,24 @@ class _ModelsScreenState extends State<ModelsScreen>
     final status = apple
         ? (_checking
               ? 'Checking readiness…'
-              : _error ?? modelStatus(_availability))
+              : _error ??
+                    (_availability is Available
+                        ? 'Built into iOS'
+                        : modelStatus(_availability)))
         : store == null
         ? 'Not available in this version'
         : switch (state!.phase) {
             ModelInstallPhase.absent =>
               _localSupported == false
                   ? 'Device not supported'
-                  : 'General text preview · 2.08 GB',
+                  : 'Open model · 2.08 GB download',
             ModelInstallPhase.downloading =>
               'Downloading · ${(100 * state.receivedBytes / store.model.artifact!.bytes).clamp(0, 100).toStringAsFixed(0)}%',
             ModelInstallPhase.verifying => 'Verifying…',
             ModelInstallPhase.installed =>
               selected && !active
-                  ? 'Installed · Tap circle to activate'
-                  : 'General text preview · 2.08 GB',
+                  ? 'Downloaded · Tap the circle to use'
+                  : 'Open model · 2.08 GB download',
             ModelInstallPhase.removing => 'Removing…',
             ModelInstallPhase.failed => state.message ?? 'Download failed',
           };

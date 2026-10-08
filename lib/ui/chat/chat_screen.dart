@@ -750,18 +750,21 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   );
 
   Widget _empty() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      const SizedBox(height: 20),
-      const TuckMascot(size: 120),
-      const SizedBox(height: 20),
+      const SizedBox(height: 12),
+      const TuckMascot(size: 160, asset: 'assets/brand/tuck-shell.png'),
+      const SizedBox(height: 16),
       const Text(
-        'A little space to think',
+        'Your own private space',
+        textAlign: TextAlign.center,
         style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 10),
       const Text(
-        'Ask a question, work through an idea, or choose sources from your Knowledge Vault.',
+        'Private AI that lives on your iPhone. It\'s free, works offline, and nothing you share ever leaves your device.',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: SekretBrand.secondary),
       ),
       const SizedBox(height: 20),
       CupertinoButton(
