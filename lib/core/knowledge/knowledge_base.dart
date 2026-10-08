@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/services.dart' show PlatformException;
+import 'package:sqlite3/sqlite3.dart' show SqliteException;
+import '../platform/llm_backend.dart' show LlmException;
 
 import '../platform/embedder.dart';
 import '../platform/ocr_engine.dart';
@@ -360,7 +364,9 @@ final class KnowledgeBase {
         pageCount: total,
         passages: passages,
       );
-    } on Object catch (error) {
+    } on Object catch (error, stack) {
+      // Type, code and stack only (no source text) for device diagnosis.
+      debugPrint('Knowledge processing failed: ${_failureCode(error)}\n$stack');
       await _store.setState(
         id,
         job.paused
@@ -698,8 +704,18 @@ String _safeFailure(Object error) => switch (error) {
     'The scanned page could not be rendered. Retry processing.',
   OcrException() =>
     'On-device text recognition failed. Check image quality and retry.',
-  EmbeddingException() =>
-    'On-device semantic indexing is unavailable or failed. Retry processing.',
+  EmbeddingException(:final code) =>
+    'On-device semantic indexing is unavailable or failed (${code.name}). Retry processing.',
   _ =>
-    'Processing failed. The original source is retained; retry or delete this item.',
+    'Processing failed (${_failureCode(error)}). The original source is retained; retry or delete this item.',
+};
+
+/// Type and code only: never exception messages, which may quote source text
+/// or SQL parameters.
+String _failureCode(Object error) => switch (error) {
+  LlmException(:final code) => 'model token count: ${code.name}',
+  VaultWriteException(:final cause) => 'storage: ${_failureCode(cause)}',
+  SqliteException(:final extendedResultCode) => 'sqlite $extendedResultCode',
+  PlatformException(:final code) => 'native: $code',
+  _ => error.runtimeType.toString(),
 };

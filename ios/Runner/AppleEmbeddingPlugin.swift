@@ -20,19 +20,35 @@ enum AppleSentenceEmbeddingError: String, Error {
 final class AppleSentenceEmbeddingService {
   static let language = "en"
 
-  private let model: SentenceEmbeddingModel?
+  private var loaded: SentenceEmbeddingModel?
+  private let load: () -> SentenceEmbeddingModel?
 
   init(model: SentenceEmbeddingModel?) {
-    self.model = model
+    self.loaded = model
+    self.load = { nil }
+  }
+
+  /// Retries loading until the system asset is ready, instead of keeping a
+  /// launch-time miss for the whole process.
+  init(load: @escaping () -> SentenceEmbeddingModel?) {
+    self.load = load
+  }
+
+  private var model: SentenceEmbeddingModel? {
+    if loaded == nil { loaded = load() }
+    return loaded
   }
 
   static func systemEnglish() -> AppleSentenceEmbeddingService {
-    if #available(iOS 14.0, *) {
-      return AppleSentenceEmbeddingService(
-        model: NLEmbedding.sentenceEmbedding(for: .english)
-      )
-    }
-    return AppleSentenceEmbeddingService(model: nil)
+    // The system asset loads lazily: on iOS 27 the default lookup can return
+    // nil while an explicit current-revision lookup succeeds right after.
+    AppleSentenceEmbeddingService(load: {
+      NLEmbedding.sentenceEmbedding(for: .english)
+        ?? NLEmbedding.sentenceEmbedding(
+          for: .english,
+          revision: NLEmbedding.currentSentenceEmbeddingRevision(for: .english)
+        )
+    })
   }
 
   func availability() -> [String: Any] {
@@ -136,3 +152,4 @@ final class AppleEmbeddingPlugin: NSObject, FlutterPlugin {
     return FlutterError(code: error.rawValue, message: message, details: nil)
   }
 }
+

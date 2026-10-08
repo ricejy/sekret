@@ -340,11 +340,11 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     await tester.tap(find.bySemanticsLabel('Add sources'));
     await settle(tester);
     expect(find.text('Import PDF'), findsOneWidget);
-    expect(find.text('Choose photograph'), findsOneWidget);
-    expect(find.text('Paste text'), findsOneWidget);
-    await tester.tap(find.text('Choose photograph'));
+    expect(find.text('Choose photograph'), findsNothing);
+    expect(find.text('Paste text'), findsNothing);
+    await tester.tap(find.text('Import PDF'));
     await settle(tester);
-    expect(requestedType, KnowledgeSourceType.photo);
+    expect(requestedType, KnowledgeSourceType.pdf);
     final otherChat = await workspace.newChat();
     final source = await vault.knowledge.beginProcessing(
       title: 'Imported photograph',
@@ -438,7 +438,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     for (final accept in [false, true]) {
       await tester.tap(find.bySemanticsLabel('Add sources'));
       await settle(tester);
-      await tester.tap(find.text('Paste text'));
+      await tester.tap(find.text('Import PDF'));
       await settle(tester);
       expect((await workspace.history()).single.mode, ChatMode.general);
       await tester.tap(find.text(accept ? 'Use existing source' : 'Cancel'));
@@ -506,25 +506,17 @@ void registerChatScreenTests({bool physicalDevice = false}) {
       // leaves Knowledge Base mode in place instead of answering generally.
       expect(find.text('No sources selected'), findsNothing);
       expect((await workspace.history()).single.mode, ChatMode.knowledgeBase);
+      expect(find.text('Use model knowledge'), findsNothing);
       await tester.enterText(message(), 'Do not fall back');
       await settle(tester);
+      await tester.tap(find.bySemanticsLabel('Send'));
+      await settle(tester);
       expect(
-        tester
-            .widget<CupertinoButton>(
-              find
-                  .ancestor(
-                    of: find.bySemanticsLabel('Send'),
-                    matching: find.byType(CupertinoButton),
-                  )
-                  .first,
-            )
-            .onPressed,
-        isNull,
+        find.textContaining('The sources for this chat were deleted.'),
+        findsOneWidget,
       );
       expect(await workspace.transcript(chat.id), isEmpty);
-      await tester.tap(find.text('Use model knowledge'));
-      await settle(tester);
-      expect((await workspace.history()).single.mode, ChatMode.general);
+      expect((await workspace.history()).single.mode, ChatMode.knowledgeBase);
     },
   );
 
@@ -753,7 +745,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     );
     await tester.tap(find.bySemanticsLabel('Add sources'));
     await settle(tester);
-    await tester.tap(find.text('Ask about a photo'));
+    await tester.tap(find.text('Photo Library'));
     await settle(tester);
     expect(picks, 1);
     expect(find.bySemanticsLabel('Attached photo'), findsOneWidget);
@@ -763,7 +755,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
 
     await tester.tap(find.bySemanticsLabel('Add sources'));
     await settle(tester);
-    await tester.tap(find.text('Ask about a photo'));
+    await tester.tap(find.text('Photo Library'));
     await settle(tester);
     await tester.enterText(find.byType(CupertinoTextField), 'What is this?');
     await settle(tester);
@@ -772,9 +764,16 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     expect(model.photoQuestions, ['What is this?']);
     expect(find.text('Photo answer · model interpretation'), findsOneWidget);
     expect(find.text('A fictional blue mug on a desk.'), findsOneWidget);
-    // The sent photo stays with its turn; the composer is cleared.
-    expect(find.bySemanticsLabel('Attached photo'), findsOneWidget);
+    // The sent photo stays with its turn and opens full screen.
+    expect(find.bySemanticsLabel('Attached photo'), findsNothing);
     expect(find.bySemanticsLabel('Remove photo'), findsNothing);
+    await tester.tap(find.bySemanticsLabel('Open photo'));
+    await settle(tester);
+    expect(find.byType(PhotoViewer), findsOneWidget);
+    expect(find.byType(InteractiveViewer), findsOneWidget);
+    await tester.tap(find.text('Done'));
+    await settle(tester);
+    expect(find.byType(PhotoViewer), findsNothing);
     await capture(tester, 'photo-answer');
   });
 
@@ -792,15 +791,10 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     );
     await tester.tap(find.bySemanticsLabel('Add sources'));
     await settle(tester);
-    await tester.tap(find.text('Ask about a photo'));
+    await tester.tap(find.text('Photo Library'));
     await settle(tester);
     expect(picks, 0);
-    expect(
-      find.text(
-        'Photo questions need Apple Intelligence on iOS 27 with image support.',
-      ),
-      findsOneWidget,
-    );
+    expect(find.text('This model does not support images.'), findsOneWidget);
   });
 }
 

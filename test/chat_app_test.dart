@@ -200,25 +200,17 @@ void main() {
       await settle(tester);
       await tester.tap(find.bySemanticsLabel('Add sources'));
       await settle(tester);
-      await tester.tap(find.text('Paste text'));
-      await settle(tester);
-      await tester.enterText(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is CupertinoTextField && widget.placeholder == 'Title',
+      // Text sources are imported in Knowledge; the paperclip selects them.
+      await tester.runAsync(
+        () => knowledge.importText(
+          title: 'Fixture source',
+          text: 'The fictional museum opens at noon.',
         ),
-        'Fixture source',
       );
-      await tester.enterText(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is CupertinoTextField &&
-              widget.placeholder == 'Paste your text',
-        ),
-        'The fictional museum opens at noon.',
-      );
+      await tester.tap(find.text('Choose from Knowledge Base'));
       await settle(tester);
-      await tester.tap(find.text('Import'));
+      await tester.tap(find.text('Fixture source'));
+      await tester.tap(find.text('Done'));
       await settle(tester);
       final imported = (await knowledge.catalogue()).single.item;
       expect(imported.title, 'Fixture source');

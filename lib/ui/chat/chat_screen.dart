@@ -179,17 +179,19 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   });
 
   bool get _busy => _submitting || widget.engine.isGenerating;
+
+  /// A Knowledge Base chat whose sources were all deleted stays grounded;
+  /// Send explains instead of falling back to model knowledge.
   bool get _sourcesReady =>
       _chat?.mode != ChatMode.knowledgeBase ||
-      (widget.engine.supportsKnowledgeBase &&
-          _chat!.selectedSourceIds.isNotEmpty &&
-          _chat!.selectedSourceIds.every(
-            (id) => _items.any(
-              (item) =>
-                  item.id == id &&
-                  item.processingState == KnowledgeProcessingState.indexed,
-            ),
-          ));
+      _chat!.selectedSourceIds.isEmpty ||
+      (_chat!.selectedSourceIds.every(
+        (id) => _items.any(
+          (item) =>
+              item.id == id &&
+              item.processingState == KnowledgeProcessingState.indexed,
+        ),
+      ));
 
   Future<void> _send({TurnRecord? regenerate}) async {
     final chat = _chat;
@@ -207,6 +209,22 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             !_sourcesReady ||
             _availability is! Available ||
             (photo != null && !_photoReady))) {
+      return;
+    }
+    final grounded = regenerate == null
+        ? chat.mode == ChatMode.knowledgeBase &&
+              chat.selectedSourceIds.isNotEmpty
+        : regenerate.provenance.mode == ChatMode.knowledgeBase;
+    if (regenerate == null &&
+        chat.mode == ChatMode.knowledgeBase &&
+        chat.selectedSourceIds.isEmpty) {
+      _report(
+        'The sources for this chat were deleted. Add sources with the paperclip or start a new chat.',
+      );
+      return;
+    }
+    if (grounded && !widget.engine.supportsKnowledgeBase) {
+      _report('This model does not support Knowledge Base answers.');
       return;
     }
     setState(() {
@@ -321,30 +339,20 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     final action = await showCupertinoModalPopup<String>(
       context: context,
       builder: (context) => CupertinoActionSheet(
-        title: const Text('Add to this chat'),
-        message: const Text(
-          'Everything stays on this device. Imports are saved in your Knowledge Base; a photo question stays with this chat.',
-        ),
+        // Photos attach to the message; PDFs are imported into the Knowledge
+        // Base. Photo and text imports remain available in Knowledge.
         actions: [
           if (widget.onPickPhoto != null)
             CupertinoActionSheetAction(
               onPressed: () => Navigator.pop(context, 'askPhoto'),
-              child: const Text('Ask about a photo'),
+              child: const Text('Photo Library'),
             ),
           if (widget.onImportSource != null)
-            for (final type in [
-              KnowledgeSourceType.pdf,
-              KnowledgeSourceType.photo,
-              KnowledgeSourceType.pastedText,
-            ])
-              CupertinoActionSheetAction(
-                onPressed: () => Navigator.pop(context, type.name),
-                child: Text(switch (type) {
-                  KnowledgeSourceType.pdf => 'Import PDF',
-                  KnowledgeSourceType.photo => 'Choose photograph',
-                  KnowledgeSourceType.pastedText => 'Paste text',
-                }),
-              ),
+            CupertinoActionSheetAction(
+              onPressed: () =>
+                  Navigator.pop(context, KnowledgeSourceType.pdf.name),
+              child: const Text('Import PDF'),
+            ),
           CupertinoActionSheetAction(
             onPressed: () => Navigator.pop(context, 'existing'),
             child: const Text('Choose from Knowledge Base'),
@@ -413,14 +421,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   /// Photo questions are General turns on a model with image input only.
-  bool get _photoReady => _photosSupported && _chat?.mode == ChatMode.general;
+  bool get _photoReady => _photoBlocker == null;
 
-  String? get _photoBlocker => _chat?.mode == ChatMode.knowledgeBase
-      ? 'Photo questions use model knowledge. Remove the selected sources first.'
-      : !_photosSupported
-      ? widget.engine.supportsKnowledgeBase
-            ? 'Photo questions need Apple Intelligence on iOS 27 with image support.'
-            : 'This model reads text only. Select Apple Intelligence in Models to ask about a photo.'
+  String? get _photoBlocker => !_photosSupported
+      ? 'This model does not support images.'
+      : _chat?.mode == ChatMode.knowledgeBase &&
+            _chat!.selectedSourceIds.isNotEmpty
+      ? 'Remove the selected sources to ask about a photo.'
       : null;
 
   Future<void> _pickPhoto(ChatRecord chat) async {
@@ -476,7 +483,21 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       padding: const EdgeInsets.only(bottom: 8),
       child: snapshot.data == null
           ? const SizedBox(width: 120, height: 120)
-          : _thumbnail(snapshot.data!, size: 120),
+          : Semantics(
+              button: true,
+              label: 'Open photo',
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push<void>(
+                  CupertinoPageRoute(
+                    fullscreenDialog: true,
+                    builder: (_) => PhotoViewer(bytes: snapshot.data!),
+                  ),
+                ),
+                child: ExcludeSemantics(
+                  child: _thumbnail(snapshot.data!, size: 120),
+                ),
+              ),
+            ),
     ),
   );
 
@@ -649,12 +670,15 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         },
         child: const Icon(CupertinoIcons.clock, semanticLabel: 'Chat history'),
       ),
+      // The chat's own title: set from its first message, or renamed.
       middle: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text('Sekret'),
           Text(
-            'On device',
+            _chat?.title ?? 'New Chat',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 11,
               color: CupertinoColors.secondaryLabel.resolveFrom(context),
@@ -940,22 +964,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             ),
           ),
         if (_chat?.mode == ChatMode.knowledgeBase) ...[
-          if (_chat!.selectedSourceIds.isEmpty)
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                CupertinoButton(
-                  onPressed:
-                      _busy ||
-                          _changingSources ||
-                          _importing ||
-                          _choosingSources
-                      ? null
-                      : () => _scope(_chat!.id, const []),
-                  child: const Text('Use model knowledge'),
-                ),
-              ],
-            ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -995,15 +1003,6 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           const Padding(
             padding: EdgeInsets.only(bottom: 8),
             child: Text('Adding source…', style: TextStyle(fontSize: 13)),
-          ),
-        if (!widget.engine.supportsKnowledgeBase &&
-            _chat?.mode == ChatMode.knowledgeBase)
-          const Padding(
-            padding: EdgeInsets.only(bottom: 8),
-            child: Text(
-              'This model supports text chat only. Select Apple Intelligence in Models for Knowledge Base answers, or remove sources to use model knowledge.',
-              style: TextStyle(fontSize: 13),
-            ),
           ),
         if (_availability is! Available)
           Wrap(
@@ -1156,4 +1155,46 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       ),
     );
   }
+}
+
+/// Full-screen, zoomable view of a photo retained with a turn.
+class PhotoViewer extends StatelessWidget {
+  const PhotoViewer({super.key, required this.bytes});
+  final Uint8List bytes;
+
+  @override
+  Widget build(BuildContext context) => CupertinoPageScaffold(
+    backgroundColor: CupertinoColors.black,
+    navigationBar: CupertinoNavigationBar(
+      backgroundColor: CupertinoColors.black,
+      brightness: Brightness.dark,
+      middle: const Text(
+        'Photo',
+        style: TextStyle(color: CupertinoColors.white),
+      ),
+      trailing: CupertinoButton(
+        padding: EdgeInsets.zero,
+        onPressed: () => Navigator.of(context).pop(),
+        child: const Text('Done'),
+      ),
+    ),
+    child: SafeArea(
+      child: InteractiveViewer(
+        minScale: 1,
+        maxScale: 5,
+        child: Center(
+          child: Image.memory(
+            bytes,
+            fit: BoxFit.contain,
+            gaplessPlayback: true,
+            semanticLabel: 'Photo',
+            errorBuilder: (_, _, _) => const Text(
+              'This photo can’t be shown.',
+              style: TextStyle(color: CupertinoColors.white),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }

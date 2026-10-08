@@ -104,18 +104,15 @@ final class AppleEmbedder implements Embedder, EmbeddingCapabilityProbe {
     }
   }
 
+  /// Not cached: the system asset may become ready later in this session.
   EmbeddingModelUnavailable _cacheUnavailable(
     String reason, {
     String language = 'en',
-  }) {
-    final status = EmbeddingModelUnavailable(
-      implementation: 'Apple Natural Language',
-      language: language,
-      reason: reason,
-    );
-    _cachedStatus = status;
-    return status;
-  }
+  }) => EmbeddingModelUnavailable(
+    implementation: 'Apple Natural Language',
+    language: language,
+    reason: reason,
+  );
 
   EmbeddingFailureCode _failureCode(String code) => switch (code) {
     'embedding_unavailable' => EmbeddingFailureCode.unavailable,
