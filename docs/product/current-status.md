@@ -26,7 +26,7 @@ These are one-phone measurements at full brightness under wireless profiling, no
 
 ## Remaining product work
 
-- The [matched development comparison](../evaluation/model-ratings/results-2026-10-07.md) now supplies preliminary General quality/speed ratings. Broader quality, comparable system-service memory and calibrated battery ratings remain unqualified.
+- The [held-out General comparison](../evaluation/model-ratings/heldout-v2-results-2026-10-08.md) (64 fresh tasks, blind grading with owner review) now supplies the General quality/speed ratings: Apple 3/5 quality, 5/5 speed; Qwen 3/5 quality, 4/5 speed. It replaces the [7 October development ratings](../evaluation/model-ratings/results-2026-10-07.md) in Models. Comparable system-service memory and calibrated battery ratings remain unqualified.
 - Ordinary-photo understanding needs separate scope, runtime/toolchain eligibility and quality/device acceptance. Current production imports use OCR; image-capable models have not been integrated.
 - Broader device support and a general release require their own qualification.
 

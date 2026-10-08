@@ -323,34 +323,44 @@ void main() {
   );
 
   testWidgets(
-    'shows preliminary measured ratings and leaves resources unmeasured',
+    'shows held-out measured ratings and leaves resources unmeasured',
     (tester) async {
       await show(tester, _Model());
       await tester.pumpAndSettle();
+      Finder rating(String id, String label) => find.descendant(
+        of: find.byKey(ValueKey(id)),
+        matching: find.bySemanticsLabel(label),
+      );
       expect(
-        find.bySemanticsLabel('Answer quality: 1 out of 5, preliminary'),
+        rating(
+          ModelCatalogue.apple.id,
+          'Answer quality: 3 out of 5, held-out test',
+        ),
         findsOneWidget,
       );
       expect(
-        find.bySemanticsLabel('Speed: 5 out of 5, preliminary'),
+        rating(ModelCatalogue.apple.id, 'Speed: 5 out of 5, held-out test'),
         findsOneWidget,
       );
       await tester.ensureVisible(find.byKey(ValueKey(ModelCatalogue.qwen.id)));
       await tester.pumpAndSettle();
       expect(
-        find.bySemanticsLabel('Answer quality: 3 out of 5, preliminary'),
+        rating(
+          ModelCatalogue.qwen.id,
+          'Answer quality: 3 out of 5, held-out test',
+        ),
         findsOneWidget,
       );
       expect(
-        find.bySemanticsLabel('Speed: 4 out of 5, preliminary'),
+        rating(ModelCatalogue.qwen.id, 'Speed: 4 out of 5, held-out test'),
         findsOneWidget,
       );
       expect(find.text('Not measured'), findsNWidgets(4));
       await tester.ensureVisible(
-        find.text('Preliminary ratings · higher is better ⓘ'),
+        find.text('Held-out ratings · higher is better ⓘ'),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Preliminary ratings · higher is better ⓘ'));
+      await tester.tap(find.text('Held-out ratings · higher is better ⓘ'));
       await tester.pumpAndSettle();
       expect(find.text('Rating scale'), findsOneWidget);
       expect(

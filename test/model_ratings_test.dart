@@ -8,19 +8,19 @@ void main() {
     final report =
         jsonDecode(
               File(
-                'docs/evaluation/model-ratings/paced-results-2026-10-07.json',
+                'docs/evaluation/model-ratings/heldout-v2-results-2026-10-08.json',
               ).readAsStringSync(),
             )
             as Map;
     final grades =
         jsonDecode(
               File(
-                'docs/evaluation/model-ratings/grades-2026-10-07.json',
+                'docs/evaluation/model-ratings/heldout-v2-grades-2026-10-08.json',
               ).readAsStringSync(),
             )
             as Map;
     expect(report['complete'], isTrue);
-    expect((report['results'] as List).length, 60);
+    expect((report['results'] as List).length, 128);
     expect(grades['sourceStartedAt'], report['startedAt']);
     for (final (name, rating) in [
       ('apple', ModelRatings.apple),
@@ -47,7 +47,7 @@ void main() {
       );
       final times = rows.map((r) => r['elapsedMs'] as int).toList()..sort();
       expect(
-        (times[14] + times[15]) / 2000,
+        (times[31] + times[32]) / 2000,
         closeTo(rating.medianSeconds, 0.000001),
       );
       expect(grades['summary'][name]['qualityScore'], rating.quality);
