@@ -40,3 +40,7 @@ Generation is greedy, single-turn, Metal-offloaded; no sampling sweep or tokeniz
 The approved Liquid Q8 pair has completed the isolated Mac development screen. See [exact results and limitations](LIQUID-RESULTS-2026-10-06.md). Fetch with `bash experiments/local_vision/fetch-liquid-approved.sh`, build with the existing `build.sh`, and run `bash experiments/local_vision/run-liquid-development.sh` only while no other native evaluator is running. Each future run receives a unique result directory and a 120-second per-case timeout; failures are retained. The existing Smol profile is unchanged; its obsolete downloaded weights were removed centrally by root after reports were preserved. No phone or shipping integration is included.
 
 Storage cleanup is complete for Liquid too: its model and projector were removed after evaluation. Re-fetching the pinned pair is required before another vision run; metadata, results and the shared runtime are preserved.
+
+## Gemma 4 E2B screening
+
+`fetch-gemma-approved.sh` retrieves the pinned QAT Q4 pair; `run-screening.py` runs the frozen [photo screening set](../photo_screening/README.md) through `local-vision-eval --gemma --system ...`, refusing a changed suite or image. Result: [did not advance](GEMMA-SCREENING-RESULTS-2026-10-08.md).

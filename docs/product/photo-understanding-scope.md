@@ -2,6 +2,8 @@
 
 Status: scoped on 2026-10-07; no new weights, SDK install, phone evaluation or production vision integration performed.
 
+Update 2026-10-08: the owner confirmed the one-image, chat-local retention slice and chose a downloadable model first. The [frozen screening set](../../experiments/photo_screening/README.md) was built, and [Gemma 4 E2B did not advance](../../experiments/local_vision/GEMMA-SCREENING-RESULTS-2026-10-08.md): 11/16 answerable (threshold 14) and an invented phone number on a blurred card, despite 8/8 adversarial passes. No phone run or production integration.
+
 ## User-visible capability
 
 Start with direct questions about one explicitly selected photo in the current chat: describe visible objects, colors, simple counts and spatial relationships; read visible text; explain a screenshot. The first slice should answer the user's question about pixels, not merely run OCR or save a searchable caption.

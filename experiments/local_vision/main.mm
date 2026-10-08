@@ -117,12 +117,26 @@ static void writeJSON(NSDictionary *value, NSString *path) {
 int main(int argc, char **argv) {
     @autoreleasepool {
         try {
-            const bool liquid = argc == 7 && std::string(argv[1]) == "--liquid";
-            if (liquid) { ++argv; --argc; }
-            const auto profile = liquid ? liquidProfile() : smolProfile();
-            if (argc != 6) {
-                std::fprintf(stderr, "usage: local-vision-eval [--liquid] model.gguf projector.gguf image prompt result.json\n");
+            bool liquid = false, gemma = false;
+            std::string system;
+            while (argc > 1 && std::string(argv[1]).rfind("--", 0) == 0) {
+                const std::string flag = argv[1];
+                if (flag == "--liquid") liquid = true;
+                else if (flag == "--gemma") gemma = true;
+                else if (flag == "--system" && argc > 2) { system = argv[2]; ++argv; --argc; }
+                else { argc = 0; break; }
+                ++argv; --argc;
+            }
+            const auto profile = gemma ? gemmaProfile() : liquid ? liquidProfile() : smolProfile();
+            if (argc != 6 || (liquid && gemma)) {
+                std::fprintf(stderr, "usage: local-vision-eval [--liquid|--gemma] [--system text] model.gguf projector.gguf image prompt result.json\n");
                 return 2;
+            }
+            if (!system.empty() && profile.systemPrefix.empty()) {
+                throw std::runtime_error("This profile has no system turn");
+            }
+            if (system.size() > 4096 || system.find('<') != std::string::npos) {
+                throw std::runtime_error("Use a plain-text system instruction, at most 4096 bytes");
             }
             std::signal(SIGINT, interrupt);
             std::signal(SIGTERM, interrupt);
@@ -164,7 +178,10 @@ int main(int argc, char **argv) {
             mtmd_bitmap_set_id(bitmap.get(), imageHash.c_str());
             // Exact single user turn subset of the publisher's pinned template.
             // libmtmd replaces its media marker with this architecture's image tokens.
-            const std::string prompt = profile.prefix + mtmd_default_marker() + question + profile.suffix;
+            // Gemma's BOS precedes the optional system turn; Liquid's prefix carries its own.
+            std::string prompt = gemma ? "<bos>" : "";
+            if (!system.empty()) prompt += profile.systemPrefix + system + profile.systemSuffix;
+            prompt += profile.prefix + mtmd_default_marker() + question + profile.suffix;
             auto input = mtmd_input_text{prompt.c_str(), prompt.size(), !profile.explicitBos, true};
             const mtmd_bitmap *images[] = {bitmap.get()};
             std::unique_ptr<mtmd_input_chunks, decltype(&mtmd_input_chunks_free)> chunks(
@@ -185,7 +202,7 @@ int main(int argc, char **argv) {
                 }
                 [chunkDetails addObject:@{@"type": @(type), @"tokens": @(mtmd_input_chunk_get_n_tokens(chunk))}];
             }
-            if (liquid && bosCount != 1) throw std::runtime_error("Liquid prompt must have exactly one BOS token");
+            if (profile.explicitBos && bosCount != 1) throw std::runtime_error("Prompt must have exactly one BOS token");
             constexpr int contextSize = 2048, outputCap = 128, batchSize = 512;
             const size_t inputTokens = mtmd_helper_get_n_tokens(chunks.get());
             const auto positions = mtmd_helper_get_n_pos(chunks.get());
@@ -239,7 +256,7 @@ int main(int argc, char **argv) {
                 @"qualification": @"Mac-only feasibility; not iPhone or production acceptance",
                 @"runtime": @"llama.cpp b11429 / d81235049384534c167caea52b85a694f6103d14",
                 @"model_sha256": @(modelHash.c_str()), @"projector_sha256": @(projectorHash.c_str()),
-                @"image_sha256": @(imageHash.c_str()), @"image_path": @(argv[3]), @"question": @(argv[4]),
+                @"image_sha256": @(imageHash.c_str()), @"image_path": @(argv[3]), @"question": @(argv[4]), @"system": @(system.c_str()),
                 @"model": @(profile.name), @"template": @(profile.templateVersion),
                 @"sampling": @"greedy", @"bos_count_in_text_chunks": @(bosCount), @"chunks": chunkDetails,
                 @"configured_image_min_tokens": @(visionParams.image_min_tokens),
