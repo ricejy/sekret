@@ -107,18 +107,18 @@ Future<ChatAppResources> openChatApp() async {
       directory: Directory('${directory.path}/reviewed-models'),
       policy: const AppleModelStoragePolicy(),
       backgroundDownload: const AppleModelDownload(),
+      hasher: const AppleModelDownload(),
     );
-    try {
-      await modelStore.initialize();
-    } on Object {
+    // Verifying the downloaded model runs after the app opens.
+    final storeReady = modelStore.initialize().catchError((Object _) {
       /* Models shows a recoverable storage error. */
-    }
+    });
     modelSelection = ModelSelection(
       store: modelStore,
       engine: engine,
       apple: models,
     );
-    await modelSelection.restore();
+    await modelSelection.restore(storeReady: storeReady);
     return ChatAppResources(
       vault,
       workspace,
@@ -402,7 +402,7 @@ class _SekretChatAppState extends State<SekretChatApp>
         final resources = snapshot.data;
         if (resources == null) {
           return const CupertinoPageScaffold(
-            child: Center(child: CupertinoActivityIndicator()),
+            child: Center(child: TuckRunning()),
           );
         }
         if (_maintenance) {
@@ -450,7 +450,7 @@ class _SekretChatAppState extends State<SekretChatApp>
                     return ChatScreen(
                       workspace: resources.workspace,
                       engine: resources.engine,
-                      modelRevision: resources.modelSelection?.selected,
+                      modelRevision: resources.engine.modelIdentifier,
                       knowledge: resources.knowledge,
                       onKnowledgeBase: () => _tabs.index = _knowledgeTab,
                       onImportSource: (context, type) => importKnowledgeSource(

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sekret/core/models/background_model_download.dart';
 import 'package:sekret/core/models/model_catalogue.dart';
 import 'package:sekret/core/models/model_download.dart';
 import 'package:sekret/core/models/model_store.dart';
@@ -55,6 +56,19 @@ class Transport implements ModelTransport {
   ) async {
     calls++;
     return last = Download(source());
+  }
+}
+
+/// Native-hash stand-in; [gate] holds the result until the test releases it.
+class Hasher implements ModelFileHasher {
+  String digest = sha256.convert(payload).toString();
+  Completer<void>? gate;
+  final hashed = <String>[];
+  @override
+  Future<({int bytes, String sha256})> hash(File file) async {
+    hashed.add(file.path);
+    await gate?.future;
+    return (bytes: await file.length(), sha256: digest);
   }
 }
 
@@ -212,6 +226,34 @@ void main() {
     } finally {
       await outside.delete(recursive: true);
     }
+  });
+
+  test('native hasher verifies the install and every restart', () async {
+    final hasher = Hasher();
+    await store.close();
+    store = ModelStore(
+      directory: directory,
+      policy: policy,
+      transport: transport,
+      hasher: hasher,
+      model: fixture,
+    );
+    await store.initialize();
+    await store.install();
+    expect(hasher.hashed.single, endsWith('download.partial'));
+    await store.close();
+    hasher.digest = '0' * 64;
+    store = ModelStore(
+      directory: directory,
+      policy: policy,
+      transport: transport,
+      hasher: hasher,
+      model: fixture,
+    );
+    await expectLater(store.initialize(), throwsException);
+    expect(hasher.hashed.last, endsWith('${fixture.artifact!.sha256}.gguf'));
+    expect(store.acquire, throwsStateError);
+    await store.remove();
   });
 
   test('transport restricts redirects to exact HTTPS hostnames', () {

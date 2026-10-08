@@ -201,3 +201,8 @@ final class AppleIntelligenceNotEnabled extends LlmAvailability {
 final class ModelNotReady extends LlmAvailability {
   const ModelNotReady();
 }
+
+/// A downloaded model is still being checked after launch; ready shortly.
+final class ModelLoading extends LlmAvailability {
+  const ModelLoading();
+}

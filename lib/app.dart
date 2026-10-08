@@ -1456,7 +1456,7 @@ final class _AvailabilityWorkspace extends StatelessWidget {
         'Enable Apple Intelligence in Settings to ask this document.',
         'Open Settings',
       ),
-      ModelNotReady() => (
+      ModelNotReady() || ModelLoading() => (
         'The on-device model is still getting ready.',
         'Keep the phone powered and try again after its model assets finish downloading.',
         'Check again',

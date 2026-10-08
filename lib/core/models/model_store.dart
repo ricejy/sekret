@@ -45,6 +45,7 @@ final class ModelStore extends ChangeNotifier {
     required this.policy,
     this.transport = const HttpsModelTransport(),
     this.backgroundDownload,
+    this.hasher,
     this.model = ModelCatalogue.qwen,
   }) {
     final artifact = model.artifact;
@@ -59,6 +60,9 @@ final class ModelStore extends ChangeNotifier {
   final ModelStoragePolicy policy;
   final ModelTransport transport;
   final BackgroundModelDownload? backgroundDownload;
+
+  /// Native SHA-256 when available; the portable Dart verifier otherwise.
+  final ModelFileHasher? hasher;
   bool _recovering = false;
   final CatalogueModel model;
   static const freeSpaceReserve = 512 * 1024 * 1024;
@@ -119,11 +123,7 @@ final class ModelStore extends ChangeNotifier {
             _recovering = false;
           }
           _publish(ModelInstallPhase.verifying);
-          await verifyModelArtifact(
-            _read(_installed.openRead(), cancel),
-            _artifact,
-          );
-          cancel.check();
+          await _verify(_installed, cancel);
           _publish(ModelInstallPhase.installed);
         } else {
           _publish(ModelInstallPhase.absent);
@@ -186,7 +186,7 @@ final class ModelStore extends ChangeNotifier {
       cancel.check();
       _publish(ModelInstallPhase.verifying, bytes: received);
       // Verify the bytes actually persisted, not just the network stream.
-      await verifyModelArtifact(_read(_staged.openRead(), cancel), _artifact);
+      await _verify(_staged, cancel);
       await _assertOwned();
       cancel.check();
       // Atomic publication on the same volume. No metadata flag can promote
@@ -200,6 +200,27 @@ final class ModelStore extends ChangeNotifier {
       await _delete(_staged);
     }
   });
+
+  /// Exact size and SHA-256 of the persisted file, every launch and install.
+  Future<void> _verify(File file, ModelCancellation cancel) async {
+    final hasher = this.hasher;
+    if (hasher == null) {
+      await verifyModelArtifact(_read(file.openRead(), cancel), _artifact);
+    } else {
+      final result = await cancel.wait(hasher.hash(file));
+      if (result.bytes != _artifact.bytes) {
+        throw const ModelArtifactVerificationException(
+          'Artifact is incomplete',
+        );
+      }
+      if (result.sha256 != _artifact.sha256) {
+        throw const ModelArtifactVerificationException(
+          'Artifact digest mismatch',
+        );
+      }
+    }
+    cancel.check();
+  }
 
   /// Native inference holds a lease until all work has stopped and it unloads.
   /// A lease can never be obtained while installation/verification is running.

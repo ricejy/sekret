@@ -1,3 +1,4 @@
+import CryptoKit
 import Flutter
 import Foundation
 
@@ -129,8 +130,46 @@ final class ModelDownloadPlugin: NSObject, FlutterPlugin, URLSessionDownloadDele
         if tasks.isEmpty { self.finishCancellation() }
         else { tasks.forEach { $0.cancel() } }
       }
+    case "hash":
+      // Only the store's two fixed files; hashed off the main thread.
+      let path = (call.arguments as? [String: Any])?["path"] as? String
+      let installed = Self.directory.appendingPathComponent("\(Self.artifactHash).gguf")
+      guard let path, path == staged.path || path == installed.path else {
+        result(hashError()); return
+      }
+      DispatchQueue.global(qos: .userInitiated).async {
+        let digest = Self.sha256(ofFileAt: URL(fileURLWithPath: path))
+        DispatchQueue.main.async {
+          guard let digest else { result(self.hashError()); return }
+          result(["bytes": digest.bytes, "sha256": digest.hex])
+        }
+      }
     default: result(FlutterMethodNotImplemented)
     }
+  }
+
+  /// Hardware-accelerated SHA-256 in 8 MB reads, so verifying ~2 GB takes
+  /// seconds without holding the file in memory.
+  static func sha256(ofFileAt url: URL) -> (bytes: Int64, hex: String)? {
+    guard let handle = try? FileHandle(forReadingFrom: url) else { return nil }
+    defer { try? handle.close() }
+    var hasher = SHA256()
+    var bytes: Int64 = 0
+    while true {
+      let chunk: Data?
+      do {
+        chunk = try autoreleasepool { try handle.read(upToCount: 8 << 20) }
+      } catch { return nil }
+      guard let chunk, !chunk.isEmpty else { break }
+      hasher.update(data: chunk)
+      bytes += Int64(chunk.count)
+    }
+    let hex = hasher.finalize().map { String(format: "%02x", $0) }.joined()
+    return (bytes, hex)
+  }
+
+  private func hashError() -> FlutterError {
+    FlutterError(code: "model_hash_failed", message: "The model file could not be checked.", details: nil)
   }
 
   private func error() -> FlutterError {

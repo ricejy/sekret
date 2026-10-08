@@ -9,7 +9,9 @@ import 'package:sekret/core/models/model_store.dart';
 import 'package:sekret/core/platform/apple_foundation_models.dart';
 import 'package:sekret/core/platform/llm_backend.dart';
 import 'package:sekret/core/storage/local_data_vault.dart';
-import 'model_store_test.dart' show Policy, Transport, fixture;
+import 'dart:async';
+
+import 'model_store_test.dart' show Hasher, Policy, Transport, fixture;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -94,6 +96,44 @@ void main() {
     await selection.select(ModelCatalogue.apple.id);
     expect(engine.modelIdentifier, ModelCatalogue.apple.id);
   });
+  test(
+    'saved Qwen waits for startup verification instead of answering',
+    () async {
+      await store.install();
+      await File(
+        '${directory.path}/selected-model',
+      ).writeAsString(ModelCatalogue.qwen.id);
+      final hasher = Hasher()..gate = Completer<void>();
+      final restarted = ModelStore(
+        directory: directory,
+        policy: Policy(),
+        transport: Transport(),
+        hasher: hasher,
+        model: fixture,
+      );
+      final restored = ModelSelection(
+        store: restarted,
+        engine: engine,
+        apple: apple,
+      );
+      final storeReady = restarted.initialize();
+      await restored.restore(storeReady: storeReady);
+      expect(restarted.state.phase, ModelInstallPhase.verifying);
+      expect(restored.selected, ModelCatalogue.qwen.id);
+      expect(engine.modelIdentifier, isNot(ModelCatalogue.apple.id));
+      expect(await engine.availability(), isA<ModelLoading>());
+      expect(restored.hasLocalLease, false);
+
+      hasher.gate!.complete();
+      await storeReady;
+      await pumpEventQueue();
+      expect(engine.modelIdentifier, ModelCatalogue.qwen.id);
+      expect(restored.hasLocalLease, true);
+      await restored.select(ModelCatalogue.apple.id);
+      await restored.close();
+      await restarted.close();
+    },
+  );
   test('corrupt choice fails closed but explicit selection recovers', () async {
     await File('${directory.path}/selected-model').writeAsString('unknown');
     await selection.restore();
