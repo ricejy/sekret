@@ -374,11 +374,7 @@ class _SekretChatAppState extends State<SekretChatApp>
             Positioned.fill(child: _lockScreen(_resources!)),
           if (_obscured)
             Positioned.fill(
-              child: const ColoredBox(
-                key: ValueKey('privacy-cover'),
-                color: SekretBrand.background,
-                child: Center(child: TuckPrivacy()),
-              ),
+              child: const TuckPrivacy(key: ValueKey('privacy-cover')),
             ),
         ],
       ),

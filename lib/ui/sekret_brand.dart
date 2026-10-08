@@ -251,16 +251,24 @@ class _VaultPainter extends CustomPainter {
   bool shouldRepaint(_VaultPainter old) => old.color != color;
 }
 
-/// App-switcher cover: a large Tuck keeping the screen private.
+/// App-switcher cover: full-screen Tuck shushing under the Sekret wordmark.
 class TuckPrivacy extends StatelessWidget {
   const TuckPrivacy({super.key});
 
-  // Placeholder pose until a dedicated shushing Tuck is supplied.
-  static const asset = 'assets/brand/tuck-shell.png';
+  static const asset = 'assets/brand/tuck-privacy.png';
+
+  /// The artwork's own backdrop, so any uncovered edge blends in.
+  static const backdrop = Color(0xFF0D1B21);
 
   @override
-  Widget build(BuildContext context) => FractionallySizedBox(
-    widthFactor: 0.9,
-    child: Image.asset(asset, fit: BoxFit.contain, excludeFromSemantics: true),
+  Widget build(BuildContext context) => const ColoredBox(
+    color: backdrop,
+    child: SizedBox.expand(
+      child: Image(
+        image: AssetImage(asset),
+        fit: BoxFit.cover,
+        excludeFromSemantics: true,
+      ),
+    ),
   );
 }
