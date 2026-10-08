@@ -7,28 +7,10 @@ import '../../core/platform/pdf_file_picker.dart';
 import '../../core/platform/document_image_picker.dart';
 import '../../core/platform/file_selector_pdf_picker.dart';
 import '../../core/platform/photos_document_image_picker.dart';
-import '../chat/chat_sheets.dart' show processingLabel;
+import 'source_status.dart';
 import 'source_preview.dart';
 import 'knowledge_import_actions.dart';
 import 'rename_sheet.dart';
-import '../accessible_controls.dart';
-
-String sourceTypeLabel(KnowledgeSourceType type) => switch (type) {
-  KnowledgeSourceType.pastedText => 'Text',
-  KnowledgeSourceType.pdf => 'PDF',
-  KnowledgeSourceType.photo => 'Photo',
-};
-
-String sourceSizeLabel(int bytes) => bytes < 1024
-    ? '$bytes B'
-    : bytes < 1024 * 1024
-    ? '${(bytes / 1024).toStringAsFixed(1)} KB'
-    : '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
-
-String importDateLabel(DateTime date) {
-  final local = date.toLocal();
-  return '${local.day}/${local.month}/${local.year}';
-}
 
 class KnowledgeScreen extends StatefulWidget {
   const KnowledgeScreen({
@@ -49,7 +31,6 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
   StreamSubscription<void>? _changes;
   List<CatalogueMatch>? _matches;
   KnowledgeSourceType? _type;
-  KnowledgeProcessingState? _state;
   String? _error;
   String? _loadError;
   Timer? _debounce;
@@ -112,17 +93,16 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
     }
   }
 
-  Future<void> _delete(KnowledgeItemRecord item, {bool cancel = false}) async {
+  Future<void> _delete(KnowledgeItemRecord item) async {
+    final ready = item.processingState == KnowledgeProcessingState.indexed;
     final confirmed = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: Text(
-          cancel ? 'Discard incomplete import?' : 'Delete “${item.title}”?',
-        ),
+        title: Text('Delete “${item.title}”?'),
         content: Text(
-          cancel
-              ? 'The original source and all processing work will be permanently removed. If indexing has just finished, use Delete source instead.'
-              : 'The source, extracted text, and search index will be permanently removed. Chat text remains and may contain sensitive information derived from this source. Its citations will show Source deleted.',
+          ready
+              ? 'The source and its search index are removed from this iPhone. Chats keep their text, and citations show Source deleted.'
+              : 'The source and any partial work are removed from this iPhone.',
         ),
         actions: [
           CupertinoDialogAction(
@@ -132,7 +112,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
           CupertinoDialogAction(
             isDestructiveAction: true,
             onPressed: () => Navigator.pop(context, true),
-            child: Text(cancel ? 'Discard import' : 'Delete permanently'),
+            child: const Text('Delete'),
           ),
         ],
       ),
@@ -140,48 +120,41 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
     if (mounted && confirmed == true) {
       await _perform(
         item,
-        () => cancel
-            ? widget.knowledge.cancelImport(item.id)
-            : widget.knowledge.delete(item.id),
+        () => ready
+            ? widget.knowledge.delete(item.id)
+            : widget.knowledge.cancelImport(item.id),
       );
     }
   }
 
   Future<void> _actions(KnowledgeItemRecord item) async {
+    final status = SourceStatus.of(item.processingState);
     final action = await showCupertinoModalPopup<String>(
       context: context,
       builder: (context) => CupertinoActionSheet(
         title: Text(item.title),
-        message: Text(
-          item.processingMessage ?? processingLabel(item.processingState),
-        ),
+        message: status == SourceStatus.failed
+            ? Text(item.processingMessage ?? 'Could not be added.')
+            : null,
         actions: [
           CupertinoActionSheetAction(
             onPressed: () => Navigator.pop(context, 'rename'),
             child: const Text('Rename'),
           ),
-          if (item.processingState == KnowledgeProcessingState.indexed)
+          if (status == SourceStatus.failed)
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.pop(context, 'retry'),
+              child: const Text('Retry'),
+            ),
+          if (status == SourceStatus.ready)
             CupertinoActionSheetAction(
               onPressed: () => Navigator.pop(context, 'reindex'),
               child: const Text('Re-index'),
             ),
-          if (item.processingState == KnowledgeProcessingState.paused ||
-              item.processingState == KnowledgeProcessingState.failed ||
-              item.processingState == KnowledgeProcessingState.needsReindexing)
-            CupertinoActionSheetAction(
-              onPressed: () => Navigator.pop(context, 'retry'),
-              child: const Text('Retry indexing'),
-            ),
-          if (item.processingState != KnowledgeProcessingState.indexed)
-            CupertinoActionSheetAction(
-              isDestructiveAction: true,
-              onPressed: () => Navigator.pop(context, 'cancel'),
-              child: const Text('Cancel import'),
-            ),
           CupertinoActionSheetAction(
             isDestructiveAction: true,
             onPressed: () => Navigator.pop(context, 'delete'),
-            child: const Text('Delete source'),
+            child: const Text('Delete'),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
@@ -196,8 +169,6 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
         await _rename(item);
       case 'delete':
         await _delete(item);
-      case 'cancel':
-        await _delete(item, cancel: true);
       case 'retry':
         _startProcessing(item.id);
       case 'reindex':
@@ -315,7 +286,6 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
         // An active filter must not hide the item that was just admitted.
         _search.clear();
         _type = null;
-        _state = null;
         await _load();
       }
     } on Object {
@@ -346,7 +316,6 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
       final matches = await widget.knowledge.catalogue(
         query: _search.text,
         sourceType: _type,
-        state: _state,
       );
       if (mounted && revision == _revision) {
         setState(() {
@@ -363,55 +332,6 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
     }
   }
 
-  Future<void> _filter({required bool types}) async {
-    await showCupertinoModalPopup<void>(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        title: Text(types ? 'Source type' : 'Processing state'),
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () {
-              setState(() {
-                if (types) {
-                  _type = null;
-                } else {
-                  _state = null;
-                }
-              });
-              Navigator.pop(context);
-              _load();
-            },
-            child: Text(types ? 'All types' : 'All states'),
-          ),
-          if (types)
-            for (final type in KnowledgeSourceType.values)
-              CupertinoActionSheetAction(
-                onPressed: () {
-                  setState(() => _type = type);
-                  Navigator.pop(context);
-                  _load();
-                },
-                child: Text(sourceTypeLabel(type)),
-              )
-          else
-            for (final state in KnowledgeProcessingState.values)
-              CupertinoActionSheetAction(
-                onPressed: () {
-                  setState(() => _state = state);
-                  Navigator.pop(context);
-                  _load();
-                },
-                child: Text(processingLabel(state)),
-              ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-      ),
-    );
-  }
-
   @override
   void dispose() {
     _changes?.cancel();
@@ -420,8 +340,11 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
     super.dispose();
   }
 
+  bool get _filtered => _search.text.isNotEmpty || _type != null;
+
   @override
   Widget build(BuildContext context) => CupertinoPageScaffold(
+    backgroundColor: SekretBrand.background,
     navigationBar: CupertinoNavigationBar(
       middle: const Text('Knowledge Vault'),
       trailing: CupertinoButton(
@@ -431,236 +354,336 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
       ),
     ),
     child: SafeArea(
-      child: PanelAndContent(
-        panel: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-              child: CupertinoSearchTextField(
-                controller: _search,
-                placeholder: 'Search knowledge',
-                onChanged: (_) {
-                  ++_revision;
-                  _debounce?.cancel();
-                  _debounce = Timer(const Duration(milliseconds: 180), _load);
-                },
-              ),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: CustomScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              sliver: SliverList.list(children: _header()),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Wrap(
-                children: [
-                  CupertinoButton(
-                    onPressed: () => _filter(types: true),
-                    child: Text(
-                      _type == null ? 'All types' : sourceTypeLabel(_type!),
-                    ),
-                  ),
-                  CupertinoButton(
-                    onPressed: () => _filter(types: false),
-                    child: Text(
-                      _state == null ? 'All states' : processingLabel(_state!),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (_error != null || _loadError != null)
-              CupertinoButton(
-                onPressed: () {
-                  setState(() => _error = null);
-                  _load();
-                },
-                child: Text(_error ?? _loadError!),
-              ),
-            if (_matches != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '${_matches!.length} ${_matches!.length == 1 ? 'item' : 'items'}',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: CupertinoColors.secondaryLabel.resolveFrom(
-                        context,
-                      ),
-                    ),
-                  ),
+            if (_matches == null)
+              const SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(child: CupertinoActivityIndicator()),
+              )
+            else if (_matches!.isEmpty)
+              SliverFillRemaining(hasScrollBody: false, child: _empty())
+            else
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+                sliver: SliverList.separated(
+                  itemCount: _matches!.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) => _card(_matches![index]),
                 ),
               ),
           ],
         ),
-        content: _matches == null
-            ? const Center(child: CupertinoActivityIndicator())
-            : _matches!.isEmpty
-            ? Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (_search.text.isEmpty &&
-                          _type == null &&
-                          _state == null) ...[
-                        const TuckMascot(size: 144),
-                        const SizedBox(height: 20),
-                      ],
-                      Text(
-                        _search.text.isNotEmpty ||
-                                _type != null ||
-                                _state != null
-                            ? 'No matching items'
-                            : 'Your knowledge, on device.\nAdd text, a PDF, or a photograph to get started.',
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            : ListView.builder(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                itemCount: _matches!.length,
-                itemBuilder: (context, index) {
-                  final match = _matches![index];
-                  final item = match.item;
-                  final date = importDateLabel(item.createdAt);
-                  final checkpoint = item.checkpoint;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (index == 0 ||
-                          importDateLabel(
-                                _matches![index - 1].item.createdAt,
-                              ) !=
-                              date)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-                          child: Text(
-                            date,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: CupertinoColors.secondaryLabel.resolveFrom(
-                                context,
-                              ),
-                            ),
-                          ),
-                        ),
-                      Dismissible(
-                        key: ValueKey(item.id),
-                        confirmDismiss: (direction) async {
-                          if (!_busy.contains(item.id)) {
-                            if (direction == DismissDirection.startToEnd) {
-                              await _rename(item);
-                            } else {
-                              await _delete(item);
-                            }
-                          }
-                          return false;
-                        },
-                        background: Container(
-                          color: SekretBrand.accent,
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.all(20),
-                          child: const Text(
-                            'Rename',
-                            style: TextStyle(color: SekretBrand.background),
-                          ),
-                        ),
-                        secondaryBackground: Container(
-                          color: CupertinoColors.systemRed,
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.all(20),
-                          child: const Text(
-                            'Delete',
-                            style: TextStyle(color: CupertinoColors.white),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: CupertinoButton(
-                                alignment: Alignment.centerLeft,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 12,
-                                ),
-                                onPressed: () => _open(
-                                  match.location ?? KnowledgeLocation(item.id),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.title,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: CupertinoColors.label
-                                            .resolveFrom(context),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      '${sourceTypeLabel(item.sourceType)} · ${sourceSizeLabel(item.sourceSize)}${item.pageCount > 0 ? ' · ${item.pageCount} ${item.pageCount == 1 ? 'page' : 'pages'}' : ''}',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: CupertinoColors.secondaryLabel
-                                            .resolveFrom(context),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${processingLabel(item.processingState)}${checkpoint == null ? '' : ' · ${checkpoint.stage} ${checkpoint.completedUnits}/${checkpoint.totalUnits}'}',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: CupertinoColors.label
-                                            .resolveFrom(context),
-                                      ),
-                                    ),
-                                    if (item.processingMessage != null)
-                                      Text(
-                                        item.processingMessage!,
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: CupertinoColors.secondaryLabel
-                                              .resolveFrom(context),
-                                        ),
-                                      ),
-                                    if (match.excerpt != null)
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 6),
-                                        child: Text(
-                                          match.excerpt!,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            CupertinoButton(
-                              onPressed: _busy.contains(item.id)
-                                  ? null
-                                  : () => _actions(item),
-                              child: Icon(
-                                CupertinoIcons.ellipsis,
-                                semanticLabel: 'Actions for ${item.title}',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: .5,
-                        margin: const EdgeInsets.only(left: 20),
-                        color: CupertinoColors.separator.resolveFrom(context),
-                      ),
-                    ],
-                  );
-                },
+      ),
+    ),
+  );
+
+  List<Widget> _header() => [
+    // An empty vault has nothing to search or filter yet.
+    if (_filtered || (_matches?.isNotEmpty ?? false)) ..._controls(),
+    if (_error != null || _loadError != null)
+      Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          alignment: Alignment.centerLeft,
+          onPressed: () {
+            setState(() => _error = null);
+            _load();
+          },
+          child: Text(
+            _error ?? _loadError!,
+            style: const TextStyle(
+              fontSize: 13,
+              color: CupertinoColors.systemRed,
+            ),
+          ),
+        ),
+      ),
+    if (_matches != null && _matches!.isNotEmpty)
+      Padding(
+        padding: const EdgeInsets.only(top: 14),
+        child: Text(
+          '${_matches!.length} ${_matches!.length == 1 ? 'item' : 'items'}',
+          style: const TextStyle(fontSize: 13, color: SekretBrand.secondary),
+        ),
+      ),
+  ];
+
+  List<Widget> _controls() => [
+    CupertinoSearchTextField(
+      controller: _search,
+      placeholder: 'Search your vault',
+      onChanged: (_) {
+        ++_revision;
+        _debounce?.cancel();
+        _debounce = Timer(const Duration(milliseconds: 180), _load);
+      },
+    ),
+    const SizedBox(height: 12),
+    SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          for (final (type, label) in const [
+            (null, 'All'),
+            (KnowledgeSourceType.pastedText, 'Text'),
+            (KnowledgeSourceType.pdf, 'PDFs'),
+            (KnowledgeSourceType.photo, 'Photos'),
+          ])
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: _chip(label, type),
+            ),
+        ],
+      ),
+    ),
+  ];
+
+  Widget _chip(String label, KnowledgeSourceType? type) {
+    final selected = _type == type;
+    return Semantics(
+      button: true,
+      selected: selected,
+      child: GestureDetector(
+        onTap: () {
+          setState(() => _type = type);
+          _load();
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+          decoration: BoxDecoration(
+            color: selected ? SekretBrand.accent : SekretBrand.surface,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: selected ? SekretBrand.accent : SekretBrand.line,
+            ),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: selected ? SekretBrand.background : SekretBrand.foreground,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _empty() => Padding(
+    padding: const EdgeInsets.fromLTRB(32, 8, 32, 48),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: _filtered
+          ? const [
+              Icon(
+                CupertinoIcons.search,
+                size: 36,
+                color: SekretBrand.secondary,
               ),
+              SizedBox(height: 12),
+              Text('No matching items', textAlign: TextAlign.center),
+            ]
+          : [
+              const TuckMascot(size: 140, asset: 'assets/brand/tuck-shell.png'),
+              const SizedBox(height: 16),
+              const Text(
+                'Your vault is empty',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Add notes, PDFs or photos of documents. Sekret answers from them, and they never leave this iPhone.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: SekretBrand.secondary),
+              ),
+              const SizedBox(height: 20),
+              CupertinoButton.filled(
+                onPressed: _importing ? null : _add,
+                child: const Text('Add to Vault'),
+              ),
+            ],
+    ),
+  );
+
+  Widget _card(CatalogueMatch match) {
+    final item = match.item;
+    final status = SourceStatus.of(item.processingState);
+    final busy = _busy.contains(item.id);
+    final meta = [
+      sourceTypeLabel(item.sourceType),
+      sourceSizeLabel(item.sourceSize),
+      if (item.sourceType == KnowledgeSourceType.pdf && item.pageCount > 0)
+        '${item.pageCount} ${item.pageCount == 1 ? 'page' : 'pages'}',
+      importDateLabel(item.createdAt),
+    ].join(' · ');
+    final radius = BorderRadius.circular(16);
+    return Dismissible(
+      key: ValueKey(item.id),
+      confirmDismiss: (direction) async {
+        if (!busy) {
+          if (direction == DismissDirection.startToEnd) {
+            await _rename(item);
+          } else {
+            await _delete(item);
+          }
+        }
+        return false;
+      },
+      background: _swipe(radius, 'Rename', SekretBrand.accent, left: true),
+      secondaryBackground: _swipe(
+        radius,
+        'Delete',
+        CupertinoColors.systemRed,
+        left: false,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: SekretBrand.surface,
+          borderRadius: radius,
+          border: Border.all(
+            color: status == SourceStatus.failed
+                ? CupertinoColors.systemRed.withValues(alpha: .45)
+                : SekretBrand.line,
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: CupertinoButton(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.fromLTRB(14, 14, 0, 14),
+                onPressed: () =>
+                    _open(match.location ?? KnowledgeLocation(item.id)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _typeTile(item.sourceType),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: SekretBrand.foreground,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            meta,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: SekretBrand.secondary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          SourceStatusBadge(
+                            status,
+                            progress: switch (item.checkpoint) {
+                              final c? when c.totalUnits > 0 =>
+                                c.completedUnits / c.totalUnits,
+                              _ => null,
+                            },
+                          ),
+                          if (status == SourceStatus.failed &&
+                              item.processingMessage != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 6),
+                              child: Text(
+                                item.processingMessage!,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: SekretBrand.secondary,
+                                ),
+                              ),
+                            ),
+                          if (match.excerpt != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Text(
+                                match.excerpt!,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: SekretBrand.foreground,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            CupertinoButton(
+              padding: const EdgeInsets.fromLTRB(8, 10, 10, 8),
+              onPressed: busy ? null : () => _actions(item),
+              child: Icon(
+                CupertinoIcons.ellipsis,
+                size: 20,
+                color: SekretBrand.secondary,
+                semanticLabel: 'Actions for ${item.title}',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _typeTile(KnowledgeSourceType type) => Container(
+    width: 40,
+    height: 40,
+    decoration: BoxDecoration(
+      color: SekretBrand.accent.withValues(alpha: .12),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Icon(
+      switch (type) {
+        KnowledgeSourceType.pastedText => CupertinoIcons.text_alignleft,
+        KnowledgeSourceType.pdf => CupertinoIcons.doc_text,
+        KnowledgeSourceType.photo => CupertinoIcons.photo,
+      },
+      size: 20,
+      color: SekretBrand.accent,
+    ),
+  );
+
+  Widget _swipe(
+    BorderRadius radius,
+    String label,
+    Color color, {
+    required bool left,
+  }) => Container(
+    decoration: BoxDecoration(color: color, borderRadius: radius),
+    alignment: left ? Alignment.centerLeft : Alignment.centerRight,
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Text(
+      label,
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        color: left ? SekretBrand.background : CupertinoColors.white,
       ),
     ),
   );

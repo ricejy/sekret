@@ -4,14 +4,10 @@ import '../../core/chat/chat_workspace.dart';
 import '../../core/knowledge/knowledge_base.dart';
 import '../../core/storage/local_data_vault.dart';
 import '../accessible_controls.dart';
+import '../knowledge/source_status.dart';
 
-String processingLabel(KnowledgeProcessingState state) => switch (state) {
-  KnowledgeProcessingState.processing => 'Processing',
-  KnowledgeProcessingState.paused => 'Paused',
-  KnowledgeProcessingState.indexed => 'Indexed',
-  KnowledgeProcessingState.failed => 'Failed',
-  KnowledgeProcessingState.needsReindexing => 'Needs re-indexing',
-};
+String processingLabel(KnowledgeProcessingState state) =>
+    SourceStatus.of(state).label;
 
 class ChatHistory extends StatefulWidget {
   const ChatHistory({super.key, required this.workspace, required this.isBusy});
@@ -299,7 +295,7 @@ class _SourceSelectionState extends State<SourceSelection> {
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'Changes apply to future turns only. All selected sources must be indexed before asking.',
+                'Changes apply to future turns only. All selected sources must be ready before asking.',
               ),
             ),
             if (_error != null) Text(_error!),

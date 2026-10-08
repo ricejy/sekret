@@ -5,7 +5,8 @@ import 'package:flutter/material.dart' show SelectableText;
 import 'package:pdfrx/pdfrx.dart';
 import '../../core/knowledge/knowledge_base.dart';
 import '../../core/storage/local_data_vault.dart';
-import '../chat/chat_sheets.dart' show processingLabel;
+import '../sekret_brand.dart';
+import 'source_status.dart';
 import '../accessible_controls.dart';
 
 /// Shared catalogue/citation destination. Re-resolves changes rather than
@@ -195,7 +196,7 @@ class _SourcePreviewState extends State<SourcePreview> {
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Source information'),
         content: Text(
-          '${item.title}\n${item.sourceName ?? 'Pasted text'}\n${item.sourceSize} bytes · ${item.pageCount} pages\nImported ${item.createdAt.toLocal()}\n${processingLabel(item.processingState)}'
+          '${item.sourceName ?? 'Pasted text'}\n${sourceTypeLabel(item.sourceType)} · ${sourceSizeLabel(item.sourceSize)}${item.sourceType == KnowledgeSourceType.pdf ? ' · ${item.pageCount} pages' : ''}\nAdded ${importDateLabel(item.createdAt)} · ${SourceStatus.of(item.processingState).label}'
           '${item.processingMessage == null ? '' : '\n${item.processingMessage}'}'
           '${preview.hasOcrWarning ? '\nSome recognized text has low confidence. Compare it with the original before relying on it.' : ''}'
           '${preview.source.pages.any((p) => p.ocrConfidence != null) ? '\nOCR search locates a page, not exact image coordinates. Select or copy recognized text in Extracted text.' : ''}'
@@ -228,6 +229,7 @@ class _SourcePreviewState extends State<SourcePreview> {
         ? 1
         : (_pdf.isReady ? _pdf.pageCount : item.pageCount).clamp(1, 1000000);
     return CupertinoPageScaffold(
+      backgroundColor: SekretBrand.background,
       navigationBar: CupertinoNavigationBar(
         middle: Text(
           item?.title ?? 'Preview',
