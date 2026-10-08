@@ -22,3 +22,9 @@ Blinding is imperfect: style and length can hint at the model. Grades remain one
 ## Scoring and display
 
 Quality uses the unchanged [scale-v1 bands](scale-v1.md) on the 64-case pass rate; speed uses the unchanged bands on the median completion time from this collection, withheld if any case fails to complete. A complete graded collection replaces the 7 October quality and speed numbers in the Models screen as a **held-out General rating** for this device and configuration; the 7 October results stay published as historical development evidence. Memory and battery stay "Not measured".
+
+## Attempt 1 (stopped) and attempt 2 amendment
+
+[Attempt 1](heldout-v2-attempt1-2026-10-08.json) stopped after 121 of 128 responses: thermal state rose from nominal to fair by case 24 and to serious by case 61, where production admission refused Qwen ("qwen unavailable"). Its first two Qwen responses ended `interrupted` within ~30 s of launch at nominal thermal state, while the owner was unplugging; the runtime interrupts on resign-active or memory warnings, and the report does not say which fired. It is partial, gives no rating and its outputs were not graded or read.
+
+Attempt 2 is fixed before its outputs. Changes only: (1) the start conditions (ready, nominal, on battery) must hold for 60 consecutive seconds; (2) before each response, if production admission is not ready or thermal state is serious, wait up to 20 minutes for it to recover instead of stopping, with each pause recorded and excluded from timing; a pause timeout, power reconnection or interruption still stops the run. Production guards, tasks, order, caps, rests and grading are unchanged, and mid-response interruptions still fail. Results must state the observed thermal range and pauses.
