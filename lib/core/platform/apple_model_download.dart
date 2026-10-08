@@ -6,13 +6,29 @@ import '../models/background_model_download.dart';
 import '../models/model_catalogue.dart';
 import '../models/model_download.dart';
 
-final class AppleModelDownload implements BackgroundModelDownload {
+final class AppleModelDownload
+    implements BackgroundModelDownload, ModelFileHasher {
   const AppleModelDownload({
     this.channel = const MethodChannel('com.ricejy.sekret/model_download'),
     this.pollInterval = const Duration(milliseconds: 500),
   });
   final MethodChannel channel;
   final Duration pollInterval;
+
+  @override
+  Future<({int bytes, String sha256})> hash(File file) async {
+    final result = await channel.invokeMapMethod<String, Object?>('hash', {
+      'path': file.path,
+    });
+    final bytes = result?['bytes'];
+    final sha256 = result?['sha256'];
+    if (bytes is! int ||
+        sha256 is! String ||
+        !RegExp(r'^[0-9a-f]{64}$').hasMatch(sha256)) {
+      throw const FormatException('Invalid model file hash');
+    }
+    return (bytes: bytes, sha256: sha256);
+  }
 
   @override
   Future<bool> hasPending() async =>

@@ -26,6 +26,7 @@ final class ModelSelection extends ChangeNotifier {
   String _selected = ModelCatalogue.apple.id;
   String get selected => _selected;
   bool get hasLocalLease => _lease != null;
+  Future<void>? _restoring;
   bool _busy = false;
   bool get busy => _busy;
   ModelLease? _lease;
@@ -47,7 +48,10 @@ final class ModelSelection extends ChangeNotifier {
     }
   }
 
-  Future<void> restore() async {
+  /// With [storeReady], a saved downloaded model is restored once the store
+  /// has verified it; until then chat reports the model as not ready instead
+  /// of answering with another model. Apple restores immediately.
+  Future<void> restore({Future<void>? storeReady}) async {
     try {
       await _validateFiles();
       if (!await _choice.exists()) return;
@@ -56,17 +60,51 @@ final class ModelSelection extends ChangeNotifier {
       if (!ModelCatalogue.entries.any((m) => m.id == id)) {
         throw StateError('Unknown selection');
       }
+      if (storeReady != null && id != ModelCatalogue.apple.id) {
+        await _awaitVerification(id, storeReady);
+        return;
+      }
       await _select(id, persist: false);
     } on Object {
-      _selected = 'unavailable';
-      const unavailable = _UnavailableModel();
-      await engine.switchModel(
-        backend: unavailable,
-        contextProbe: unavailable,
-        model: const ModelSnapshot(identifier: 'unavailable', revision: 'none'),
-      );
-      notifyListeners();
+      await _restoreUnavailable();
     }
+  }
+
+  Future<void> _awaitVerification(String id, Future<void> storeReady) async {
+    _selected = id;
+    await engine.switchModel(
+      backend: const _VerifyingModel(),
+      contextProbe: const _VerifyingModel(),
+      model: const ModelSnapshot(identifier: 'verifying', revision: 'none'),
+    );
+    notifyListeners();
+    _restoring = () async {
+      try {
+        try {
+          await storeReady;
+        } on Object {
+          // An unverified model restores as unavailable below.
+        }
+        await _select(id, persist: false);
+      } on Object {
+        try {
+          await _restoreUnavailable();
+        } on Object {
+          // The app is closing; the engine is already disposed.
+        }
+      }
+    }();
+  }
+
+  Future<void> _restoreUnavailable() async {
+    _selected = 'unavailable';
+    const unavailable = _UnavailableModel();
+    await engine.switchModel(
+      backend: unavailable,
+      contextProbe: unavailable,
+      model: const ModelSnapshot(identifier: 'unavailable', revision: 'none'),
+    );
+    notifyListeners();
   }
 
   Future<void> select(String id) => _select(id, persist: true);
@@ -151,6 +189,7 @@ final class ModelSelection extends ChangeNotifier {
   }
 
   Future<void> close() async {
+    await _restoring;
     try {
       await _pending;
     } on Object {
@@ -160,6 +199,25 @@ final class ModelSelection extends ChangeNotifier {
     _lease = null;
     super.dispose();
   }
+}
+
+/// Holds a saved downloaded model's place while startup verification runs.
+final class _VerifyingModel implements GeneralLlmBackend, ModelContextProbe {
+  const _VerifyingModel();
+  @override
+  Future<LlmAvailability> availability() async => const ModelNotReady();
+  @override
+  Stream<String> generateGeneral({required String prompt}) =>
+      Stream.error(StateError('The model is still being checked'));
+  @override
+  Future<int> contextWindowSize() =>
+      Future.error(StateError('Model is being checked'));
+  @override
+  Future<int> countInstructionTokens(String text) =>
+      Future.error(StateError('Model is being checked'));
+  @override
+  Future<int> countPromptTokens(String text) =>
+      Future.error(StateError('Model is being checked'));
 }
 
 final class _UnavailableModel implements GeneralLlmBackend, ModelContextProbe {

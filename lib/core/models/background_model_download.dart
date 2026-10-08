@@ -17,3 +17,8 @@ abstract interface class BackgroundModelDownload {
   /// Resolves only after native work can no longer publish a staging file.
   Future<void> cancel();
 }
+
+/// Byte count and SHA-256 of a local model file, computed off the UI thread.
+abstract interface class ModelFileHasher {
+  Future<({int bytes, String sha256})> hash(File file);
+}

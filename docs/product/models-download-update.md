@@ -12,6 +12,8 @@ The app previously called model cancellation on backgrounding and on app lock. B
 
 A fixed background-session identifier and pinned task identity allow recovery after process recreation. Startup checks for pending native work or a completed unverified staging file without holding the app open screen behind the full transfer. The downloaded file moves into the existing fixed staging path; Dart verifies the persisted byte count and SHA-256 before atomic publication. No second model-sized copy is introduced.
 
+Update 2026-10-08 (issue #55): the store verifies the persisted byte count and SHA-256 natively (CryptoKit, off the main thread), both before publication and on every launch. Launch no longer waits for that check: the app opens immediately (measured 23–90 ms on iPhone 15 Pro Max, previously 15.3 s of Dart hashing) and the full check finishes in about 2 s. A saved Qwen choice stays "not ready" until the check passes; it never falls back to another model.
+
 Public model files use protection until first user authentication so the system can finish writing while locked. Private chats, Knowledge Base and database retain their existing complete protection. Model files remain excluded from backup. Network requests contain only the reviewed artifact choice and ordinary request metadata, never prompts or private data.
 
 [Apple's background-transfer documentation](https://developer.apple.com/documentation/foundation/downloading-files-in-the-background) describes system-owned downloads while the app is suspended. Scheduling remains controlled by iOS; forced app termination, connectivity loss and OS deferral are not a promise of uninterrupted progress. Verification may finish after returning to Sekret.
