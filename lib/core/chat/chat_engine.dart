@@ -175,7 +175,7 @@ final class ChatEngine {
             .mode;
     final grounded = mode == ChatMode.knowledgeBase;
     if (grounded && (knowledgeBase == null || groundedBackend == null)) {
-      throw StateError('Knowledge Base generation is unavailable.');
+      throw StateError('Knowledge Vault generation is unavailable.');
     }
     if (photo != null && (grounded || photo.isEmpty)) {
       throw StateError('Photo questions run only in General mode.');

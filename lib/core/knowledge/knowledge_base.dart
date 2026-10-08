@@ -107,7 +107,7 @@ final class KnowledgeBase {
   Stream<void> get changes => _changes.stream;
 
   void _ensureOpen() {
-    if (_disposed) throw StateError('Knowledge Base is closed.');
+    if (_disposed) throw StateError('Knowledge Vault is closed.');
   }
 
   void _notify() {

@@ -30,7 +30,7 @@ void main() {
     },
   );
   test(
-    'v2 Knowledge Base retains all 30 hybrid and dense-only corpus hits',
+    'v2 Knowledge Vault retains all 30 hybrid and dense-only corpus hits',
     () async {
       final vault = await openLocalDataVault(databasePath: ':memory:');
       final base = await KnowledgeBase.open(

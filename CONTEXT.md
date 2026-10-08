@@ -1,6 +1,6 @@
 # Sekret
 
-Sekret is a private, local assistant that can chat generally or answer from an explicitly chosen personal knowledge base. This glossary names the concepts that must remain consistent across product design, implementation, and tests.
+Sekret is a private, local assistant that can chat generally or answer from an explicitly chosen personal Knowledge Vault. This glossary names the concepts that must remain consistent across product design, implementation, and tests.
 
 ## Chats
 
@@ -13,10 +13,10 @@ A user message together with the assistant response or terminal failure it cause
 _Avoid_: Request, exchange
 
 **General mode**:
-A chat mode in which the assistant answers from the on-device model without consulting the knowledge base.
+A chat mode in which the assistant answers from the on-device model without consulting the Knowledge Vault.
 _Avoid_: Ungrounded mode, open mode
 
-**Knowledge Base mode**:
+**Knowledge Vault mode**:
 A chat mode in which the assistant may answer only from evidence retrieved from the selected sources. Insufficient evidence never falls back to general knowledge.
 _Avoid_: Document mode, retrieval mode
 
@@ -30,9 +30,9 @@ _Avoid_: Failed answer
 
 ## Knowledge
 
-**Knowledge Base**:
-The local catalogue of imported knowledge items available for explicit selection in chats.
-_Avoid_: Library, uploads, documents folder
+**Knowledge Vault**:
+The local catalogue of imported knowledge items available for explicit selection in chats. Renamed from Knowledge Base on 2026-10-09; code identifiers (`KnowledgeBase`, `ChatMode.knowledgeBase`) and the stored chat mode keep the old name.
+_Avoid_: Knowledge Base (former name), library, uploads, documents folder
 
 **Knowledge item**:
 A pasted text, PDF, scanned PDF, or photograph together with its processing state and locally derived searchable representations.
@@ -47,7 +47,7 @@ The immutable set of selected sources captured when a turn begins. Later selecti
 _Avoid_: Current sources, active sources
 
 **Evidence passage**:
-A ranked excerpt retrieved from a source and supplied to the model for a Knowledge Base mode turn.
+A ranked excerpt retrieved from a source and supplied to the model for a Knowledge Vault mode turn.
 _Avoid_: Context, result, snippet
 
 **Citation**:
@@ -65,15 +65,15 @@ An answer produced in General mode and visibly identified as model knowledge rat
 _Avoid_: Normal answer, ungrounded answer
 
 **Grounded answer**:
-An answer produced in Knowledge Base mode from retrieved evidence and presented with application-owned citations.
+An answer produced in Knowledge Vault mode from retrieved evidence and presented with application-owned citations.
 _Avoid_: Document answer, sourced response
 
 **Insufficient evidence**:
-The Knowledge Base mode outcome used when selected sources do not adequately support an answer. Its user-facing text remains fixed and it never triggers an automatic general answer.
+The Knowledge Vault mode outcome used when selected sources do not adequately support an answer. Its user-facing text remains fixed and it never triggers an automatic general answer.
 _Avoid_: Refusal, no answer
 
 **Photo question**:
-A General mode turn about one photo picked for that turn. Only the photo and that question reach the model; the photo stays with its turn and chat, never enters the Knowledge Base, and its answer is identified as the model's interpretation, not evidence.
+A General mode turn about one photo picked for that turn. Only the photo and that question reach the model; the photo stays with its turn and chat, never enters the Knowledge Vault, and its answer is identified as the model's interpretation, not evidence.
 _Avoid_: Image attachment, photo source, vision mode
 
 ## Lifecycle

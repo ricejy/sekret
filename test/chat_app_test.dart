@@ -103,6 +103,7 @@ void main() {
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
       await settle(tester);
+      expect(find.byType(TuckPrivacy), findsOneWidget);
       expect(store.state.phase, ModelInstallPhase.downloading);
       // A slow completion must not be mistaken for cancellation or failure.
       // Real time deliberately exceeds the old 150 ms polling budget.
@@ -181,7 +182,7 @@ void main() {
             .widget<CupertinoTabBar>(find.byType(CupertinoTabBar))
             .items
             .map((item) => item.label),
-        ['Chat', 'Models', 'Knowledge Base', 'Settings'],
+        ['Chat', 'Models', 'Knowledge Vault', 'Settings'],
       );
       await tester.tap(
         find.descendant(
@@ -207,7 +208,7 @@ void main() {
           text: 'The fictional museum opens at noon.',
         ),
       );
-      await tester.tap(find.text('Choose from Knowledge Base'));
+      await tester.tap(find.text('Choose from Knowledge Vault'));
       await settle(tester);
       await tester.tap(find.text('Fixture source'));
       await tester.tap(find.text('Done'));
@@ -238,7 +239,7 @@ void main() {
       await tester.tap(
         find.descendant(
           of: find.byType(CupertinoTabBar),
-          matching: find.text('Knowledge Base'),
+          matching: find.text('Knowledge Vault'),
         ),
       );
       await settle(tester);

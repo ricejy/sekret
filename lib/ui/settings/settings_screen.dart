@@ -199,10 +199,10 @@ class _SettingsScreenState extends State<SettingsScreen>
     final (title, detail) = switch (action) {
       LocalDataAction.chats => (
         'Delete all chats?',
-        'All chats, summaries, drafts, and saved source selections will be permanently removed. Your Knowledge Base stays.',
+        'All chats, summaries, drafts, and saved source selections will be permanently removed. Your Knowledge Vault stays.',
       ),
       LocalDataAction.knowledge => (
-        'Delete entire Knowledge Base?',
+        'Delete entire Knowledge Vault?',
         'All source originals, extracted text, indexes, and processing work will be permanently removed. Chats may retain sensitive information derived from these sources. Their citations will show Source deleted.',
       ),
       LocalDataAction.everything => (
@@ -270,7 +270,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 'Your chats, knowledge, search, and processing stay on this device. No account, cloud model, or sync.',
               ),
               _detail(
-                'Optional model downloads contact Hugging Face and its delivery hosts only after you confirm. They see your IP address and model request, not your chats or Knowledge Base content. Downloaded model storage is shown in Models.',
+                'Optional model downloads contact Hugging Face and its delivery hosts only after you confirm. They see your IP address and model request, not your chats or Knowledge Vault content. Downloaded model storage is shown in Models.',
               ),
               _detail(
                 'iOS sandbox and file protection protect stored data. App lock protects entry to Sekret; it is not database encryption. App-switcher snapshots are always hidden. Sekret sends no notifications.',
@@ -354,7 +354,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 destructive: true,
               ),
               _button(
-                'Delete entire Knowledge Base',
+                'Delete entire Knowledge Vault',
                 () => _delete(LocalDataAction.knowledge),
                 destructive: true,
               ),

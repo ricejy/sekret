@@ -134,7 +134,7 @@ void main() {
 
   for (final action in [
     'Delete all chats',
-    'Delete entire Knowledge Base',
+    'Delete entire Knowledge Vault',
     'Erase all local data',
   ]) {
     testWidgets(
@@ -165,7 +165,7 @@ void main() {
           ),
         );
         await settleSettings(tester);
-        if (action == 'Delete entire Knowledge Base') {
+        if (action == 'Delete entire Knowledge Vault') {
           expect((await app.workspace.history()).single.id, chat.id);
         } else {
           expect(await app.workspace.history(), isEmpty);
@@ -239,7 +239,7 @@ void main() {
       await tester.pumpWidget(SekretChatApp(openResources: () async => app));
       await settleSettings(tester);
       await settings(tester);
-      await tapRow(tester, 'Delete entire Knowledge Base');
+      await tapRow(tester, 'Delete entire Knowledge Vault');
       await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Delete'));
       await tester.pump(const Duration(milliseconds: 100));
       await expectLater(

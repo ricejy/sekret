@@ -191,7 +191,7 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
       await paste();
       expect(find.text('Equipment policy'), findsOneWidget);
       await paste();
-      expect(find.text('Already in your Knowledge Base'), findsOneWidget);
+      expect(find.text('Already in your Knowledge Vault'), findsOneWidget);
       await tester.tap(find.text('Keep existing'));
       await settle(tester);
       expect(find.text('Equipment policy'), findsOneWidget);

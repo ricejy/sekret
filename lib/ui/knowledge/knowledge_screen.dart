@@ -255,7 +255,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
     final type = await showCupertinoModalPopup<KnowledgeSourceType>(
       context: context,
       builder: (context) => CupertinoActionSheet(
-        title: const Text('Add to Knowledge Base'),
+        title: const Text('Add to Knowledge Vault'),
         message: const Text('Your source stays on this device.'),
         actions: [
           for (final type in KnowledgeSourceType.values)
@@ -292,7 +292,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
         final open = await showCupertinoDialog<bool>(
           context: context,
           builder: (context) => CupertinoAlertDialog(
-            title: const Text('Already in your Knowledge Base'),
+            title: const Text('Already in your Knowledge Vault'),
             content: Text(
               'This content is already saved as “${result.item.title}”. No second copy was added.',
             ),
@@ -357,7 +357,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
     } on Object {
       if (mounted && revision == _revision) {
         setState(
-          () => _loadError = 'Could not load the Knowledge Base. Try again.',
+          () => _loadError = 'Could not load the Knowledge Vault. Try again.',
         );
       }
     }
@@ -423,7 +423,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
   @override
   Widget build(BuildContext context) => CupertinoPageScaffold(
     navigationBar: CupertinoNavigationBar(
-      middle: const Text('Knowledge Base'),
+      middle: const Text('Knowledge Vault'),
       trailing: CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: _importing ? null : _add,
