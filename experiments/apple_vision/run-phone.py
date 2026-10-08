@@ -3,7 +3,8 @@
 Replaces the earlier `com.ricejy.sekret.localeval` test app in place (free-profile
 app limit); its Documents are copied to results/ first. Never touches Sekret.
 
-    python3 -I experiments/apple_vision/run-phone.py --device <CoreDevice UDID>
+    python3 -I experiments/apple_vision/run-phone.py --device <CoreDevice UDID> \
+        [--skip-install] [--suite v1|v2] [--instructions-file path]
 """
 
 import argparse
@@ -17,7 +18,6 @@ ROOT = Path(__file__).resolve().parent
 BUNDLE = "com.ricejy.sekret.localeval"
 APP = ROOT / "ios/build/Build/Products/Release-iphoneos/SekretVisionEval.app"
 REMOTE = "Documents/VisionReports"
-CASES = 24
 
 
 def device(*args, timeout=120):
@@ -32,10 +32,18 @@ def main():
     parser.add_argument("--device", required=True)
     parser.add_argument("--skip-install", action="store_true",
                         help="Reuse the installed, already-verified build (e.g. while offline)")
+    parser.add_argument("--suite", choices=["v1", "v2"], default="v1")
+    parser.add_argument("--instructions-file", type=Path,
+                        help="System instructions to use instead of the suite's own (required for v2)")
     args = parser.parse_args()
+    extra = ["--suite", args.suite]
+    if args.instructions_file:
+        extra += ["--instructions", args.instructions_file.read_text().strip()]
+    elif args.suite == "v2":
+        parser.error("v2 requires --instructions-file")
     results = ROOT / "results"
     results.mkdir(exist_ok=True)
-    root = Path(tempfile.mkdtemp(prefix=f"phone-{time.strftime('%Y%m%d-%H%M%S')}-", dir=results))
+    root = Path(tempfile.mkdtemp(prefix=f"phone-{args.suite}-{time.strftime('%Y%m%d-%H%M%S')}-", dir=results))
     container = ["--domain-type", "appDataContainer", "--domain-identifier", BUNDLE]
 
     def inventory(subdirectory, missing_ok=True):
@@ -57,7 +65,7 @@ def main():
     if not args.skip_install:
         device("install", "app", "--device", args.device, str(APP), timeout=600)
     prior = inventory(REMOTE)
-    device("process", "launch", "--device", args.device, "--terminate-existing", BUNDLE, "--screening-suite")
+    device("process", "launch", "--device", args.device, "--terminate-existing", BUNDLE, "--screening-suite", *extra)
     deadline = time.monotonic() + 30 * 60
     while time.monotonic() < deadline:
         time.sleep(10)

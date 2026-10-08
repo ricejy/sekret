@@ -52,7 +52,7 @@
             isa = XCBuildConfiguration;
             buildSettings = {
                 CODE_SIGN_STYLE = Automatic;
-                CURRENT_PROJECT_VERSION = 2;
+                CURRENT_PROJECT_VERSION = 3;
                 DEVELOPMENT_TEAM = "";
                 GENERATE_INFOPLIST_FILE = YES;
                 INFOPLIST_KEY_CFBundleDisplayName = "Sekret Vision Eval";
@@ -72,7 +72,7 @@
             isa = XCBuildConfiguration;
             buildSettings = {
                 CODE_SIGN_STYLE = Automatic;
-                CURRENT_PROJECT_VERSION = 2;
+                CURRENT_PROJECT_VERSION = 3;
                 DEVELOPMENT_TEAM = "";
                 GENERATE_INFOPLIST_FILE = YES;
                 INFOPLIST_KEY_CFBundleDisplayName = "Sekret Vision Eval";

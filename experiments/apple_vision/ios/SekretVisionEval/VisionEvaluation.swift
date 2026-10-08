@@ -9,7 +9,11 @@ import UIKit
 /// Only `SystemLanguageModel.default` is used; Private Cloud Compute is never referenced.
 @MainActor
 final class VisionEvaluation: ObservableObject {
-    static let suiteSHA256 = "2f396f76d91af8acac7865fc2b992425aebc50a8c6e69d64d8db3b3628e7190c"
+    /// v1 is spent and now a development set; v2 is the held-out set for the narrowed slice.
+    static let suites = [
+        "v1": ("screening-v1.json", "2f396f76d91af8acac7865fc2b992425aebc50a8c6e69d64d8db3b3628e7190c"),
+        "v2": ("screening-v2.json", "2e65ef96930adcd7b3ab4a78e4d1a9f8b8d04afb549edf512863fdb5c615e920"),
+    ]
     static let preprocessing = "ImageIO oriented thumbnail, longest edge 1024, CGImage passed with orientation .up"
 
     @Published var status = "Idle"
@@ -27,24 +31,29 @@ final class VisionEvaluation: ObservableObject {
         path.start(queue: .main)
     }
 
-    func run() {
+    /// `instructions` overrides the suite's system text; v2 has none of its own and requires it.
+    func run(suite name: String = "v1", instructions: String? = nil) {
         guard !busy else { return }
         busy = true
         log = []
-        task = Task { await runSuite(); busy = false }
+        task = Task { await runSuite(name, instructions: instructions); busy = false }
     }
 
     func stop() { task?.cancel() }
 
-    private func runSuite() async {
+    private func runSuite(_ name: String, instructions: String?) async {
         let reports = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("VisionReports/\(UUID().uuidString)", isDirectory: true)
         do {
             try FileManager.default.createDirectory(at: reports, withIntermediateDirectories: true)
             let fixtures = Bundle.main.url(forResource: "photo_screening", withExtension: nil)!
-            let suiteData = try Data(contentsOf: fixtures.appendingPathComponent("screening-v1.json"))
-            guard sha256(suiteData) == Self.suiteSHA256 else { throw Failure("Suite differs from frozen screening-v1.json") }
+            guard let (file, expectedSHA256) = Self.suites[name] else { throw Failure("Unknown suite \(name)") }
+            let suiteData = try Data(contentsOf: fixtures.appendingPathComponent(file))
+            guard sha256(suiteData) == expectedSHA256 else { throw Failure("Suite differs from frozen \(file)") }
             let suite = try JSONDecoder().decode(Suite.self, from: suiteData)
+            guard let system = instructions ?? (name == "v1" ? suite.system : nil) else {
+                throw Failure("\(file) requires --instructions")
+            }
             for item in suite.cases {
                 let data = try Data(contentsOf: fixtures.appendingPathComponent(item.image))
                 guard sha256(data) == item.image_sha256 else { throw Failure("Image hash mismatch: \(item.id)") }
@@ -57,7 +66,8 @@ final class VisionEvaluation: ObservableObject {
                 "os": ProcessInfo.processInfo.operatingSystemVersionString,
                 "device": deviceModel(),
                 "network_path_at_start": networkStatus,
-                "suite_sha256": Self.suiteSHA256,
+                "suite": file, "suite_sha256": expectedSHA256,
+                "instructions": system, "instructions_sha256": sha256(Data(system.utf8)),
                 "preprocessing": Self.preprocessing,
                 "sampling": "greedy", "output_cap": 128,
             ]
@@ -67,7 +77,7 @@ final class VisionEvaluation: ObservableObject {
             for item in suite.cases {
                 if Task.isCancelled { throw Failure("Stopped") }
                 status = "Running \(item.id)"
-                let result = await evaluate(item, system: suite.system, fixtures: fixtures, model: model)
+                let result = await evaluate(item, system: system, fixtures: fixtures, model: model)
                 try write(result, to: reports.appendingPathComponent("\(item.id).json"))
                 append("\(item.id): \(result["response"] as? String ?? "ERROR \(result["error"] ?? "")")")
             }

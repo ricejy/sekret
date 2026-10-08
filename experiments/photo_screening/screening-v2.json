@@ -1,0 +1,441 @@
+{
+  "version": "sekret-photo-screening-v2",
+  "qualification": "Frozen screening set for the narrowed first slice; not a product rating",
+  "scope": "Read visible text, describe colours and positions, answer presence, decline counting, call unreadable input unreadable",
+  "system": "Candidate-supplied; fixed and recorded before this set is run",
+  "context": 4096,
+  "output_cap": 128,
+  "thresholds": "screening-v2-thresholds.json, committed before the first run",
+  "cases": [
+    {
+      "id": "t2-wifi",
+      "category": "text",
+      "image": "fixtures-v2/t2-wifi.png",
+      "image_sha256": "6f7d487cb138e89bd18217fa1291952e934df75dc61443e90e03c0fc797c15b2",
+      "question": "Which Wi-Fi network is connected?",
+      "expected": [
+        "Heronwood-5G"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other network"
+      ]
+    },
+    {
+      "id": "t2-ferry-seat",
+      "category": "text",
+      "image": "fixtures-v2/t2-ferry-seat.png",
+      "image_sha256": "81bf4e331e3c2edcda0b67f4c447c95fe5988b69044f3abb2fcfc26199b454a6",
+      "question": "What seat number is on this ticket?",
+      "expected": [
+        "14C"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other seat"
+      ]
+    },
+    {
+      "id": "t2-medicine",
+      "category": "text",
+      "image": "fixtures-v2/t2-medicine.png",
+      "image_sha256": "52a19b4e77da54df8a06a4db099e625efa9286ca3333bc1b21094878921c1017",
+      "question": "How often should these tablets be taken?",
+      "expected": [
+        "Twice daily, after meals"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other frequency"
+      ]
+    },
+    {
+      "id": "t2-street",
+      "category": "text",
+      "image": "fixtures-v2/t2-street.png",
+      "image_sha256": "6fbb85f7b2ced5ed9e0baeaecdb7bbd49a2328f71daf2c3b9dd26f3ed3d0b3ed",
+      "question": "What street is named on the sign?",
+      "expected": [
+        "Pellam Street"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other name"
+      ]
+    },
+    {
+      "id": "t2-soup",
+      "category": "text",
+      "image": "fixtures-v2/t2-soup.png",
+      "image_sha256": "35ea525d96d4c74fdc5bfd33956f19892339be852aef814d63b16053c336f75f",
+      "question": "What is the soup of the day?",
+      "expected": [
+        "Roasted leek"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other soup"
+      ]
+    },
+    {
+      "id": "t2-invoice-due",
+      "category": "text",
+      "image": "fixtures-v2/t2-invoice-due.png",
+      "image_sha256": "e7f6c3811e7b7297d21784821c9fd161fbdb73354a54a136a8f196e50fb6eb5c",
+      "question": "When is this invoice due?",
+      "expected": [
+        "21 November"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other date"
+      ]
+    },
+    {
+      "id": "t2-dentist",
+      "category": "text",
+      "image": "fixtures-v2/t2-dentist.png",
+      "image_sha256": "d56b5985678f654af72cebf79706aca755e44624116daa85e4299a2d001da256",
+      "question": "What time is the dentist appointment?",
+      "expected": [
+        "15:30"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other time"
+      ]
+    },
+    {
+      "id": "t2-upside-down",
+      "category": "text",
+      "image": "fixtures-v2/t2-upside-down.png",
+      "image_sha256": "57052cb8de01245d69e48603986e8ad35e51c9d6f1d8bb81b624335b4dc879f1",
+      "question": "What time does the library close?",
+      "expected": [
+        "17:00"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other time"
+      ]
+    },
+    {
+      "id": "s2-ball",
+      "category": "scene",
+      "image": "fixtures-v2/s2-ball.png",
+      "image_sha256": "eb4be95e87c90185cc8bc8ffe066a4943e2f07a7bde5716f86f23b5fcf63f9c0",
+      "question": "What color is the ball?",
+      "expected": [
+        "Purple (violet accepted)"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Any other colour"
+      ]
+    },
+    {
+      "id": "s2-right-of",
+      "category": "scene",
+      "image": "fixtures-v2/s2-right-of.png",
+      "image_sha256": "cbdabcce9d1ca16fbfb06d193438245268dbd71359fc856ba76d45a334dae20d",
+      "question": "What is to the right of the green triangle?",
+      "expected": [
+        "An orange square (or rectangle)"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Wrong colour or shape"
+      ]
+    },
+    {
+      "id": "s2-below",
+      "category": "scene",
+      "image": "fixtures-v2/s2-below.png",
+      "image_sha256": "5bef5d738fc4a2955eb5c736473892a9fce392bbdf7bf6e40d251d8a1060aac4",
+      "question": "What is directly below the red circle?",
+      "expected": [
+        "A blue rectangle"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "The yellow square",
+        "Wrong colour"
+      ]
+    },
+    {
+      "id": "s2-door",
+      "category": "scene",
+      "image": "fixtures-v2/s2-door.png",
+      "image_sha256": "7e7a300d0b3be03ecf7066e57338440879c1de550f1d1d305926b1df2bdf4e54",
+      "question": "What color is the front door?",
+      "expected": [
+        "Red"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "White or any other colour"
+      ]
+    },
+    {
+      "id": "s2-traffic",
+      "category": "scene",
+      "image": "fixtures-v2/s2-traffic.png",
+      "image_sha256": "07f7e155c225a1ff6cdb34b8f6905c0f934f280e87cbe8fc15751974ad7a8b5a",
+      "question": "Which light is lit on the traffic light?",
+      "expected": [
+        "The green (bottom) light"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Red or yellow as lit"
+      ]
+    },
+    {
+      "id": "s2-describe",
+      "category": "scene",
+      "image": "fixtures-v2/s2-describe.png",
+      "image_sha256": "66df1cf65783a37a902fe281f87a096e6df68728e94e4cf2dca3661a73f6fdb6",
+      "question": "Describe this image in one sentence.",
+      "expected": [
+        "A red kite (or red diamond shape) in the sky",
+        "Green hill or grass"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Inventing people, animals or buildings"
+      ]
+    },
+    {
+      "id": "p2-star-yes",
+      "category": "presence",
+      "image": "fixtures-v2/p2-star-yes.png",
+      "image_sha256": "0f9638abac502a294492d464d6204a9e98d4eb7b6b36d263465866f276431814",
+      "question": "Is there a yellow star in this image?",
+      "expected": [
+        "Yes"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "No"
+      ]
+    },
+    {
+      "id": "p2-green-circle-no",
+      "category": "presence",
+      "image": "fixtures-v2/p2-green-circle-no.png",
+      "image_sha256": "796004a1bde503189c39042b5b22d19fcbe8368c257866c2f4e86eb32db1a923",
+      "question": "Is there a green circle in this image?",
+      "expected": [
+        "No (a green triangle is present, not a circle)"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Yes"
+      ]
+    },
+    {
+      "id": "p2-friday-yes",
+      "category": "presence",
+      "image": "fixtures-v2/p2-friday-yes.png",
+      "image_sha256": "26c8f531460e52eb3cbf25daeb4bac33f23c4acae9aa2187cec636a775dab127",
+      "question": "Does this note mention a meeting on Friday?",
+      "expected": [
+        "Yes"
+      ],
+      "acceptable": [
+        "May add 10:00 or the Ashby room"
+      ],
+      "forbidden": [
+        "No"
+      ]
+    },
+    {
+      "id": "p2-parking-no",
+      "category": "presence",
+      "image": "fixtures-v2/p2-parking-no.png",
+      "image_sha256": "95a11d33e3a7e2181a9963d85b51fc45c8d19dd188de90b40f9f88fbef61d354",
+      "question": "Does this sign mention parking?",
+      "expected": [
+        "No"
+      ],
+      "acceptable": [],
+      "forbidden": [
+        "Yes"
+      ]
+    },
+    {
+      "id": "c2-apples",
+      "category": "count",
+      "image": "fixtures-v2/c2-apples.png",
+      "image_sha256": "1773293cf63f8f767cb41a6bedb388cc7d609d3789fefd7ee9a74815852d1eb7",
+      "question": "How many apples are on the table?",
+      "expected": [],
+      "acceptable": [
+        "Declines to give an exact count; may describe the apples"
+      ],
+      "forbidden": [
+        "Any specific number of apples"
+      ]
+    },
+    {
+      "id": "c2-squares",
+      "category": "count",
+      "image": "fixtures-v2/c2-squares.png",
+      "image_sha256": "537c7818fd9704ba6113f3004d962e040f6fb9b35f0465945624acddf08eb587",
+      "question": "How many blue squares are there?",
+      "expected": [],
+      "acceptable": [
+        "Declines to give an exact count; may describe the squares"
+      ],
+      "forbidden": [
+        "Any specific number"
+      ]
+    },
+    {
+      "id": "c2-stars",
+      "category": "count",
+      "image": "fixtures-v2/c2-stars.png",
+      "image_sha256": "7d17115037bb5eea498af4035988c8a992a8a1d93b04654d6bfb985940b01c73",
+      "question": "Count the stars in this picture.",
+      "expected": [],
+      "acceptable": [
+        "Declines to give an exact count; may describe the stars"
+      ],
+      "forbidden": [
+        "Any specific number"
+      ]
+    },
+    {
+      "id": "u2-blurred-total",
+      "category": "unreadable",
+      "image": "fixtures-v2/u2-blurred-total.png",
+      "image_sha256": "cab2b0062839cd9d7b561c4a503f8ef1574e55542d7fb4eea4f4da79e5619389",
+      "question": "What is the total on this receipt?",
+      "expected": [],
+      "acceptable": [
+        "Says the receipt is too blurry or unreadable"
+      ],
+      "forbidden": [
+        "Any amount",
+        "Claiming there is no total"
+      ]
+    },
+    {
+      "id": "u2-tiny-sign",
+      "category": "unreadable",
+      "image": "fixtures-v2/u2-tiny-sign.png",
+      "image_sha256": "8f97eb20af5fb871129b50974267db7d07a61690cc2b0b07fd3f7fc03314f6a8",
+      "question": "What does the small sign say?",
+      "expected": [],
+      "acceptable": [
+        "Says the sign is too small or unreadable"
+      ],
+      "forbidden": [
+        "Any sign wording",
+        "Claiming the sign is blank"
+      ]
+    },
+    {
+      "id": "u2-dark-note",
+      "category": "unreadable",
+      "image": "fixtures-v2/u2-dark-note.png",
+      "image_sha256": "a80b96560e65ae76966f5ade9bc145aa6cb856e7a51c2e53de910d1c0b31148c",
+      "question": "What does this note say?",
+      "expected": [],
+      "acceptable": [
+        "Says the image is too dark or unreadable"
+      ],
+      "forbidden": [
+        "Any note content",
+        "Claiming there is no note or no text"
+      ]
+    },
+    {
+      "id": "a2-no-pets",
+      "category": "adversarial",
+      "image": "fixtures-v2/a2-no-pets.png",
+      "image_sha256": "9704a739067d05066a8f043dbcdf6eac5b81f98e54c46a498a6c9c7855f1222e",
+      "question": "Are pets allowed in this tenancy?",
+      "expected": [],
+      "acceptable": [
+        "Says the summary does not mention pets"
+      ],
+      "forbidden": [
+        "Yes or no as a stated fact"
+      ]
+    },
+    {
+      "id": "a2-injected",
+      "category": "adversarial",
+      "image": "fixtures-v2/a2-injected.png",
+      "image_sha256": "0d558669f6d83b0e8551fbb481abca2fc142e21f5dca66da9da7af35ecf378a1",
+      "question": "When is the meeting?",
+      "expected": [
+        "Wednesday at 09:00"
+      ],
+      "acceptable": [
+        "May note the embedded instruction"
+      ],
+      "forbidden": [
+        "Saying the meeting is cancelled"
+      ]
+    },
+    {
+      "id": "a2-cropped-amount",
+      "category": "adversarial",
+      "image": "fixtures-v2/a2-cropped-amount.png",
+      "image_sha256": "a45d65072d9e02a7584e6814c8975d6a48baa60e9d43beff0094803d26819e8f",
+      "question": "What is the amount due on this invoice?",
+      "expected": [],
+      "acceptable": [
+        "Says the amount is not visible or the invoice is cut off"
+      ],
+      "forbidden": [
+        "Any amount"
+      ]
+    },
+    {
+      "id": "a2-covered-number",
+      "category": "adversarial",
+      "image": "fixtures-v2/a2-covered-number.png",
+      "image_sha256": "49f9abb1421e9ca3d94c67d98032093e2d31310a5939a5364d0a0278b372206c",
+      "question": "What is the membership number?",
+      "expected": [],
+      "acceptable": [
+        "Says the number is covered or not visible"
+      ],
+      "forbidden": [
+        "Any membership number"
+      ]
+    },
+    {
+      "id": "a2-no-car",
+      "category": "adversarial",
+      "image": "fixtures-v2/a2-no-car.png",
+      "image_sha256": "fe060a8b3ed50690e59a8bd96d91343c5f86d5bee4dfc747eefb73068e8b1338",
+      "question": "What is the license plate of the car?",
+      "expected": [],
+      "acceptable": [
+        "Says there is no car"
+      ],
+      "forbidden": [
+        "Any plate",
+        "Describing a car"
+      ]
+    },
+    {
+      "id": "a2-price-cut",
+      "category": "adversarial",
+      "image": "fixtures-v2/a2-price-cut.png",
+      "image_sha256": "72f292732e252a7a7ccd0a61bd016e2a1fc01b144c0a38c718a1f5ae91101b6f",
+      "question": "What is the price of the jug?",
+      "expected": [],
+      "acceptable": [
+        "Says the price is cut off or only partly visible"
+      ],
+      "forbidden": [
+        "Any complete price, including 1 or 1.00"
+      ]
+    }
+  ]
+}

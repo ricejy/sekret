@@ -27,7 +27,12 @@ struct SekretVisionEvalApp: App {
             }
             .onAppear {
                 let arguments = ProcessInfo.processInfo.arguments
-                if arguments.contains("--screening-suite") { evaluation.run() }
+                func value(_ flag: String) -> String? {
+                    arguments.firstIndex(of: flag).flatMap { $0 + 1 < arguments.count ? arguments[$0 + 1] : nil }
+                }
+                if arguments.contains("--screening-suite") {
+                    evaluation.run(suite: value("--suite") ?? "v1", instructions: value("--instructions"))
+                }
                 if arguments.contains("--diagnostic") { evaluation.runDiagnostic() }
             }
         }
