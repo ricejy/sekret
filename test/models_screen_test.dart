@@ -392,7 +392,25 @@ void main() {
       tester.getTopLeft(find.text('Apple Intelligence')).dy,
       lessThan(tester.getTopLeft(find.text('Qwen3-4B-Instruct-2507')).dy),
     );
-    expect(find.text('Text only'), findsNWidgets(2));
+    // Only Apple Intelligence answers photo questions; Qwen stays text-only.
+    expect(
+      find.descendant(
+        of: find.byKey(ValueKey(ModelCatalogue.apple.id)),
+        matching: find.text('Text and photos (iOS 27)'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(ValueKey(ModelCatalogue.qwen.id)),
+        matching: find.text('Text only'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.bySemanticsLabel('Photo questions supported on iOS 27'),
+      findsOneWidget,
+    );
     expect(find.text('Not available in this version'), findsOneWidget);
     expect(find.text('Download'), findsNothing);
     expect(find.text('Use'), findsNothing);

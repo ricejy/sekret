@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:typed_data';
+
+import 'package:crypto/crypto.dart';
 
 import '../knowledge/knowledge_base.dart';
 import '../platform/embedder.dart';
@@ -26,6 +29,7 @@ final class ChatEngine {
     required ModelSnapshot model,
     this.knowledgeBase,
     this.groundedBackend,
+    this.photoBackend,
     this.outputTokenReserve = 512,
   }) : _model = ModelSnapshot(
          identifier: model.identifier,
@@ -39,8 +43,21 @@ final class ChatEngine {
   ModelSnapshot _model;
   final KnowledgeBase? knowledgeBase;
   GroundedLlmBackend? groundedBackend;
+  PhotoQuestionBackend? photoBackend;
   int outputTokenReserve;
   bool get supportsKnowledgeBase => groundedBackend != null;
+
+  /// Only the selected model's own capability; never switches models.
+  Future<bool> supportsPhotoQuestions() async {
+    final backend = photoBackend;
+    if (backend == null || _cleanupFailed) return false;
+    try {
+      return await backend.supportsPhotoQuestions();
+    } on Object {
+      return false;
+    }
+  }
+
   String get modelIdentifier => _model.identifier;
 
   /// Atomic idle-only change of backend, tokenizer and retained provenance.
@@ -50,6 +67,7 @@ final class ChatEngine {
     required ModelContextProbe contextProbe,
     required ModelSnapshot model,
     GroundedLlmBackend? grounded,
+    PhotoQuestionBackend? photo,
     int outputTokens = 512,
     Future<void> Function()? beforeChange,
   }) async {
@@ -68,6 +86,7 @@ final class ChatEngine {
         metadata: Map.unmodifiable(model.metadata),
       );
       groundedBackend = grounded;
+      photoBackend = photo;
       outputTokenReserve = outputTokens;
     } finally {
       _changingModel = false;
@@ -87,8 +106,13 @@ final class ChatEngine {
 
   /// Returns the persisted terminal turn. Streamed snapshots are observable
   /// through workspace.changes/transcript. Busy submissions are never queued.
-  Future<ChatTurnResult> send({required String chatId, required String text}) =>
-      _start(chatId, text);
+  /// A photo turn sends only this photo and question to the model, without
+  /// earlier chat context; later turns see its text answer, not the photo.
+  Future<ChatTurnResult> send({
+    required String chatId,
+    required String text,
+    Uint8List? photo,
+  }) => _start(chatId, text, photo: photo);
 
   /// Append a new attempt using context strictly before the original turn.
   /// Neither the original answer nor subsequent turns are silently deleted.
@@ -101,6 +125,7 @@ final class ChatEngine {
     String chatId,
     String text, {
     String? regenerateTurnId,
+    Uint8List? photo,
   }) {
     if (_disposed || _suspended || _cleanupFailed || isGenerating) {
       return Future.error(
@@ -110,7 +135,7 @@ final class ChatEngine {
     final active = _ActiveTurn();
     _active =
         active; // Reserve synchronously, including availability/preflight.
-    return _execute(active, chatId, text, regenerateTurnId).whenComplete(
+    return _execute(active, chatId, text, regenerateTurnId, photo).whenComplete(
       () async {
         try {
           final backend = _backend;
@@ -134,20 +159,30 @@ final class ChatEngine {
     String chatId,
     String text,
     String? regenerateTurnId,
+    Uint8List? photo,
   ) async {
     // Do not race this write against cancellation: always obtain its identity
     // before recording Stop, even if Stop was tapped during admission.
-    final mode = regenerateTurnId == null
-        ? (await _workspace.history())
-              .firstWhere((chat) => chat.id == chatId)
-              .mode
+    final original = regenerateTurnId == null
+        ? null
         : (await _workspace.transcript(
             chatId,
-          )).firstWhere((turn) => turn.id == regenerateTurnId).provenance.mode;
+          )).firstWhere((turn) => turn.id == regenerateTurnId);
+    final mode =
+        original?.provenance.mode ??
+        (await _workspace.history())
+            .firstWhere((chat) => chat.id == chatId)
+            .mode;
     final grounded = mode == ChatMode.knowledgeBase;
     if (grounded && (knowledgeBase == null || groundedBackend == null)) {
       throw StateError('Knowledge Base generation is unavailable.');
     }
+    if (photo != null && (grounded || photo.isEmpty)) {
+      throw StateError('Photo questions run only in General mode.');
+    }
+    final photoTurn = photo != null || (original?.hasPhoto ?? false);
+    final question = (original?.userText ?? text).trim();
+    final countDeclined = photoTurn && photoCountQuestion.hasMatch(question);
     final model = ModelSnapshot(
       identifier: _model.identifier,
       revision: _model.revision,
@@ -155,8 +190,17 @@ final class ChatEngine {
         ..._model.metadata,
         'promptVersion': grounded
             ? groundedPromptVersion
+            : photoTurn
+            ? photoPromptVersion
             : generalPromptVersion,
         if (grounded) 'verificationVersion': groundedVerificationVersion,
+        if (photoTurn) ...{
+          'photoSha256':
+              original?.provenance.model.metadata['photoSha256'] ??
+              sha256.convert(photo!).toString(),
+          'photoPreprocessing': photoPreprocessingVersion,
+          if (countDeclined) 'declinedBy': 'count-rule',
+        },
       },
     );
     var turn = grounded
@@ -171,6 +215,7 @@ final class ChatEngine {
             userText: text,
             model: model,
             regenerateTurnId: regenerateTurnId,
+            photo: photo,
           );
     var outcome = TurnOutcome.completed;
     TurnFailure? failure;
@@ -186,6 +231,17 @@ final class ChatEngine {
             TurnFailure.appleIntelligenceNotEnabled,
           _ => TurnFailure.modelNotReady,
         });
+      }
+      if (photoTurn) {
+        await _answerAboutPhoto(
+          active,
+          turn,
+          question: question,
+          declined: countDeclined,
+          onIterator: (value) => iterator = value,
+          onSnapshot: (value) => response = value,
+        );
+        throw const _PhotoAnswered();
       }
       var boundary = turn.ordinal;
       if (regenerateTurnId != null) {
@@ -386,6 +442,8 @@ final class ChatEngine {
       if (response.trim().isEmpty) {
         throw const _TurnFailure(TurnFailure.streamFailure);
       }
+    } on _PhotoAnswered {
+      // The photo path saved its own snapshots; record its terminal state.
     } on _InsufficientEvidence {
       outcome = TurnOutcome.insufficientEvidence;
       response = insufficientEvidenceMessage;
@@ -433,6 +491,41 @@ final class ChatEngine {
       chatId,
     )).firstWhere((t) => t.id == turn.id);
     return ChatTurnResult(saved, earlierContextSummarized: summarized);
+  }
+
+  /// No chat context, retrieval or token preflight: image token counts are
+  /// unavailable natively, so context overflow is reported by the model.
+  Future<void> _answerAboutPhoto(
+    _ActiveTurn active,
+    TurnRecord turn, {
+    required String question,
+    required bool declined,
+    required void Function(StreamIterator<String>) onIterator,
+    required void Function(String) onSnapshot,
+  }) async {
+    if (declined) return onSnapshot(photoCountDecline);
+    final backend = photoBackend;
+    if (backend == null || !await active.wait(supportsPhotoQuestions())) {
+      throw const _TurnFailure(TurnFailure.photosUnsupported);
+    }
+    final photo = await active.wait(_workspace.turnPhoto(turn.id));
+    if (photo == null) throw const _TurnFailure(TurnFailure.streamFailure);
+    active.check();
+    final iterator = StreamIterator(
+      backend.answerAboutPhoto(photo: photo, question: question),
+    );
+    onIterator(iterator);
+    var response = '';
+    while (await active.wait(iterator.moveNext())) {
+      active.check();
+      response = iterator.current;
+      onSnapshot(response);
+      await _workspace.saveResponse(turn.id, response);
+    }
+    active.check();
+    if (response.trim().isEmpty) {
+      throw const _TurnFailure(TurnFailure.streamFailure);
+    }
   }
 
   Future<void> stop() => _cancel(TurnOutcome.stopped);
@@ -497,6 +590,10 @@ final class _TurnCancelled implements Exception {
 final class _TurnFailure implements Exception {
   const _TurnFailure(this.failure);
   final TurnFailure failure;
+}
+
+final class _PhotoAnswered implements Exception {
+  const _PhotoAnswered();
 }
 
 final class _InsufficientEvidence implements Exception {

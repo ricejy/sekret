@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import '../storage/local_data_vault.dart';
 
@@ -205,6 +206,7 @@ final class ChatWorkspace {
     required String userText,
     required ModelSnapshot model,
     String? regenerateTurnId,
+    Uint8List? photo,
   }) => _run(() async {
     final chat = await _findChat(chatId);
     var text = userText.trim();
@@ -219,6 +221,13 @@ final class ChatWorkspace {
         );
       }
       text = original.userText;
+      // Regeneration keeps the original turn's photo scope.
+      photo = original.hasPhoto
+          ? await _vault.chats.turnPhoto(original.id)
+          : null;
+      if (original.hasPhoto && photo == null) {
+        throw StateError('The original photo is no longer available.');
+      }
     } else if (chat.mode != ChatMode.general) {
       throw StateError('Choose General mode before sending.');
     }
@@ -233,8 +242,12 @@ final class ChatWorkspace {
       evidencePassageIds: const [],
       citationEvidenceIndexes: const [],
       model: model,
+      photo: photo,
     );
   });
+
+  Future<Uint8List?> turnPhoto(String turnId) =>
+      _run(() => _vault.chats.turnPhoto(turnId), notify: false);
 
   Future<void> deleteFromTurn(String chatId, String turnId) =>
       _run(() => _vault.chats.deleteFromTurn(chatId, turnId));

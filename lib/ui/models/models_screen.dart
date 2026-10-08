@@ -261,7 +261,7 @@ class _ModelsScreenState extends State<ModelsScreen>
     builder: (context) => CupertinoAlertDialog(
       title: const Text('Apple Intelligence'),
       content: Text(
-        'Managed by iOS. Sekret does not download or remove this model. Text chat and Knowledge Base answers use the on-device model. Photo imports currently recognize text only.\n\n'
+        'Managed by iOS. Sekret does not download or remove this model. Text chat and Knowledge Base answers use the on-device model. On iOS 27 you can ask one question about a photo in General chat; answers are the model’s interpretation. It may misread cut-off or tiny text, Sekret does not answer counting questions, and it sometimes declines ordinary photos. Photos added to the Knowledge Base are still searched by their recognized text only.\n\n'
         '${ModelRatings.apple.description}\n\n'
         'The system model may change with iOS updates. Earlier grounded-answer tests remain separate from these General-mode ratings.',
       ),
@@ -343,6 +343,7 @@ class _ModelsScreenState extends State<ModelsScreen>
 
   Widget _modelRow(CatalogueModel model) {
     final apple = model.kind == CatalogueModelKind.appleManaged;
+    final photos = model.capabilities.contains(ModelCapability.photoQuestions);
     final ratings = ModelRatings.forModel(model.id);
     final store = widget.store;
     final state = store?.state;
@@ -486,21 +487,34 @@ class _ModelsScreenState extends State<ModelsScreen>
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 4,
             children: [
-              Semantics(
-                label:
-                    'Image understanding not supported; text recognition only',
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Icon(
-                    CupertinoIcons.photo,
-                    size: 18,
-                    color: SekretBrand.secondary,
-                  ),
+              MergeSemantics(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Icon(
+                        photos
+                            ? CupertinoIcons.photo
+                            : CupertinoIcons.textformat,
+                        size: 18,
+                        color: SekretBrand.secondary,
+                        semanticLabel: photos
+                            ? 'Photo questions supported on iOS 27'
+                            : 'Text only; no photo questions',
+                      ),
+                    ),
+                    ExcludeSemantics(
+                      child: Text(
+                        photos ? 'Text and photos (iOS 27)' : 'Text only',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: SekretBrand.secondary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const Text(
-                'Text only',
-                style: TextStyle(fontSize: 12, color: SekretBrand.secondary),
               ),
               if (apple) ...[
                 CupertinoButton(

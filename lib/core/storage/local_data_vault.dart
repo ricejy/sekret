@@ -24,6 +24,7 @@ enum TurnFailure {
   contextOverflow,
   guardrailViolation,
   streamFailure,
+  photosUnsupported,
 }
 
 enum RetentionPolicy { manual, thirtyDays, ninetyDays }
@@ -40,7 +41,7 @@ enum KnowledgeProcessingState {
   needsReindexing,
 }
 
-const localDataVaultSchemaVersion = 6;
+const localDataVaultSchemaVersion = 7;
 
 final class VaultWriteException implements Exception {
   const VaultWriteException(this.cause);
@@ -315,9 +316,14 @@ final class TurnRecord {
   final TurnProvenance provenance;
   final TurnFailure? failure;
 
-  String get answerLabel => provenance.mode == ChatMode.general
-      ? 'General answer'
-      : 'Based on selected sources';
+  /// Photo turns record the photo's hash in their immutable provenance.
+  bool get hasPhoto => provenance.model.metadata['photoSha256'] is String;
+
+  String get answerLabel => provenance.mode == ChatMode.knowledgeBase
+      ? 'Based on selected sources'
+      : hasPhoto
+      ? 'Photo answer · model interpretation'
+      : 'General answer';
 }
 
 final class ContextSummaryRecord {
@@ -420,7 +426,11 @@ abstract interface class VaultChats {
     required List<int> citationEvidenceIndexes,
     required ModelSnapshot model,
     bool deferEvidence = false,
+    Uint8List? photo,
   });
+
+  /// The photo retained with a turn; deleted with its turn and chat.
+  Future<Uint8List?> turnPhoto(String turnId);
 
   Future<List<TurnRecord>> listTurns(String chatId);
 
@@ -576,6 +586,7 @@ final class _SqliteLocalDataVault implements LocalDataVault, VaultChats {
         COALESCE((
           SELECT SUM(length(summary_text)) FROM context_summaries
         ), 0) +
+        COALESCE((SELECT SUM(length(photo_bytes)) FROM turn_photos), 0) +
         COALESCE((
           SELECT SUM(length(source_title)) FROM turn_source_scope
         ), 0) +
@@ -684,6 +695,9 @@ final class _SqliteLocalDataVault implements LocalDataVault, VaultChats {
           case 5:
             _createOnboardingSchema();
             version = 6;
+          case 6:
+            _createTurnPhotoSchema();
+            version = 7;
           default:
             throw InvalidVaultSchemaException(const []);
         }
@@ -714,6 +728,7 @@ final class _SqliteLocalDataVault implements LocalDataVault, VaultChats {
       'knowledge_passages_fts',
       'chat_workspace_state',
       'knowledge_pages',
+      'turn_photos',
     };
     final missingTables = requiredTables.difference(_userTableNames()).toList()
       ..sort();
@@ -890,7 +905,17 @@ final class _SqliteLocalDataVault implements LocalDataVault, VaultChats {
     _createChatLifecycleSchema();
     _createKnowledgeLifecycleSchema();
     _createOnboardingSchema();
+    _createTurnPhotoSchema();
   }
+
+  /// Original picked bytes; secure_delete and cascades remove them with the
+  /// turn, its chat and erase-all.
+  void _createTurnPhotoSchema() => _database.execute('''
+    CREATE TABLE turn_photos (
+      turn_id TEXT PRIMARY KEY REFERENCES turns(id) ON DELETE CASCADE,
+      photo_bytes BLOB NOT NULL
+    );
+  ''');
 
   void _createOnboardingSchema() => _database.execute(
     'ALTER TABLE vault_settings ADD COLUMN onboarding_complete INTEGER NOT NULL DEFAULT 0;',
@@ -1237,7 +1262,11 @@ final class _SqliteLocalDataVault implements LocalDataVault, VaultChats {
     required List<int> citationEvidenceIndexes,
     required ModelSnapshot model,
     bool deferEvidence = false,
+    Uint8List? photo,
   }) async {
+    if (photo != null && (mode != ChatMode.general || photo.isEmpty)) {
+      throw ArgumentError('Photos belong to non-empty General turns.');
+    }
     if (deferEvidence &&
         (mode != ChatMode.knowledgeBase ||
             outcome != TurnOutcome.generating ||
@@ -1304,6 +1333,12 @@ final class _SqliteLocalDataVault implements LocalDataVault, VaultChats {
           jsonEncode(model.metadata),
         ],
       );
+      if (photo != null) {
+        _database.execute(
+          'INSERT INTO turn_photos (turn_id, photo_bytes) VALUES (?, ?);',
+          [turnId, photo],
+        );
+      }
 
       for (var index = 0; index < sourceScopeIds.length; index += 1) {
         final sourceId = sourceScopeIds[index];
@@ -1408,6 +1443,22 @@ final class _SqliteLocalDataVault implements LocalDataVault, VaultChats {
       throw VaultWriteException(error);
     }
     return (await listTurns(chatId)).firstWhere((turn) => turn.id == turnId);
+  }
+
+  @override
+  Future<Uint8List?> turnPhoto(String turnId) async {
+    _ensureOpen();
+    final rows = _database.select(
+      '''
+        SELECT turn_photos.photo_bytes
+        FROM turn_photos
+        JOIN turns ON turns.id = turn_photos.turn_id
+        JOIN chats ON chats.id = turns.chat_id
+        WHERE turn_photos.turn_id = ? AND chats.deletion_deadline IS NULL;
+      ''',
+      [turnId],
+    );
+    return rows.isEmpty ? null : rows.single['photo_bytes'] as Uint8List;
   }
 
   @override

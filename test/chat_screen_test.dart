@@ -94,6 +94,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
       backend: model,
       contextProbe: model,
       groundedBackend: model,
+      photoBackend: model,
       knowledgeBase: knowledge,
       model: const ModelSnapshot(identifier: 'fake', revision: '1'),
     );
@@ -126,6 +127,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     double scale = 1,
     Future<KnowledgeImportResult?> Function(BuildContext, KnowledgeSourceType)?
     onImportSource,
+    Future<Uint8List?> Function()? onPickPhoto,
   }) async {
     if (!physicalDevice) {
       tester.view.physicalSize = const Size(390, 844);
@@ -153,6 +155,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
             onPreview: (preview) async => previews.add(preview),
             onLink: (uri) async => links.add(uri),
             onImportSource: onImportSource,
+            onPickPhoto: onPickPhoto,
           ),
         ),
       ),
@@ -733,10 +736,93 @@ void registerChatScreenTests({bool physicalDevice = false}) {
       expect(tester.takeException(), isNull);
     },
   );
+
+  // A 1×1 PNG; the picker returns picked bytes unchanged.
+  final pngPixel = base64Decode(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+  );
+
+  runTest('asks one question about a picked photo', (tester) async {
+    var picks = 0;
+    await mount(
+      tester,
+      onPickPhoto: () async {
+        picks++;
+        return pngPixel;
+      },
+    );
+    await tester.tap(find.bySemanticsLabel('Add sources'));
+    await settle(tester);
+    await tester.tap(find.text('Ask about a photo'));
+    await settle(tester);
+    expect(picks, 1);
+    expect(find.bySemanticsLabel('Attached photo'), findsOneWidget);
+    await tester.tap(find.bySemanticsLabel('Remove photo'));
+    await settle(tester);
+    expect(find.bySemanticsLabel('Attached photo'), findsNothing);
+
+    await tester.tap(find.bySemanticsLabel('Add sources'));
+    await settle(tester);
+    await tester.tap(find.text('Ask about a photo'));
+    await settle(tester);
+    await tester.enterText(find.byType(CupertinoTextField), 'What is this?');
+    await settle(tester);
+    await tester.tap(find.bySemanticsLabel('Send'));
+    await settle(tester);
+    expect(model.photoQuestions, ['What is this?']);
+    expect(find.text('Photo answer · model interpretation'), findsOneWidget);
+    expect(find.text('A fictional blue mug on a desk.'), findsOneWidget);
+    // The sent photo stays with its turn; the composer is cleared.
+    expect(find.bySemanticsLabel('Attached photo'), findsOneWidget);
+    expect(find.bySemanticsLabel('Remove photo'), findsNothing);
+    await capture(tester, 'photo-answer');
+  });
+
+  runTest('explains when the selected model cannot read photos', (
+    tester,
+  ) async {
+    model.photoSupported = false;
+    var picks = 0;
+    await mount(
+      tester,
+      onPickPhoto: () async {
+        picks++;
+        return pngPixel;
+      },
+    );
+    await tester.tap(find.bySemanticsLabel('Add sources'));
+    await settle(tester);
+    await tester.tap(find.text('Ask about a photo'));
+    await settle(tester);
+    expect(picks, 0);
+    expect(
+      find.text(
+        'Photo questions need Apple Intelligence on iOS 27 with image support.',
+      ),
+      findsOneWidget,
+    );
+  });
 }
 
 class UiModel
-    implements GeneralLlmBackend, GroundedLlmBackend, ModelContextProbe {
+    implements
+        GeneralLlmBackend,
+        GroundedLlmBackend,
+        PhotoQuestionBackend,
+        ModelContextProbe {
+  bool photoSupported = true;
+  final photoQuestions = <String>[];
+  @override
+  Future<bool> supportsPhotoQuestions() async => photoSupported;
+  @override
+  Stream<String> answerAboutPhoto({
+    required Uint8List photo,
+    required String question,
+  }) async* {
+    photoQuestions.add(question);
+    yield 'A fictional blue mug on a desk.';
+  }
+
   @override
   Stream<String> verifyGrounded({required String prompt}) =>
       Stream.value('SUPPORTED');

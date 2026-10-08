@@ -42,3 +42,17 @@ Only after both quality and device gates pass should production work add the ima
 1. Approve native Apple eligibility/toolchain investigation as the first route, including a disk plan before any installation.
 2. Confirm one-image direct questions and chat-local image retention as the first product slice.
 3. Agree the frozen screening set and advancement thresholds before a device run.
+
+## Decision 2026-10-08: ship the narrowed slice with known limitations
+
+The narrowed slice did not meet its frozen thresholds, but the owner chose to ship it with the screened limitations stated, and to revisit when Apple updates the on-device model. This overrides the "quality and device gates first" rule above for this slice only; a future model change still needs a fresh held-out set before any claim of improvement.
+
+What shipped, matching the screened configuration exactly:
+
+- Paperclip → **Ask about a photo**: one photo, one question, General mode only. Shown only as usable when the selected model reports image support (Apple Intelligence on iOS 27, built with the iOS 27 SDK); Qwen and older iOS explain why instead of switching models.
+- The model receives only the photo and the question (no chat context), with candidate D instructions (`photo-v1`), an ImageIO oriented thumbnail of longest edge 1024 (`imageio-oriented-1024-v1`), greedy sampling and 128 output tokens. Follow-up turns see the photo turn's text answer, not the photo.
+- Count questions (`how many`, `count`, `the number of`) get Sekret's fixed decline without calling the model.
+- The original picked bytes are stored in `turn_photos` (schema 7), deleted with their turn, chat and erase-all. Provenance records the photo's SHA-256, preprocessing and prompt versions; regeneration reuses the original photo.
+- Answers are labelled "Photo answer · model interpretation"; a refusal shows "The on-device model declined to answer about this photo." The Models screen states the limits.
+
+Not done: device acceptance (memory, repeated-run thermals, HEIC/orientation on real photos, interruption mid-generation), and no quality rating is published for photos.

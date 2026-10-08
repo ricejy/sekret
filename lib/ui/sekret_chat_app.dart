@@ -19,6 +19,7 @@ import '../core/platform/apple_vision_ocr.dart';
 import '../core/platform/device_protection.dart';
 import '../core/settings/app_protection.dart';
 import '../core/platform/pdfrx_pdf_page_rasterizer.dart';
+import '../core/platform/photos_document_image_picker.dart';
 import '../core/platform/pdfrx_pdf_text_extractor.dart';
 import '../core/storage/local_data_vault.dart';
 import 'chat/chat_screen.dart';
@@ -95,6 +96,7 @@ Future<ChatAppResources> openChatApp() async {
       backend: models,
       contextProbe: models,
       groundedBackend: models,
+      photoBackend: models,
       knowledgeBase: knowledge,
       model: ModelSnapshot(
         identifier: 'apple-foundation-models',
@@ -456,6 +458,9 @@ class _SekretChatAppState extends State<SekretChatApp>
                         resources.knowledge,
                         type,
                       ),
+                      onPickPhoto: () async =>
+                          (await const PhotosDocumentImagePicker().pickImage())
+                              ?.bytes,
                       onPreview: (preview) => Navigator.of(context).push<void>(
                         CupertinoPageRoute(
                           builder: (_) => SourcePreview(
