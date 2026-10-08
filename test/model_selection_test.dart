@@ -121,7 +121,7 @@ void main() {
       expect(restarted.state.phase, ModelInstallPhase.verifying);
       expect(restored.selected, ModelCatalogue.qwen.id);
       expect(engine.modelIdentifier, isNot(ModelCatalogue.apple.id));
-      expect(await engine.availability(), isA<ModelNotReady>());
+      expect(await engine.availability(), isA<ModelLoading>());
       expect(restored.hasLocalLease, false);
 
       hasher.gate!.complete();

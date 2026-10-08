@@ -205,7 +205,7 @@ final class ModelSelection extends ChangeNotifier {
 final class _VerifyingModel implements GeneralLlmBackend, ModelContextProbe {
   const _VerifyingModel();
   @override
-  Future<LlmAvailability> availability() async => const ModelNotReady();
+  Future<LlmAvailability> availability() async => const ModelLoading();
   @override
   Stream<String> generateGeneral({required String prompt}) =>
       Stream.error(StateError('The model is still being checked'));

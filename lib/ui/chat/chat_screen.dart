@@ -1015,6 +1015,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 AppleIntelligenceNotEnabled() =>
                   'Enable Apple Intelligence to answer.',
                 ModelNotReady() => 'The on-device model is not ready.',
+                ModelLoading() =>
+                  'The on-device model is loading. Give it a minute.',
                 _ => 'Checking on-device model…',
               }, style: const TextStyle(fontSize: 13)),
               CupertinoButton(
