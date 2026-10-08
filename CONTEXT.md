@@ -72,6 +72,10 @@ _Avoid_: Document answer, sourced response
 The Knowledge Base mode outcome used when selected sources do not adequately support an answer. Its user-facing text remains fixed and it never triggers an automatic general answer.
 _Avoid_: Refusal, no answer
 
+**Photo question**:
+A General mode turn about one photo picked for that turn. Only the photo and that question reach the model; the photo stays with its turn and chat, never enters the Knowledge Base, and its answer is identified as the model's interpretation, not evidence.
+_Avoid_: Image attachment, photo source, vision mode
+
 ## Lifecycle
 
 **Processing state**:

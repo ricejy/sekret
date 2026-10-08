@@ -166,6 +166,70 @@ void main() {
     },
   );
 
+  test('photo instructions and preprocessing match native exactly', () {
+    final native = File(
+      'ios/Runner/AppleFoundationModelsPlugin.swift',
+    ).readAsStringSync();
+    final instructions = RegExp(
+      r'static let photoInstructions = "([^"]+)"',
+    ).firstMatch(native)?.group(1)?.replaceAll(r'\n', '\n');
+    expect(instructions, photoInstructions);
+    expect(native, contains('photoPromptVersion = "$photoPromptVersion"'));
+    expect(native, contains('photoMaximumPixelSize = 1024'));
+  });
+
+  test('photo questions send the photo in photo mode', () async {
+    final events = StreamController<Object?>.broadcast();
+    addTearDown(events.close);
+    final calls = <MethodCall>[];
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          calls.add(call);
+          if (call.method == 'photoSupport') return true;
+          if (call.method == 'generate') {
+            final requestId = (call.arguments as Map)['requestId'] as String;
+            scheduleMicrotask(() {
+              events.add({
+                'requestId': requestId,
+                'type': 'snapshot',
+                'text': 'A red kite.',
+              });
+              events.add({'requestId': requestId, 'type': 'completed'});
+            });
+          }
+          return null;
+        });
+    final models = AppleFoundationModels(
+      channel: channel,
+      events: events.stream,
+    );
+    expect(await models.supportsPhotoQuestions(), true);
+    final photo = Uint8List.fromList([1, 2, 3]);
+    expect(
+      await models
+          .answerAboutPhoto(photo: photo, question: 'What is flying?')
+          .toList(),
+      ['A red kite.'],
+    );
+    final generate = calls.firstWhere((call) => call.method == 'generate');
+    final arguments = generate.arguments as Map;
+    expect(arguments['mode'], 'photo');
+    expect(arguments['prompt'], 'What is flying?');
+    expect(arguments['photo'], photo);
+    await expectLater(
+      models.answerAboutPhoto(photo: Uint8List(0), question: 'Empty').toList(),
+      throwsA(isA<LlmException>()),
+    );
+  });
+
+  test('photo support is false without the native plugin', () async {
+    final models = AppleFoundationModels(
+      channel: const MethodChannel('com.ricejy.sekret/missing-photo'),
+      events: const Stream.empty(),
+    );
+    expect(await models.supportsPhotoQuestions(), false);
+  });
+
   test('streams cumulative plain-string snapshots to completion', () async {
     final events = StreamController<Object?>.broadcast();
     addTearDown(events.close);

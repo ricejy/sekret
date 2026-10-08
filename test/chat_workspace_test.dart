@@ -304,6 +304,7 @@ void main() {
       ALTER TABLE vault_settings DROP COLUMN onboarding_complete;
       ALTER TABLE turn_provenance DROP COLUMN evidence_captured;
       DROP TABLE knowledge_pages;
+      DROP TABLE turn_photos;
       ALTER TABLE knowledge_items DROP COLUMN processing_message;
       PRAGMA user_version = 1;
     ''');

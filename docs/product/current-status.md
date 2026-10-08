@@ -27,7 +27,7 @@ These are one-phone measurements at full brightness under wireless profiling, no
 ## Remaining product work
 
 - The [held-out General comparison](../evaluation/model-ratings/heldout-v2-results-2026-10-08.md) (64 fresh tasks, blind grading with owner review) now supplies the General quality/speed ratings: Apple 3/5 quality, 5/5 speed; Qwen 3/5 quality, 4/5 speed. It replaces the [7 October development ratings](../evaluation/model-ratings/results-2026-10-07.md) in Models. Comparable system-service memory and calibrated battery ratings remain unqualified.
-- Ordinary-photo understanding needs separate scope, runtime/toolchain eligibility and quality/device acceptance. Current production imports use OCR; image-capable models have not been integrated.
+- **Photo questions** (8 October 2026): on iOS 27 with Apple Intelligence, General chat can ask one question about one picked photo. The owner accepted the [narrowed slice](photo-understanding-scope.md) with its screened limitations (misread cut-off/tiny text, occasional refusals; Sekret declines count questions) instead of waiting for the screening thresholds. No device acceptance (memory, thermals, HEIC, interruption) has been run. Knowledge Base photo imports still use OCR text only; Qwen remains text-only.
 - Broader device support and a general release require their own qualification.
 
 The README and this status record describe the accepted baseline. Dated integration notes and research documents preserve their original stages; their pending-work statements must not override later code, ADRs or acceptance evidence.

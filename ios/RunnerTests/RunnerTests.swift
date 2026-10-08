@@ -292,6 +292,54 @@ final class RunnerTests: XCTestCase {
     XCTAssertEqual(runtime.requestedModes, [.general, .knowledgeBase, .groundedChat, .groundedVerification])
   }
 
+  func testPhotoModeRoutesPhotoAndQuestionToPhotoRuntime() async throws {
+    let runtime = FakeFoundationModelRuntime(status: .available, snapshots: ["A kite"], photos: true)
+    let service = AppleFoundationModelService(runtime: runtime)
+    XCTAssertTrue(service.supportsPhotos())
+    var text = ""
+    for try await snapshot in try service.responseStream(
+      prompt: "What is flying?", mode: .photo, photo: Data([1, 2, 3])
+    ) {
+      text = snapshot
+    }
+    XCTAssertEqual(text, "A kite")
+    XCTAssertEqual(runtime.photoRequests.map(\.question), ["What is flying?"])
+    XCTAssertEqual(runtime.photoRequests.map(\.photo), [Data([1, 2, 3])])
+    XCTAssertEqual(runtime.requestedModes, [])
+    XCTAssertThrowsError(try service.responseStream(prompt: "No photo", mode: .photo))
+  }
+
+  func testRuntimesWithoutImageInputReportPhotosUnsupported() async throws {
+    let service = AppleFoundationModelService(
+      runtime: FakeFoundationModelRuntime(status: .available)
+    )
+    XCTAssertFalse(service.supportsPhotos())
+    XCTAssertFalse(AppleFoundationModelService(runtime: nil).supportsPhotos())
+    do {
+      for try await _ in try service.responseStream(
+        prompt: "Describe", mode: .photo, photo: Data([1])
+      ) {}
+      XCTFail("Expected unsupported photo input")
+    } catch {
+      XCTAssertEqual(error as? FoundationModelBridgeFailure, .modelUnavailable)
+    }
+  }
+
+  @available(iOS 26.0, *)
+  func testPhotoPreprocessingOrientsAndBoundsTheLongestEdge() throws {
+    let format = UIGraphicsImageRendererFormat()
+    format.scale = 1
+    let image = UIGraphicsImageRenderer(size: CGSize(width: 2000, height: 500), format: format)
+      .jpegData(withCompressionQuality: 0.8) { context in
+        UIColor.blue.setFill()
+        context.fill(CGRect(x: 0, y: 0, width: 2000, height: 500))
+      }
+    let prepared = try SystemFoundationModelRuntime.preparePhoto(image)
+    XCTAssertEqual(max(prepared.width, prepared.height), 1024)
+    XCTAssertGreaterThan(prepared.width, prepared.height)
+    XCTAssertThrowsError(try SystemFoundationModelRuntime.preparePhoto(Data([1, 2, 3])))
+  }
+
   func testGeneralRuntimeStreamFailureIsNotCompletion() async throws {
     let runtime = FakeFoundationModelRuntime(status: .available, failure: .guardrailViolation)
     let service = AppleFoundationModelService(runtime: runtime)
@@ -500,8 +548,10 @@ private final class FakeFoundationModelRuntime: FoundationModelRuntime {
     tokenCount: Int = 1,
     snapshots: [String] = [],
     failure: FoundationModelBridgeFailure? = nil,
-    holdStream: Bool = false
+    holdStream: Bool = false,
+    photos: Bool = false
   ) {
+    self.photos = photos
     self.status = status
     self.reportedContextSize = contextSize
     self.reportedTokenCount = tokenCount
@@ -516,6 +566,8 @@ private final class FakeFoundationModelRuntime: FoundationModelRuntime {
   let snapshots: [String]
   let failure: FoundationModelBridgeFailure?
   let holdStream: Bool
+  let photos: Bool
+  private(set) var photoRequests: [(photo: Data, question: String)] = []
   private(set) var streamCancelled = false
   private(set) var countedKinds: [FoundationModelTokenKind] = []
   private(set) var requestedModes: [FoundationModelMode] = []
@@ -533,8 +585,24 @@ private final class FakeFoundationModelRuntime: FoundationModelRuntime {
     return reportedTokenCount
   }
 
+  func supportsPhotos() -> Bool { photos }
+
+  func photoResponseStream(photo: Data, question: String) -> AsyncThrowingStream<String, Error> {
+    guard photos else {
+      return AsyncThrowingStream { $0.finish(throwing: FoundationModelBridgeFailure.modelUnavailable) }
+    }
+    photoRequests.append((photo, question))
+    return responseStream(prompt: question, mode: .photo, record: false)
+  }
+
   func responseStream(prompt: String, mode: FoundationModelMode) -> AsyncThrowingStream<String, Error> {
-    requestedModes.append(mode)
+    responseStream(prompt: prompt, mode: mode, record: true)
+  }
+
+  private func responseStream(
+    prompt: String, mode: FoundationModelMode, record: Bool
+  ) -> AsyncThrowingStream<String, Error> {
+    if record { requestedModes.append(mode) }
     return AsyncThrowingStream { continuation in
       if holdStream {
         continuation.onTermination = { [weak self] _ in self?.streamCancelled = true }

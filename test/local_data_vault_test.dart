@@ -426,7 +426,7 @@ void main() {
       await vault.close();
       final old = sqlite3.open(path);
       old.execute(
-        'ALTER TABLE vault_settings DROP COLUMN onboarding_complete; PRAGMA user_version = 5;',
+        'DROP TABLE turn_photos; ALTER TABLE vault_settings DROP COLUMN onboarding_complete; PRAGMA user_version = 5;',
       );
       old.close();
       vault = await openLocalDataVault(databasePath: path);

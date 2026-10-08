@@ -261,7 +261,7 @@ class _ModelsScreenState extends State<ModelsScreen>
     builder: (context) => CupertinoAlertDialog(
       title: const Text('Apple Intelligence'),
       content: Text(
-        'Managed by iOS. Sekret does not download or remove this model. Text chat and Knowledge Base answers use the on-device model. Photo imports currently recognize text only.\n\n'
+        'Managed by iOS. Sekret does not download or remove this model. Text chat and Knowledge Base answers use the on-device model. On iOS 27 you can ask one question about a photo in General chat; answers are the model’s interpretation. It may misread cut-off or tiny text, Sekret does not answer counting questions, and it sometimes declines ordinary photos. Photos added to the Knowledge Base are still searched by their recognized text only.\n\n'
         '${ModelRatings.apple.description}\n\n'
         'The system model may change with iOS updates. Earlier grounded-answer tests remain separate from these General-mode ratings.',
       ),

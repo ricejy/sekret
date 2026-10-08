@@ -10,6 +10,7 @@ final class AppleFoundationModels
         LlmBackend,
         GeneralLlmBackend,
         GroundedLlmBackend,
+        PhotoQuestionBackend,
         LlmSettingsController,
         TokenCounter,
         ModelContextProbe {
@@ -126,7 +127,36 @@ final class AppleFoundationModels
   Stream<String> verifyGrounded({required String prompt}) =>
       _generate(prompt, mode: 'grounded-verification');
 
-  Stream<String> _generate(String prompt, {required String mode}) {
+  /// iOS 27 image input on the on-device model; false when unsupported.
+  @override
+  Future<bool> supportsPhotoQuestions() async {
+    try {
+      return await _channel.invokeMethod<bool>('photoSupport') ?? false;
+    } on MissingPluginException {
+      return false;
+    } on PlatformException {
+      return false;
+    }
+  }
+
+  @override
+  Stream<String> answerAboutPhoto({
+    required Uint8List photo,
+    required String question,
+  }) => photo.isEmpty
+      ? Stream.error(
+          const LlmException(
+            LlmFailureCode.streamFailure,
+            'No photo was supplied.',
+          ),
+        )
+      : _generate(question, mode: 'photo', photo: photo);
+
+  Stream<String> _generate(
+    String prompt, {
+    required String mode,
+    Uint8List? photo,
+  }) {
     final requestId =
         '${DateTime.now().microsecondsSinceEpoch}-${_requestSequence++}';
     late final StreamController<String> controller;
@@ -180,6 +210,7 @@ final class AppleFoundationModels
                 'requestId': requestId,
                 'prompt': prompt,
                 'mode': mode,
+                'photo': ?photo,
               })
               .catchError((Object error) {
                 fail(

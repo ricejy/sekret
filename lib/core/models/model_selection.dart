@@ -104,6 +104,7 @@ final class ModelSelection extends ChangeNotifier {
           backend: backend,
           contextProbe: probe,
           grounded: isApple ? apple : null,
+          photo: isApple ? apple : null,
           model: ModelSnapshot(
             identifier: id,
             revision: isApple

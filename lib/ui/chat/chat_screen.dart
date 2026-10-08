@@ -25,6 +25,7 @@ class ChatScreen extends StatefulWidget {
     required this.onLink,
     this.onSettings,
     this.onImportSource,
+    this.onPickPhoto,
     this.modelRevision,
   });
   final ChatWorkspace workspace;
@@ -42,6 +43,10 @@ class ChatScreen extends StatefulWidget {
     KnowledgeSourceType type,
   )?
   onImportSource;
+
+  /// Picks one photo for a question in this chat; it is not imported into
+  /// the Knowledge Base. Null when cancelled.
+  final Future<Uint8List?> Function()? onPickPhoto;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -63,6 +68,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   bool _importing = false;
   bool _changingSources = false;
   bool _choosingSources = false;
+  bool _photosSupported = false;
+  Uint8List? _photo;
+  final _turnPhotos = <String, Future<Uint8List?>>{};
   int _revision = 0;
 
   @override
@@ -115,8 +123,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     final model = widget.engine.modelIdentifier;
     try {
       final value = await widget.engine.availability();
+      final photos = await widget.engine.supportsPhotoQuestions();
       if (mounted && widget.engine.modelIdentifier == model) {
-        setState(() => _availability = value);
+        setState(() {
+          _availability = value;
+          _photosSupported = photos;
+        });
       }
     } on Object {
       _report('Could not check the on-device model. Try again.');
@@ -145,6 +157,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           !_scroll.hasClients || _scroll.position.extentAfter < 100;
       setState(() {
         if (switched) {
+          _photo = null;
           if (_chat != null) _drafts[_chat!.id] = _input.text;
           _input.text = _drafts[chat?.id] ?? '';
         }
@@ -188,8 +201,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       return;
     }
     final text = _input.text.trim();
+    final photo = regenerate == null ? _photo : null;
     if (regenerate == null &&
-        (text.isEmpty || !_sourcesReady || _availability is! Available)) {
+        (text.isEmpty ||
+            !_sourcesReady ||
+            _availability is! Available ||
+            (photo != null && !_photoReady))) {
       return;
     }
     setState(() {
@@ -198,12 +215,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     });
     if (regenerate == null) {
       _input.clear();
+      _photo = null;
       _drafts.remove(chat.id);
     }
     _toBottom();
     try {
       if (regenerate == null) {
-        await widget.engine.send(chatId: chat.id, text: text);
+        await widget.engine.send(chatId: chat.id, text: text, photo: photo);
       } else {
         await widget.engine.regenerate(chatId: chat.id, turnId: regenerate.id);
       }
@@ -212,6 +230,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         _drafts[chat.id] = text;
         if (mounted && _chat?.id == chat.id && _input.text.isEmpty) {
           _input.text = text;
+          _photo ??= photo;
         }
       }
       _report(
@@ -302,11 +321,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     final action = await showCupertinoModalPopup<String>(
       context: context,
       builder: (context) => CupertinoActionSheet(
-        title: const Text('Add sources to this chat'),
+        title: const Text('Add to this chat'),
         message: const Text(
-          'Imports stay on this device and are saved in your Knowledge Base.',
+          'Everything stays on this device. Imports are saved in your Knowledge Base; a photo question stays with this chat.',
         ),
         actions: [
+          if (widget.onPickPhoto != null)
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.pop(context, 'askPhoto'),
+              child: const Text('Ask about a photo'),
+            ),
           if (widget.onImportSource != null)
             for (final type in [
               KnowledgeSourceType.pdf,
@@ -336,6 +360,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     if (!mounted || action == null) return;
     if (action == 'existing') {
       await _chooseSources(chat);
+      return;
+    }
+    if (action == 'askPhoto') {
+      await _pickPhoto(chat);
       return;
     }
     setState(() {
@@ -383,6 +411,74 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       if (mounted) setState(() => _importing = false);
     }
   }
+
+  /// Photo questions are General turns on a model with image input only.
+  bool get _photoReady => _photosSupported && _chat?.mode == ChatMode.general;
+
+  String? get _photoBlocker => _chat?.mode == ChatMode.knowledgeBase
+      ? 'Photo questions use model knowledge. Remove the selected sources first.'
+      : !_photosSupported
+      ? widget.engine.supportsKnowledgeBase
+            ? 'Photo questions need Apple Intelligence on iOS 27 with image support.'
+            : 'This model reads text only. Select Apple Intelligence in Models to ask about a photo.'
+      : null;
+
+  Future<void> _pickPhoto(ChatRecord chat) async {
+    final blocker = _photoBlocker;
+    if (blocker != null) {
+      _report(blocker);
+      return;
+    }
+    setState(() {
+      _importing = true;
+      _error = null;
+    });
+    try {
+      final photo = await widget.onPickPhoto!();
+      if (photo != null &&
+          photo.isNotEmpty &&
+          mounted &&
+          _chat?.id == chat.id) {
+        setState(() => _photo = photo);
+        _messageFocus.requestFocus();
+      }
+    } on Object {
+      _report('Could not open this photo. Try another one.');
+    } finally {
+      if (mounted) setState(() => _importing = false);
+    }
+  }
+
+  Widget _thumbnail(Uint8List bytes, {double size = 56}) => ClipRRect(
+    borderRadius: BorderRadius.circular(10),
+    child: Image.memory(
+      bytes,
+      width: size,
+      height: size,
+      fit: BoxFit.cover,
+      cacheWidth: (size * MediaQuery.devicePixelRatioOf(context)).round(),
+      gaplessPlayback: true,
+      semanticLabel: 'Attached photo',
+      errorBuilder: (_, _, _) => SizedBox(
+        width: size,
+        height: size,
+        child: const Icon(CupertinoIcons.photo),
+      ),
+    ),
+  );
+
+  Widget _turnPhoto(TurnRecord turn) => FutureBuilder<Uint8List?>(
+    future: _turnPhotos.putIfAbsent(
+      turn.id,
+      () => widget.workspace.turnPhoto(turn.id),
+    ),
+    builder: (context, snapshot) => Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: snapshot.data == null
+          ? const SizedBox(width: 120, height: 120)
+          : _thumbnail(snapshot.data!, size: 120),
+    ),
+  );
 
   Future<void> _openSource(TurnEvidenceSnapshot source) async {
     try {
@@ -671,22 +767,25 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           child: FractionallySizedBox(
             widthFactor: .86,
             alignment: Alignment.centerRight,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                margin: const EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  color: CupertinoColors.tertiarySystemFill.resolveFrom(
-                    context,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (turn.hasPhoto) _turnPhoto(turn),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
                   ),
-                  borderRadius: BorderRadius.circular(18),
+                  margin: const EdgeInsets.only(bottom: 20),
+                  decoration: BoxDecoration(
+                    color: CupertinoColors.tertiarySystemFill.resolveFrom(
+                      context,
+                    ),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: SelectableText(turn.userText),
                 ),
-                child: SelectableText(turn.userText),
-              ),
+              ],
             ),
           ),
         ),
@@ -801,7 +900,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       TurnFailure.modelNotReady || TurnFailure.unavailable =>
         'The on-device model is not ready. Try again shortly.',
       TurnFailure.guardrailViolation =>
-        'The on-device model could not answer this request.',
+        turn.hasPhoto
+            ? 'The on-device model declined to answer about this photo.'
+            : 'The on-device model could not answer this request.',
+      TurnFailure.photosUnsupported =>
+        'Photo questions need Apple Intelligence on iOS 27. Select it in Models, then regenerate.',
       _ => 'The response failed. Regenerate to try again.',
     },
     _ => '',
@@ -862,6 +965,32 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             ),
           ),
         ],
+        if (_photo != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              children: [
+                _thumbnail(_photo!),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    _photoBlocker ??
+                        'Ask one question about this photo. Answers are the model’s interpretation and can be wrong.',
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ),
+                CupertinoButton(
+                  padding: const EdgeInsets.all(8),
+                  onPressed: _busy ? null : () => setState(() => _photo = null),
+                  child: const Icon(
+                    CupertinoIcons.xmark_circle_fill,
+                    size: 22,
+                    semanticLabel: 'Remove photo',
+                  ),
+                ),
+              ],
+            ),
+          ),
         if (_importing)
           const Padding(
             padding: EdgeInsets.only(bottom: 8),
@@ -928,7 +1057,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   controller: _input,
                   focusNode: _messageFocus,
                   groupId: _messageFocus,
-                  placeholder: 'Message',
+                  placeholder: _photo == null
+                      ? 'Message'
+                      : 'Ask about this photo',
                   minLines: 1,
                   maxLines: 4,
                   enabled: _availability is Available,
@@ -951,6 +1082,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                         !_choosingSources &&
                         _availability is Available &&
                         _sourcesReady &&
+                        (_photo == null || _photoReady) &&
                         _input.text.trim().isNotEmpty
                   ? () => _send()
                   : null,

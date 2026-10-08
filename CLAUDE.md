@@ -39,6 +39,8 @@ flutter run --release --dart-define=SEKRET_V2=true
 flutter build ios --release --dart-define=SEKRET_V2=true
 ```
 
+Photo questions need the iOS 27 SDK: build with Xcode 27 (`DEVELOPER_DIR=<Xcode 27>/Contents/Developer flutter build ios ...`). With Xcode 26 the app still builds, but the image path is compiled out (`#if compiler(>=6.4)`) and photo questions report unsupported. Flutter's `objective_c` build hook follows `xcode-select`, not `DEVELOPER_DIR`; delete `.dart_tool/hooks_runner/objective_c` if a build fails with "unknown architecture" after switching. `RunnerTests` can't run on the simulator (the llama.cpp xcframework has no simulator slice); `xcodebuild build-for-testing ... -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO` compile-checks them.
+
 Bundle id `com.ricejy.sekret`; install over it to preserve the local container. Never commit personal signing settings. The production v2 app throws on non-iOS; on Windows/macOS desktop use tests and fakes.
 
 ## Architecture
