@@ -4,11 +4,12 @@ Replaces the earlier `com.ricejy.sekret.localeval` test app in place (free-profi
 app limit); its Documents are copied to results/ first. Never touches Sekret.
 
     python3 -I experiments/apple_vision/run-phone.py --device <CoreDevice UDID> \
-        [--skip-install] [--suite v1|v2] [--instructions-file path]
+        [--skip-install] [--suite v1|v2] [--instructions-file path] [--decline-counts]
 """
 
 import argparse
 import json
+import re
 import subprocess
 import tempfile
 import time
@@ -18,6 +19,10 @@ ROOT = Path(__file__).resolve().parent
 BUNDLE = "com.ricejy.sekret.localeval"
 APP = ROOT / "ios/build/Build/Products/Release-iphoneos/SekretVisionEval.app"
 REMOTE = "Documents/VisionReports"
+# Sekret-side rule: count questions get Sekret's fixed decline, decided from the question text alone.
+COUNT_PATTERN = re.compile(r"\bhow\s+many\b|\bcount\b|\bthe\s+number\s+of\b", re.IGNORECASE)
+COUNT_DECLINE = ("Sekret doesn't count objects in photos yet, because counts from images aren't reliable. "
+                 "You can ask what the objects look like or where they are.")
 
 
 def device(*args, timeout=120):
@@ -35,6 +40,8 @@ def main():
     parser.add_argument("--suite", choices=["v1", "v2"], default="v1")
     parser.add_argument("--instructions-file", type=Path,
                         help="System instructions to use instead of the suite's own (required for v2)")
+    parser.add_argument("--decline-counts", action="store_true",
+                        help="Replace answers to count questions with Sekret's fixed decline (raw output kept)")
     args = parser.parse_args()
     extra = ["--suite", args.suite]
     if args.instructions_file:
@@ -81,6 +88,15 @@ def main():
         run = root / "reports" / fresh[0]
         device("copy", "from", "--device", args.device, "--source", f"{REMOTE}/{fresh[0]}",
                "--destination", str(run), *container, timeout=300)
+        if args.decline_counts:
+            for path in run.glob("*.json"):
+                report = json.loads(path.read_text())
+                if "question" in report and COUNT_PATTERN.search(report["question"]):
+                    report.update(model_response=report.get("response"), response=COUNT_DECLINE,
+                                  declined_by="count-rule")
+                    path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+            (root / "sekret-rules.json").write_text(json.dumps(
+                {"count_pattern": COUNT_PATTERN.pattern, "count_decline": COUNT_DECLINE}, indent=2) + "\n")
         for path in sorted(run.glob("*.json")):
             if path.stem in {"environment", "suite-complete", "suite-failed"}:
                 print(path.stem, path.read_text())
