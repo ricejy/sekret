@@ -199,15 +199,7 @@ class _ModelsScreenState extends State<ModelsScreen>
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'General text preview on the tested iPhone 15 Pro Max. No image understanding or Knowledge Base answers. Removing the selected model asks you to switch to Apple Intelligence first.\n\n'
-                '${ModelRatings.qwen.description}\n\n'
-                'Warm-start control: Qwen stopped when iOS reported serious thermal pressure. Rapid repeated use may be interrupted.\n\n'
-                'Earlier evaluations · 6–7 October 2026\n\n'
-                'Answer quality: 25 of 30 development tasks passed on Mac. Arithmetic and strict-format failures remain. This small development set is not an overall accuracy score.\n\n'
-                'Speed: 4.95 seconds median native generation in the paced iPhone workload; excludes model loading and UI overhead. The same eight-turn fixture was repeated three times, with all 24 answers correct.\n\n'
-                'Memory: 2.56 GB peak process RSS; 446 MB peak sampled footprint. These are different accounting measures, not a total-RAM requirement.\n\n'
-                'Battery: whole-device profiler averages were 4.32%/hour idle and 13.79%/hour during the paced workload. One phone at full brightness under wireless profiling; the coarse battery gauge was not reconciled. These are not app-only drain or battery-life estimates. Earlier sustained-load thermal stopping remains relevant.\n\n'
-                'The shared 1–5 scale requires matched phone measurements. These historical results used different workloads and are not substituted for that comparison. The completed battery study retained an unmeasured public battery rating.\n\n'
+                'Text chat only: no images or Knowledge Base answers. Runs entirely on this iPhone after download. Answers may stop if the phone gets too hot. To remove it while it is selected, switch to Apple Intelligence first.\n\n'
                 'License and provenance\n\nQwen3-4B-Instruct-2507 by Qwen\nQ3_K_M quantization by Unsloth\n'
                 'Publisher license revision: cdbee75f17c01a7cc42f958dc650907174af0554\n'
                 'Artifact revision: ${ModelCatalogue.qwen.artifact!.revision}\n'
@@ -261,9 +253,9 @@ class _ModelsScreenState extends State<ModelsScreen>
     builder: (context) => CupertinoAlertDialog(
       title: const Text('Apple Intelligence'),
       content: Text(
-        'Managed by iOS. Sekret does not download or remove this model. Text chat and Knowledge Base answers use the on-device model. On iOS 27 you can ask one question about a photo in General chat; answers are the model’s interpretation. It may misread cut-off or tiny text, Sekret does not answer counting questions, and it sometimes declines ordinary photos. Photos added to the Knowledge Base are still searched by their recognized text only.\n\n'
-        '${ModelRatings.apple.description}\n\n'
-        'The system model may change with iOS updates. Earlier grounded-answer tests remain separate from these General-mode ratings.',
+        'Built into iOS and runs on this iPhone. Sekret does not download or remove it.\n\n'
+        'Answers text chats and Knowledge Base questions. On iOS 27 it can also answer one question about a photo; it may misread small or cut-off text and does not count objects.\n\n'
+        'The system model may change with iOS updates.',
       ),
       actions: [
         CupertinoDialogAction(
