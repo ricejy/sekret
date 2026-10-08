@@ -16,6 +16,12 @@ import '../core/platform/token_counter.dart';
 
 const _fixture = String.fromEnvironment('MODEL_RATING_FIXTURE');
 
+/// Development v1 and the held-out v2 set; each writes its own report.
+const _reports = {
+  'sekret-broader-text-development-v1': 'model-ratings-v1.json',
+  'sekret-broader-text-heldout-v2': 'model-ratings-heldout-v2.json',
+};
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -60,10 +66,13 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
 
   Future<void> _run() async {
     final docs = await getApplicationDocumentsDirectory();
-    final file = File('${docs.path}/model-ratings-v1.json');
+    final fixture = jsonDecode(utf8.decode(base64Decode(_fixture))) as Map;
+    final reportName =
+        _reports[fixture['version']] ?? 'model-ratings-rejected.json';
+    final file = File('${docs.path}/$reportName');
     final report = <String, Object?>{
       'schema': 'sekret-model-ratings-v1',
-      'fixture': 'sekret-broader-text-development-v1',
+      'fixture': fixture['version'],
       'fixtureSHA256': sha256.convert(base64Decode(_fixture)).toString(),
       'instructionsSHA256': sha256
           .convert(utf8.encode(generalInstructions))
@@ -91,8 +100,7 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
       flush: true,
     );
     try {
-      final fixture = jsonDecode(utf8.decode(base64Decode(_fixture))) as Map;
-      if (fixture['version'] != report['fixture']) {
+      if (!_reports.containsKey(fixture['version'])) {
         throw StateError('Wrong fixture');
       }
       final support = await getApplicationSupportDirectory();
@@ -146,7 +154,15 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
           }
           final prompt = buildGeneralChatPrompt({
             'context_summary': null,
-            'recent_turns': [],
+            'recent_turns': [
+              for (final turn
+                  in (item['turns'] as List? ?? const []).cast<Map>())
+                {
+                  'user': turn['user'],
+                  'assistant': turn['assistant'],
+                  'outcome': 'completed',
+                },
+            ],
             'current_user_message': item['prompt'],
           });
           final watch = Stopwatch()..start();
