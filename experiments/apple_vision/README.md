@@ -1,6 +1,6 @@
 # Apple on-device vision probe
 
-Isolated iPhone app that runs the frozen [photo screening set](../photo_screening/README.md) through `SystemLanguageModel.default` with an image `Attachment` (iOS 27). Never references Private Cloud Compute; no network code; no Sekret data. Result: [did not advance](RESULTS-2026-10-08.md).
+Isolated iPhone app that runs the frozen [photo screening set](../photo_screening/README.md) through `SystemLanguageModel.default` with an image `Attachment` (iOS 27). Never references Private Cloud Compute; no network code; no Sekret data. Results: [v1 did not advance](RESULTS-2026-10-08.md); [narrowed v2 did not advance](RESULTS-V2-2026-10-08.md).
 
 Build with Xcode 27 without changing the system default, then install and run with the phone connected and unlocked:
 
