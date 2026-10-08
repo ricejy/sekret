@@ -33,12 +33,17 @@ abstract final class SekretBrand {
 
 /// Decorative brand art; nearby headings carry the screen's accessible meaning.
 class TuckMascot extends StatelessWidget {
-  const TuckMascot({super.key, this.size = 144});
+  const TuckMascot({
+    super.key,
+    this.size = 144,
+    this.asset = 'assets/brand/tuck.png',
+  });
   final double size;
+  final String asset;
 
   @override
   Widget build(BuildContext context) => Image.asset(
-    'assets/brand/tuck.png',
+    asset,
     width: size,
     height: size,
     fit: BoxFit.contain,

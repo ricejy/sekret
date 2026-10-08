@@ -205,7 +205,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     'empty state, General send, drafts and searchable persistent history',
     (tester) async {
       await mount(tester);
-      expect(find.text('A little space to think'), findsOneWidget);
+      expect(find.text('Your own private space'), findsOneWidget);
       await tester.tap(find.text('Add to Knowledge Vault'));
       expect(knowledgeNavigations, 1);
       await send(tester, 'Plan a fictional picnic');

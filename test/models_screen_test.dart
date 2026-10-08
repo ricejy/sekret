@@ -356,11 +356,9 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Not measured'), findsNWidgets(4));
-      await tester.ensureVisible(
-        find.text('Held-out ratings · higher is better ⓘ'),
-      );
+      await tester.ensureVisible(find.text('How ratings work'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Held-out ratings · higher is better ⓘ'));
+      await tester.tap(find.text('How ratings work'));
       await tester.pumpAndSettle();
       expect(find.text('Rating scale'), findsOneWidget);
       expect(
@@ -385,7 +383,7 @@ void main() {
   ) async {
     await show(tester, _Model());
     await tester.pumpAndSettle();
-    expect(find.text('Ready · On-device Apple Intelligence'), findsOneWidget);
+    expect(find.text('Built into iOS'), findsOneWidget);
     expect(find.text('Apple Intelligence'), findsOneWidget);
     expect(find.text('Qwen3-4B-Instruct-2507'), findsOneWidget);
     expect(
@@ -453,11 +451,11 @@ void main() {
       find.text('Could not check model readiness. Try again.'),
       findsOneWidget,
     );
-    expect(find.text('Ready · On-device Apple Intelligence'), findsNothing);
+    expect(find.text('Built into iOS'), findsNothing);
     model.fails = false;
     await tester.tap(find.text('Check readiness'));
     await tester.pumpAndSettle();
-    expect(find.text('Ready · On-device Apple Intelligence'), findsOneWidget);
+    expect(find.text('Built into iOS'), findsOneWidget);
   });
 
   testWidgets('late availability from replaced adapter does not win', (
@@ -469,7 +467,7 @@ void main() {
     await tester.pumpAndSettle();
     first.pending!.complete(const Available());
     await tester.pumpAndSettle();
-    expect(find.text('Ready · On-device Apple Intelligence'), findsNothing);
+    expect(find.text('Built into iOS'), findsNothing);
     expect(
       find.text(
         'This device or OS does not support the required on-device model.',
@@ -478,16 +476,16 @@ void main() {
     );
   });
 
-  testWidgets('search filters models and handles no matches', (tester) async {
+  testWidgets('intro says every model is local and choice is free', (
+    tester,
+  ) async {
     await show(tester, _Model());
     await tester.pumpAndSettle();
-    await tester.enterText(find.byType(CupertinoSearchTextField), 'QWEN');
-    await tester.pumpAndSettle();
-    expect(find.text('Apple Intelligence'), findsNothing);
-    expect(find.text('Qwen3-4B-Instruct-2507'), findsOneWidget);
-    await tester.enterText(find.byType(CupertinoSearchTextField), 'missing');
-    await tester.pumpAndSettle();
-    expect(find.text('No matching models'), findsOneWidget);
+    expect(find.text('Choose your model'), findsOneWidget);
+    for (final label in ['Offline', 'Free', 'Private']) {
+      expect(find.text(label), findsOneWidget);
+    }
+    expect(find.byType(CupertinoSearchTextField), findsNothing);
   });
 
   testWidgets('checking state is visible and disabled until completion', (
