@@ -497,6 +497,11 @@ void main() {
     await tester.enterText(find.byType(CupertinoSearchTextField), 'missing');
     await tester.pumpAndSettle();
     expect(find.text('No matching models'), findsOneWidget);
+    EditableTextState editable() => tester.state(find.byType(EditableText));
+    expect(editable().widget.focusNode.hasFocus, isTrue);
+    await tester.tap(find.text('Choose your model'));
+    await tester.pumpAndSettle();
+    expect(editable().widget.focusNode.hasFocus, isFalse);
   });
 
   testWidgets('checking state is visible and disabled until completion', (

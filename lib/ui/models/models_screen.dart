@@ -289,40 +289,46 @@ class _ModelsScreenState extends State<ModelsScreen>
       backgroundColor: SekretBrand.background,
       navigationBar: const CupertinoNavigationBar(middle: Text('Models')),
       child: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          children: [
-            _intro(),
-            const SizedBox(height: 16),
-            CupertinoSearchTextField(
-              placeholder: 'Search models',
-              onChanged: (value) => setState(() => _query = value),
-            ),
-            const SizedBox(height: 16),
-            if (_operationError != null) _notice(_operationError!),
-            if (widget.selection?.selected == 'unavailable')
-              _notice('Choose a model to restore your saved selection.'),
-            for (final model in models) _modelRow(model),
-            if (models.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(24),
-                child: Text('No matching models'),
+        // Tapping outside the search field or scrolling dismisses the keyboard.
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: ListView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            children: [
+              _intro(),
+              const SizedBox(height: 16),
+              CupertinoSearchTextField(
+                placeholder: 'Search models',
+                onChanged: (value) => setState(() => _query = value),
               ),
-            const SizedBox(height: 4),
-            CupertinoButton(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.zero,
-              onPressed: _ratingScale,
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(CupertinoIcons.info_circle, size: 14),
-                  SizedBox(width: 6),
-                  Text('How ratings work', style: TextStyle(fontSize: 13)),
-                ],
+              const SizedBox(height: 16),
+              if (_operationError != null) _notice(_operationError!),
+              if (widget.selection?.selected == 'unavailable')
+                _notice('Choose a model to restore your saved selection.'),
+              for (final model in models) _modelRow(model),
+              if (models.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text('No matching models'),
+                ),
+              const SizedBox(height: 4),
+              CupertinoButton(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.zero,
+                onPressed: _ratingScale,
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(CupertinoIcons.info_circle, size: 14),
+                    SizedBox(width: 6),
+                    Text('How ratings work', style: TextStyle(fontSize: 13)),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
