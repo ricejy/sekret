@@ -362,9 +362,7 @@ void main() {
     tester,
   ) async {
     final startup = Completer<DocumentLibrary>();
-    await tester.pumpWidget(
-      SekretApp(documentLibraryFuture: startup.future),
-    );
+    await tester.pumpWidget(SekretApp(documentLibraryFuture: startup.future));
     startup.completeError(StateError('synthetic corrupt database detail'));
     await tester.pumpAndSettle();
 

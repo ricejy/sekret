@@ -16,6 +16,12 @@ import '../core/platform/token_counter.dart';
 
 const _fixture = String.fromEnvironment('MODEL_RATING_FIXTURE');
 
+/// Development v1 and the held-out v2 set; each writes its own report.
+const _reports = {
+  'sekret-broader-text-development-v1': 'model-ratings-v1.json',
+  'sekret-broader-text-heldout-v2': 'model-ratings-heldout-v2.json',
+};
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -60,10 +66,13 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
 
   Future<void> _run() async {
     final docs = await getApplicationDocumentsDirectory();
-    final file = File('${docs.path}/model-ratings-v1.json');
+    final fixture = jsonDecode(utf8.decode(base64Decode(_fixture))) as Map;
+    final reportName =
+        _reports[fixture['version']] ?? 'model-ratings-rejected.json';
+    final file = File('${docs.path}/$reportName');
     final report = <String, Object?>{
       'schema': 'sekret-model-ratings-v1',
-      'fixture': 'sekret-broader-text-development-v1',
+      'fixture': fixture['version'],
       'fixtureSHA256': sha256.convert(base64Decode(_fixture)).toString(),
       'instructionsSHA256': sha256
           .convert(utf8.encode(generalInstructions))
@@ -76,7 +85,9 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
       'os': Platform.operatingSystemVersion,
       'startedAt': DateTime.now().toUtc().toIso8601String(),
       'complete': false,
-      'protocol': 'paced-v4-unplugged-nominal-start-dark-screen',
+      'protocol': fixture['version'] == 'sekret-broader-text-heldout-v2'
+          ? 'heldout-v2-attempt2-settle-60s-cooling-pauses'
+          : 'paced-v4-unplugged-nominal-start-dark-screen',
       'restSeconds': 10,
       'display': 'dark-diagnostic-screen-system-brightness-unchanged',
       'results': rows,
@@ -91,8 +102,7 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
       flush: true,
     );
     try {
-      final fixture = jsonDecode(utf8.decode(base64Decode(_fixture))) as Map;
-      if (fixture['version'] != report['fixture']) {
+      if (!_reports.containsKey(fixture['version'])) {
         throw StateError('Wrong fixture');
       }
       final support = await getApplicationSupportDirectory();
@@ -106,15 +116,21 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
       final cases = (fixture['cases'] as List).cast<Map>();
       // A distinct paced run; the initial burst report is preserved separately.
       // Owner-requested cooler unplugged comparison; keep all production guards.
+      // Held-out attempt 2: the start conditions must hold for 60 s in a row.
+      final settle = fixture['version'] == 'sekret-broader-text-heldout-v2'
+          ? 12
+          : 1;
+      var settled = 0;
       for (var attempt = 0; ; attempt++) {
         final state = await resources();
         report['initialReadiness'] = state;
         await save();
-        if (state['ready'] == true &&
+        final ok =
+            state['ready'] == true &&
             state['thermalState'] == 0 &&
-            state['onBattery'] == true) {
-          break;
-        }
+            state['onBattery'] == true;
+        settled = ok ? settled + 1 : 0;
+        if (settled >= settle) break;
         if (interrupted || attempt >= 240) {
           throw StateError('Readiness timeout');
         }
@@ -131,8 +147,34 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
         final item = cases[i];
         for (final id in i.isEven ? ['apple', 'qwen'] : ['qwen', 'apple']) {
           if (interrupted) throw StateError('Interrupted');
-          final before = await resources();
+          var before = await resources();
           report['latestReadiness'] = before;
+          // Cooling pause: wait up to 20 minutes for production admission
+          // (ready, below serious) instead of stopping. Excluded from timing.
+          final pauses = (report['coolingPauses'] ??= <Object?>[]) as List;
+          final pauseWatch = Stopwatch()..start();
+          while (fixture['version'] == 'sekret-broader-text-heldout-v2' &&
+              (before['ready'] != true ||
+                  (before['thermalState'] as int? ?? 3) >= 2)) {
+            if (interrupted || before['onBattery'] != true) break;
+            if (pauseWatch.elapsed > const Duration(minutes: 20)) {
+              throw StateError('Cooling pause timeout');
+            }
+            if (mounted) {
+              setState(() => status = 'Cooling pause…\nKeep Sekret open.');
+            }
+            await Future<void>.delayed(const Duration(seconds: 5));
+            before = await resources();
+            report['latestReadiness'] = before;
+          }
+          if (pauseWatch.elapsed > const Duration(seconds: 1) &&
+              before['ready'] == true) {
+            pauses.add({
+              'beforeCase': item['id'],
+              'model': id,
+              'seconds': pauseWatch.elapsedMilliseconds / 1000,
+            });
+          }
           if (before['onBattery'] != true) {
             throw StateError('Power connection changed');
           }
@@ -146,7 +188,15 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
           }
           final prompt = buildGeneralChatPrompt({
             'context_summary': null,
-            'recent_turns': [],
+            'recent_turns': [
+              for (final turn
+                  in (item['turns'] as List? ?? const []).cast<Map>())
+                {
+                  'user': turn['user'],
+                  'assistant': turn['assistant'],
+                  'outcome': 'completed',
+                },
+            ],
             'current_user_message': item['prompt'],
           });
           final watch = Stopwatch()..start();

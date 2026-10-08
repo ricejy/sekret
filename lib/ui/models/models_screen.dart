@@ -320,7 +320,7 @@ class _ModelsScreenState extends State<ModelsScreen>
               padding: EdgeInsets.zero,
               onPressed: _ratingScale,
               child: const Text(
-                'Preliminary ratings · higher is better ⓘ',
+                'Held-out ratings · higher is better ⓘ',
                 style: TextStyle(fontSize: 12),
               ),
             ),
@@ -576,7 +576,7 @@ class _ModelsScreenState extends State<ModelsScreen>
             ? 'Memory efficiency'
             : label == 'Battery'
             ? 'Battery efficiency'
-            : label}: ${score == null ? 'not measured' : '$score out of 5, preliminary'}',
+            : label}: ${score == null ? 'not measured' : '$score out of 5, held-out test'}',
     child: ExcludeSemantics(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
