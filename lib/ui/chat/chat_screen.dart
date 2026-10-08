@@ -762,7 +762,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       ),
       const SizedBox(height: 10),
       const Text(
-        'Free AI that runs entirely on your iPhone: offline, no account, and your chats and files never leave it.',
+        'Private AI that lives on your iPhone. It\'s free, works offline, and nothing you share ever leaves your device.',
         textAlign: TextAlign.center,
         style: TextStyle(color: SekretBrand.secondary),
       ),

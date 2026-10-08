@@ -35,6 +35,7 @@ class ModelsScreen extends StatefulWidget {
 class _ModelsScreenState extends State<ModelsScreen>
     with WidgetsBindingObserver {
   LlmAvailability? _availability;
+  String _query = '';
   String? _error;
   int _revision = 0;
   bool _checking = false;
@@ -281,7 +282,9 @@ class _ModelsScreenState extends State<ModelsScreen>
 
   @override
   Widget build(BuildContext context) {
-    final models = ModelCatalogue.entries;
+    final models = ModelCatalogue.entries.where(
+      (model) => model.name.toLowerCase().contains(_query.trim().toLowerCase()),
+    );
     return CupertinoPageScaffold(
       backgroundColor: SekretBrand.background,
       navigationBar: const CupertinoNavigationBar(middle: Text('Models')),
@@ -290,11 +293,21 @@ class _ModelsScreenState extends State<ModelsScreen>
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
           children: [
             _intro(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
+            CupertinoSearchTextField(
+              placeholder: 'Search models',
+              onChanged: (value) => setState(() => _query = value),
+            ),
+            const SizedBox(height: 16),
             if (_operationError != null) _notice(_operationError!),
             if (widget.selection?.selected == 'unavailable')
               _notice('Choose a model to restore your saved selection.'),
             for (final model in models) _modelRow(model),
+            if (models.isEmpty)
+              const Padding(
+                padding: EdgeInsets.all(24),
+                child: Text('No matching models'),
+              ),
             const SizedBox(height: 4),
             CupertinoButton(
               alignment: Alignment.centerLeft,

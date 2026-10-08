@@ -485,7 +485,18 @@ void main() {
     for (final label in ['Offline', 'Free', 'Private']) {
       expect(find.text(label), findsOneWidget);
     }
-    expect(find.byType(CupertinoSearchTextField), findsNothing);
+  });
+
+  testWidgets('search filters models and handles no matches', (tester) async {
+    await show(tester, _Model());
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(CupertinoSearchTextField), 'QWEN');
+    await tester.pumpAndSettle();
+    expect(find.text('Apple Intelligence'), findsNothing);
+    expect(find.text('Qwen3-4B-Instruct-2507'), findsOneWidget);
+    await tester.enterText(find.byType(CupertinoSearchTextField), 'missing');
+    await tester.pumpAndSettle();
+    expect(find.text('No matching models'), findsOneWidget);
   });
 
   testWidgets('checking state is visible and disabled until completion', (
