@@ -374,10 +374,7 @@ class _SekretChatAppState extends State<SekretChatApp>
             Positioned.fill(child: _lockScreen(_resources!)),
           if (_obscured)
             Positioned.fill(
-              child: ColoredBox(
-                color: SekretBrand.background,
-                child: const Center(child: Text('Sekret')),
-              ),
+              child: const TuckPrivacy(key: ValueKey('privacy-cover')),
             ),
         ],
       ),
@@ -435,8 +432,8 @@ class _SekretChatAppState extends State<SekretChatApp>
                     label: 'Models',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.folder),
-                    label: 'Knowledge Base',
+                    icon: VaultIcon(),
+                    label: 'Knowledge Vault',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(CupertinoIcons.settings),
@@ -495,8 +492,6 @@ class _SekretChatAppState extends State<SekretChatApp>
                     vault: resources.vault,
                     workspace: resources.workspace,
                     protection: resources.protection,
-                    model: resources.models,
-                    openSystemSettings: resources.models.openSettings,
                     deleteData: _deleteData,
                   );
                 },

@@ -108,7 +108,7 @@ This saved sample checks **emphasis**, readable paragraphs, and navigation by he
 ### A short list
 
 - Open Chat history and rename a chat.
-- Select several Knowledge Base sources.
+- Select several Knowledge Vault sources.
 - Rotate the phone with an unsent draft.
 
 ### A wide table

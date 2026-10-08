@@ -153,7 +153,7 @@ class _ModelsScreenState extends State<ModelsScreen>
         content: Text(
           '${switchesModel ? 'Switch to Apple Intelligence and remove Qwen’s downloaded files? ' : ''}'
           '${switchesModel && _availability is! Available ? 'Apple Intelligence is not ready; chat will be unavailable until it is ready or you select another available model. ' : ''}'
-          'Your chats and Knowledge Base stay intact. You can download Qwen again later.',
+          'Your chats and Knowledge Vault stay intact. You can download Qwen again later.',
         ),
         actions: [
           CupertinoDialogAction(
@@ -199,7 +199,7 @@ class _ModelsScreenState extends State<ModelsScreen>
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Text chat only: no images or Knowledge Base answers. Runs entirely on this iPhone after download. Answers may stop if the phone gets too hot. To remove it while it is selected, switch to Apple Intelligence first.\n\n'
+                'Text chat only: no images or Knowledge Vault answers. Runs entirely on this iPhone after download. Answers may stop if the phone gets too hot. To remove it while it is selected, switch to Apple Intelligence first.\n\n'
                 'License and provenance\n\nQwen3-4B-Instruct-2507 by Qwen\nQ3_K_M quantization by Unsloth\n'
                 'Publisher license revision: cdbee75f17c01a7cc42f958dc650907174af0554\n'
                 'Artifact revision: ${ModelCatalogue.qwen.artifact!.revision}\n'
@@ -254,7 +254,7 @@ class _ModelsScreenState extends State<ModelsScreen>
       title: const Text('Apple Intelligence'),
       content: Text(
         'Built into iOS and runs on this iPhone. Sekret does not download or remove it.\n\n'
-        'Answers text chats and Knowledge Base questions. On iOS 27 it can also answer one question about a photo; it may misread small or cut-off text and does not count objects.\n\n'
+        'Answers text chats and Knowledge Vault questions. On iOS 27 it can also answer one question about a photo; it may misread small or cut-off text and does not count objects.\n\n'
         'The system model may change with iOS updates.',
       ),
       actions: [

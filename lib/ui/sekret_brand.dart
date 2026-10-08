@@ -6,6 +6,7 @@ abstract final class SekretBrand {
   static const background = Color(0xFF101B21);
   static const surface = Color(0xFF1B2A31);
   static const accent = Color(0xFF72DECD);
+  static const accentDeep = Color(0xFF2A8C80);
   static const foreground = Color(0xFFF1F6F5);
   static const secondary = Color(0xFFB0C2C6);
   static const line = Color(0xFF31454D);
@@ -179,4 +180,95 @@ class _GroundPainter extends CustomPainter {
   @override
   bool shouldRepaint(_GroundPainter old) =>
       old.t != t || old.landing != landing;
+}
+
+/// Knowledge Vault tab icon: a safe with a dial and handle. Follows the
+/// ambient [IconTheme] like a font icon; the tab label carries its meaning.
+class VaultIcon extends StatelessWidget {
+  const VaultIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = IconTheme.of(context);
+    final size = theme.size ?? 24;
+    return ExcludeSemantics(
+      child: SizedBox.square(
+        dimension: size,
+        child: CustomPaint(
+          painter: _VaultPainter(
+            (theme.color ?? CupertinoColors.label).withValues(
+              alpha: theme.opacity ?? 1,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _VaultPainter extends CustomPainter {
+  const _VaultPainter(this.color);
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final s = size.width;
+    final stroke = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = s * 0.075
+      ..strokeCap = StrokeCap.round;
+    final fill = Paint()..color = color;
+    // Body and inner door.
+    final body = Rect.fromLTWH(s * 0.10, s * 0.12, s * 0.80, s * 0.68);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(body, Radius.circular(s * 0.12)),
+      stroke,
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        body.deflate(s * 0.11),
+        Radius.circular(s * 0.05),
+      ),
+      stroke..strokeWidth = s * 0.05,
+    );
+    // Dial with a pointer, and the handle on the opening side.
+    final dial = Offset(s * 0.44, body.center.dy);
+    canvas.drawCircle(dial, s * 0.11, stroke);
+    canvas.drawCircle(dial, s * 0.03, fill);
+    canvas.drawLine(
+      Offset(s * 0.70, body.center.dy - s * 0.10),
+      Offset(s * 0.70, body.center.dy + s * 0.10),
+      stroke..strokeWidth = s * 0.075,
+    );
+    // Feet.
+    for (final x in [s * 0.24, s * 0.76]) {
+      canvas.drawLine(Offset(x, s * 0.84), Offset(x, s * 0.90), stroke);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_VaultPainter old) => old.color != color;
+}
+
+/// App-switcher cover: full-screen Tuck shushing under the Sekret wordmark.
+class TuckPrivacy extends StatelessWidget {
+  const TuckPrivacy({super.key});
+
+  static const asset = 'assets/brand/tuck-privacy.png';
+
+  /// The artwork's own backdrop, so any uncovered edge blends in.
+  static const backdrop = Color(0xFF0D1B21);
+
+  @override
+  Widget build(BuildContext context) => const ColoredBox(
+    color: backdrop,
+    child: SizedBox.expand(
+      child: Image(
+        image: AssetImage(asset),
+        fit: BoxFit.cover,
+        excludeFromSemantics: true,
+      ),
+    ),
+  );
 }

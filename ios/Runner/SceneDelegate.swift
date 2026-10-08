@@ -4,6 +4,15 @@ import LocalAuthentication
 
 class SceneDelegate: FlutterSceneDelegate {
   private var privacyWindow: UIWindow?
+  /// The artwork's own backdrop colour (#0D1B21), matching TuckPrivacy.
+  private static let privacyBackdrop = UIColor(red: 13/255, green: 27/255, blue: 33/255, alpha: 1)
+  /// Decoded once from the bundled Flutter asset, so the cover stays synchronous.
+  private static let privacyArtwork: UIImage? = {
+    let key = FlutterDartProject.lookupKey(forAsset: "assets/brand/tuck-privacy.png")
+    guard let path = Bundle.main.path(forResource: key, ofType: nil),
+      let image = UIImage(contentsOfFile: path) else { return nil }
+    return image.preparingForDisplay() ?? image
+  }()
 
   override func sceneWillResignActive(_ scene: UIScene) {
     // Native and synchronous: do not wait for a Flutter frame before snapshotting.
@@ -13,17 +22,28 @@ class SceneDelegate: FlutterSceneDelegate {
       cover.frame = windowScene.coordinateSpace.bounds
       cover.windowLevel = .alert + 1
       let controller = UIViewController()
-      controller.view.backgroundColor = UIColor(red: 16/255, green: 27/255, blue: 33/255, alpha: 1)
-      let label = UILabel()
-      label.text = "Sekret"
-      label.textColor = .label
-      label.font = .preferredFont(forTextStyle: .title1)
-      label.translatesAutoresizingMaskIntoConstraints = false
-      controller.view.addSubview(label)
-      NSLayoutConstraint.activate([
-        label.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
-        label.centerYAnchor.constraint(equalTo: controller.view.centerYAnchor)
-      ])
+      controller.view.backgroundColor = Self.privacyBackdrop
+      if let artwork = Self.privacyArtwork {
+        // Same art as the Flutter cover (assets/brand/tuck-privacy.png).
+        let image = UIImageView(image: artwork)
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
+        image.frame = controller.view.bounds
+        image.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        image.isAccessibilityElement = false
+        controller.view.addSubview(image)
+      } else {
+        let label = UILabel()
+        label.text = "Sekret"
+        label.textColor = .label
+        label.font = .preferredFont(forTextStyle: .title1)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.addSubview(label)
+        NSLayoutConstraint.activate([
+          label.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
+          label.centerYAnchor.constraint(equalTo: controller.view.centerYAnchor)
+        ])
+      }
       cover.rootViewController = controller
       cover.isHidden = false
       privacyWindow = cover

@@ -206,7 +206,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     (tester) async {
       await mount(tester);
       expect(find.text('A little space to think'), findsOneWidget);
-      await tester.tap(find.text('Add to Knowledge Base'));
+      await tester.tap(find.text('Add to Knowledge Vault'));
       expect(knowledgeNavigations, 1);
       await send(tester, 'Plan a fictional picnic');
       expect(find.text('General answer'), findsOneWidget);
@@ -283,7 +283,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
       await mount(tester);
       await tester.tap(find.bySemanticsLabel('Add sources'));
       await settle(tester);
-      await tester.tap(find.text('Choose from Knowledge Base'));
+      await tester.tap(find.text('Choose from Knowledge Vault'));
       await settle(tester);
       await tester.tap(find.text('Return policy'));
       await tester.tap(find.text('Done'));
@@ -336,7 +336,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     );
     final initiatingId = workspace.currentChatId!;
     expect(find.text('General'), findsNothing);
-    expect(find.text('Knowledge Base'), findsNothing);
+    expect(find.text('Knowledge Vault'), findsNothing);
     await tester.tap(find.bySemanticsLabel('Add sources'));
     await settle(tester);
     expect(find.text('Import PDF'), findsOneWidget);
@@ -406,7 +406,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     final chatId = workspace.currentChatId!;
     await tester.tap(find.bySemanticsLabel('Add sources'));
     await settle(tester);
-    await tester.tap(find.text('Choose from Knowledge Base'));
+    await tester.tap(find.text('Choose from Knowledge Vault'));
     await settle(tester);
     await workspace.addSource(chatId, imported.item.id);
     await settle(tester);

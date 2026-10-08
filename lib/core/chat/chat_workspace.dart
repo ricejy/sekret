@@ -276,7 +276,7 @@ final class ChatWorkspace {
           .toList();
       text = original.userText;
     } else if (chat.mode != ChatMode.knowledgeBase) {
-      throw StateError('Choose Knowledge Base mode before sending.');
+      throw StateError('Choose Knowledge Vault mode before sending.');
     }
     if (text.isEmpty) throw ArgumentError('Enter a message.');
     if (sources.isEmpty) {

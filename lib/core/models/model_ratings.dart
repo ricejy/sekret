@@ -35,7 +35,7 @@ abstract final class ModelRatingScale {
   }
 
   static const explanation =
-      '1–5 bars; higher is better. Held-out General-mode ratings on iPhone 15 Pro Max, not overall accuracy or Knowledge Base ratings. Quality includes following exact output-format instructions.\n\n'
+      '1–5 bars; higher is better. Held-out General-mode ratings on iPhone 15 Pro Max, not overall accuracy or Knowledge Vault ratings. Quality includes following exact output-format instructions.\n\n'
       'Quality: full-task pass rate on the same 64 fresh fictional tasks, graded without knowing which model answered. 5: ≥95%; 4: ≥85%; 3: ≥75%; 2: ≥60%; 1: below 60%.\n\n'
       'Speed: median completion time including model preparation and generation. 5: ≤2 s; 4: ≤5 s; 3: ≤10 s; 2: ≤20 s; 1: slower. Missing completions leave speed unmeasured.\n\n'
       'Memory: lower additional peak memory is better, including system model services. 5: ≤0.5 GB; 4: ≤1 GB; 3: ≤2 GB; 2: ≤3 GB; 1: more. Download size is separate.\n\n'

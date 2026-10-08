@@ -224,7 +224,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       return;
     }
     if (grounded && !widget.engine.supportsKnowledgeBase) {
-      _report('This model does not support Knowledge Base answers.');
+      _report('This model does not support Knowledge Vault answers.');
       return;
     }
     setState(() {
@@ -355,7 +355,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             ),
           CupertinoActionSheetAction(
             onPressed: () => Navigator.pop(context, 'existing'),
-            child: const Text('Choose from Knowledge Base'),
+            child: const Text('Choose from Knowledge Vault'),
           ),
         ],
         cancelButton: CupertinoActionSheetAction(
@@ -389,7 +389,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         final useExisting = await showCupertinoDialog<bool>(
           context: context,
           builder: (context) => CupertinoAlertDialog(
-            title: const Text('Already in your Knowledge Base'),
+            title: const Text('Already in your Knowledge Vault'),
             content: Text(
               'Use “${result.item.title}” in this chat? No second copy was added.',
             ),
@@ -413,7 +413,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       if (mounted) await _load();
     } on Object {
       _report(
-        'Could not add this source to the chat. Check your Knowledge Base and try again.',
+        'Could not add this source to the chat. Check your Knowledge Vault and try again.',
       );
     } finally {
       if (mounted) setState(() => _importing = false);
@@ -761,13 +761,13 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       ),
       const SizedBox(height: 12),
       const Text(
-        'Ask a question, work through an idea, or choose sources from your Knowledge Base.',
+        'Ask a question, work through an idea, or choose sources from your Knowledge Vault.',
       ),
       const SizedBox(height: 20),
       CupertinoButton(
         padding: EdgeInsets.zero,
         onPressed: widget.onKnowledgeBase,
-        child: const Text('Add to Knowledge Base'),
+        child: const Text('Add to Knowledge Vault'),
       ),
       for (final prompt in [
         'Help me organize an idea',
@@ -912,7 +912,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     TurnOutcome.interrupted => 'Interrupted · Regenerate to try again',
     TurnOutcome.failed => switch (turn.failure) {
       TurnFailure.sourcesUnavailable =>
-        'Selected sources are no longer ready. Check your Knowledge Base.',
+        'Selected sources are no longer ready. Check your Knowledge Vault.',
       TurnFailure.retrievalUnavailable =>
         'Could not retrieve evidence. Retry when indexing is available.',
       TurnFailure.contextOverflow =>

@@ -8,7 +8,7 @@ Before exploring, read `CONTEXT.md` (domain glossary — use its terms, avoid th
 
 ## What this is
 
-Sekret is an iPhone-first, fully local assistant (Flutter): General chat, Knowledge Base (grounded) chat over imported text/PDFs/document photos, Models, Settings. No accounts, hosted inference, or telemetry (ADR 0001). The only networking exception is explicit, user-requested download of pinned, SHA-256-verified model artifacts (ADR 0005). `docs/product/current-status.md` is the authoritative record of what is accepted; dated integration/research notes in `docs/product/` and `docs/evaluation/` describe their own stage and must not override later code, ADRs or status.
+Sekret is an iPhone-first, fully local assistant (Flutter): General chat, Knowledge Vault (grounded) chat — called Knowledge Base before 2026-10-09 and still `knowledgeBase` in code and older docs — over imported text/PDFs/document photos, Models, Settings. No accounts, hosted inference, or telemetry (ADR 0001). The only networking exception is explicit, user-requested download of pinned, SHA-256-verified model artifacts (ADR 0005). `docs/product/current-status.md` is the authoritative record of what is accepted; dated integration/research notes in `docs/product/` and `docs/evaluation/` describe their own stage and must not override later code, ADRs or status.
 
 ## Commands
 

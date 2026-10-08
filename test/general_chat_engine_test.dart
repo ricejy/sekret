@@ -145,7 +145,7 @@ void main() {
     );
   });
 
-  test('General mode never touches the Knowledge Base facade', () async {
+  test('General mode never touches the Knowledge Vault facade', () async {
     await engine.dispose();
     await workspace.dispose();
     final chatOnly = ChatOnlyVault(vault);
