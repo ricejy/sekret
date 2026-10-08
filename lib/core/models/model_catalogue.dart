@@ -1,7 +1,8 @@
 /// Frozen initial offering. Inclusion is not installation or device approval.
 enum CatalogueModelKind { appleManaged, downloadable }
 
-enum ModelCapability { generalText }
+/// Static catalogue claims; photo questions also need iOS 27 at runtime.
+enum ModelCapability { generalText, photoQuestions }
 
 class ModelArtifact {
   const ModelArtifact({
@@ -48,7 +49,7 @@ abstract final class ModelCatalogue {
     name: 'Apple Intelligence',
     kind: CatalogueModelKind.appleManaged,
     integrationReady: true,
-    capabilities: {ModelCapability.generalText},
+    capabilities: {ModelCapability.generalText, ModelCapability.photoQuestions},
   );
 
   static const qwen = CatalogueModel(

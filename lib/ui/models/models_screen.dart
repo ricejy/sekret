@@ -343,6 +343,7 @@ class _ModelsScreenState extends State<ModelsScreen>
 
   Widget _modelRow(CatalogueModel model) {
     final apple = model.kind == CatalogueModelKind.appleManaged;
+    final photos = model.capabilities.contains(ModelCapability.photoQuestions);
     final ratings = ModelRatings.forModel(model.id);
     final store = widget.store;
     final state = store?.state;
@@ -486,21 +487,34 @@ class _ModelsScreenState extends State<ModelsScreen>
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 4,
             children: [
-              Semantics(
-                label:
-                    'Image understanding not supported; text recognition only',
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Icon(
-                    CupertinoIcons.photo,
-                    size: 18,
-                    color: SekretBrand.secondary,
-                  ),
+              MergeSemantics(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Icon(
+                        photos
+                            ? CupertinoIcons.photo
+                            : CupertinoIcons.textformat,
+                        size: 18,
+                        color: SekretBrand.secondary,
+                        semanticLabel: photos
+                            ? 'Photo questions supported on iOS 27'
+                            : 'Text only; no photo questions',
+                      ),
+                    ),
+                    ExcludeSemantics(
+                      child: Text(
+                        photos ? 'Text and photos (iOS 27)' : 'Text only',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: SekretBrand.secondary,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const Text(
-                'Text only',
-                style: TextStyle(fontSize: 12, color: SekretBrand.secondary),
               ),
               if (apple) ...[
                 CupertinoButton(
