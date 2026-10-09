@@ -1,0 +1,115 @@
+{
+  "traceSamples": 56,
+  "phases": {
+    "idle-before-apple": {
+      "traceSamples": 25,
+      "appSamples": 60,
+      "app": {
+        "median": 85116720,
+        "max": 86804248,
+        "min": 84870960
+      },
+      "serving": {
+        "median": 468049800,
+        "max": 468066184,
+        "min": 468033416
+      },
+      "total": {
+        "median": 6703561368,
+        "max": 6785759848,
+        "min": 6684162592
+      },
+      "appPlusServing": {
+        "median": 553182904,
+        "max": 554854048
+      },
+      "servingAtPeak": {
+        "TGOnDeviceInferenceProviderServ": 441814744,
+        "generativeexperiencesd": 11961776,
+        "GenerativeExperiencesSafetyInfe": 5997904,
+        "modelmanagerd": 8275376
+      },
+      "appSelfReported": {
+        "median": 85092144.0,
+        "max": 86804248
+      },
+      "thermal": [
+        0
+      ]
+    },
+    "apple-general": {
+      "traceSamples": 29,
+      "appSamples": 171,
+      "app": {
+        "median": 126306120,
+        "max": 182290248,
+        "min": 118474568
+      },
+      "serving": {
+        "median": 692641696,
+        "max": 696131488,
+        "min": 575545224
+      },
+      "total": {
+        "median": 5264853120,
+        "max": 6986090832,
+        "min": 5209471784
+      },
+      "appPlusServing": {
+        "median": 816211736,
+        "max": 836806352
+      },
+      "servingAtPeak": {
+        "TGOnDeviceInferenceProviderServi": 628215536,
+        "generativeexperiencesd": 11945392,
+        "modelmanagerd": 8537496,
+        "GenerativeExperiencesSafetyInfer": 5817680
+      },
+      "appSelfReported": {
+        "median": 125863752,
+        "max": 183387976
+      },
+      "thermal": [
+        0,
+        1
+      ]
+    },
+    "idle-before-qwen": {
+      "traceSamples": 0,
+      "appSamples": 60,
+      "appSelfReported": {
+        "median": 119129952.0,
+        "max": 182355808
+      },
+      "thermal": [
+        1
+      ]
+    },
+    "qwen-general": {
+      "traceSamples": 0,
+      "appSamples": 633,
+      "appSelfReported": {
+        "median": 160516056,
+        "max": 545771136
+      },
+      "thermal": [
+        1,
+        2
+      ]
+    }
+  },
+  "incremental": {
+    "apple": {
+      "appPlusServing": 283623448,
+      "total": 282529464
+    },
+    "qwen": {
+      "appPlusServing": null,
+      "appSelfReported": 426641184.0,
+      "total": null
+    },
+    "photo": {
+      "appPlusServing": null
+    }
+  }
+}

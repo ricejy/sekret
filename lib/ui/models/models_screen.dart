@@ -646,7 +646,7 @@ class _ModelsScreenState extends State<ModelsScreen>
             ? 'Memory efficiency'
             : label == 'Battery'
             ? 'Battery efficiency'
-            : label}: ${score == null ? 'not measured' : '$score out of 5, held-out test'}',
+            : label}: ${score == null ? (label == 'Memory' ? 'not scored; see how ratings work' : 'not measured') : '$score out of 5, held-out test'}',
     child: ExcludeSemantics(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -675,7 +675,9 @@ class _ModelsScreenState extends State<ModelsScreen>
           ),
           const SizedBox(height: 4),
           Text(
-            score == null ? 'Not measured' : '$score/5',
+            score == null
+                ? (label == 'Memory' ? 'Not scored' : 'Not measured')
+                : '$score/5',
             style: const TextStyle(fontSize: 10, color: SekretBrand.secondary),
           ),
         ],

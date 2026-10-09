@@ -355,7 +355,8 @@ void main() {
         rating(ModelCatalogue.qwen.id, 'Speed: 4 out of 5, held-out test'),
         findsOneWidget,
       );
-      expect(find.text('Not measured'), findsNWidgets(4));
+      expect(find.text('Not measured'), findsNWidgets(2));
+      expect(find.text('Not scored'), findsNWidgets(2));
       await tester.ensureVisible(find.text('How ratings work'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('How ratings work'));
