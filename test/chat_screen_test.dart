@@ -363,7 +363,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     expect(other.selectedSourceIds, isEmpty);
     await workspace.openChat(initiatingId);
     await settle(tester);
-    expect(find.text('Processing'), findsOneWidget);
+    expect(find.text('Adding…'), findsOneWidget);
     expect(
       find.textContaining('Choose sources or remove unavailable ones'),
       findsNothing,

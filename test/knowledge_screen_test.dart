@@ -150,15 +150,17 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
     await tester.runAsync(() => knowledge.process(imported.item.id));
     await mount(tester);
     expect(find.text('Travel policy'), findsOneWidget);
-    expect(find.textContaining('Indexed'), findsOneWidget);
+    expect(find.text('Ready'), findsOneWidget);
     await tester.enterText(find.byType(CupertinoSearchTextField), 'camera');
     await settle(tester);
     expect(find.textContaining('seven days'), findsOneWidget);
-    await tester.tap(find.text('All types'));
-    await settle(tester);
-    await tester.tap(find.text('PDF'));
+    await tester.tap(find.text('PDFs'));
     await settle(tester);
     expect(find.text('No matching items'), findsOneWidget);
+    await tester.tap(find.text('Text'));
+    await settle(tester);
+    expect(find.text('Travel policy'), findsOneWidget);
+    expect(find.text('All states'), findsNothing);
   });
 
   scenario(
@@ -222,15 +224,15 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
     expect(find.text('New title'), findsOneWidget);
     await tester.tap(find.bySemanticsLabel('Actions for New title'));
     await settle(tester);
-    await tester.tap(find.text('Delete source'));
+    await tester.tap(find.widgetWithText(CupertinoActionSheetAction, 'Delete'));
     await settle(tester);
-    expect(find.textContaining('Chat text remains'), findsOneWidget);
+    expect(find.textContaining('Chats keep their text'), findsOneWidget);
     await tester.tap(find.text('Cancel'));
     await settle(tester);
     expect(find.text('New title'), findsOneWidget);
     await tester.drag(find.text('New title'), const Offset(-320, 0));
     await settle(tester);
-    await tester.tap(find.text('Delete permanently'));
+    await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Delete'));
     await settle(tester);
     expect(find.text('New title'), findsNothing);
     expect(
@@ -290,19 +292,21 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
     );
     await tester.runAsync(() => knowledge.process(imported.item.id));
     await mount(tester);
-    expect(find.textContaining('Failed'), findsOneWidget);
+    expect(find.text('Failed'), findsOneWidget);
     embedder.fail = false;
     embedder.gate = Completer<void>();
     await tester.tap(find.bySemanticsLabel('Actions for Retry policy'));
     await settle(tester);
-    await tester.tap(find.text('Retry indexing'));
+    await tester.tap(find.text('Retry'));
     await settle(tester);
-    expect(find.textContaining('Processing'), findsOneWidget);
+    expect(find.text('Adding…'), findsOneWidget);
     await tester.tap(find.bySemanticsLabel('Actions for Retry policy'));
     await settle(tester);
-    await tester.tap(find.text('Cancel import'));
+    expect(find.text('Retry'), findsNothing);
+    await tester.tap(find.widgetWithText(CupertinoActionSheetAction, 'Delete'));
     await settle(tester);
-    await tester.tap(find.text('Discard import'));
+    expect(find.textContaining('any partial work'), findsOneWidget);
+    await tester.tap(find.widgetWithText(CupertinoDialogAction, 'Delete'));
     await settle(tester);
     embedder.gate!.complete();
     await settle(tester);
@@ -310,7 +314,7 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
   });
 
   scenario(
-    '500-item catalogue remains searchable with large text and state filters',
+    '500-item catalogue remains searchable with large text and type filters',
     (tester) async {
       await tester.runAsync(() async {
         for (var i = 0; i < 500; i++) {
@@ -323,11 +327,7 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
       });
       await mount(tester, scale: 2);
       expect(find.text('500 items'), findsOneWidget);
-      await tester.tap(find.text('All states'));
-      await settle(tester);
-      await tester.tap(
-        find.widgetWithText(CupertinoActionSheetAction, 'Indexed'),
-      );
+      await tester.tap(find.text('Text'));
       await settle(tester);
       await tester.enterText(
         find.byType(CupertinoSearchTextField),
@@ -361,19 +361,20 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
       embedder.gate!.complete();
       await settle(tester);
       await suspended;
-      expect(find.textContaining('Paused'), findsOneWidget);
+      // A pause resumes in the foreground, so it still reads as adding.
+      expect(find.text('Adding…'), findsOneWidget);
       final resuming = knowledge.resume();
       await settle(tester);
       await resuming;
-      expect(find.text('Indexed'), findsOneWidget);
+      expect(find.text('Ready'), findsOneWidget);
       await knowledge.invalidateIndex(imported.item.id);
       await settle(tester);
-      expect(find.textContaining('Needs re-indexing'), findsOneWidget);
+      expect(find.text('Failed'), findsOneWidget);
       await tester.tap(find.bySemanticsLabel('Actions for Saved policy'));
       await settle(tester);
-      await tester.tap(find.text('Retry indexing'));
+      await tester.tap(find.text('Retry'));
       await settle(tester);
-      expect(find.text('Indexed'), findsOneWidget);
+      expect(find.text('Ready'), findsOneWidget);
       await tester.tap(find.text('Saved policy'));
       await settle(tester);
       expect(find.text('Keep equipment dry.'), findsOneWidget);
@@ -491,7 +492,7 @@ void registerKnowledgeScreenTests({bool physicalDevice = false}) {
         final item = (await knowledge.catalogue()).single.item;
         await tester.runAsync(() => knowledge.process(item.id));
         await settle(tester);
-        expect(find.textContaining('Indexed'), findsOneWidget);
+        expect(find.text('Ready'), findsOneWidget);
         await tester.tap(find.text(picker.name));
         await settle(tester);
         if (kind == 'Photo') {

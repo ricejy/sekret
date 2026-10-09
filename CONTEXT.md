@@ -80,6 +80,7 @@ _Avoid_: Image attachment, photo source, vision mode
 
 **Processing state**:
 The current readiness of a knowledge item: processing, paused, indexed, failed, or needs re-indexing. Only indexed items may contribute evidence.
+The interface shows it as one of two outcomes: **Ready** (indexed) or **Failed** (failed, or needs re-indexing), with a transient **Adding…** while processing or paused, since a pause resumes in the foreground.
 _Avoid_: Upload status, sync status
 
 **Retention policy**:
