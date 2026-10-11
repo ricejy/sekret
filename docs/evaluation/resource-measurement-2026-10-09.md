@@ -29,7 +29,7 @@ Fixtures were Tuck brand artwork, which is fictional: a 4032×3024 JPEG; a HEIC 
 | Background interruption mid-answer | The in-flight answer ended with `interrupted`, with no crash ([run 3](resource-measurement/run3-interruption-2026-10-09.json)) |
 | Recovery | The next photo answer completed ("Upright"). Note that it ran during the backgrounding, so return-to-app is covered by the existing `chat_app_test` lifecycle test rather than this harness |
 | Memory | +0.71 GB peak above idle (Sekret plus services), mostly in `TGOnDeviceInferenceProviderService` |
-| Airplane mode | Not run: it would cut the wireless measurement link. Owner spot-check pending |
+| Airplane mode | Not run by the harness, because it would cut the wireless measurement link. On 11 October the owner reported that a photo question works in airplane mode |
 
 In run 2 the interruption-phase answer finished before the interruption arrived, so run 3 kept answers in flight until it landed.
 
