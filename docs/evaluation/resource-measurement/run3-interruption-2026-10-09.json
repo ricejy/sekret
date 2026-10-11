@@ -1,0 +1,309 @@
+{
+  "schema": "sekret-resource-measurement-v1",
+  "fixture": "sekret-broader-text-development-v1",
+  "fixtureSHA256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4",
+  "instructionsSHA256": "29c591d23f297701ee16735d801c2ecda91cbee5b9b845671e32eb534f3a240f",
+  "qwenSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "qwenRuntime": "llama.cpp-b11429",
+  "applePromptVersion": "general-v4",
+  "os": "Version 27.0.1 (Build 24A446)",
+  "startedAt": "2026-10-09T04:06:05.314091Z",
+  "idleSeconds": 120,
+  "requestedPhases": "interrupt",
+  "restSeconds": 10,
+  "phases": [
+    {
+      "name": "photo-interruption",
+      "start": "2026-10-09T04:06:05.321928Z",
+      "end": "2026-10-09T04:06:27.399924Z"
+    }
+  ],
+  "events": [
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:05.322748Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 4483,
+      "elapsedMs": 4531,
+      "end": "2026-10-09T04:06:09.853960Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834449Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:09.854988Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1603,
+      "elapsedMs": 1647,
+      "end": "2026-10-09T04:06:11.502408Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834454Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:11.503239Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1420,
+      "elapsedMs": 1464,
+      "end": "2026-10-09T04:06:12.967444Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834455Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:12.968125Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1537,
+      "elapsedMs": 1584,
+      "end": "2026-10-09T04:06:14.552950Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834456Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:14.553651Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1502,
+      "elapsedMs": 1553,
+      "end": "2026-10-09T04:06:16.107379Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834457Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:16.108068Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1527,
+      "elapsedMs": 1572,
+      "end": "2026-10-09T04:06:17.680946Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834458Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:17.681870Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1266,
+      "elapsedMs": 1313,
+      "end": "2026-10-09T04:06:18.995882Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834461Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:18.996734Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1203,
+      "elapsedMs": 1248,
+      "end": "2026-10-09T04:06:20.245267Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834462Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:20.245976Z",
+      "thermalBefore": 0,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1409,
+      "elapsedMs": 1452,
+      "end": "2026-10-09T04:06:21.698382Z",
+      "thermalAfter": 0,
+      "interruptedAt": "2026-10-09T04:06:22.834463Z"
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T04:06:21.699878Z",
+      "thermalBefore": 0,
+      "output": "",
+      "completed": true,
+      "interruptedAt": "2026-10-09T04:06:22.834464Z",
+      "error": "interrupted",
+      "elapsedMs": 1134,
+      "end": "2026-10-09T04:06:22.834483Z",
+      "thermalAfter": 0
+    },
+    {
+      "type": "after-resume",
+      "file": "photo-fixtures/rotated.heic",
+      "bytes": 37729,
+      "question": "Is the turtle in this image upright, lying on its side, or upside down?",
+      "expect": "upright",
+      "start": "2026-10-09T04:06:24.838030Z",
+      "thermalBefore": 0,
+      "output": "Upright",
+      "completed": true,
+      "firstSnapshotMs": 2494,
+      "elapsedMs": 2557,
+      "end": "2026-10-09T04:06:27.396089Z",
+      "thermalAfter": 0
+    }
+  ],
+  "lifecycle": [
+    {
+      "at": "2026-10-09T04:06:05.527558Z",
+      "state": "resumed"
+    },
+    {
+      "at": "2026-10-09T04:06:22.244864Z",
+      "state": "inactive"
+    },
+    {
+      "at": "2026-10-09T04:06:22.713352Z",
+      "state": "hidden"
+    },
+    {
+      "at": "2026-10-09T04:06:22.713358Z",
+      "state": "paused"
+    }
+  ],
+  "complete": true,
+  "samples": [
+    {
+      "at": "2026-10-09T04:06:07.316439Z",
+      "thermal": 0,
+      "footprint": 107398936,
+      "available": 3432593640,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:09.316544Z",
+      "thermal": 0,
+      "footprint": 99239704,
+      "available": 3440752872,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:11.316663Z",
+      "thermal": 0,
+      "footprint": 106940208,
+      "available": 3433052368,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:13.315692Z",
+      "thermal": 0,
+      "footprint": 134104880,
+      "available": 3405887696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:15.316760Z",
+      "thermal": 0,
+      "footprint": 132925232,
+      "available": 3407067344,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:17.315595Z",
+      "thermal": 0,
+      "footprint": 133547824,
+      "available": 3406444752,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:19.315285Z",
+      "thermal": 0,
+      "footprint": 134842160,
+      "available": 3405150416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:21.316380Z",
+      "thermal": 0,
+      "footprint": 109594440,
+      "available": 3430398136,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:23.317208Z",
+      "thermal": 0,
+      "footprint": 78694240,
+      "available": 3461298336,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:25.316905Z",
+      "thermal": 0,
+      "footprint": 111363936,
+      "available": 3428628640,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T04:06:27.315902Z",
+      "thermal": 0,
+      "footprint": 108971872,
+      "available": 3431020704,
+      "onBattery": true
+    }
+  ],
+  "initialResources": {
+    "physFootprintBytes": 51742464,
+    "onBattery": true,
+    "thermalState": 0,
+    "availableMemoryBytes": 3488250112,
+    "applicationState": 1,
+    "ready": false
+  },
+  "startWaitSeconds": 0,
+  "photoSupported": true,
+  "currentPhase": "done",
+  "awaitingInterruption": false,
+  "finishedAt": "2026-10-09T04:06:27.402656Z"
+}

@@ -56,6 +56,18 @@ final class LocalModelPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         #endif
     }
 
+    /// This process's physical footprint (what Activity Monitor calls Memory).
+    private static var physFootprintBytes: Int {
+        var info = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<integer_t>.size)
+        let status = withUnsafeMutablePointer(to: &info) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: Int(count)) {
+                task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+            }
+        }
+        return status == KERN_SUCCESS ? Int(info.phys_footprint) : -1
+    }
+
     private static var ready: Bool {
         supported && UIApplication.shared.applicationState == .active &&
             ProcessInfo.processInfo.thermalState.rawValue < 2 &&
@@ -82,6 +94,7 @@ final class LocalModelPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
                 "thermalState": ProcessInfo.processInfo.thermalState.rawValue,
                 "applicationState": UIApplication.shared.applicationState.rawValue,
                 "availableMemoryBytes": QwenRuntime.availableMemoryBytes,
+                "physFootprintBytes": Self.physFootprintBytes,
                 "ready": Self.ready,
             ])
         case "supported": result(Self.supported)

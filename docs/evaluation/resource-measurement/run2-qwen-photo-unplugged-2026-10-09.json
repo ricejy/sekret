@@ -1,0 +1,7483 @@
+{
+  "schema": "sekret-resource-measurement-v1",
+  "fixture": "sekret-broader-text-development-v1",
+  "fixtureSHA256": "d3cfa3104a58a512bd7354ea71cff11f4ecc88353861fa6e88534572f4dc87c4",
+  "instructionsSHA256": "29c591d23f297701ee16735d801c2ecda91cbee5b9b845671e32eb534f3a240f",
+  "qwenSHA256": "9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9",
+  "qwenRuntime": "llama.cpp-b11429",
+  "applePromptVersion": "general-v4",
+  "os": "Version 27.0.1 (Build 24A446)",
+  "startedAt": "2026-10-09T03:20:07.093836Z",
+  "idleSeconds": 120,
+  "requestedPhases": "qwen,photo",
+  "restSeconds": 10,
+  "phases": [
+    {
+      "name": "idle-before-qwen",
+      "start": "2026-10-09T03:39:22.791856Z",
+      "end": "2026-10-09T03:41:22.803768Z"
+    },
+    {
+      "name": "qwen-general",
+      "start": "2026-10-09T03:41:22.814586Z",
+      "end": "2026-10-09T03:48:09.578293Z"
+    },
+    {
+      "name": "idle-before-photo",
+      "start": "2026-10-09T03:48:09.591588Z",
+      "end": "2026-10-09T03:50:09.600320Z"
+    },
+    {
+      "name": "photo-repeated",
+      "start": "2026-10-09T03:50:09.626380Z",
+      "end": "2026-10-09T03:51:58.932411Z"
+    },
+    {
+      "name": "photo-cancellation",
+      "start": "2026-10-09T03:51:58.945559Z",
+      "end": "2026-10-09T03:52:08.447736Z"
+    },
+    {
+      "name": "photo-interruption",
+      "start": "2026-10-09T03:52:08.449411Z",
+      "end": "2026-10-09T03:52:45.132329Z"
+    }
+  ],
+  "events": [
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "polite-rewrite",
+      "start": "2026-10-09T03:41:22.820259Z",
+      "thermalBefore": 0,
+      "completed": true,
+      "elapsedMs": 6926,
+      "end": "2026-10-09T03:41:29.746996Z",
+      "thermalAfter": 0
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "simple-explanation",
+      "start": "2026-10-09T03:41:39.755239Z",
+      "thermalBefore": 0,
+      "completed": true,
+      "elapsedMs": 6482,
+      "end": "2026-10-09T03:41:46.237384Z",
+      "thermalAfter": 0
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "picnic-checklist",
+      "start": "2026-10-09T03:41:56.244061Z",
+      "thermalBefore": 0,
+      "completed": true,
+      "elapsedMs": 4428,
+      "end": "2026-10-09T03:42:00.672078Z",
+      "thermalAfter": 0
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "creative-names",
+      "start": "2026-10-09T03:42:10.679575Z",
+      "thermalBefore": 0,
+      "completed": true,
+      "elapsedMs": 3193,
+      "end": "2026-10-09T03:42:13.873492Z",
+      "thermalAfter": 0
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "brief-reschedule",
+      "start": "2026-10-09T03:42:23.879594Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3416,
+      "end": "2026-10-09T03:42:27.296382Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "member-exception",
+      "start": "2026-10-09T03:42:37.303299Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2842,
+      "end": "2026-10-09T03:42:40.145579Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "new-address",
+      "start": "2026-10-09T03:42:50.151793Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3168,
+      "end": "2026-10-09T03:42:53.320078Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "table-selection",
+      "start": "2026-10-09T03:43:03.325974Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2747,
+      "end": "2026-10-09T03:43:06.073851Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "two-sources",
+      "start": "2026-10-09T03:43:16.081916Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 4619,
+      "end": "2026-10-09T03:43:20.700947Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "negated-permission",
+      "start": "2026-10-09T03:43:30.706561Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2738,
+      "end": "2026-10-09T03:43:33.444825Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "missing-phone",
+      "start": "2026-10-09T03:43:43.450678Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2987,
+      "end": "2026-10-09T03:43:46.438076Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "missing-surname",
+      "start": "2026-10-09T03:43:56.443920Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2872,
+      "end": "2026-10-09T03:43:59.316265Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "missing-discount",
+      "start": "2026-10-09T03:44:09.322167Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2876,
+      "end": "2026-10-09T03:44:12.198953Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "missing-clock-time",
+      "start": "2026-10-09T03:44:22.205856Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2865,
+      "end": "2026-10-09T03:44:25.071147Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "unknown-eligibility",
+      "start": "2026-10-09T03:44:35.077007Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3167,
+      "end": "2026-10-09T03:44:38.244051Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "token-balance",
+      "start": "2026-10-09T03:44:48.250817Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3729,
+      "end": "2026-10-09T03:44:51.979915Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "packs-and-singles",
+      "start": "2026-10-09T03:45:01.986479Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3358,
+      "end": "2026-10-09T03:45:05.345269Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "equal-shares",
+      "start": "2026-10-09T03:45:15.352895Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3409,
+      "end": "2026-10-09T03:45:18.762124Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "remaining-budget",
+      "start": "2026-10-09T03:45:28.770118Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 4722,
+      "end": "2026-10-09T03:45:33.492251Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "finish-time",
+      "start": "2026-10-09T03:45:43.497446Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3528,
+      "end": "2026-10-09T03:45:47.026424Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "embedded-location",
+      "start": "2026-10-09T03:45:57.033127Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3475,
+      "end": "2026-10-09T03:46:00.508213Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "pretend-authority",
+      "start": "2026-10-09T03:46:10.515586Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3631,
+      "end": "2026-10-09T03:46:14.147546Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "selected-scope",
+      "start": "2026-10-09T03:46:24.154781Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3054,
+      "end": "2026-10-09T03:46:27.209234Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "footnote-command",
+      "start": "2026-10-09T03:46:37.216854Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3021,
+      "end": "2026-10-09T03:46:40.238655Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "quoted-command",
+      "start": "2026-10-09T03:46:50.245053Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2808,
+      "end": "2026-10-09T03:46:53.053811Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "korean-thanks",
+      "start": "2026-10-09T03:47:03.062634Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2865,
+      "end": "2026-10-09T03:47:05.927879Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "french-greeting",
+      "start": "2026-10-09T03:47:15.934852Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 2858,
+      "end": "2026-10-09T03:47:18.792847Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "json-unknown",
+      "start": "2026-10-09T03:47:28.801202Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3617,
+      "end": "2026-10-09T03:47:32.419036Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "csv-rows",
+      "start": "2026-10-09T03:47:42.425783Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3427,
+      "end": "2026-10-09T03:47:45.853586Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "general",
+      "model": "qwen",
+      "id": "spanish-translation",
+      "start": "2026-10-09T03:47:55.862642Z",
+      "thermalBefore": 1,
+      "completed": true,
+      "elapsedMs": 3709,
+      "end": "2026-10-09T03:47:59.572076Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T03:50:09.630639Z",
+      "thermalBefore": 1,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 4891,
+      "elapsedMs": 4937,
+      "end": "2026-10-09T03:50:14.569014Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/rotated.heic",
+      "bytes": 37729,
+      "question": "Is the turtle in this image upright, lying on its side, or upside down?",
+      "expect": "upright",
+      "start": "2026-10-09T03:50:24.573996Z",
+      "thermalBefore": 1,
+      "output": "Upright",
+      "completed": true,
+      "firstSnapshotMs": 2008,
+      "elapsedMs": 2053,
+      "end": "2026-10-09T03:50:26.628218Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/small.png",
+      "bytes": 121903,
+      "question": "What colour is the turtle?",
+      "expect": "teal/green/blue",
+      "start": "2026-10-09T03:50:36.632059Z",
+      "thermalBefore": 1,
+      "output": "The turtle is teal.",
+      "completed": true,
+      "firstSnapshotMs": 1344,
+      "elapsedMs": 1393,
+      "end": "2026-10-09T03:50:38.026457Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T03:50:48.029907Z",
+      "thermalBefore": 1,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1971,
+      "elapsedMs": 2015,
+      "end": "2026-10-09T03:50:50.047231Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/rotated.heic",
+      "bytes": 37729,
+      "question": "Is the turtle in this image upright, lying on its side, or upside down?",
+      "expect": "upright",
+      "start": "2026-10-09T03:51:00.050924Z",
+      "thermalBefore": 1,
+      "output": "Upright",
+      "completed": true,
+      "firstSnapshotMs": 1819,
+      "elapsedMs": 1866,
+      "end": "2026-10-09T03:51:01.918461Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/small.png",
+      "bytes": 121903,
+      "question": "What colour is the turtle?",
+      "expect": "teal/green/blue",
+      "start": "2026-10-09T03:51:11.922445Z",
+      "thermalBefore": 1,
+      "output": "The turtle is teal.",
+      "completed": true,
+      "firstSnapshotMs": 1394,
+      "elapsedMs": 1441,
+      "end": "2026-10-09T03:51:13.365039Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T03:51:23.369202Z",
+      "thermalBefore": 1,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 2171,
+      "elapsedMs": 2219,
+      "end": "2026-10-09T03:51:25.588803Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/rotated.heic",
+      "bytes": 37729,
+      "question": "Is the turtle in this image upright, lying on its side, or upside down?",
+      "expect": "upright",
+      "start": "2026-10-09T03:51:35.592595Z",
+      "thermalBefore": 1,
+      "output": "Upright",
+      "completed": true,
+      "firstSnapshotMs": 1413,
+      "elapsedMs": 1460,
+      "end": "2026-10-09T03:51:37.054331Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "photo",
+      "file": "photo-fixtures/small.png",
+      "bytes": 121903,
+      "question": "What colour is the turtle?",
+      "expect": "teal/green/blue",
+      "start": "2026-10-09T03:51:47.058419Z",
+      "thermalBefore": 1,
+      "output": "The turtle is teal.",
+      "completed": true,
+      "firstSnapshotMs": 1822,
+      "elapsedMs": 1869,
+      "end": "2026-10-09T03:51:48.929038Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "cancel-preparation",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T03:51:58.952339Z",
+      "thermalBefore": 1,
+      "output": "",
+      "completed": false,
+      "cancelledAfterSnapshots": 0,
+      "elapsedMs": 1,
+      "end": "2026-10-09T03:51:58.954056Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "cancel-generation",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T03:52:01.961424Z",
+      "thermalBefore": 1,
+      "output": "A turtle",
+      "completed": false,
+      "firstSnapshotMs": 1888,
+      "cancelledAfterSnapshots": 1,
+      "elapsedMs": 1888,
+      "end": "2026-10-09T03:52:03.851017Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "after-cancel",
+      "file": "photo-fixtures/small.png",
+      "bytes": 121903,
+      "question": "What colour is the turtle?",
+      "expect": "teal/green/blue",
+      "start": "2026-10-09T03:52:06.855236Z",
+      "thermalBefore": 1,
+      "output": "The turtle is teal.",
+      "completed": true,
+      "firstSnapshotMs": 1542,
+      "elapsedMs": 1588,
+      "end": "2026-10-09T03:52:08.444045Z",
+      "thermalAfter": 1
+    },
+    {
+      "type": "background-interruption",
+      "file": "photo-fixtures/landscape.jpg",
+      "bytes": 480439,
+      "question": "What animal is shown?",
+      "expect": "turtle",
+      "start": "2026-10-09T03:52:08.452594Z",
+      "thermalBefore": 1,
+      "output": "A turtle.",
+      "completed": true,
+      "firstSnapshotMs": 1993,
+      "elapsedMs": 2040,
+      "end": "2026-10-09T03:52:10.492922Z",
+      "thermalAfter": 1,
+      "interruptedAt": "2026-10-09T03:52:33.372668Z"
+    },
+    {
+      "type": "after-resume",
+      "file": "photo-fixtures/rotated.heic",
+      "bytes": 37729,
+      "question": "Is the turtle in this image upright, lying on its side, or upside down?",
+      "expect": "upright",
+      "start": "2026-10-09T03:52:41.805578Z",
+      "thermalBefore": 1,
+      "output": "Upright",
+      "completed": true,
+      "firstSnapshotMs": 3275,
+      "elapsedMs": 3324,
+      "end": "2026-10-09T03:52:45.130356Z",
+      "thermalAfter": 1
+    }
+  ],
+  "lifecycle": [
+    {
+      "at": "2026-10-09T03:20:07.152320Z",
+      "state": "resumed"
+    },
+    {
+      "at": "2026-10-09T03:52:32.740134Z",
+      "state": "inactive"
+    },
+    {
+      "at": "2026-10-09T03:52:33.250516Z",
+      "state": "hidden"
+    },
+    {
+      "at": "2026-10-09T03:52:33.250526Z",
+      "state": "paused"
+    },
+    {
+      "at": "2026-10-09T03:52:39.478280Z",
+      "state": "hidden"
+    },
+    {
+      "at": "2026-10-09T03:52:39.478290Z",
+      "state": "inactive"
+    },
+    {
+      "at": "2026-10-09T03:52:39.804018Z",
+      "state": "resumed"
+    }
+  ],
+  "complete": true,
+  "samples": [
+    {
+      "at": "2026-10-09T03:20:09.096903Z",
+      "thermal": 1,
+      "footprint": 93636400,
+      "available": 3446356176,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:11.096705Z",
+      "thermal": 1,
+      "footprint": 85198616,
+      "available": 3454793960,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:13.096489Z",
+      "thermal": 1,
+      "footprint": 153126680,
+      "available": 3386865896,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:15.096123Z",
+      "thermal": 1,
+      "footprint": 115148568,
+      "available": 3424844008,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:17.096510Z",
+      "thermal": 1,
+      "footprint": 115148568,
+      "available": 3424844008,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:19.096238Z",
+      "thermal": 1,
+      "footprint": 125617944,
+      "available": 3414374632,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:21.096614Z",
+      "thermal": 1,
+      "footprint": 125617944,
+      "available": 3414374632,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:23.096515Z",
+      "thermal": 1,
+      "footprint": 154208024,
+      "available": 3385784552,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:25.096927Z",
+      "thermal": 1,
+      "footprint": 129845016,
+      "available": 3410147560,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:27.096313Z",
+      "thermal": 1,
+      "footprint": 129861400,
+      "available": 3410131176,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:29.096151Z",
+      "thermal": 1,
+      "footprint": 129877784,
+      "available": 3410114792,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:31.096158Z",
+      "thermal": 1,
+      "footprint": 129894168,
+      "available": 3410098408,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:33.096388Z",
+      "thermal": 1,
+      "footprint": 154224408,
+      "available": 3385768168,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:35.096710Z",
+      "thermal": 1,
+      "footprint": 116246296,
+      "available": 3423746280,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:37.096202Z",
+      "thermal": 1,
+      "footprint": 116246296,
+      "available": 3423746280,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:39.096092Z",
+      "thermal": 1,
+      "footprint": 141477656,
+      "available": 3398514920,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:41.097390Z",
+      "thermal": 1,
+      "footprint": 141477656,
+      "available": 3398514920,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:43.096335Z",
+      "thermal": 1,
+      "footprint": 154306328,
+      "available": 3385686248,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:45.095625Z",
+      "thermal": 1,
+      "footprint": 141510424,
+      "available": 3398482152,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:47.096034Z",
+      "thermal": 1,
+      "footprint": 141526808,
+      "available": 3398465768,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:49.095593Z",
+      "thermal": 1,
+      "footprint": 141543192,
+      "available": 3398449384,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:51.096788Z",
+      "thermal": 1,
+      "footprint": 141559576,
+      "available": 3398433000,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:53.095802Z",
+      "thermal": 1,
+      "footprint": 154371864,
+      "available": 3385620712,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:55.096396Z",
+      "thermal": 1,
+      "footprint": 141592344,
+      "available": 3398400232,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:57.095735Z",
+      "thermal": 1,
+      "footprint": 141608728,
+      "available": 3398383848,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:20:59.095208Z",
+      "thermal": 1,
+      "footprint": 141625112,
+      "available": 3398367464,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:01.096513Z",
+      "thermal": 1,
+      "footprint": 116442904,
+      "available": 3423549672,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:03.095175Z",
+      "thermal": 1,
+      "footprint": 154453784,
+      "available": 3385538792,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:05.095817Z",
+      "thermal": 1,
+      "footprint": 116475672,
+      "available": 3423516904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:07.096204Z",
+      "thermal": 1,
+      "footprint": 116475672,
+      "available": 3423516904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:09.096084Z",
+      "thermal": 1,
+      "footprint": 125945624,
+      "available": 3414046952,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:11.095768Z",
+      "thermal": 1,
+      "footprint": 125945624,
+      "available": 3414046952,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:13.095580Z",
+      "thermal": 1,
+      "footprint": 154535704,
+      "available": 3385456872,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:15.096096Z",
+      "thermal": 1,
+      "footprint": 125978392,
+      "available": 3414014184,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:17.095460Z",
+      "thermal": 1,
+      "footprint": 125994776,
+      "available": 3413997800,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:19.095242Z",
+      "thermal": 1,
+      "footprint": 126011160,
+      "available": 3413981416,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:21.095696Z",
+      "thermal": 1,
+      "footprint": 126027544,
+      "available": 3413965032,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:23.094876Z",
+      "thermal": 1,
+      "footprint": 154601240,
+      "available": 3385391336,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:25.095425Z",
+      "thermal": 1,
+      "footprint": 126060312,
+      "available": 3413932264,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:27.095726Z",
+      "thermal": 1,
+      "footprint": 126060312,
+      "available": 3413932264,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:29.095383Z",
+      "thermal": 1,
+      "footprint": 116655896,
+      "available": 3423336680,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:31.096183Z",
+      "thermal": 1,
+      "footprint": 116655896,
+      "available": 3423336680,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:33.095011Z",
+      "thermal": 1,
+      "footprint": 154683160,
+      "available": 3385309416,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:35.095545Z",
+      "thermal": 1,
+      "footprint": 126125848,
+      "available": 3413866728,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:37.094889Z",
+      "thermal": 1,
+      "footprint": 126142232,
+      "available": 3413850344,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:39.095428Z",
+      "thermal": 1,
+      "footprint": 126158616,
+      "available": 3413833960,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:41.095041Z",
+      "thermal": 1,
+      "footprint": 126175000,
+      "available": 3413817576,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:43.094507Z",
+      "thermal": 1,
+      "footprint": 154748696,
+      "available": 3385243880,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:45.095030Z",
+      "thermal": 1,
+      "footprint": 126207768,
+      "available": 3413784808,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:47.095345Z",
+      "thermal": 1,
+      "footprint": 126207768,
+      "available": 3413784808,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:49.093935Z",
+      "thermal": 1,
+      "footprint": 126240536,
+      "available": 3413752040,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:51.095868Z",
+      "thermal": 1,
+      "footprint": 126240536,
+      "available": 3413752040,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:53.094532Z",
+      "thermal": 1,
+      "footprint": 154830616,
+      "available": 3385161960,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:55.095046Z",
+      "thermal": 1,
+      "footprint": 126273304,
+      "available": 3413719272,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:57.095036Z",
+      "thermal": 1,
+      "footprint": 126289688,
+      "available": 3413702888,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:21:59.094739Z",
+      "thermal": 1,
+      "footprint": 126306072,
+      "available": 3413686504,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:01.095710Z",
+      "thermal": 1,
+      "footprint": 116885272,
+      "available": 3423107304,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:03.094460Z",
+      "thermal": 1,
+      "footprint": 154896152,
+      "available": 3385096424,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:05.094986Z",
+      "thermal": 1,
+      "footprint": 119015192,
+      "available": 3420977384,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:07.094222Z",
+      "thermal": 1,
+      "footprint": 119015192,
+      "available": 3420977384,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:09.094908Z",
+      "thermal": 1,
+      "footprint": 126387992,
+      "available": 3413604584,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:11.095165Z",
+      "thermal": 1,
+      "footprint": 126387992,
+      "available": 3413604584,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:13.094520Z",
+      "thermal": 1,
+      "footprint": 154978072,
+      "available": 3385014504,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:15.095048Z",
+      "thermal": 1,
+      "footprint": 126420760,
+      "available": 3413571816,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:17.094383Z",
+      "thermal": 1,
+      "footprint": 126437144,
+      "available": 3413555432,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:19.094744Z",
+      "thermal": 1,
+      "footprint": 126469912,
+      "available": 3413522664,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:21.094619Z",
+      "thermal": 1,
+      "footprint": 126469912,
+      "available": 3413522664,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:23.094539Z",
+      "thermal": 1,
+      "footprint": 155059992,
+      "available": 3384932584,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:25.094102Z",
+      "thermal": 1,
+      "footprint": 126502680,
+      "available": 3413489896,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:27.093815Z",
+      "thermal": 1,
+      "footprint": 126519064,
+      "available": 3413473512,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:29.094494Z",
+      "thermal": 1,
+      "footprint": 126535448,
+      "available": 3413457128,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:31.095253Z",
+      "thermal": 1,
+      "footprint": 126551832,
+      "available": 3413440744,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:33.094201Z",
+      "thermal": 1,
+      "footprint": 155158296,
+      "available": 3384834280,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:35.094708Z",
+      "thermal": 1,
+      "footprint": 117180184,
+      "available": 3422812392,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:37.094126Z",
+      "thermal": 1,
+      "footprint": 117180184,
+      "available": 3422812392,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:39.094379Z",
+      "thermal": 1,
+      "footprint": 117212952,
+      "available": 3422779624,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:41.095286Z",
+      "thermal": 1,
+      "footprint": 117212952,
+      "available": 3422779624,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:43.093217Z",
+      "thermal": 1,
+      "footprint": 155240216,
+      "available": 3384752360,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:45.093892Z",
+      "thermal": 1,
+      "footprint": 117245720,
+      "available": 3422746856,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:47.094505Z",
+      "thermal": 1,
+      "footprint": 117262104,
+      "available": 3422730472,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:49.094203Z",
+      "thermal": 1,
+      "footprint": 117278488,
+      "available": 3422714088,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:51.093611Z",
+      "thermal": 1,
+      "footprint": 117294872,
+      "available": 3422697704,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:53.093671Z",
+      "thermal": 1,
+      "footprint": 155305752,
+      "available": 3384686824,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:55.093954Z",
+      "thermal": 1,
+      "footprint": 117327640,
+      "available": 3422664936,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:57.093811Z",
+      "thermal": 1,
+      "footprint": 117327640,
+      "available": 3422664936,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:22:59.093548Z",
+      "thermal": 1,
+      "footprint": 117360408,
+      "available": 3422632168,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:01.094745Z",
+      "thermal": 1,
+      "footprint": 117360408,
+      "available": 3422632168,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:03.093785Z",
+      "thermal": 1,
+      "footprint": 155387672,
+      "available": 3384604904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:05.093949Z",
+      "thermal": 1,
+      "footprint": 117393176,
+      "available": 3422599400,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:07.093851Z",
+      "thermal": 1,
+      "footprint": 117409560,
+      "available": 3422583016,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:09.094045Z",
+      "thermal": 1,
+      "footprint": 142624536,
+      "available": 3397368040,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:11.095033Z",
+      "thermal": 1,
+      "footprint": 142640920,
+      "available": 3397351656,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:13.094459Z",
+      "thermal": 1,
+      "footprint": 155453208,
+      "available": 3384539368,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:15.093625Z",
+      "thermal": 1,
+      "footprint": 142673688,
+      "available": 3397318888,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:17.094075Z",
+      "thermal": 1,
+      "footprint": 142673688,
+      "available": 3397318888,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:19.093948Z",
+      "thermal": 1,
+      "footprint": 142706456,
+      "available": 3397286120,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:21.093603Z",
+      "thermal": 1,
+      "footprint": 142706456,
+      "available": 3397286120,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:23.093246Z",
+      "thermal": 1,
+      "footprint": 155535128,
+      "available": 3384457448,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:25.094479Z",
+      "thermal": 1,
+      "footprint": 142739224,
+      "available": 3397253352,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:27.094095Z",
+      "thermal": 1,
+      "footprint": 142755608,
+      "available": 3397236968,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:29.094012Z",
+      "thermal": 1,
+      "footprint": 142771992,
+      "available": 3397220584,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:31.093432Z",
+      "thermal": 1,
+      "footprint": 142788376,
+      "available": 3397204200,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:33.093969Z",
+      "thermal": 1,
+      "footprint": 155600664,
+      "available": 3384391912,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:35.093553Z",
+      "thermal": 1,
+      "footprint": 142821144,
+      "available": 3397171432,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:37.093909Z",
+      "thermal": 1,
+      "footprint": 142821144,
+      "available": 3397171432,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:39.093884Z",
+      "thermal": 1,
+      "footprint": 142853912,
+      "available": 3397138664,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:41.093162Z",
+      "thermal": 1,
+      "footprint": 142853912,
+      "available": 3397138664,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:43.093813Z",
+      "thermal": 1,
+      "footprint": 155682584,
+      "available": 3384309992,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:45.092768Z",
+      "thermal": 1,
+      "footprint": 117688088,
+      "available": 3422304488,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:47.093302Z",
+      "thermal": 1,
+      "footprint": 117704472,
+      "available": 3422288104,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:49.096594Z",
+      "thermal": 1,
+      "footprint": 131352344,
+      "available": 3408640232,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:51.092986Z",
+      "thermal": 1,
+      "footprint": 131680024,
+      "available": 3408312552,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:53.093049Z",
+      "thermal": 1,
+      "footprint": 153978648,
+      "available": 3386013928,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:55.093633Z",
+      "thermal": 1,
+      "footprint": 129615640,
+      "available": 3410376936,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:57.093025Z",
+      "thermal": 1,
+      "footprint": 129632024,
+      "available": 3410360552,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:23:59.092932Z",
+      "thermal": 1,
+      "footprint": 129648408,
+      "available": 3410344168,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:01.093433Z",
+      "thermal": 1,
+      "footprint": 116033304,
+      "available": 3423959272,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:03.093011Z",
+      "thermal": 1,
+      "footprint": 154044184,
+      "available": 3385948392,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:05.093427Z",
+      "thermal": 1,
+      "footprint": 117114648,
+      "available": 3422877928,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:07.092819Z",
+      "thermal": 1,
+      "footprint": 117114648,
+      "available": 3422877928,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:09.092638Z",
+      "thermal": 1,
+      "footprint": 126584600,
+      "available": 3413407976,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:11.093896Z",
+      "thermal": 1,
+      "footprint": 126584600,
+      "available": 3413407976,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:13.093354Z",
+      "thermal": 1,
+      "footprint": 154126104,
+      "available": 3385866472,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:15.092818Z",
+      "thermal": 1,
+      "footprint": 126617368,
+      "available": 3413375208,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:17.093202Z",
+      "thermal": 1,
+      "footprint": 126633752,
+      "available": 3413358824,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:19.093101Z",
+      "thermal": 1,
+      "footprint": 126650136,
+      "available": 3413342440,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:21.092913Z",
+      "thermal": 1,
+      "footprint": 126666520,
+      "available": 3413326056,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:23.093209Z",
+      "thermal": 1,
+      "footprint": 154191640,
+      "available": 3385800936,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:25.092304Z",
+      "thermal": 1,
+      "footprint": 126682904,
+      "available": 3413309672,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:27.092528Z",
+      "thermal": 1,
+      "footprint": 126699288,
+      "available": 3413293288,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:29.092535Z",
+      "thermal": 1,
+      "footprint": 126715672,
+      "available": 3413276904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:31.093615Z",
+      "thermal": 1,
+      "footprint": 126732056,
+      "available": 3413260520,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:33.092759Z",
+      "thermal": 1,
+      "footprint": 154257176,
+      "available": 3385735400,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:35.093114Z",
+      "thermal": 1,
+      "footprint": 126764824,
+      "available": 3413227752,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:37.092394Z",
+      "thermal": 1,
+      "footprint": 126764824,
+      "available": 3413227752,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:39.092174Z",
+      "thermal": 1,
+      "footprint": 126797592,
+      "available": 3413194984,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:41.096371Z",
+      "thermal": 1,
+      "footprint": 126797592,
+      "available": 3413194984,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:43.092840Z",
+      "thermal": 1,
+      "footprint": 154339096,
+      "available": 3385653480,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:45.092353Z",
+      "thermal": 1,
+      "footprint": 126830360,
+      "available": 3413162216,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:47.092712Z",
+      "thermal": 1,
+      "footprint": 126846744,
+      "available": 3413145832,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:49.092620Z",
+      "thermal": 1,
+      "footprint": 126863128,
+      "available": 3413129448,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:51.092882Z",
+      "thermal": 1,
+      "footprint": 126879512,
+      "available": 3413113064,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:53.092546Z",
+      "thermal": 1,
+      "footprint": 154404632,
+      "available": 3385587944,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:55.091736Z",
+      "thermal": 1,
+      "footprint": 126912280,
+      "available": 3413080296,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:57.092350Z",
+      "thermal": 1,
+      "footprint": 126912280,
+      "available": 3413080296,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:24:59.092116Z",
+      "thermal": 1,
+      "footprint": 126945048,
+      "available": 3413047528,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:01.092611Z",
+      "thermal": 1,
+      "footprint": 116459288,
+      "available": 3423533288,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:03.092310Z",
+      "thermal": 1,
+      "footprint": 154486552,
+      "available": 3385506024,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:05.091977Z",
+      "thermal": 1,
+      "footprint": 117540632,
+      "available": 3422451944,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:07.092238Z",
+      "thermal": 1,
+      "footprint": 117557016,
+      "available": 3422435560,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:09.092242Z",
+      "thermal": 1,
+      "footprint": 127010584,
+      "available": 3412981992,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:11.091766Z",
+      "thermal": 1,
+      "footprint": 127026968,
+      "available": 3412965608,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:13.093332Z",
+      "thermal": 1,
+      "footprint": 154552088,
+      "available": 3385440488,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:15.091973Z",
+      "thermal": 1,
+      "footprint": 127059736,
+      "available": 3412932840,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:17.092395Z",
+      "thermal": 1,
+      "footprint": 127076120,
+      "available": 3412916456,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:19.092419Z",
+      "thermal": 1,
+      "footprint": 127092504,
+      "available": 3412900072,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:21.091881Z",
+      "thermal": 1,
+      "footprint": 127108888,
+      "available": 3412883688,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:23.092362Z",
+      "thermal": 1,
+      "footprint": 154634008,
+      "available": 3385358568,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:25.092124Z",
+      "thermal": 1,
+      "footprint": 127141656,
+      "available": 3412850920,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:27.091607Z",
+      "thermal": 1,
+      "footprint": 127141656,
+      "available": 3412850920,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:29.091482Z",
+      "thermal": 1,
+      "footprint": 127174424,
+      "available": 3412818152,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:31.092053Z",
+      "thermal": 1,
+      "footprint": 127174424,
+      "available": 3412818152,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:33.093045Z",
+      "thermal": 1,
+      "footprint": 154715928,
+      "available": 3385276648,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:35.091701Z",
+      "thermal": 1,
+      "footprint": 127207192,
+      "available": 3412785384,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:37.092061Z",
+      "thermal": 1,
+      "footprint": 127223576,
+      "available": 3412769000,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:39.092045Z",
+      "thermal": 1,
+      "footprint": 127239960,
+      "available": 3412752616,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:41.091779Z",
+      "thermal": 1,
+      "footprint": 127256344,
+      "available": 3412736232,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:43.092170Z",
+      "thermal": 1,
+      "footprint": 154781464,
+      "available": 3385211112,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:45.091249Z",
+      "thermal": 1,
+      "footprint": 127289112,
+      "available": 3412703464,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:47.091818Z",
+      "thermal": 1,
+      "footprint": 127289112,
+      "available": 3412703464,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:49.091917Z",
+      "thermal": 1,
+      "footprint": 127321880,
+      "available": 3412670696,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:51.091176Z",
+      "thermal": 1,
+      "footprint": 127321880,
+      "available": 3412670696,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:53.091482Z",
+      "thermal": 1,
+      "footprint": 154863384,
+      "available": 3385129192,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:55.091590Z",
+      "thermal": 1,
+      "footprint": 127354648,
+      "available": 3412637928,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:57.091085Z",
+      "thermal": 1,
+      "footprint": 127371032,
+      "available": 3412621544,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:25:59.091066Z",
+      "thermal": 1,
+      "footprint": 127387416,
+      "available": 3412605160,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:01.091277Z",
+      "thermal": 1,
+      "footprint": 116918040,
+      "available": 3423074536,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:03.090931Z",
+      "thermal": 1,
+      "footprint": 154928920,
+      "available": 3385063656,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:05.090922Z",
+      "thermal": 1,
+      "footprint": 117999384,
+      "available": 3421993192,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:07.091567Z",
+      "thermal": 1,
+      "footprint": 117999384,
+      "available": 3421993192,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:09.091562Z",
+      "thermal": 1,
+      "footprint": 127469336,
+      "available": 3412523240,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:11.091063Z",
+      "thermal": 1,
+      "footprint": 127469336,
+      "available": 3412523240,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:13.090584Z",
+      "thermal": 1,
+      "footprint": 155010840,
+      "available": 3384981736,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:15.091051Z",
+      "thermal": 1,
+      "footprint": 127502104,
+      "available": 3412490472,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:17.090708Z",
+      "thermal": 1,
+      "footprint": 127518488,
+      "available": 3412474088,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:19.090628Z",
+      "thermal": 1,
+      "footprint": 127534872,
+      "available": 3412457704,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:21.091229Z",
+      "thermal": 1,
+      "footprint": 127551256,
+      "available": 3412441320,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:23.090879Z",
+      "thermal": 1,
+      "footprint": 155076376,
+      "available": 3384916200,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:25.090229Z",
+      "thermal": 1,
+      "footprint": 127584024,
+      "available": 3412408552,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:27.091098Z",
+      "thermal": 1,
+      "footprint": 127584024,
+      "available": 3412408552,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:29.090860Z",
+      "thermal": 1,
+      "footprint": 127616792,
+      "available": 3412375784,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:31.090076Z",
+      "thermal": 1,
+      "footprint": 127616792,
+      "available": 3412375784,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:33.091160Z",
+      "thermal": 1,
+      "footprint": 155158296,
+      "available": 3384834280,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:35.090783Z",
+      "thermal": 1,
+      "footprint": 127649560,
+      "available": 3412343016,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:37.091249Z",
+      "thermal": 1,
+      "footprint": 127665944,
+      "available": 3412326632,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:39.091247Z",
+      "thermal": 1,
+      "footprint": 127682328,
+      "available": 3412310248,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:41.091087Z",
+      "thermal": 1,
+      "footprint": 127698712,
+      "available": 3412293864,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:43.090200Z",
+      "thermal": 1,
+      "footprint": 155223832,
+      "available": 3384768744,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:45.090856Z",
+      "thermal": 1,
+      "footprint": 127731480,
+      "available": 3412261096,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:47.090047Z",
+      "thermal": 1,
+      "footprint": 127731480,
+      "available": 3412261096,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:49.090158Z",
+      "thermal": 1,
+      "footprint": 127764248,
+      "available": 3412228328,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:51.091126Z",
+      "thermal": 1,
+      "footprint": 127780632,
+      "available": 3412211944,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:53.089654Z",
+      "thermal": 1,
+      "footprint": 155305752,
+      "available": 3384686824,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:55.090364Z",
+      "thermal": 1,
+      "footprint": 127813400,
+      "available": 3412179176,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:57.090916Z",
+      "thermal": 1,
+      "footprint": 127813400,
+      "available": 3412179176,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:26:59.090787Z",
+      "thermal": 1,
+      "footprint": 126519088,
+      "available": 3413473488,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:01.090317Z",
+      "thermal": 1,
+      "footprint": 116049712,
+      "available": 3423942864,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:03.090176Z",
+      "thermal": 1,
+      "footprint": 154044208,
+      "available": 3385948368,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:05.089934Z",
+      "thermal": 1,
+      "footprint": 117114672,
+      "available": 3422877904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:07.090427Z",
+      "thermal": 1,
+      "footprint": 117114672,
+      "available": 3422877904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:09.089199Z",
+      "thermal": 1,
+      "footprint": 126584624,
+      "available": 3413407952,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:11.090479Z",
+      "thermal": 1,
+      "footprint": 126584624,
+      "available": 3413407952,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:13.089866Z",
+      "thermal": 1,
+      "footprint": 154126128,
+      "available": 3385866448,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:15.090347Z",
+      "thermal": 1,
+      "footprint": 126617392,
+      "available": 3413375184,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:17.089884Z",
+      "thermal": 1,
+      "footprint": 126633776,
+      "available": 3413358800,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:19.089827Z",
+      "thermal": 1,
+      "footprint": 126650160,
+      "available": 3413342416,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:21.090317Z",
+      "thermal": 1,
+      "footprint": 126666544,
+      "available": 3413326032,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:23.090332Z",
+      "thermal": 1,
+      "footprint": 154191664,
+      "available": 3385800912,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:25.089486Z",
+      "thermal": 1,
+      "footprint": 126699312,
+      "available": 3413293264,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:27.090110Z",
+      "thermal": 1,
+      "footprint": 126699312,
+      "available": 3413293264,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:29.090061Z",
+      "thermal": 1,
+      "footprint": 126732080,
+      "available": 3413260496,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:31.089569Z",
+      "thermal": 1,
+      "footprint": 126732080,
+      "available": 3413260496,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:33.089533Z",
+      "thermal": 1,
+      "footprint": 154273584,
+      "available": 3385718992,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:35.089449Z",
+      "thermal": 1,
+      "footprint": 126764848,
+      "available": 3413227728,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:37.089956Z",
+      "thermal": 1,
+      "footprint": 126781232,
+      "available": 3413211344,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:39.090028Z",
+      "thermal": 1,
+      "footprint": 126797616,
+      "available": 3413194960,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:41.089527Z",
+      "thermal": 1,
+      "footprint": 126814000,
+      "available": 3413178576,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:43.089515Z",
+      "thermal": 1,
+      "footprint": 154339120,
+      "available": 3385653456,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:45.090046Z",
+      "thermal": 1,
+      "footprint": 116361008,
+      "available": 3423631568,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:47.089449Z",
+      "thermal": 1,
+      "footprint": 116361008,
+      "available": 3423631568,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:49.089446Z",
+      "thermal": 1,
+      "footprint": 125830960,
+      "available": 3414161616,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:51.089922Z",
+      "thermal": 1,
+      "footprint": 125830960,
+      "available": 3414161616,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:53.089932Z",
+      "thermal": 1,
+      "footprint": 154421040,
+      "available": 3385571536,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:55.089462Z",
+      "thermal": 1,
+      "footprint": 126912304,
+      "available": 3413080272,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:57.089664Z",
+      "thermal": 1,
+      "footprint": 126928688,
+      "available": 3413063888,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:27:59.089774Z",
+      "thermal": 1,
+      "footprint": 126945072,
+      "available": 3413047504,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:01.089277Z",
+      "thermal": 1,
+      "footprint": 116475696,
+      "available": 3423516880,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:03.089155Z",
+      "thermal": 1,
+      "footprint": 154486576,
+      "available": 3385506000,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:05.089620Z",
+      "thermal": 1,
+      "footprint": 117540656,
+      "available": 3422451920,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:07.089028Z",
+      "thermal": 1,
+      "footprint": 117557040,
+      "available": 3422435536,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:09.095176Z",
+      "thermal": 1,
+      "footprint": 127010608,
+      "available": 3412981968,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:11.090221Z",
+      "thermal": 1,
+      "footprint": 127026992,
+      "available": 3412965584,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:13.089307Z",
+      "thermal": 1,
+      "footprint": 154552112,
+      "available": 3385440464,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:15.088857Z",
+      "thermal": 1,
+      "footprint": 127059760,
+      "available": 3412932816,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:17.089361Z",
+      "thermal": 1,
+      "footprint": 127059760,
+      "available": 3412932816,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:19.090064Z",
+      "thermal": 1,
+      "footprint": 127092528,
+      "available": 3412900048,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:21.089198Z",
+      "thermal": 1,
+      "footprint": 127092528,
+      "available": 3412900048,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:23.089427Z",
+      "thermal": 1,
+      "footprint": 154634032,
+      "available": 3385358544,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:25.088878Z",
+      "thermal": 1,
+      "footprint": 127125296,
+      "available": 3412867280,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:27.089358Z",
+      "thermal": 1,
+      "footprint": 127141680,
+      "available": 3412850896,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:29.089112Z",
+      "thermal": 1,
+      "footprint": 127158064,
+      "available": 3412834512,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:31.088713Z",
+      "thermal": 1,
+      "footprint": 127174448,
+      "available": 3412818128,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:33.088646Z",
+      "thermal": 1,
+      "footprint": 154699568,
+      "available": 3385293008,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:35.089130Z",
+      "thermal": 1,
+      "footprint": 127207216,
+      "available": 3412785360,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:37.088324Z",
+      "thermal": 1,
+      "footprint": 127207216,
+      "available": 3412785360,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:39.089878Z",
+      "thermal": 1,
+      "footprint": 127239984,
+      "available": 3412752592,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:41.088764Z",
+      "thermal": 1,
+      "footprint": 127239984,
+      "available": 3412752592,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:43.088648Z",
+      "thermal": 1,
+      "footprint": 154781488,
+      "available": 3385211088,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:45.089163Z",
+      "thermal": 1,
+      "footprint": 127272752,
+      "available": 3412719824,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:47.088319Z",
+      "thermal": 1,
+      "footprint": 127289136,
+      "available": 3412703440,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:49.088757Z",
+      "thermal": 1,
+      "footprint": 127305520,
+      "available": 3412687056,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:51.088528Z",
+      "thermal": 1,
+      "footprint": 127321904,
+      "available": 3412670672,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:53.088617Z",
+      "thermal": 1,
+      "footprint": 154847024,
+      "available": 3385145552,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:55.089063Z",
+      "thermal": 1,
+      "footprint": 127354672,
+      "available": 3412637904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:57.088574Z",
+      "thermal": 1,
+      "footprint": 127371056,
+      "available": 3412621520,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:28:59.088946Z",
+      "thermal": 1,
+      "footprint": 127387440,
+      "available": 3412605136,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:01.088777Z",
+      "thermal": 1,
+      "footprint": 116918064,
+      "available": 3423074512,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:03.088771Z",
+      "thermal": 1,
+      "footprint": 154928944,
+      "available": 3385063632,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:05.088243Z",
+      "thermal": 1,
+      "footprint": 117999408,
+      "available": 3421993168,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:07.088717Z",
+      "thermal": 1,
+      "footprint": 117999408,
+      "available": 3421993168,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:09.087820Z",
+      "thermal": 1,
+      "footprint": 123275056,
+      "available": 3416717520,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:11.087916Z",
+      "thermal": 1,
+      "footprint": 123275056,
+      "available": 3416717520,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:13.088880Z",
+      "thermal": 1,
+      "footprint": 155010864,
+      "available": 3384981712,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:15.088295Z",
+      "thermal": 1,
+      "footprint": 123307824,
+      "available": 3416684752,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:17.089513Z",
+      "thermal": 1,
+      "footprint": 123324208,
+      "available": 3416668368,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:19.089137Z",
+      "thermal": 1,
+      "footprint": 123340592,
+      "available": 3416651984,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:21.088041Z",
+      "thermal": 1,
+      "footprint": 123356976,
+      "available": 3416635600,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:23.087141Z",
+      "thermal": 1,
+      "footprint": 155076400,
+      "available": 3384916176,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:25.088589Z",
+      "thermal": 1,
+      "footprint": 123389744,
+      "available": 3416602832,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:27.088133Z",
+      "thermal": 1,
+      "footprint": 123389744,
+      "available": 3416602832,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:29.087832Z",
+      "thermal": 1,
+      "footprint": 123422512,
+      "available": 3416570064,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:31.088255Z",
+      "thermal": 1,
+      "footprint": 123422512,
+      "available": 3416570064,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:33.088383Z",
+      "thermal": 1,
+      "footprint": 155158320,
+      "available": 3384834256,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:35.087765Z",
+      "thermal": 1,
+      "footprint": 123455280,
+      "available": 3416537296,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:37.089044Z",
+      "thermal": 1,
+      "footprint": 123471664,
+      "available": 3416520912,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:39.088216Z",
+      "thermal": 1,
+      "footprint": 123488048,
+      "available": 3416504528,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:41.087707Z",
+      "thermal": 1,
+      "footprint": 123504432,
+      "available": 3416488144,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:43.087758Z",
+      "thermal": 1,
+      "footprint": 155223856,
+      "available": 3384768720,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:45.088190Z",
+      "thermal": 1,
+      "footprint": 123537200,
+      "available": 3416455376,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:47.088572Z",
+      "thermal": 1,
+      "footprint": 123537200,
+      "available": 3416455376,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:49.086725Z",
+      "thermal": 1,
+      "footprint": 123569968,
+      "available": 3416422608,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:51.087342Z",
+      "thermal": 1,
+      "footprint": 123569968,
+      "available": 3416422608,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:53.087185Z",
+      "thermal": 1,
+      "footprint": 155305776,
+      "available": 3384686800,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:55.086961Z",
+      "thermal": 1,
+      "footprint": 123602736,
+      "available": 3416389840,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:57.087546Z",
+      "thermal": 1,
+      "footprint": 123619120,
+      "available": 3416373456,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:29:59.088097Z",
+      "thermal": 1,
+      "footprint": 123635504,
+      "available": 3416357072,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:01.086304Z",
+      "thermal": 1,
+      "footprint": 117360432,
+      "available": 3422632144,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:03.087551Z",
+      "thermal": 1,
+      "footprint": 155371312,
+      "available": 3384621264,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:05.088295Z",
+      "thermal": 1,
+      "footprint": 118441776,
+      "available": 3421550800,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:07.087617Z",
+      "thermal": 1,
+      "footprint": 118441776,
+      "available": 3421550800,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:09.087209Z",
+      "thermal": 1,
+      "footprint": 123717424,
+      "available": 3416275152,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:11.087664Z",
+      "thermal": 1,
+      "footprint": 123717424,
+      "available": 3416275152,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:13.087248Z",
+      "thermal": 1,
+      "footprint": 155453232,
+      "available": 3384539344,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:15.088816Z",
+      "thermal": 1,
+      "footprint": 123750192,
+      "available": 3416242384,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:17.087077Z",
+      "thermal": 1,
+      "footprint": 123766576,
+      "available": 3416226000,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:19.087337Z",
+      "thermal": 1,
+      "footprint": 123782960,
+      "available": 3416209616,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:21.087826Z",
+      "thermal": 1,
+      "footprint": 123799344,
+      "available": 3416193232,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:23.086884Z",
+      "thermal": 1,
+      "footprint": 155518768,
+      "available": 3384473808,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:25.087490Z",
+      "thermal": 1,
+      "footprint": 123832112,
+      "available": 3416160464,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:27.087594Z",
+      "thermal": 1,
+      "footprint": 123848496,
+      "available": 3416144080,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:29.087517Z",
+      "thermal": 1,
+      "footprint": 123864880,
+      "available": 3416127696,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:31.086967Z",
+      "thermal": 1,
+      "footprint": 123881264,
+      "available": 3416111312,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:33.086547Z",
+      "thermal": 1,
+      "footprint": 155600688,
+      "available": 3384391888,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:35.087475Z",
+      "thermal": 1,
+      "footprint": 123914032,
+      "available": 3416078544,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:37.087207Z",
+      "thermal": 1,
+      "footprint": 123914032,
+      "available": 3416078544,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:39.087101Z",
+      "thermal": 1,
+      "footprint": 122373936,
+      "available": 3417618640,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:41.086585Z",
+      "thermal": 1,
+      "footprint": 122373936,
+      "available": 3417618640,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:43.087576Z",
+      "thermal": 1,
+      "footprint": 154093360,
+      "available": 3385899216,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:45.086265Z",
+      "thermal": 1,
+      "footprint": 122390320,
+      "available": 3417602256,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:47.086894Z",
+      "thermal": 1,
+      "footprint": 122406704,
+      "available": 3417585872,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:49.086728Z",
+      "thermal": 1,
+      "footprint": 122423088,
+      "available": 3417569488,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:51.086793Z",
+      "thermal": 1,
+      "footprint": 122439472,
+      "available": 3417553104,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:53.085965Z",
+      "thermal": 1,
+      "footprint": 154158896,
+      "available": 3385833680,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:55.086613Z",
+      "thermal": 1,
+      "footprint": 116180784,
+      "available": 3423811792,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:57.087146Z",
+      "thermal": 1,
+      "footprint": 116180784,
+      "available": 3423811792,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:30:59.087062Z",
+      "thermal": 1,
+      "footprint": 123553584,
+      "available": 3416438992,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:01.087349Z",
+      "thermal": 1,
+      "footprint": 116213552,
+      "available": 3423779024,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:03.087453Z",
+      "thermal": 1,
+      "footprint": 154240816,
+      "available": 3385751760,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:05.086538Z",
+      "thermal": 1,
+      "footprint": 118343472,
+      "available": 3421649104,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:07.086999Z",
+      "thermal": 1,
+      "footprint": 118359856,
+      "available": 3421632720,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:09.086857Z",
+      "thermal": 1,
+      "footprint": 123619120,
+      "available": 3416373456,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:11.087036Z",
+      "thermal": 1,
+      "footprint": 123635504,
+      "available": 3416357072,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:13.086241Z",
+      "thermal": 1,
+      "footprint": 154306352,
+      "available": 3385686224,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:15.086663Z",
+      "thermal": 1,
+      "footprint": 123668272,
+      "available": 3416324304,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:17.086191Z",
+      "thermal": 1,
+      "footprint": 123668272,
+      "available": 3416324304,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:19.086128Z",
+      "thermal": 1,
+      "footprint": 123701040,
+      "available": 3416291536,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:21.086389Z",
+      "thermal": 1,
+      "footprint": 123701040,
+      "available": 3416291536,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:23.086494Z",
+      "thermal": 1,
+      "footprint": 154388272,
+      "available": 3385604304,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:25.085879Z",
+      "thermal": 1,
+      "footprint": 123733808,
+      "available": 3416258768,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:27.086491Z",
+      "thermal": 1,
+      "footprint": 123750192,
+      "available": 3416242384,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:29.086560Z",
+      "thermal": 1,
+      "footprint": 123766576,
+      "available": 3416226000,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:31.086823Z",
+      "thermal": 1,
+      "footprint": 123782960,
+      "available": 3416209616,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:33.086376Z",
+      "thermal": 1,
+      "footprint": 154453808,
+      "available": 3385538768,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:35.085934Z",
+      "thermal": 1,
+      "footprint": 123815728,
+      "available": 3416176848,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:37.086474Z",
+      "thermal": 1,
+      "footprint": 123815728,
+      "available": 3416176848,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:39.087012Z",
+      "thermal": 1,
+      "footprint": 123848496,
+      "available": 3416144080,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:41.086483Z",
+      "thermal": 1,
+      "footprint": 123848496,
+      "available": 3416144080,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:43.085581Z",
+      "thermal": 1,
+      "footprint": 154535728,
+      "available": 3385456848,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:45.086140Z",
+      "thermal": 1,
+      "footprint": 123881264,
+      "available": 3416111312,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:47.085429Z",
+      "thermal": 1,
+      "footprint": 123897648,
+      "available": 3416094928,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:49.086564Z",
+      "thermal": 1,
+      "footprint": 123914032,
+      "available": 3416078544,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:51.085509Z",
+      "thermal": 1,
+      "footprint": 123930416,
+      "available": 3416062160,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:53.085606Z",
+      "thermal": 1,
+      "footprint": 154601264,
+      "available": 3385391312,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:55.086033Z",
+      "thermal": 1,
+      "footprint": 123963184,
+      "available": 3416029392,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:57.085436Z",
+      "thermal": 1,
+      "footprint": 123979568,
+      "available": 3416013008,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:31:59.085783Z",
+      "thermal": 1,
+      "footprint": 123995952,
+      "available": 3415996624,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:01.085740Z",
+      "thermal": 1,
+      "footprint": 116672304,
+      "available": 3423320272,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:03.085611Z",
+      "thermal": 1,
+      "footprint": 154683184,
+      "available": 3385309392,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:05.086181Z",
+      "thermal": 1,
+      "footprint": 118802224,
+      "available": 3421190352,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:07.086100Z",
+      "thermal": 1,
+      "footprint": 118802224,
+      "available": 3421190352,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:09.085673Z",
+      "thermal": 1,
+      "footprint": 124077872,
+      "available": 3415914704,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:11.086177Z",
+      "thermal": 1,
+      "footprint": 124077872,
+      "available": 3415914704,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:13.084965Z",
+      "thermal": 1,
+      "footprint": 154765104,
+      "available": 3385227472,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:15.085177Z",
+      "thermal": 1,
+      "footprint": 124110640,
+      "available": 3415881936,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:17.086381Z",
+      "thermal": 1,
+      "footprint": 124127024,
+      "available": 3415865552,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:19.085432Z",
+      "thermal": 1,
+      "footprint": 124143408,
+      "available": 3415849168,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:21.086067Z",
+      "thermal": 1,
+      "footprint": 124159792,
+      "available": 3415832784,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:23.085371Z",
+      "thermal": 1,
+      "footprint": 154830640,
+      "available": 3385161936,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:25.086340Z",
+      "thermal": 1,
+      "footprint": 124192560,
+      "available": 3415800016,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:27.085366Z",
+      "thermal": 1,
+      "footprint": 116852528,
+      "available": 3423140048,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:29.085594Z",
+      "thermal": 1,
+      "footprint": 138905392,
+      "available": 3401087184,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:31.085112Z",
+      "thermal": 1,
+      "footprint": 138905392,
+      "available": 3401087184,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:33.085065Z",
+      "thermal": 1,
+      "footprint": 154912560,
+      "available": 3385080016,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:35.085495Z",
+      "thermal": 1,
+      "footprint": 138938160,
+      "available": 3401054416,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:37.085681Z",
+      "thermal": 1,
+      "footprint": 138954544,
+      "available": 3401038032,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:39.084826Z",
+      "thermal": 1,
+      "footprint": 138970928,
+      "available": 3401021648,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:41.085040Z",
+      "thermal": 1,
+      "footprint": 138987312,
+      "available": 3401005264,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:43.084606Z",
+      "thermal": 1,
+      "footprint": 154978096,
+      "available": 3385014480,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:45.084960Z",
+      "thermal": 1,
+      "footprint": 139020080,
+      "available": 3400972496,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:47.085198Z",
+      "thermal": 1,
+      "footprint": 139020080,
+      "available": 3400972496,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:49.084034Z",
+      "thermal": 1,
+      "footprint": 139052848,
+      "available": 3400939728,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:51.084615Z",
+      "thermal": 1,
+      "footprint": 117032752,
+      "available": 3422959824,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:53.084313Z",
+      "thermal": 1,
+      "footprint": 155060016,
+      "available": 3384932560,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:55.084966Z",
+      "thermal": 1,
+      "footprint": 139085616,
+      "available": 3400906960,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:57.085917Z",
+      "thermal": 1,
+      "footprint": 139102000,
+      "available": 3400890576,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:32:59.084986Z",
+      "thermal": 1,
+      "footprint": 139118384,
+      "available": 3400874192,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:01.084999Z",
+      "thermal": 1,
+      "footprint": 117114672,
+      "available": 3422877904,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:03.085070Z",
+      "thermal": 1,
+      "footprint": 155125552,
+      "available": 3384867024,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:05.084576Z",
+      "thermal": 1,
+      "footprint": 122390320,
+      "available": 3417602256,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:07.085123Z",
+      "thermal": 1,
+      "footprint": 122390320,
+      "available": 3417602256,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:09.085652Z",
+      "thermal": 1,
+      "footprint": 127665968,
+      "available": 3412326608,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:11.084337Z",
+      "thermal": 1,
+      "footprint": 127665968,
+      "available": 3412326608,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:13.084365Z",
+      "thermal": 1,
+      "footprint": 155207472,
+      "available": 3384785104,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:15.084955Z",
+      "thermal": 1,
+      "footprint": 127698736,
+      "available": 3412293840,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:17.084417Z",
+      "thermal": 1,
+      "footprint": 127715120,
+      "available": 3412277456,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:19.084286Z",
+      "thermal": 1,
+      "footprint": 117245744,
+      "available": 3422746832,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:21.084515Z",
+      "thermal": 1,
+      "footprint": 117262128,
+      "available": 3422730448,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:23.084710Z",
+      "thermal": 1,
+      "footprint": 155273008,
+      "available": 3384719568,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:25.083956Z",
+      "thermal": 1,
+      "footprint": 127780656,
+      "available": 3412211920,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:27.084189Z",
+      "thermal": 1,
+      "footprint": 127797040,
+      "available": 3412195536,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:29.084458Z",
+      "thermal": 1,
+      "footprint": 127813424,
+      "available": 3412179152,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:31.084724Z",
+      "thermal": 1,
+      "footprint": 127829808,
+      "available": 3412162768,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:33.085494Z",
+      "thermal": 1,
+      "footprint": 155354928,
+      "available": 3384637648,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:35.085720Z",
+      "thermal": 1,
+      "footprint": 127862576,
+      "available": 3412130000,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:37.086525Z",
+      "thermal": 1,
+      "footprint": 127862576,
+      "available": 3412130000,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:39.085623Z",
+      "thermal": 1,
+      "footprint": 127895344,
+      "available": 3412097232,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:41.086547Z",
+      "thermal": 1,
+      "footprint": 127895344,
+      "available": 3412097232,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:43.087029Z",
+      "thermal": 1,
+      "footprint": 155436848,
+      "available": 3384555728,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:45.087841Z",
+      "thermal": 1,
+      "footprint": 127928112,
+      "available": 3412064464,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:47.087516Z",
+      "thermal": 1,
+      "footprint": 127944496,
+      "available": 3412048080,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:49.088738Z",
+      "thermal": 1,
+      "footprint": 127960880,
+      "available": 3412031696,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:51.088370Z",
+      "thermal": 1,
+      "footprint": 127977264,
+      "available": 3412015312,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:53.088619Z",
+      "thermal": 1,
+      "footprint": 155502384,
+      "available": 3384490192,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:55.088170Z",
+      "thermal": 1,
+      "footprint": 128010032,
+      "available": 3411982544,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:57.087983Z",
+      "thermal": 1,
+      "footprint": 128010032,
+      "available": 3411982544,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:33:59.089145Z",
+      "thermal": 1,
+      "footprint": 128042800,
+      "available": 3411949776,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:01.089565Z",
+      "thermal": 1,
+      "footprint": 117557040,
+      "available": 3422435536,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:03.089142Z",
+      "thermal": 1,
+      "footprint": 155584304,
+      "available": 3384408272,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:05.088582Z",
+      "thermal": 1,
+      "footprint": 122832688,
+      "available": 3417159888,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:07.088967Z",
+      "thermal": 1,
+      "footprint": 122849072,
+      "available": 3417143504,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:09.089105Z",
+      "thermal": 1,
+      "footprint": 128108336,
+      "available": 3411884240,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:11.089527Z",
+      "thermal": 1,
+      "footprint": 128124720,
+      "available": 3411867856,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:13.089420Z",
+      "thermal": 1,
+      "footprint": 155649840,
+      "available": 3384342736,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:15.088876Z",
+      "thermal": 1,
+      "footprint": 128157488,
+      "available": 3411835088,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:17.089330Z",
+      "thermal": 1,
+      "footprint": 128157488,
+      "available": 3411835088,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:19.088436Z",
+      "thermal": 1,
+      "footprint": 126601008,
+      "available": 3413391568,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:21.090090Z",
+      "thermal": 1,
+      "footprint": 126601008,
+      "available": 3413391568,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:23.089462Z",
+      "thermal": 1,
+      "footprint": 154126128,
+      "available": 3385866448,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:25.088901Z",
+      "thermal": 1,
+      "footprint": 126617392,
+      "available": 3413375184,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:27.089225Z",
+      "thermal": 1,
+      "footprint": 126633776,
+      "available": 3413358800,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:29.089049Z",
+      "thermal": 1,
+      "footprint": 126650160,
+      "available": 3413342416,
+      "onBattery": false
+    },
+    {
+      "at": "2026-10-09T03:34:31.089887Z",
+      "thermal": 1,
+      "footprint": 116180784,
+      "available": 3423811792,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:33.088842Z",
+      "thermal": 1,
+      "footprint": 180913968,
+      "available": 3359078608,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:35.088961Z",
+      "thermal": 1,
+      "footprint": 116410160,
+      "available": 3423582416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:37.089414Z",
+      "thermal": 1,
+      "footprint": 116295472,
+      "available": 3423697104,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:39.089368Z",
+      "thermal": 1,
+      "footprint": 126797616,
+      "available": 3413194960,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:41.089103Z",
+      "thermal": 1,
+      "footprint": 126814000,
+      "available": 3413178576,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:43.089180Z",
+      "thermal": 1,
+      "footprint": 154339120,
+      "available": 3385653456,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:45.089717Z",
+      "thermal": 1,
+      "footprint": 116361008,
+      "available": 3423631568,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:47.088878Z",
+      "thermal": 1,
+      "footprint": 116361008,
+      "available": 3423631568,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:49.089291Z",
+      "thermal": 1,
+      "footprint": 126879536,
+      "available": 3413113040,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:51.090535Z",
+      "thermal": 1,
+      "footprint": 126879536,
+      "available": 3413113040,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:53.088771Z",
+      "thermal": 1,
+      "footprint": 154421040,
+      "available": 3385571536,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:55.089015Z",
+      "thermal": 1,
+      "footprint": 130058032,
+      "available": 3409934544,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:57.089649Z",
+      "thermal": 1,
+      "footprint": 116442928,
+      "available": 3423549648,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:34:59.089527Z",
+      "thermal": 1,
+      "footprint": 116459312,
+      "available": 3423533264,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:01.089143Z",
+      "thermal": 1,
+      "footprint": 116475696,
+      "available": 3423516880,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:03.089567Z",
+      "thermal": 1,
+      "footprint": 154486576,
+      "available": 3385506000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:05.089095Z",
+      "thermal": 1,
+      "footprint": 124897072,
+      "available": 3415095504,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:07.089231Z",
+      "thermal": 1,
+      "footprint": 124897072,
+      "available": 3415095504,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:09.088759Z",
+      "thermal": 1,
+      "footprint": 128042800,
+      "available": 3411949776,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:11.089436Z",
+      "thermal": 1,
+      "footprint": 128042800,
+      "available": 3411949776,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:13.089123Z",
+      "thermal": 1,
+      "footprint": 154535728,
+      "available": 3385456848,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:15.088612Z",
+      "thermal": 1,
+      "footprint": 130172720,
+      "available": 3409819856,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:17.089079Z",
+      "thermal": 1,
+      "footprint": 130189104,
+      "available": 3409803472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:19.088567Z",
+      "thermal": 1,
+      "footprint": 132302640,
+      "available": 3407689936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:21.089534Z",
+      "thermal": 1,
+      "footprint": 132319024,
+      "available": 3407673552,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:23.089025Z",
+      "thermal": 1,
+      "footprint": 154601264,
+      "available": 3385391312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:25.088779Z",
+      "thermal": 1,
+      "footprint": 116623152,
+      "available": 3423369424,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:27.089303Z",
+      "thermal": 1,
+      "footprint": 116623152,
+      "available": 3423369424,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:29.089233Z",
+      "thermal": 1,
+      "footprint": 120850224,
+      "available": 3419142352,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:31.088577Z",
+      "thermal": 1,
+      "footprint": 120850224,
+      "available": 3419142352,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:33.088630Z",
+      "thermal": 1,
+      "footprint": 154683184,
+      "available": 3385309392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:35.089098Z",
+      "thermal": 1,
+      "footprint": 116688688,
+      "available": 3423303888,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:37.088545Z",
+      "thermal": 1,
+      "footprint": 116705072,
+      "available": 3423287504,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:39.088787Z",
+      "thermal": 1,
+      "footprint": 126158640,
+      "available": 3413833936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:41.089432Z",
+      "thermal": 1,
+      "footprint": 126175024,
+      "available": 3413817552,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:43.088644Z",
+      "thermal": 1,
+      "footprint": 154748720,
+      "available": 3385243856,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:45.088115Z",
+      "thermal": 1,
+      "footprint": 129353520,
+      "available": 3410639056,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:47.088529Z",
+      "thermal": 1,
+      "footprint": 129353520,
+      "available": 3410639056,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:49.089194Z",
+      "thermal": 1,
+      "footprint": 129386288,
+      "available": 3410606288,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:51.089705Z",
+      "thermal": 1,
+      "footprint": 129386288,
+      "available": 3410606288,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:53.088787Z",
+      "thermal": 1,
+      "footprint": 154830640,
+      "available": 3385161936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:55.088362Z",
+      "thermal": 1,
+      "footprint": 129419056,
+      "available": 3410573520,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:57.088910Z",
+      "thermal": 1,
+      "footprint": 129435440,
+      "available": 3410557136,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:35:59.089622Z",
+      "thermal": 1,
+      "footprint": 129451824,
+      "available": 3410540752,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:01.088325Z",
+      "thermal": 1,
+      "footprint": 116885296,
+      "available": 3423107280,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:03.088265Z",
+      "thermal": 1,
+      "footprint": 154896176,
+      "available": 3385096400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:05.088766Z",
+      "thermal": 1,
+      "footprint": 120063792,
+      "available": 3419928784,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:07.088215Z",
+      "thermal": 1,
+      "footprint": 120080176,
+      "available": 3419912400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:09.088316Z",
+      "thermal": 1,
+      "footprint": 129533744,
+      "available": 3410458832,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:11.088423Z",
+      "thermal": 1,
+      "footprint": 129550128,
+      "available": 3410442448,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:13.088291Z",
+      "thermal": 1,
+      "footprint": 154978096,
+      "available": 3385014480,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:15.087805Z",
+      "thermal": 1,
+      "footprint": 129582896,
+      "available": 3410409680,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:17.088911Z",
+      "thermal": 1,
+      "footprint": 129582896,
+      "available": 3410409680,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:19.088050Z",
+      "thermal": 1,
+      "footprint": 129615664,
+      "available": 3410376912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:21.087616Z",
+      "thermal": 1,
+      "footprint": 129615664,
+      "available": 3410376912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:23.087562Z",
+      "thermal": 1,
+      "footprint": 155060016,
+      "available": 3384932560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:25.088025Z",
+      "thermal": 1,
+      "footprint": 129648432,
+      "available": 3410344144,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:27.089362Z",
+      "thermal": 1,
+      "footprint": 129664816,
+      "available": 3410327760,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:29.087542Z",
+      "thermal": 1,
+      "footprint": 129681200,
+      "available": 3410311376,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:31.088034Z",
+      "thermal": 1,
+      "footprint": 129697584,
+      "available": 3410294992,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:33.087840Z",
+      "thermal": 1,
+      "footprint": 155125552,
+      "available": 3384867024,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:35.088332Z",
+      "thermal": 1,
+      "footprint": 129730352,
+      "available": 3410262224,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:37.088520Z",
+      "thermal": 1,
+      "footprint": 129730352,
+      "available": 3410262224,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:39.086896Z",
+      "thermal": 1,
+      "footprint": 129763120,
+      "available": 3410229456,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:41.087470Z",
+      "thermal": 1,
+      "footprint": 129763120,
+      "available": 3410229456,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:43.087313Z",
+      "thermal": 1,
+      "footprint": 155207472,
+      "available": 3384785104,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:45.087806Z",
+      "thermal": 1,
+      "footprint": 129795888,
+      "available": 3410196688,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:47.087531Z",
+      "thermal": 1,
+      "footprint": 117229360,
+      "available": 3422763216,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:49.088084Z",
+      "thermal": 1,
+      "footprint": 117245744,
+      "available": 3422746832,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:51.087609Z",
+      "thermal": 1,
+      "footprint": 117262128,
+      "available": 3422730448,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:53.087602Z",
+      "thermal": 1,
+      "footprint": 155273008,
+      "available": 3384719568,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:55.088814Z",
+      "thermal": 1,
+      "footprint": 117294896,
+      "available": 3422697680,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:57.088404Z",
+      "thermal": 1,
+      "footprint": 117294896,
+      "available": 3422697680,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:36:59.087428Z",
+      "thermal": 1,
+      "footprint": 123619120,
+      "available": 3416373456,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:01.087928Z",
+      "thermal": 1,
+      "footprint": 117327664,
+      "available": 3422664912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:03.087761Z",
+      "thermal": 1,
+      "footprint": 155354928,
+      "available": 3384637648,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:05.088019Z",
+      "thermal": 1,
+      "footprint": 120506160,
+      "available": 3419486416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:07.087766Z",
+      "thermal": 1,
+      "footprint": 120522544,
+      "available": 3419470032,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:09.086927Z",
+      "thermal": 1,
+      "footprint": 117393200,
+      "available": 3422599376,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:11.087426Z",
+      "thermal": 1,
+      "footprint": 117409584,
+      "available": 3422582992,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:13.087343Z",
+      "thermal": 1,
+      "footprint": 155436848,
+      "available": 3384555728,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:15.088372Z",
+      "thermal": 1,
+      "footprint": 130025264,
+      "available": 3409967312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:17.087047Z",
+      "thermal": 1,
+      "footprint": 130041648,
+      "available": 3409950928,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:19.087178Z",
+      "thermal": 1,
+      "footprint": 130058032,
+      "available": 3409934544,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:21.087652Z",
+      "thermal": 1,
+      "footprint": 130074416,
+      "available": 3409918160,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:23.087425Z",
+      "thermal": 1,
+      "footprint": 155502384,
+      "available": 3384490192,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:25.087092Z",
+      "thermal": 1,
+      "footprint": 130107184,
+      "available": 3409885392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:27.087190Z",
+      "thermal": 1,
+      "footprint": 130107184,
+      "available": 3409885392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:29.086838Z",
+      "thermal": 1,
+      "footprint": 130139952,
+      "available": 3409852624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:31.087258Z",
+      "thermal": 1,
+      "footprint": 130139952,
+      "available": 3409852624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:33.087308Z",
+      "thermal": 1,
+      "footprint": 155584304,
+      "available": 3384408272,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:35.087209Z",
+      "thermal": 1,
+      "footprint": 130172720,
+      "available": 3409819856,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:37.087004Z",
+      "thermal": 1,
+      "footprint": 130189104,
+      "available": 3409803472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:39.087064Z",
+      "thermal": 1,
+      "footprint": 130205488,
+      "available": 3409787088,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:41.086442Z",
+      "thermal": 1,
+      "footprint": 130221872,
+      "available": 3409770704,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:43.087157Z",
+      "thermal": 1,
+      "footprint": 155666224,
+      "available": 3384326352,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:45.087382Z",
+      "thermal": 1,
+      "footprint": 130254640,
+      "available": 3409737936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:47.087048Z",
+      "thermal": 1,
+      "footprint": 130271024,
+      "available": 3409721552,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:49.086920Z",
+      "thermal": 1,
+      "footprint": 130287408,
+      "available": 3409705168,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:51.085606Z",
+      "thermal": 1,
+      "footprint": 130303792,
+      "available": 3409688784,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:53.091667Z",
+      "thermal": 1,
+      "footprint": 155731760,
+      "available": 3384260816,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:55.087089Z",
+      "thermal": 1,
+      "footprint": 130336560,
+      "available": 3409656016,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:57.086567Z",
+      "thermal": 1,
+      "footprint": 130336560,
+      "available": 3409656016,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:37:59.086621Z",
+      "thermal": 1,
+      "footprint": 130369328,
+      "available": 3409623248,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:01.086735Z",
+      "thermal": 1,
+      "footprint": 117786416,
+      "available": 3422206160,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:03.086284Z",
+      "thermal": 1,
+      "footprint": 154191664,
+      "available": 3385800912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:05.086989Z",
+      "thermal": 1,
+      "footprint": 117262128,
+      "available": 3422730448,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:07.086439Z",
+      "thermal": 1,
+      "footprint": 117262128,
+      "available": 3422730448,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:09.086369Z",
+      "thermal": 1,
+      "footprint": 122521392,
+      "available": 3417471184,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:11.087576Z",
+      "thermal": 1,
+      "footprint": 122521392,
+      "available": 3417471184,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:13.086695Z",
+      "thermal": 1,
+      "footprint": 154257200,
+      "available": 3385735376,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:15.086139Z",
+      "thermal": 1,
+      "footprint": 122554160,
+      "available": 3417438416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:17.086644Z",
+      "thermal": 1,
+      "footprint": 122570544,
+      "available": 3417422032,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:19.086089Z",
+      "thermal": 1,
+      "footprint": 122586928,
+      "available": 3417405648,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:21.086538Z",
+      "thermal": 1,
+      "footprint": 122603312,
+      "available": 3417389264,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:23.086238Z",
+      "thermal": 1,
+      "footprint": 154322736,
+      "available": 3385669840,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:25.086846Z",
+      "thermal": 1,
+      "footprint": 122636080,
+      "available": 3417356496,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:27.086040Z",
+      "thermal": 1,
+      "footprint": 122636080,
+      "available": 3417356496,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:29.086285Z",
+      "thermal": 1,
+      "footprint": 122668848,
+      "available": 3417323728,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:31.086505Z",
+      "thermal": 1,
+      "footprint": 122668848,
+      "available": 3417323728,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:33.086538Z",
+      "thermal": 1,
+      "footprint": 154404656,
+      "available": 3385587920,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:35.086065Z",
+      "thermal": 1,
+      "footprint": 122701616,
+      "available": 3417290960,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:37.086309Z",
+      "thermal": 1,
+      "footprint": 122718000,
+      "available": 3417274576,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:39.087080Z",
+      "thermal": 1,
+      "footprint": 122734384,
+      "available": 3417258192,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:41.085888Z",
+      "thermal": 1,
+      "footprint": 122750768,
+      "available": 3417241808,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:43.085522Z",
+      "thermal": 1,
+      "footprint": 154470192,
+      "available": 3385522384,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:45.086039Z",
+      "thermal": 1,
+      "footprint": 122783536,
+      "available": 3417209040,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:47.086464Z",
+      "thermal": 1,
+      "footprint": 122783536,
+      "available": 3417209040,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:49.087125Z",
+      "thermal": 1,
+      "footprint": 122816304,
+      "available": 3417176272,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:51.085946Z",
+      "thermal": 1,
+      "footprint": 122816304,
+      "available": 3417176272,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:53.085806Z",
+      "thermal": 1,
+      "footprint": 154552112,
+      "available": 3385440464,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:55.086308Z",
+      "thermal": 1,
+      "footprint": 122849072,
+      "available": 3417143504,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:57.085824Z",
+      "thermal": 1,
+      "footprint": 122865456,
+      "available": 3417127120,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:38:59.085993Z",
+      "thermal": 1,
+      "footprint": 122881840,
+      "available": 3417110736,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:01.086209Z",
+      "thermal": 1,
+      "footprint": 116606768,
+      "available": 3423385808,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:03.086008Z",
+      "thermal": 1,
+      "footprint": 154617648,
+      "available": 3385374928,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:05.085495Z",
+      "thermal": 1,
+      "footprint": 116639536,
+      "available": 3423353040,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:07.086736Z",
+      "thermal": 1,
+      "footprint": 116639536,
+      "available": 3423353040,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:09.085619Z",
+      "thermal": 1,
+      "footprint": 117720880,
+      "available": 3422271696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:11.086027Z",
+      "thermal": 1,
+      "footprint": 117720880,
+      "available": 3422271696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:13.086060Z",
+      "thermal": 1,
+      "footprint": 154699568,
+      "available": 3385293008,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:15.085594Z",
+      "thermal": 1,
+      "footprint": 124045104,
+      "available": 3415947472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:17.086968Z",
+      "thermal": 1,
+      "footprint": 116721456,
+      "available": 3423271120,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:19.085789Z",
+      "thermal": 1,
+      "footprint": 116737840,
+      "available": 3423254736,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:21.085299Z",
+      "thermal": 0,
+      "footprint": 116754224,
+      "available": 3423238352,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:23.085190Z",
+      "thermal": 0,
+      "footprint": 181143344,
+      "available": 3358849232,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:25.085544Z",
+      "thermal": 0,
+      "footprint": 125028144,
+      "available": 3414964432,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:27.086624Z",
+      "thermal": 0,
+      "footprint": 125044528,
+      "available": 3414948048,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:29.084959Z",
+      "thermal": 0,
+      "footprint": 125028144,
+      "available": 3414964432,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:31.085737Z",
+      "thermal": 0,
+      "footprint": 123995952,
+      "available": 3415996624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:33.085204Z",
+      "thermal": 0,
+      "footprint": 121898800,
+      "available": 3418093776,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:35.085218Z",
+      "thermal": 0,
+      "footprint": 117720880,
+      "available": 3422271696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:37.085852Z",
+      "thermal": 0,
+      "footprint": 117458736,
+      "available": 3422533840,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:39.084978Z",
+      "thermal": 0,
+      "footprint": 117475120,
+      "available": 3422517456,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:41.085236Z",
+      "thermal": 0,
+      "footprint": 117475120,
+      "available": 3422517456,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:43.084925Z",
+      "thermal": 0,
+      "footprint": 117491504,
+      "available": 3422501072,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:45.085431Z",
+      "thermal": 0,
+      "footprint": 117507888,
+      "available": 3422484688,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:47.085540Z",
+      "thermal": 0,
+      "footprint": 117507888,
+      "available": 3422484688,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:49.085224Z",
+      "thermal": 0,
+      "footprint": 117524272,
+      "available": 3422468304,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:51.084724Z",
+      "thermal": 0,
+      "footprint": 117524272,
+      "available": 3422468304,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:53.085320Z",
+      "thermal": 0,
+      "footprint": 117540656,
+      "available": 3422451920,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:55.084725Z",
+      "thermal": 0,
+      "footprint": 117540656,
+      "available": 3422451920,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:57.085431Z",
+      "thermal": 0,
+      "footprint": 117557040,
+      "available": 3422435536,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:39:59.084943Z",
+      "thermal": 0,
+      "footprint": 117557040,
+      "available": 3422435536,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:01.085387Z",
+      "thermal": 0,
+      "footprint": 117573424,
+      "available": 3422419152,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:03.084592Z",
+      "thermal": 0,
+      "footprint": 117573424,
+      "available": 3422419152,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:05.086226Z",
+      "thermal": 0,
+      "footprint": 117589808,
+      "available": 3422402768,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:07.084573Z",
+      "thermal": 0,
+      "footprint": 117589808,
+      "available": 3422402768,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:09.085107Z",
+      "thermal": 0,
+      "footprint": 117606192,
+      "available": 3422386384,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:11.084610Z",
+      "thermal": 0,
+      "footprint": 117622576,
+      "available": 3422370000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:13.085133Z",
+      "thermal": 0,
+      "footprint": 117622576,
+      "available": 3422370000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:15.084346Z",
+      "thermal": 0,
+      "footprint": 117638960,
+      "available": 3422353616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:17.084944Z",
+      "thermal": 0,
+      "footprint": 117638960,
+      "available": 3422353616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:19.085076Z",
+      "thermal": 0,
+      "footprint": 117655344,
+      "available": 3422337232,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:21.084552Z",
+      "thermal": 0,
+      "footprint": 117655344,
+      "available": 3422337232,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:23.085218Z",
+      "thermal": 0,
+      "footprint": 117671728,
+      "available": 3422320848,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:25.084602Z",
+      "thermal": 0,
+      "footprint": 117671728,
+      "available": 3422320848,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:27.084653Z",
+      "thermal": 0,
+      "footprint": 117688112,
+      "available": 3422304464,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:29.085029Z",
+      "thermal": 0,
+      "footprint": 117688112,
+      "available": 3422304464,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:31.084063Z",
+      "thermal": 0,
+      "footprint": 117704496,
+      "available": 3422288080,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:33.084596Z",
+      "thermal": 0,
+      "footprint": 117704496,
+      "available": 3422288080,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:35.086022Z",
+      "thermal": 0,
+      "footprint": 117720880,
+      "available": 3422271696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:37.084515Z",
+      "thermal": 0,
+      "footprint": 117737264,
+      "available": 3422255312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:39.083644Z",
+      "thermal": 0,
+      "footprint": 117737264,
+      "available": 3422255312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:41.084540Z",
+      "thermal": 0,
+      "footprint": 117753648,
+      "available": 3422238928,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:43.084786Z",
+      "thermal": 0,
+      "footprint": 117753648,
+      "available": 3422238928,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:45.084570Z",
+      "thermal": 0,
+      "footprint": 117770032,
+      "available": 3422222544,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:47.084110Z",
+      "thermal": 0,
+      "footprint": 117770032,
+      "available": 3422222544,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:49.084563Z",
+      "thermal": 0,
+      "footprint": 117786416,
+      "available": 3422206160,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:51.083278Z",
+      "thermal": 0,
+      "footprint": 117786416,
+      "available": 3422206160,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:53.083929Z",
+      "thermal": 0,
+      "footprint": 117802800,
+      "available": 3422189776,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:55.084179Z",
+      "thermal": 0,
+      "footprint": 117802800,
+      "available": 3422189776,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:57.083738Z",
+      "thermal": 0,
+      "footprint": 117819184,
+      "available": 3422173392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:40:59.083136Z",
+      "thermal": 0,
+      "footprint": 117819184,
+      "available": 3422173392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:01.084059Z",
+      "thermal": 0,
+      "footprint": 117835568,
+      "available": 3422157008,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:03.083432Z",
+      "thermal": 0,
+      "footprint": 117851952,
+      "available": 3422140624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:05.084496Z",
+      "thermal": 0,
+      "footprint": 117851952,
+      "available": 3422140624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:07.084050Z",
+      "thermal": 0,
+      "footprint": 117868336,
+      "available": 3422124240,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:09.084580Z",
+      "thermal": 0,
+      "footprint": 117868336,
+      "available": 3422124240,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:11.084556Z",
+      "thermal": 0,
+      "footprint": 117884720,
+      "available": 3422107856,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:13.084804Z",
+      "thermal": 0,
+      "footprint": 117884720,
+      "available": 3422107856,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:15.084325Z",
+      "thermal": 0,
+      "footprint": 117901104,
+      "available": 3422091472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:17.083909Z",
+      "thermal": 0,
+      "footprint": 117720880,
+      "available": 3422271696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:19.084266Z",
+      "thermal": 0,
+      "footprint": 117737264,
+      "available": 3422255312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:21.084670Z",
+      "thermal": 0,
+      "footprint": 117737264,
+      "available": 3422255312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:23.082666Z",
+      "thermal": 0,
+      "footprint": 181782344,
+      "available": 3358210232,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:25.082046Z",
+      "thermal": 0,
+      "footprint": 224725384,
+      "available": 3315267192,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:27.083587Z",
+      "thermal": 0,
+      "footprint": 214502776,
+      "available": 3325489800,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:29.084118Z",
+      "thermal": 0,
+      "footprint": 539102848,
+      "available": 3000889728,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:31.083177Z",
+      "thermal": 0,
+      "footprint": 155600832,
+      "available": 3384391744,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:33.083637Z",
+      "thermal": 0,
+      "footprint": 155600832,
+      "available": 3384391744,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:35.083144Z",
+      "thermal": 0,
+      "footprint": 155584448,
+      "available": 3384408128,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:37.083633Z",
+      "thermal": 0,
+      "footprint": 155551680,
+      "available": 3384440896,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:39.084231Z",
+      "thermal": 0,
+      "footprint": 155551680,
+      "available": 3384440896,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:41.081989Z",
+      "thermal": 0,
+      "footprint": 166774720,
+      "available": 3373217856,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:43.083740Z",
+      "thermal": 0,
+      "footprint": 515313280,
+      "available": 3024679296,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:45.083148Z",
+      "thermal": 0,
+      "footprint": 500567680,
+      "available": 3039424896,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:47.083803Z",
+      "thermal": 0,
+      "footprint": 500533424,
+      "available": 3039459152,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:49.083255Z",
+      "thermal": 0,
+      "footprint": 491129008,
+      "available": 3048863568,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:51.082968Z",
+      "thermal": 0,
+      "footprint": 483788976,
+      "available": 3056203600,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:53.083617Z",
+      "thermal": 0,
+      "footprint": 483739824,
+      "available": 3056252752,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:55.083331Z",
+      "thermal": 0,
+      "footprint": 483739824,
+      "available": 3056252752,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:57.082591Z",
+      "thermal": 0,
+      "footprint": 532613296,
+      "available": 3007379280,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:41:59.083156Z",
+      "thermal": 0,
+      "footprint": 503549568,
+      "available": 3036443008,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:01.083822Z",
+      "thermal": 0,
+      "footprint": 503204016,
+      "available": 3036788560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:03.083253Z",
+      "thermal": 0,
+      "footprint": 494815408,
+      "available": 3045177168,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:05.083768Z",
+      "thermal": 0,
+      "footprint": 489572528,
+      "available": 3050420048,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:07.082553Z",
+      "thermal": 0,
+      "footprint": 483248304,
+      "available": 3056744272,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:09.088313Z",
+      "thermal": 0,
+      "footprint": 471713968,
+      "available": 3068278608,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:11.082017Z",
+      "thermal": 0,
+      "footprint": 533481648,
+      "available": 3006510928,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:13.082742Z",
+      "thermal": 0,
+      "footprint": 509677184,
+      "available": 3030315392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:15.082781Z",
+      "thermal": 0,
+      "footprint": 470845616,
+      "available": 3069146960,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:17.082989Z",
+      "thermal": 0,
+      "footprint": 470698160,
+      "available": 3069294416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:19.082358Z",
+      "thermal": 0,
+      "footprint": 470681776,
+      "available": 3069310800,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:21.082667Z",
+      "thermal": 1,
+      "footprint": 470698160,
+      "available": 3069294416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:23.083023Z",
+      "thermal": 1,
+      "footprint": 470698160,
+      "available": 3069294416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:25.082383Z",
+      "thermal": 1,
+      "footprint": 547229288,
+      "available": 2992763288,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:27.083236Z",
+      "thermal": 1,
+      "footprint": 509480552,
+      "available": 3030512024,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:29.083352Z",
+      "thermal": 1,
+      "footprint": 505251992,
+      "available": 3034740584,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:31.082870Z",
+      "thermal": 1,
+      "footprint": 478005400,
+      "available": 3061987176,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:33.083391Z",
+      "thermal": 1,
+      "footprint": 477972632,
+      "available": 3062019944,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:35.082681Z",
+      "thermal": 1,
+      "footprint": 477989016,
+      "available": 3062003560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:37.082768Z",
+      "thermal": 1,
+      "footprint": 477989016,
+      "available": 3062003560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:39.082628Z",
+      "thermal": 1,
+      "footprint": 508694120,
+      "available": 3031298456,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:41.083255Z",
+      "thermal": 1,
+      "footprint": 508692632,
+      "available": 3031299944,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:43.082819Z",
+      "thermal": 1,
+      "footprint": 496634008,
+      "available": 3043358568,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:45.083355Z",
+      "thermal": 1,
+      "footprint": 188483544,
+      "available": 3351509032,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:47.082971Z",
+      "thermal": 1,
+      "footprint": 174852056,
+      "available": 3365140520,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:49.082453Z",
+      "thermal": 1,
+      "footprint": 171706328,
+      "available": 3368286248,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:51.082246Z",
+      "thermal": 1,
+      "footprint": 225052608,
+      "available": 3314939968,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:53.082788Z",
+      "thermal": 1,
+      "footprint": 509955712,
+      "available": 3030036864,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:55.082449Z",
+      "thermal": 1,
+      "footprint": 501500080,
+      "available": 3038492496,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:57.083446Z",
+      "thermal": 1,
+      "footprint": 197117912,
+      "available": 3342874664,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:42:59.082375Z",
+      "thermal": 1,
+      "footprint": 185632728,
+      "available": 3354359848,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:01.082851Z",
+      "thermal": 1,
+      "footprint": 174098392,
+      "available": 3365894184,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:03.082105Z",
+      "thermal": 1,
+      "footprint": 174098392,
+      "available": 3365894184,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:05.081908Z",
+      "thermal": 1,
+      "footprint": 508464768,
+      "available": 3031527808,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:07.082545Z",
+      "thermal": 1,
+      "footprint": 508381360,
+      "available": 3031611216,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:09.082029Z",
+      "thermal": 1,
+      "footprint": 499976368,
+      "available": 3040016208,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:11.081067Z",
+      "thermal": 1,
+      "footprint": 200804336,
+      "available": 3339188240,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:13.081554Z",
+      "thermal": 1,
+      "footprint": 161908672,
+      "available": 3378083904,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:15.082159Z",
+      "thermal": 1,
+      "footprint": 148146112,
+      "available": 3391846464,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:17.081345Z",
+      "thermal": 1,
+      "footprint": 237144000,
+      "available": 3302848576,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:19.082533Z",
+      "thermal": 1,
+      "footprint": 519163520,
+      "available": 3020829056,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:21.081787Z",
+      "thermal": 1,
+      "footprint": 209471472,
+      "available": 3330521104,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:23.082317Z",
+      "thermal": 1,
+      "footprint": 201099248,
+      "available": 3338893328,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:25.081417Z",
+      "thermal": 1,
+      "footprint": 195856368,
+      "available": 3344136208,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:27.082168Z",
+      "thermal": 1,
+      "footprint": 189564912,
+      "available": 3350427664,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:29.082764Z",
+      "thermal": 1,
+      "footprint": 189564912,
+      "available": 3350427664,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:31.081155Z",
+      "thermal": 1,
+      "footprint": 232163288,
+      "available": 3307829288,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:33.081784Z",
+      "thermal": 1,
+      "footprint": 512183936,
+      "available": 3027808640,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:35.082371Z",
+      "thermal": 1,
+      "footprint": 503679152,
+      "available": 3036313424,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:37.081833Z",
+      "thermal": 1,
+      "footprint": 503646384,
+      "available": 3036346192,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:39.082246Z",
+      "thermal": 1,
+      "footprint": 490014896,
+      "available": 3049977680,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:41.081718Z",
+      "thermal": 1,
+      "footprint": 486869168,
+      "available": 3053123408,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:43.082098Z",
+      "thermal": 1,
+      "footprint": 485836976,
+      "available": 3054155600,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:45.081716Z",
+      "thermal": 1,
+      "footprint": 516853376,
+      "available": 3023139200,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:47.082261Z",
+      "thermal": 1,
+      "footprint": 507070640,
+      "available": 3032921936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:49.082362Z",
+      "thermal": 1,
+      "footprint": 199788528,
+      "available": 3340204048,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:51.082834Z",
+      "thermal": 1,
+      "footprint": 180111320,
+      "available": 3359881256,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:53.081530Z",
+      "thermal": 1,
+      "footprint": 166463448,
+      "available": 3373529128,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:55.082050Z",
+      "thermal": 1,
+      "footprint": 163334104,
+      "available": 3376658472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:57.081369Z",
+      "thermal": 1,
+      "footprint": 214616000,
+      "available": 3325376576,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:43:59.081260Z",
+      "thermal": 1,
+      "footprint": 506990208,
+      "available": 3033002368,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:01.081515Z",
+      "thermal": 1,
+      "footprint": 475531440,
+      "available": 3064461136,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:03.082062Z",
+      "thermal": 1,
+      "footprint": 475498672,
+      "available": 3064493904,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:05.081484Z",
+      "thermal": 1,
+      "footprint": 475498672,
+      "available": 3064493904,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:07.082745Z",
+      "thermal": 1,
+      "footprint": 475515056,
+      "available": 3064477520,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:09.082357Z",
+      "thermal": 1,
+      "footprint": 475515056,
+      "available": 3064477520,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:11.081256Z",
+      "thermal": 1,
+      "footprint": 510299776,
+      "available": 3029692800,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:13.082016Z",
+      "thermal": 1,
+      "footprint": 510265520,
+      "available": 3029727056,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:15.081466Z",
+      "thermal": 1,
+      "footprint": 500975792,
+      "available": 3039016784,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:17.082003Z",
+      "thermal": 1,
+      "footprint": 493635760,
+      "available": 3046356816,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:19.081600Z",
+      "thermal": 1,
+      "footprint": 178898928,
+      "available": 3361093648,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:21.081173Z",
+      "thermal": 1,
+      "footprint": 176818160,
+      "available": 3363174416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:23.080180Z",
+      "thermal": 1,
+      "footprint": 200984512,
+      "available": 3339008064,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:25.080258Z",
+      "thermal": 1,
+      "footprint": 507250864,
+      "available": 3032741712,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:27.081212Z",
+      "thermal": 1,
+      "footprint": 497928368,
+      "available": 3042064208,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:29.081713Z",
+      "thermal": 1,
+      "footprint": 497879216,
+      "available": 3042113360,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:31.081174Z",
+      "thermal": 1,
+      "footprint": 179275736,
+      "available": 3360716840,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:33.081718Z",
+      "thermal": 1,
+      "footprint": 175081432,
+      "available": 3364911144,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:35.080335Z",
+      "thermal": 1,
+      "footprint": 171624384,
+      "available": 3368368192,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:37.080595Z",
+      "thermal": 1,
+      "footprint": 534597248,
+      "available": 3005395328,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:39.081338Z",
+      "thermal": 1,
+      "footprint": 532449456,
+      "available": 3007543120,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:41.081133Z",
+      "thermal": 1,
+      "footprint": 207914968,
+      "available": 3332077608,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:43.081422Z",
+      "thermal": 1,
+      "footprint": 207931352,
+      "available": 3332061224,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:45.080952Z",
+      "thermal": 1,
+      "footprint": 185780184,
+      "available": 3354212392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:47.081262Z",
+      "thermal": 1,
+      "footprint": 185796568,
+      "available": 3354196008,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:49.080499Z",
+      "thermal": 1,
+      "footprint": 211322816,
+      "available": 3328669760,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:51.081061Z",
+      "thermal": 1,
+      "footprint": 503418496,
+      "available": 3036574080,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:53.080575Z",
+      "thermal": 1,
+      "footprint": 499140784,
+      "available": 3040851792,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:55.081037Z",
+      "thermal": 1,
+      "footprint": 494946480,
+      "available": 3045046096,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:57.081304Z",
+      "thermal": 1,
+      "footprint": 486541488,
+      "available": 3053451088,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:44:59.081868Z",
+      "thermal": 1,
+      "footprint": 477661360,
+      "available": 3062331216,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:01.079304Z",
+      "thermal": 1,
+      "footprint": 468224176,
+      "available": 3071768400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:03.080345Z",
+      "thermal": 1,
+      "footprint": 234966416,
+      "available": 3305026160,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:05.081078Z",
+      "thermal": 1,
+      "footprint": 509365888,
+      "available": 3030626688,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:07.079437Z",
+      "thermal": 1,
+      "footprint": 500172976,
+      "available": 3039819600,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:09.080869Z",
+      "thermal": 1,
+      "footprint": 495995056,
+      "available": 3043997520,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:11.080573Z",
+      "thermal": 1,
+      "footprint": 482347184,
+      "available": 3057645392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:13.080935Z",
+      "thermal": 1,
+      "footprint": 472910000,
+      "available": 3067082576,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:15.081186Z",
+      "thermal": 1,
+      "footprint": 472926384,
+      "available": 3067066192,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:17.080185Z",
+      "thermal": 1,
+      "footprint": 508055168,
+      "available": 3031937408,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:19.080683Z",
+      "thermal": 1,
+      "footprint": 499550384,
+      "available": 3040442192,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:21.080201Z",
+      "thermal": 1,
+      "footprint": 492964016,
+      "available": 3047028560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:23.080649Z",
+      "thermal": 1,
+      "footprint": 492964016,
+      "available": 3047028560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:25.079658Z",
+      "thermal": 1,
+      "footprint": 480381104,
+      "available": 3059611472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:27.080399Z",
+      "thermal": 1,
+      "footprint": 468093104,
+      "available": 3071899472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:29.079691Z",
+      "thermal": 1,
+      "footprint": 221300672,
+      "available": 3318691904,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:31.080214Z",
+      "thermal": 1,
+      "footprint": 509234816,
+      "available": 3030757760,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:33.081149Z",
+      "thermal": 1,
+      "footprint": 500797056,
+      "available": 3039195520,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:35.079658Z",
+      "thermal": 1,
+      "footprint": 492390576,
+      "available": 3047602000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:37.080084Z",
+      "thermal": 1,
+      "footprint": 487164080,
+      "available": 3052828496,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:39.080143Z",
+      "thermal": 1,
+      "footprint": 480839856,
+      "available": 3059152720,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:41.080953Z",
+      "thermal": 1,
+      "footprint": 478759088,
+      "available": 3061233488,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:43.080632Z",
+      "thermal": 1,
+      "footprint": 478759088,
+      "available": 3061233488,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:45.079626Z",
+      "thermal": 1,
+      "footprint": 508284544,
+      "available": 3031708032,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:47.079598Z",
+      "thermal": 1,
+      "footprint": 503384240,
+      "available": 3036608336,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:49.080399Z",
+      "thermal": 1,
+      "footprint": 494962864,
+      "available": 3045029712,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:51.080673Z",
+      "thermal": 1,
+      "footprint": 494979248,
+      "available": 3045013328,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:53.080697Z",
+      "thermal": 1,
+      "footprint": 483428528,
+      "available": 3056564048,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:55.080214Z",
+      "thermal": 1,
+      "footprint": 471910576,
+      "available": 3068082000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:57.079904Z",
+      "thermal": 1,
+      "footprint": 535431344,
+      "available": 3004561232,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:45:59.080461Z",
+      "thermal": 1,
+      "footprint": 509398632,
+      "available": 3030593944,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:01.080050Z",
+      "thermal": 1,
+      "footprint": 502368408,
+      "available": 3037624168,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:03.078998Z",
+      "thermal": 1,
+      "footprint": 470943896,
+      "available": 3069048680,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:05.079407Z",
+      "thermal": 1,
+      "footprint": 470960280,
+      "available": 3069032296,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:07.079974Z",
+      "thermal": 1,
+      "footprint": 470927512,
+      "available": 3069065064,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:09.079756Z",
+      "thermal": 1,
+      "footprint": 470943896,
+      "available": 3069048680,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:11.078588Z",
+      "thermal": 1,
+      "footprint": 194922432,
+      "available": 3345070144,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:13.078906Z",
+      "thermal": 1,
+      "footprint": 508251752,
+      "available": 3031740824,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:15.079407Z",
+      "thermal": 1,
+      "footprint": 508545176,
+      "available": 3031447400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:17.080094Z",
+      "thermal": 1,
+      "footprint": 174950360,
+      "available": 3365042216,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:19.080946Z",
+      "thermal": 1,
+      "footprint": 174966744,
+      "available": 3365025832,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:21.079602Z",
+      "thermal": 1,
+      "footprint": 174950360,
+      "available": 3365042216,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:23.080045Z",
+      "thermal": 1,
+      "footprint": 174966744,
+      "available": 3365025832,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:25.078439Z",
+      "thermal": 1,
+      "footprint": 201443264,
+      "available": 3338549312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:27.079629Z",
+      "thermal": 1,
+      "footprint": 507154024,
+      "available": 3032838552,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:29.079609Z",
+      "thermal": 1,
+      "footprint": 498010264,
+      "available": 3041982312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:31.079090Z",
+      "thermal": 1,
+      "footprint": 497977496,
+      "available": 3042015080,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:33.079535Z",
+      "thermal": 1,
+      "footprint": 487458968,
+      "available": 3052533608,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:35.079554Z",
+      "thermal": 1,
+      "footprint": 483264664,
+      "available": 3056727912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:37.080272Z",
+      "thermal": 1,
+      "footprint": 483281048,
+      "available": 3056711528,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:39.078711Z",
+      "thermal": 1,
+      "footprint": 510332568,
+      "available": 3029660008,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:41.079439Z",
+      "thermal": 1,
+      "footprint": 505546952,
+      "available": 3034445624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:43.078959Z",
+      "thermal": 1,
+      "footprint": 496273608,
+      "available": 3043718968,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:45.080085Z",
+      "thermal": 1,
+      "footprint": 496289992,
+      "available": 3043702584,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:47.078906Z",
+      "thermal": 1,
+      "footprint": 483690696,
+      "available": 3056301880,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:49.079302Z",
+      "thermal": 1,
+      "footprint": 480561352,
+      "available": 3059431224,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:51.078610Z",
+      "thermal": 1,
+      "footprint": 508070040,
+      "available": 3031922536,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:53.078747Z",
+      "thermal": 1,
+      "footprint": 502728856,
+      "available": 3037263720,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:55.080632Z",
+      "thermal": 1,
+      "footprint": 493488280,
+      "available": 3046504296,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:57.079215Z",
+      "thermal": 1,
+      "footprint": 493504664,
+      "available": 3046487912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:46:59.078673Z",
+      "thermal": 1,
+      "footprint": 482969752,
+      "available": 3057022824,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:01.078982Z",
+      "thermal": 1,
+      "footprint": 471238808,
+      "available": 3068753768,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:03.078553Z",
+      "thermal": 1,
+      "footprint": 201377752,
+      "available": 3338614824,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:05.079136Z",
+      "thermal": 1,
+      "footprint": 508137064,
+      "available": 3031855512,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:07.078452Z",
+      "thermal": 1,
+      "footprint": 508201112,
+      "available": 3031791464,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:09.078939Z",
+      "thermal": 1,
+      "footprint": 501581976,
+      "available": 3038410600,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:11.079769Z",
+      "thermal": 1,
+      "footprint": 491096216,
+      "available": 3048896360,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:13.079632Z",
+      "thermal": 1,
+      "footprint": 483068056,
+      "available": 3056924520,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:15.079229Z",
+      "thermal": 1,
+      "footprint": 482035864,
+      "available": 3057956712,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:17.078329Z",
+      "thermal": 1,
+      "footprint": 538758760,
+      "available": 3001233816,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:19.079008Z",
+      "thermal": 1,
+      "footprint": 507480216,
+      "available": 3032512360,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:21.079035Z",
+      "thermal": 1,
+      "footprint": 500779160,
+      "available": 3039213416,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:23.079219Z",
+      "thermal": 1,
+      "footprint": 500795544,
+      "available": 3039197032,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:25.078690Z",
+      "thermal": 1,
+      "footprint": 181094336,
+      "available": 3358898240,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:27.079110Z",
+      "thermal": 1,
+      "footprint": 177964992,
+      "available": 3362027584,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:29.078332Z",
+      "thermal": 1,
+      "footprint": 185829312,
+      "available": 3354163264,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:31.078848Z",
+      "thermal": 1,
+      "footprint": 509251200,
+      "available": 3030741376,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:33.078455Z",
+      "thermal": 1,
+      "footprint": 509348016,
+      "available": 3030644560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:35.078899Z",
+      "thermal": 1,
+      "footprint": 500074672,
+      "available": 3039917904,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:37.078074Z",
+      "thermal": 1,
+      "footprint": 492734640,
+      "available": 3047257936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:39.078775Z",
+      "thermal": 1,
+      "footprint": 487475376,
+      "available": 3052517200,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:41.079063Z",
+      "thermal": 1,
+      "footprint": 477890736,
+      "available": 3062101840,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:43.078264Z",
+      "thermal": 1,
+      "footprint": 515459248,
+      "available": 3024533328,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:45.077760Z",
+      "thermal": 1,
+      "footprint": 506809984,
+      "available": 3033182592,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:47.080304Z",
+      "thermal": 1,
+      "footprint": 501876912,
+      "available": 3038115664,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:49.079731Z",
+      "thermal": 1,
+      "footprint": 467585176,
+      "available": 3072407400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:51.078082Z",
+      "thermal": 1,
+      "footprint": 467536024,
+      "available": 3072456552,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:53.078527Z",
+      "thermal": 1,
+      "footprint": 467552408,
+      "available": 3072440168,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:55.077816Z",
+      "thermal": 1,
+      "footprint": 161368000,
+      "available": 3378624576,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:57.077286Z",
+      "thermal": 1,
+      "footprint": 547229312,
+      "available": 2992763264,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:47:59.077895Z",
+      "thermal": 1,
+      "footprint": 503795328,
+      "available": 3036197248,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:01.078443Z",
+      "thermal": 1,
+      "footprint": 476694704,
+      "available": 3063297872,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:03.078313Z",
+      "thermal": 1,
+      "footprint": 472533168,
+      "available": 3067459408,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:05.077941Z",
+      "thermal": 1,
+      "footprint": 472467632,
+      "available": 3067524944,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:07.078849Z",
+      "thermal": 1,
+      "footprint": 472484016,
+      "available": 3067508560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:09.078248Z",
+      "thermal": 1,
+      "footprint": 472484016,
+      "available": 3067508560,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:11.078544Z",
+      "thermal": 1,
+      "footprint": 483903664,
+      "available": 3056088912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:13.078161Z",
+      "thermal": 1,
+      "footprint": 483903664,
+      "available": 3056088912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:15.078563Z",
+      "thermal": 1,
+      "footprint": 483854512,
+      "available": 3056138064,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:17.078257Z",
+      "thermal": 1,
+      "footprint": 472320176,
+      "available": 3067672400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:19.077716Z",
+      "thermal": 1,
+      "footprint": 472320176,
+      "available": 3067672400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:21.077909Z",
+      "thermal": 1,
+      "footprint": 472320176,
+      "available": 3067672400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:23.078777Z",
+      "thermal": 1,
+      "footprint": 472320176,
+      "available": 3067672400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:25.078279Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:27.077488Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:29.077979Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:31.077446Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:33.078608Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:35.077307Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:37.077808Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:39.077291Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:41.078433Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:43.077794Z",
+      "thermal": 1,
+      "footprint": 158336960,
+      "available": 3381655616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:45.077559Z",
+      "thermal": 1,
+      "footprint": 158353344,
+      "available": 3381639232,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:47.078046Z",
+      "thermal": 1,
+      "footprint": 158353344,
+      "available": 3381639232,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:49.077498Z",
+      "thermal": 1,
+      "footprint": 158369728,
+      "available": 3381622848,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:51.078322Z",
+      "thermal": 1,
+      "footprint": 158386112,
+      "available": 3381606464,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:53.077042Z",
+      "thermal": 1,
+      "footprint": 158386112,
+      "available": 3381606464,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:55.077513Z",
+      "thermal": 1,
+      "footprint": 158402496,
+      "available": 3381590080,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:57.076278Z",
+      "thermal": 1,
+      "footprint": 158402496,
+      "available": 3381590080,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:48:59.077759Z",
+      "thermal": 1,
+      "footprint": 158418880,
+      "available": 3381573696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:01.077471Z",
+      "thermal": 1,
+      "footprint": 158418880,
+      "available": 3381573696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:03.077602Z",
+      "thermal": 1,
+      "footprint": 158435264,
+      "available": 3381557312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:05.076981Z",
+      "thermal": 1,
+      "footprint": 158435264,
+      "available": 3381557312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:07.077434Z",
+      "thermal": 1,
+      "footprint": 158451648,
+      "available": 3381540928,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:09.077904Z",
+      "thermal": 1,
+      "footprint": 158451648,
+      "available": 3381540928,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:11.078229Z",
+      "thermal": 1,
+      "footprint": 158468032,
+      "available": 3381524544,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:13.076999Z",
+      "thermal": 1,
+      "footprint": 158484416,
+      "available": 3381508160,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:15.077412Z",
+      "thermal": 1,
+      "footprint": 158484416,
+      "available": 3381508160,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:17.077032Z",
+      "thermal": 1,
+      "footprint": 158500800,
+      "available": 3381491776,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:19.077502Z",
+      "thermal": 1,
+      "footprint": 158500800,
+      "available": 3381491776,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:21.077422Z",
+      "thermal": 1,
+      "footprint": 158517184,
+      "available": 3381475392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:23.076874Z",
+      "thermal": 1,
+      "footprint": 158517184,
+      "available": 3381475392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:25.077326Z",
+      "thermal": 1,
+      "footprint": 158533568,
+      "available": 3381459008,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:27.077647Z",
+      "thermal": 1,
+      "footprint": 158533568,
+      "available": 3381459008,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:29.077320Z",
+      "thermal": 1,
+      "footprint": 158549952,
+      "available": 3381442624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:31.076669Z",
+      "thermal": 1,
+      "footprint": 158549952,
+      "available": 3381442624,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:33.077091Z",
+      "thermal": 1,
+      "footprint": 158566336,
+      "available": 3381426240,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:35.076980Z",
+      "thermal": 1,
+      "footprint": 158566336,
+      "available": 3381426240,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:37.077785Z",
+      "thermal": 1,
+      "footprint": 158582720,
+      "available": 3381409856,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:39.077356Z",
+      "thermal": 1,
+      "footprint": 158599104,
+      "available": 3381393472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:41.076803Z",
+      "thermal": 1,
+      "footprint": 158599104,
+      "available": 3381393472,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:43.077248Z",
+      "thermal": 1,
+      "footprint": 158615488,
+      "available": 3381377088,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:45.077398Z",
+      "thermal": 1,
+      "footprint": 158615488,
+      "available": 3381377088,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:47.077224Z",
+      "thermal": 1,
+      "footprint": 158631872,
+      "available": 3381360704,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:49.076722Z",
+      "thermal": 1,
+      "footprint": 158631872,
+      "available": 3381360704,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:51.077152Z",
+      "thermal": 1,
+      "footprint": 158648256,
+      "available": 3381344320,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:53.076787Z",
+      "thermal": 1,
+      "footprint": 158648256,
+      "available": 3381344320,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:55.077261Z",
+      "thermal": 1,
+      "footprint": 158664640,
+      "available": 3381327936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:57.076394Z",
+      "thermal": 1,
+      "footprint": 158664640,
+      "available": 3381327936,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:49:59.076739Z",
+      "thermal": 1,
+      "footprint": 158681024,
+      "available": 3381311552,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:01.076135Z",
+      "thermal": 1,
+      "footprint": 158681024,
+      "available": 3381311552,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:03.077161Z",
+      "thermal": 1,
+      "footprint": 158697408,
+      "available": 3381295168,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:05.077342Z",
+      "thermal": 1,
+      "footprint": 158713792,
+      "available": 3381278784,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:07.077146Z",
+      "thermal": 1,
+      "footprint": 158713792,
+      "available": 3381278784,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:09.080591Z",
+      "thermal": 1,
+      "footprint": 158730176,
+      "available": 3381262400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:11.076375Z",
+      "thermal": 1,
+      "footprint": 178505664,
+      "available": 3361486912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:13.077810Z",
+      "thermal": 1,
+      "footprint": 178735040,
+      "available": 3361257536,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:15.077695Z",
+      "thermal": 1,
+      "footprint": 170395584,
+      "available": 3369596992,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:17.078319Z",
+      "thermal": 1,
+      "footprint": 167249856,
+      "available": 3372742720,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:19.077855Z",
+      "thermal": 1,
+      "footprint": 165152704,
+      "available": 3374839872,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:21.079017Z",
+      "thermal": 1,
+      "footprint": 158517184,
+      "available": 3381475392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:23.079092Z",
+      "thermal": 1,
+      "footprint": 158517184,
+      "available": 3381475392,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:25.078149Z",
+      "thermal": 1,
+      "footprint": 235079616,
+      "available": 3304912960,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:27.078958Z",
+      "thermal": 1,
+      "footprint": 182781888,
+      "available": 3357210688,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:29.078100Z",
+      "thermal": 1,
+      "footprint": 182781888,
+      "available": 3357210688,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:31.078254Z",
+      "thermal": 1,
+      "footprint": 182781888,
+      "available": 3357210688,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:33.078631Z",
+      "thermal": 1,
+      "footprint": 173131712,
+      "available": 3366860864,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:35.079127Z",
+      "thermal": 1,
+      "footprint": 162416576,
+      "available": 3377576000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:37.078257Z",
+      "thermal": 1,
+      "footprint": 219776960,
+      "available": 3320215616,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:39.079929Z",
+      "thermal": 1,
+      "footprint": 173148096,
+      "available": 3366844480,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:41.079561Z",
+      "thermal": 1,
+      "footprint": 173131712,
+      "available": 3366860864,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:43.079176Z",
+      "thermal": 1,
+      "footprint": 173066176,
+      "available": 3366926400,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:45.078677Z",
+      "thermal": 1,
+      "footprint": 163547072,
+      "available": 3376445504,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:47.079127Z",
+      "thermal": 1,
+      "footprint": 161466304,
+      "available": 3378526272,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:49.078383Z",
+      "thermal": 1,
+      "footprint": 229492672,
+      "available": 3310499904,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:51.079294Z",
+      "thermal": 1,
+      "footprint": 178702272,
+      "available": 3361290304,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:53.078830Z",
+      "thermal": 1,
+      "footprint": 178718656,
+      "available": 3361273920,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:55.079298Z",
+      "thermal": 1,
+      "footprint": 178554816,
+      "available": 3361437760,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:57.078959Z",
+      "thermal": 1,
+      "footprint": 167036864,
+      "available": 3372955712,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:50:59.079183Z",
+      "thermal": 1,
+      "footprint": 158320576,
+      "available": 3381672000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:01.078073Z",
+      "thermal": 1,
+      "footprint": 233883584,
+      "available": 3306108992,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:03.078873Z",
+      "thermal": 1,
+      "footprint": 163596224,
+      "available": 3376396352,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:05.079402Z",
+      "thermal": 1,
+      "footprint": 163596224,
+      "available": 3376396352,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:07.078041Z",
+      "thermal": 1,
+      "footprint": 163530688,
+      "available": 3376461888,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:09.079152Z",
+      "thermal": 1,
+      "footprint": 163514304,
+      "available": 3376478272,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:11.078614Z",
+      "thermal": 1,
+      "footprint": 154814400,
+      "available": 3385178176,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:13.077013Z",
+      "thermal": 1,
+      "footprint": 218449856,
+      "available": 3321542720,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:15.079442Z",
+      "thermal": 1,
+      "footprint": 154322880,
+      "available": 3385669696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:17.079317Z",
+      "thermal": 1,
+      "footprint": 154339264,
+      "available": 3385653312,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:19.078810Z",
+      "thermal": 1,
+      "footprint": 154273728,
+      "available": 3385718848,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:21.079258Z",
+      "thermal": 1,
+      "footprint": 154208192,
+      "available": 3385784384,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:23.078492Z",
+      "thermal": 1,
+      "footprint": 154224576,
+      "available": 3385768000,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:25.077799Z",
+      "thermal": 1,
+      "footprint": 183650240,
+      "available": 3356342336,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:27.078610Z",
+      "thermal": 1,
+      "footprint": 175654848,
+      "available": 3364337728,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:29.079147Z",
+      "thermal": 1,
+      "footprint": 175638464,
+      "available": 3364354112,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:31.078673Z",
+      "thermal": 1,
+      "footprint": 175507392,
+      "available": 3364485184,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:33.079954Z",
+      "thermal": 1,
+      "footprint": 162924480,
+      "available": 3377068096,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:35.078761Z",
+      "thermal": 1,
+      "footprint": 160843712,
+      "available": 3379148864,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:37.077455Z",
+      "thermal": 1,
+      "footprint": 185681856,
+      "available": 3354310720,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:39.078186Z",
+      "thermal": 1,
+      "footprint": 185698240,
+      "available": 3354294336,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:41.078873Z",
+      "thermal": 1,
+      "footprint": 185681856,
+      "available": 3354310720,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:43.078358Z",
+      "thermal": 1,
+      "footprint": 185550784,
+      "available": 3354441792,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:45.078657Z",
+      "thermal": 1,
+      "footprint": 172967872,
+      "available": 3367024704,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:47.078203Z",
+      "thermal": 1,
+      "footprint": 197183424,
+      "available": 3342809152,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:49.077683Z",
+      "thermal": 1,
+      "footprint": 157796288,
+      "available": 3382196288,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:51.079559Z",
+      "thermal": 1,
+      "footprint": 157796288,
+      "available": 3382196288,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:53.079038Z",
+      "thermal": 1,
+      "footprint": 157812672,
+      "available": 3382179904,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:55.078757Z",
+      "thermal": 1,
+      "footprint": 157747136,
+      "available": 3382245440,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:57.078102Z",
+      "thermal": 1,
+      "footprint": 153929664,
+      "available": 3386062912,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:51:59.077823Z",
+      "thermal": 1,
+      "footprint": 222480320,
+      "available": 3317512256,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:01.079278Z",
+      "thermal": 1,
+      "footprint": 158943168,
+      "available": 3381049408,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:03.077911Z",
+      "thermal": 1,
+      "footprint": 191186880,
+      "available": 3348805696,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:05.079418Z",
+      "thermal": 1,
+      "footprint": 183748544,
+      "available": 3356244032,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:07.077639Z",
+      "thermal": 1,
+      "footprint": 188434368,
+      "available": 3351558208,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:09.077714Z",
+      "thermal": 1,
+      "footprint": 228280256,
+      "available": 3311712320,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:11.078480Z",
+      "thermal": 1,
+      "footprint": 153864128,
+      "available": 3386128448,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:13.077776Z",
+      "thermal": 1,
+      "footprint": 153864128,
+      "available": 3386128448,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:15.079476Z",
+      "thermal": 1,
+      "footprint": 153814976,
+      "available": 3386177600,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:17.078760Z",
+      "thermal": 1,
+      "footprint": 153634752,
+      "available": 3386357824,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:19.078070Z",
+      "thermal": 1,
+      "footprint": 153651136,
+      "available": 3386341440,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:21.078113Z",
+      "thermal": 1,
+      "footprint": 153651136,
+      "available": 3386341440,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:23.078034Z",
+      "thermal": 1,
+      "footprint": 153667520,
+      "available": 3386325056,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:25.077154Z",
+      "thermal": 1,
+      "footprint": 153667520,
+      "available": 3386325056,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:27.078242Z",
+      "thermal": 1,
+      "footprint": 153683904,
+      "available": 3386308672,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:29.077703Z",
+      "thermal": 1,
+      "footprint": 153683904,
+      "available": 3386308672,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:31.078184Z",
+      "thermal": 1,
+      "footprint": 153683904,
+      "available": 3386308672,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:33.076972Z",
+      "thermal": 1,
+      "footprint": 196265920,
+      "available": 3343726656,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:39.488032Z",
+      "thermal": 1,
+      "footprint": 99895232,
+      "available": 3440097344,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:41.077938Z",
+      "thermal": 1,
+      "footprint": 128993216,
+      "available": 3410999360,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:43.076119Z",
+      "thermal": 1,
+      "footprint": 169510848,
+      "available": 3370481728,
+      "onBattery": true
+    },
+    {
+      "at": "2026-10-09T03:52:45.077372Z",
+      "thermal": 1,
+      "footprint": 167708608,
+      "available": 3372283968,
+      "onBattery": true
+    }
+  ],
+  "initialResources": {
+    "applicationState": 1,
+    "physFootprintBytes": 51578624,
+    "availableMemoryBytes": 3488413952,
+    "ready": false,
+    "onBattery": false,
+    "thermalState": 1
+  },
+  "startResources": {
+    "availableMemoryBytes": 3423238352,
+    "onBattery": true,
+    "applicationState": 0,
+    "physFootprintBytes": 116754224,
+    "ready": true,
+    "thermalState": 0
+  },
+  "startWaitSeconds": 1155,
+  "currentPhase": "done",
+  "photoSupported": true,
+  "awaitingInterruption": false,
+  "finishedAt": "2026-10-09T03:52:45.134133Z"
+}

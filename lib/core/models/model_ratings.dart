@@ -38,7 +38,7 @@ abstract final class ModelRatingScale {
       '1–5 bars; higher is better. Held-out General-mode ratings on iPhone 15 Pro Max, not overall accuracy or Knowledge Vault ratings. Quality includes following exact output-format instructions.\n\n'
       'Quality: full-task pass rate on the same 64 fresh fictional tasks, graded without knowing which model answered. 5: ≥95%; 4: ≥85%; 3: ≥75%; 2: ≥60%; 1: below 60%.\n\n'
       'Speed: median completion time including model preparation and generation. 5: ≤2 s; 4: ≤5 s; 3: ≤10 s; 2: ≤20 s; 1: slower. Missing completions leave speed unmeasured.\n\n'
-      'Memory: lower additional peak memory is better, including system model services. 5: ≤0.5 GB; 4: ≤1 GB; 3: ≤2 GB; 2: ≤3 GB; 1: more. Download size is separate.\n\n'
+      'Memory: not scored, because no fair single number exists. Measured working memory added while answering, including system model services: Apple Intelligence 0.28 GB, Qwen3-4B 0.40 GB. Qwen also reads its 2.08 GB of weights from storage into memory while it answers; Apple\'s weights are shared by iOS and their size is not visible to apps.\n\n'
       'Battery: lower additional whole-device drain in a matched one-request-per-minute workload is better. 5: ≤1 percentage point/hour; 4: ≤2; 3: ≤4; 2: ≤8; 1: more. Requires repeated matched idle comparisons and a gauge cross-check; this is not a battery-life prediction.\n\n'
       'Not measured means comparable evidence is missing, not a zero score.';
 }

@@ -55,4 +55,4 @@ What shipped, matching the screened configuration exactly:
 - The original picked bytes are stored in `turn_photos` (schema 7), deleted with their turn, chat and erase-all. Provenance records the photo's SHA-256, preprocessing and prompt versions; regeneration reuses the original photo.
 - Answers are labelled "Photo answer · model interpretation"; a refusal shows "The on-device model declined to answer about this photo." The Models screen states the limits.
 
-Not done: device acceptance (memory, repeated-run thermals, HEIC/orientation on real photos, interruption mid-generation), and no quality rating is published for photos.
+Device acceptance ran on 9 October 2026 with fictional fixtures ([results](../evaluation/resource-measurement-2026-10-09.md)): repeated-run thermals, HEIC orientation, cancellation, mid-answer interruption and memory passed. Not done: an airplane-mode spot-check and HEIC from the camera roll. No quality rating is published for photos.

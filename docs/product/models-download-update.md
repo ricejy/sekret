@@ -72,3 +72,7 @@ The owner authorized committing and publishing the current update. Quality and s
 Publication validation: the full 284-test Flutter run passed 283 tests and hit the Models download test's custom 15-second host-time deadline. That behavior test now has a one-minute deadline; all 11 Models tests passed on rerun, with all assertions retained. Static analysis is clean. No production behavior changed for this validation adjustment.
 
 PR #50 publication: its first Windows PR run passed, while the separate branch run exposed a fixed-150-millisecond polling race in the background-download lifecycle test. A deliberately delayed fictional completion reproduced the failure. The test now waits for the install operation (including verification and cleanup) with a bounded deadline; all four chat lifecycle tests and analysis passed locally. This changes test synchronization only. Both device acceptance results remain valid; refreshed CI checks accompany the follow-up commit.
+
+## Memory shown unscored — 2026-10-09
+
+The Memory bar now reads “Not scored”, and “How ratings work” states the [measured working memory](../evaluation/resource-measurement-2026-10-09.md) (Apple 0.28 GB, Qwen 0.40 GB) and that Qwen also maps its 2.08 GB weights while answering. Battery still reads “Not measured”.
