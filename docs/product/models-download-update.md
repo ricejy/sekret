@@ -76,3 +76,19 @@ PR #50 publication: its first Windows PR run passed, while the separate branch r
 ## Memory shown unscored — 2026-10-09
 
 The Memory bar now reads “Not scored”, and “How ratings work” states the [measured working memory](../evaluation/resource-measurement-2026-10-09.md) (Apple 0.28 GB, Qwen 0.40 GB) and that Qwen also maps its 2.08 GB weights while answering. Battery still reads “Not measured”.
+
+## Many models — 2026-11-15 (ADR 0006)
+
+The Models screen, store and downloader now support many optional models, with no change to what is offered yet. Entries join per phase, after each passes a phone smoke test.
+
+- **Catalogue.** Each entry has a kind (chat, voice input, read aloud) and a runtime (Apple, llama.cpp, FluidAudio). It lists every pinned file with its exact bytes, SHA-256 and role, and carries its licence and credit. A chat entry from llama.cpp also has a runtime profile, which supplies its turn provenance: quantization, template, context and output cap. The pins researched for the shortlist are in [model-expansion-artifacts-2026-11-15.json](../evaluation/model-expansion-artifacts-2026-11-15.json).
+- **Store.** Each model has its own store and its own folder, `reviewed-models/<model-id>/`. Files keep their repository layout there, because speech runtimes load a folder. Each file is staged as `<sha256>.partial`, verified, then atomically renamed into place. A model is usable only when every file verifies. Verified files survive a failed or cancelled download, so a many-file model resumes. A restart reports it as "Download incomplete". Qwen3-4B keeps its original layout (`<sha256>.gguf` at the top level), so existing installs are not downloaded again.
+- **Library.** `ModelLibrary` owns every store. It runs one download at a time, matching the single native background session; a second download is refused, not queued. Erase All removes every model. A store cancels the native transfer only when that transfer is its own.
+- **Native downloader.** Dart passes each transfer's URL, bytes, SHA-256 and staging path. Native code accepts only:
+  - an `https://huggingface.co/<org>/<repo>/resolve/<40-hex commit>/…` URL;
+  - a staging path that is either the legacy file or `<model-id>/<sha256>.partial`.
+
+  The pin is stored in the task description, so a transfer that finishes while Sekret is closed is still checked. An in-flight Qwen transfer from before this update is still recognised. Hashing accepts any file Sekret owns below `reviewed-models/` that is reached without links. Storage protection now covers every nested folder and file.
+- **Selection.** Chat selection resolves the model's store by id. Voice input and read aloud are separate persisted choices (`selected-voice-input`, `selected-read-aloud`), off by default. Each needs a verified install, unless it is an Apple entry.
+- **Models screen.** Chat, Voice input and Read aloud sections appear once more than one kind is offered. Download consent, information and Switch & remove are generic: they take the name, size, licence, credit and attribution from the entry. New entries carry a "New" chip and show "Not measured".
+- **Info.plist.** Adds microphone and speech-recognition usage descriptions for the voice-input phase.

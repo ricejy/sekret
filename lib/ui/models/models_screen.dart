@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 import '../../core/models/model_catalogue.dart';
+import '../../core/models/model_library.dart';
 import '../../core/models/model_ratings.dart';
 import '../../core/models/model_store.dart';
 import '../../core/models/model_selection.dart';
@@ -17,14 +18,18 @@ class ModelsScreen extends StatefulWidget {
     super.key,
     required this.model,
     required this.openSystemSettings,
-    this.store,
+    this.library,
     this.selection,
     this.supportsLocalModel,
+    this.catalogue = ModelCatalogue.entries,
   });
 
   final LlmBackend model;
   final Future<void> Function() openSystemSettings;
-  final ModelStore? store;
+  final ModelLibrary? library;
+
+  /// Reviewed entries to offer; tests pass a fixture catalogue.
+  final List<CatalogueModel> catalogue;
   final ModelSelection? selection;
   final Future<bool> Function()? supportsLocalModel;
 
@@ -43,13 +48,14 @@ class _ModelsScreenState extends State<ModelsScreen>
   bool _working = false;
   bool? _localSupported;
   String? _operationError;
+  ModelKind _kind = ModelKind.chat;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _refresh();
-    widget.store?.addListener(_changed);
+    widget.library?.addListener(_changed);
     widget.selection?.addListener(_changed);
     _checkLocal();
   }
@@ -58,11 +64,11 @@ class _ModelsScreenState extends State<ModelsScreen>
   void didUpdateWidget(covariant ModelsScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.model != widget.model) _refresh();
-    if (oldWidget.store != widget.store ||
+    if (oldWidget.library != widget.library ||
         oldWidget.selection != widget.selection) {
-      oldWidget.store?.removeListener(_changed);
+      oldWidget.library?.removeListener(_changed);
       oldWidget.selection?.removeListener(_changed);
-      widget.store?.addListener(_changed);
+      widget.library?.addListener(_changed);
       widget.selection?.addListener(_changed);
       _checkLocal();
     }
@@ -77,7 +83,7 @@ class _ModelsScreenState extends State<ModelsScreen>
   void dispose() {
     _revision++;
     WidgetsBinding.instance.removeObserver(this);
-    widget.store?.removeListener(_changed);
+    widget.library?.removeListener(_changed);
     widget.selection?.removeListener(_changed);
     super.dispose();
   }
@@ -87,7 +93,7 @@ class _ModelsScreenState extends State<ModelsScreen>
   }
 
   Future<void> _checkLocal() async {
-    if (widget.store == null) return;
+    if (widget.library == null) return;
     final supported =
         await (widget.supportsLocalModel ??
             LocalModelBackend.deviceSupported)();
@@ -116,13 +122,17 @@ class _ModelsScreenState extends State<ModelsScreen>
     }
   }
 
-  Future<void> _download() async {
+  Future<void> _download(CatalogueModel model) async {
+    final size = formatModelSize(model.totalBytes);
     final approved = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: const Text('Download Qwen · 2.08 GB?'),
-        content: const Text(
-          'Hugging Face and its delivery hosts see your IP address and model choice, never chats or sources. Needs 2.62 GB free; Wi-Fi recommended. Downloads continue while locked. Return to Sekret for verification. Cancel discards progress.',
+        title: Text('Download ${model.name}?'),
+        content: Text(
+          '$size${model.notice == null ? '' : ' · ${model.notice!.license}'}. '
+          'Hugging Face and its delivery hosts see your IP address and model choice, never chats or sources. '
+          'Needs ${formatModelSize(model.totalBytes + ModelStore.freeSpaceReserve)} free; Wi-Fi recommended. '
+          'Downloads continue while locked. Return to Sekret for verification. Cancel discards progress.',
         ),
         actions: [
           CupertinoDialogAction(
@@ -137,23 +147,21 @@ class _ModelsScreenState extends State<ModelsScreen>
       ),
     );
     if (approved != true || !mounted) return;
-    await _run(() async {
-      final store = widget.store!;
-      if (!store.initialized) await store.initialize();
-      await store.install();
-    });
+    await _run(() => widget.library!.install(model.id));
   }
 
-  Future<void> _remove() async {
-    final switchesModel = widget.selection?.selected == ModelCatalogue.qwen.id;
+  Future<void> _remove(CatalogueModel model) async {
+    final selection = widget.selection;
+    final chat = model.kind == ModelKind.chat;
+    final switchesModel = selection?.selectedFor(model.kind) == model.id;
     final approved = await showCupertinoDialog<bool>(
       context: context,
       builder: (context) => CupertinoAlertDialog(
         title: const Text('Remove downloaded model?'),
         content: Text(
-          '${switchesModel ? 'Switch to Apple Intelligence and remove Qwen’s downloaded files? ' : ''}'
-          '${switchesModel && _availability is! Available ? 'Apple Intelligence is not ready; chat will be unavailable until it is ready or you select another available model. ' : ''}'
-          'Your chats and Knowledge Vault stay intact. You can download Qwen again later.',
+          '${switchesModel ? (chat ? 'Switch to Apple Intelligence and remove ${model.name}’s downloaded files? ' : 'Turn off ${model.name} and remove its downloaded files? ') : ''}'
+          '${switchesModel && chat && _availability is! Available ? 'Apple Intelligence is not ready; chat will be unavailable until it is ready or you select another available model. ' : ''}'
+          'Your chats and Knowledge Vault stay intact. You can download ${model.name} again later.',
         ),
         actions: [
           CupertinoDialogAction(
@@ -170,25 +178,29 @@ class _ModelsScreenState extends State<ModelsScreen>
     );
     if (approved != true || !mounted) return;
     await _run(() async {
-      final selection = widget.selection;
-      if (selection?.selected == ModelCatalogue.qwen.id) {
+      if (selection?.selectedFor(model.kind) == model.id) {
         // Never remove an active lease or silently change the model. If the
         // choice changed while the dialog was open, ask again next time.
         if (!switchesModel) throw StateError('Model selection changed');
-        await selection!.select(ModelCatalogue.apple.id);
+        if (chat) {
+          await selection!.select(ModelCatalogue.apple.id);
+        } else {
+          await selection!.choose(model.kind, null);
+        }
       }
-      await widget.store!.remove();
+      await widget.library!.store(model.id)!.remove();
     });
   }
 
-  Future<void> _licenses() => _run(() async {
-    final qwen = await rootBundle.loadString(
-      'assets/licenses/Qwen-Apache-2.0.txt',
-    );
-    final runtime = await rootBundle.loadString(
-      'assets/licenses/llama-MIT.txt',
-    );
+  Future<void> _licenses(CatalogueModel model) => _run(() async {
+    final notice = model.notice;
+    final runtime = ModelCatalogue.runtimeNotices[model.runtime];
+    final texts = [
+      for (final asset in [...?notice?.assets, ?runtime?.asset])
+        await rootBundle.loadString(asset),
+    ];
     if (!mounted) return;
+    final files = model.artifacts;
     await Navigator.of(context).push<void>(
       CupertinoPageRoute(
         builder: (_) => CupertinoPageScaffold(
@@ -199,12 +211,14 @@ class _ModelsScreenState extends State<ModelsScreen>
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
               child: Text(
-                'Text chat only: no images or Knowledge Vault answers. Runs entirely on this iPhone after download. Answers may stop if the phone gets too hot. To remove it while it is selected, switch to Apple Intelligence first.\n\n'
-                'License and provenance\n\nQwen3-4B-Instruct-2507 by Qwen\nQ3_K_M quantization by Unsloth\n'
-                'Publisher license revision: cdbee75f17c01a7cc42f958dc650907174af0554\n'
-                'Artifact revision: ${ModelCatalogue.qwen.artifact!.revision}\n'
-                'SHA-256: ${ModelCatalogue.qwen.artifact!.sha256}\n\n$qwen\n\n'
-                'llama.cpp b11429 · d81235049384534c167caea52b85a694f6103d14\n\n$runtime',
+                '${model.summary} To remove it while it is selected, switch away from it first.\n\n'
+                'License and provenance\n\n'
+                '${notice == null ? '' : '${notice.credit}\nLicense: ${notice.license}\n'}'
+                '${notice?.attribution == null ? '' : '${notice!.attribution}\n'}'
+                'Artifact revision: ${files.first.revision}\n'
+                '${files.length == 1 ? 'SHA-256: ${files.single.sha256}' : '${files.length} files · ${formatModelSize(model.totalBytes)}, each checked by SHA-256'}\n\n'
+                '${texts.isEmpty ? '' : texts.first}'
+                '${runtime == null ? '' : '\n\n${runtime.credit}\n\n${texts.last}'}',
               ),
             ),
           ),
@@ -248,14 +262,16 @@ class _ModelsScreenState extends State<ModelsScreen>
     }
   }
 
-  Future<void> _appleInfo() => showCupertinoDialog<void>(
+  Future<void> _appleInfo(CatalogueModel model) => showCupertinoDialog<void>(
     context: context,
     builder: (context) => CupertinoAlertDialog(
-      title: const Text('Apple Intelligence'),
+      title: Text(model.name),
       content: Text(
-        'Built into iOS and runs on this iPhone. Sekret does not download or remove it.\n\n'
-        'Answers text chats and Knowledge Vault questions. On iOS 27 it can also answer one question about a photo; it may misread small or cut-off text and does not count objects.\n\n'
-        'The system model may change with iOS updates.',
+        model.kind == ModelKind.chat
+            ? '${model.summary}\n\n'
+                  'Answers text chats and Knowledge Vault questions. On iOS 27 it can also answer one question about a photo; it may misread small or cut-off text and does not count objects.\n\n'
+                  'The system model may change with iOS updates.'
+            : model.summary,
       ),
       actions: [
         CupertinoDialogAction(
@@ -282,8 +298,15 @@ class _ModelsScreenState extends State<ModelsScreen>
 
   @override
   Widget build(BuildContext context) {
-    final models = ModelCatalogue.entries.where(
-      (model) => model.name.toLowerCase().contains(_query.trim().toLowerCase()),
+    final kinds = [
+      for (final kind in ModelKind.values)
+        if (widget.catalogue.any((model) => model.kind == kind)) kind,
+    ];
+    final kind = kinds.contains(_kind) ? _kind : ModelKind.chat;
+    final models = widget.catalogue.where(
+      (model) =>
+          model.kind == kind &&
+          model.name.toLowerCase().contains(_query.trim().toLowerCase()),
     );
     return CupertinoPageScaffold(
       backgroundColor: SekretBrand.background,
@@ -298,6 +321,26 @@ class _ModelsScreenState extends State<ModelsScreen>
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
             children: [
               _intro(),
+              if (kinds.length > 1) ...[
+                const SizedBox(height: 16),
+                CupertinoSlidingSegmentedControl<ModelKind>(
+                  groupValue: kind,
+                  onValueChanged: (value) {
+                    if (value != null) setState(() => _kind = value);
+                  },
+                  children: {
+                    for (final kind in kinds)
+                      kind: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: Text(switch (kind) {
+                          ModelKind.chat => 'Chat',
+                          ModelKind.voiceInput => 'Voice input',
+                          ModelKind.readAloud => 'Read aloud',
+                        }),
+                      ),
+                  },
+                ),
+              ],
               const SizedBox(height: 16),
               CupertinoSearchTextField(
                 placeholder: 'Search models',
@@ -395,25 +438,32 @@ class _ModelsScreenState extends State<ModelsScreen>
   );
 
   Widget _modelRow(CatalogueModel model) {
-    final apple = model.kind == CatalogueModelKind.appleManaged;
+    final apple = model.runtime == ModelRuntime.apple;
+    final chat = model.kind == ModelKind.chat;
     final photos = model.capabilities.contains(ModelCapability.photoQuestions);
     final ratings = ModelRatings.forModel(model.id);
-    final store = widget.store;
+    final store = widget.library?.store(model.id);
     final state = store?.state;
     final installed = state?.phase == ModelInstallPhase.installed;
-    final selected = widget.selection?.selected == model.id;
+    final size = formatModelSize(model.totalBytes);
+    final supported =
+        model.runtime != ModelRuntime.llamaCpp || _localSupported == true;
+    final selection = widget.selection;
+    final selected = selection?.selectedFor(model.kind) == model.id;
     final active =
-        selected && (apple || (widget.selection?.hasLocalLease ?? false));
-    final busy = _working || (widget.selection?.busy ?? false);
+        selected && (!chat || apple || (selection?.hasLocalLease ?? false));
+    final busy = _working || (selection?.busy ?? false);
     final selectable =
         !busy &&
-        !active &&
-        widget.selection != null &&
+        selection != null &&
+        (chat ? !active : true) &&
         (apple
-            ? _availability is Available
-            : installed && _localSupported == true);
+            ? (!chat || _availability is Available)
+            : installed && supported);
     final status = apple
-        ? (_checking
+        ? (!chat
+              ? 'Built into iOS'
+              : _checking
               ? 'Checking readiness…'
               : _error ??
                     (_availability is Available
@@ -423,16 +473,16 @@ class _ModelsScreenState extends State<ModelsScreen>
         ? 'Not available in this version'
         : switch (state!.phase) {
             ModelInstallPhase.absent =>
-              _localSupported == false
+              model.runtime == ModelRuntime.llamaCpp && _localSupported == false
                   ? 'Device not supported'
-                  : 'Open model · 2.08 GB download',
+                  : 'Open model · $size download',
             ModelInstallPhase.downloading =>
-              'Downloading · ${(100 * state.receivedBytes / store.model.artifact!.bytes).clamp(0, 100).toStringAsFixed(0)}%',
+              'Downloading · ${(100 * state.receivedBytes / model.totalBytes).clamp(0, 100).toStringAsFixed(0)}%',
             ModelInstallPhase.verifying => 'Verifying…',
             ModelInstallPhase.installed =>
-              selected && !active
+              (selected && !active) || (!selected && !chat)
                   ? 'Downloaded · Tap the circle to use'
-                  : 'Open model · 2.08 GB download',
+                  : 'Open model · $size download',
             ModelInstallPhase.removing => 'Removing…',
             ModelInstallPhase.failed => state.message ?? 'Download failed',
           };
@@ -460,7 +510,14 @@ class _ModelsScreenState extends State<ModelsScreen>
                 child: CupertinoButton(
                   padding: const EdgeInsets.all(10),
                   onPressed: selectable
-                      ? () => _run(() => widget.selection!.select(model.id))
+                      ? () => _run(
+                          () => chat
+                              ? selection.select(model.id)
+                              : selection.choose(
+                                  model.kind,
+                                  selected ? null : model.id,
+                                ),
+                        )
                       : null,
                   child: Icon(
                     selected
@@ -479,12 +536,38 @@ class _ModelsScreenState extends State<ModelsScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        model.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Wrap(
+                        spacing: 8,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            model.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          if (model.isNew)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: SekretBrand.accent.withValues(
+                                  alpha: 0.12,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Text(
+                                'New',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: SekretBrand.accent,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                       const SizedBox(height: 5),
                       Semantics(
@@ -504,7 +587,7 @@ class _ModelsScreenState extends State<ModelsScreen>
               _icon(
                 'About ${model.name}',
                 CupertinoIcons.info_circle,
-                apple ? _appleInfo : _licenses,
+                () => apple ? _appleInfo(model) : _licenses(model),
               ),
             ],
           ),
@@ -550,19 +633,34 @@ class _ModelsScreenState extends State<ModelsScreen>
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Icon(
-                        photos
-                            ? CupertinoIcons.photo
-                            : CupertinoIcons.textformat,
+                        switch (model.kind) {
+                          ModelKind.voiceInput => CupertinoIcons.mic,
+                          ModelKind.readAloud => CupertinoIcons.speaker_2,
+                          ModelKind.chat =>
+                            photos
+                                ? CupertinoIcons.photo
+                                : CupertinoIcons.textformat,
+                        },
                         size: 18,
                         color: SekretBrand.secondary,
-                        semanticLabel: photos
-                            ? 'Photo questions supported on iOS 27'
-                            : 'Text only; no photo questions',
+                        semanticLabel: switch (model.kind) {
+                          ModelKind.voiceInput => 'Turns speech into text',
+                          ModelKind.readAloud => 'Reads answers aloud',
+                          ModelKind.chat =>
+                            photos
+                                ? 'Photo questions supported on iOS 27'
+                                : 'Text only; no photo questions',
+                        },
                       ),
                     ),
                     ExcludeSemantics(
                       child: Text(
-                        photos ? 'Text and photos (iOS 27)' : 'Text only',
+                        switch (model.kind) {
+                          ModelKind.voiceInput => 'Speech to text',
+                          ModelKind.readAloud => 'Text to speech',
+                          ModelKind.chat =>
+                            photos ? 'Text and photos (iOS 27)' : 'Text only',
+                        },
                         style: const TextStyle(
                           fontSize: 12,
                           color: SekretBrand.secondary,
@@ -572,7 +670,7 @@ class _ModelsScreenState extends State<ModelsScreen>
                   ],
                 ),
               ),
-              if (apple) ...[
+              if (apple && chat) ...[
                 CupertinoButton(
                   onPressed: _checking || _availability is Available
                       ? null
@@ -604,12 +702,12 @@ class _ModelsScreenState extends State<ModelsScreen>
                   )
                 else if (!installed)
                   CupertinoButton(
-                    onPressed: busy || _localSupported != true
+                    onPressed: busy || !supported
                         ? null
-                        : _download,
-                    child: const Text(
-                      'Download · 2.08 GB',
-                      style: TextStyle(fontSize: 13),
+                        : () => _download(model),
+                    child: Text(
+                      'Download · $size',
+                      style: const TextStyle(fontSize: 13),
                     ),
                   ),
                 if (!state.busy &&
@@ -617,7 +715,7 @@ class _ModelsScreenState extends State<ModelsScreen>
                   _icon(
                     'Remove downloaded files',
                     CupertinoIcons.trash,
-                    busy ? null : _remove,
+                    busy ? null : () => _remove(model),
                   ),
               ],
             ],
@@ -684,4 +782,11 @@ class _ModelsScreenState extends State<ModelsScreen>
       ),
     ),
   );
+}
+
+/// Decimal units, as iOS Settings shows storage.
+String formatModelSize(int bytes) {
+  if (bytes >= 1000000000) return '${(bytes / 1e9).toStringAsFixed(2)} GB';
+  if (bytes >= 1000000) return '${(bytes / 1e6).toStringAsFixed(0)} MB';
+  return '<1 MB';
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:sekret/core/models/model_library.dart';
 import 'package:sekret/core/models/model_store.dart';
 import 'model_store_test.dart' show Policy, Transport, fixture;
 import 'app_protection_test.dart' show FakeDeviceProtection;
@@ -83,7 +84,7 @@ void main() {
         engine,
         AppleFoundationModels(events: const Stream.empty()),
         device: FakeDeviceProtection(),
-        modelStore: store,
+        modelLibrary: ModelLibrary(directory: store.directory, stores: [store]),
       );
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pumpWidget(SekretChatApp(openResources: () async => app));

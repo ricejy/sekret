@@ -15,7 +15,8 @@ class _Background implements BackgroundModelDownload {
   Completer<void>? gate;
   List<int> bytes = payload;
   @override
-  Future<bool> hasPending() async => pending;
+  Future<bool> hasPending(File destination) async =>
+      pending || await destination.exists();
   @override
   Future<void> cancel() async {
     cancellations++;

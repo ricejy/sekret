@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sekret/core/platform/llm_backend.dart';
 import 'package:sekret/core/models/model_catalogue.dart';
+import 'package:sekret/core/models/model_library.dart';
 import 'package:sekret/core/models/model_selection.dart';
 import 'package:sekret/core/chat/chat_engine.dart';
 import 'package:sekret/core/chat/chat_workspace.dart';
@@ -13,6 +14,8 @@ import 'package:sekret/core/storage/local_data_vault.dart';
 import 'package:sekret/ui/models/models_screen.dart';
 import 'package:sekret/ui/sekret_brand.dart';
 import 'package:sekret/core/models/model_store.dart';
+import 'model_library_test.dart'
+    show PathTransport, readAloudFixture, voiceFixture;
 import 'model_store_test.dart' show Policy, Transport, fixture;
 
 class _Model implements LlmBackend {
@@ -35,10 +38,18 @@ class _Model implements LlmBackend {
   }) => const Stream.empty();
 }
 
+/// Dialogs are laid out for iPhone, not the 800×600 default test surface.
+void phoneSized(WidgetTester tester) {
+  tester.view.physicalSize = const Size(1290, 2796);
+  tester.view.devicePixelRatio = 3;
+  addTearDown(tester.view.reset);
+}
+
 void main() {
   testWidgets(
     'download requires consent, verifies, and removal requires confirmation',
     (tester) async {
+      phoneSized(tester);
       final directory = (await tester.runAsync(
         () => Directory.systemTemp.createTemp('sekret-model-ui-'),
       ))!;
@@ -59,27 +70,28 @@ void main() {
           home: ModelsScreen(
             model: _Model(),
             openSystemSettings: () async {},
-            store: store,
+            library: ModelLibrary(directory: store.directory, stores: [store]),
             supportsLocalModel: () async => true,
+            catalogue: [ModelCatalogue.apple, fixture],
           ),
         ),
       );
       await tester.pumpAndSettle();
       expect(transport.calls, 0);
       await tester.scrollUntilVisible(
-        find.text('Download · 2.08 GB'),
+        find.text('Download · <1 MB'),
         300,
         scrollable: find.byType(Scrollable).first,
       );
-      await tester.ensureVisible(find.text('Download · 2.08 GB'));
+      await tester.ensureVisible(find.text('Download · <1 MB'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Download · 2.08 GB'));
+      await tester.tap(find.text('Download · <1 MB'));
       await tester.pumpAndSettle();
       expect(find.textContaining('IP address'), findsOneWidget);
       await tester.tap(find.text('Not now'));
       await tester.pumpAndSettle();
       expect(transport.calls, 0);
-      await tester.tap(find.text('Download · 2.08 GB'));
+      await tester.tap(find.text('Download · <1 MB'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Download'));
       for (
@@ -151,6 +163,7 @@ void main() {
   testWidgets('selected Qwen removal requires explicit switch confirmation', (
     tester,
   ) async {
+    phoneSized(tester);
     final fixtureResources = (await tester.runAsync(() async {
       final directory = await Directory.systemTemp.createTemp(
         'sekret-model-selection-ui-',
@@ -176,7 +189,7 @@ void main() {
         ),
       );
       final selection = ModelSelection(
-        store: store,
+        library: ModelLibrary(directory: store.directory, stores: [store]),
         engine: engine,
         apple: apple,
       );
@@ -202,9 +215,13 @@ void main() {
         home: ModelsScreen(
           model: _Model()..status = const ModelNotReady(),
           openSystemSettings: () async {},
-          store: fixtureResources.store,
+          library: ModelLibrary(
+            directory: fixtureResources.store.directory,
+            stores: [fixtureResources.store],
+          ),
           selection: selection,
           supportsLocalModel: () async => true,
+          catalogue: [ModelCatalogue.apple, fixture],
         ),
       ),
     );
@@ -215,7 +232,7 @@ void main() {
     );
     expect(tester.widget<CupertinoButton>(selectQwen).onPressed, isNotNull);
     await tester.tap(selectQwen);
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 100 && !selection.hasLocalLease; i++) {
       await tester.runAsync(
         () => Future<void>.delayed(const Duration(milliseconds: 5)),
       );
@@ -252,7 +269,11 @@ void main() {
     await tester.tap(trash);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Switch & remove'));
-    for (var i = 0; i < 30; i++) {
+    for (
+      var i = 0;
+      i < 100 && find.textContaining('Could not finish.').evaluate().isEmpty;
+      i++
+    ) {
       await tester.runAsync(
         () => Future<void>.delayed(const Duration(milliseconds: 5)),
       );
@@ -271,7 +292,11 @@ void main() {
     await tester.tap(trash);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Switch & remove'));
-    for (var i = 0; i < 40; i++) {
+    for (
+      var i = 0;
+      i < 100 && fixtureResources.store.state.phase != ModelInstallPhase.absent;
+      i++
+    ) {
       await tester.runAsync(
         () => Future<void>.delayed(const Duration(milliseconds: 5)),
       );
@@ -280,7 +305,7 @@ void main() {
     expect(selection.selected, ModelCatalogue.apple.id);
     expect(selection.hasLocalLease, isFalse);
     expect(fixtureResources.store.state.phase, ModelInstallPhase.absent);
-    expect(find.text('Download · 2.08 GB'), findsOneWidget);
+    expect(find.text('Download · <1 MB'), findsOneWidget);
     await tester.pumpWidget(const SizedBox.shrink());
     var cleaned = false;
     final cleanup = () async {
@@ -534,5 +559,72 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('sections separate chat, voice input and read aloud models', (
+    tester,
+  ) async {
+    phoneSized(tester);
+    // Rows only read each store's state; no files are touched.
+    final directory = Directory('/fixture/reviewed-models');
+    ModelStore store(CatalogueModel model) => ModelStore(
+      directory: directory,
+      policy: Policy(),
+      transport: PathTransport(),
+      model: model,
+    );
+    final library = ModelLibrary(
+      directory: directory,
+      stores: [store(fixture), store(voiceFixture), store(readAloudFixture)],
+    );
+    await tester.pumpWidget(
+      CupertinoApp(
+        theme: SekretBrand.theme,
+        home: ModelsScreen(
+          model: _Model(),
+          openSystemSettings: () async {},
+          library: library,
+          supportsLocalModel: () async => true,
+          catalogue: [
+            ModelCatalogue.apple,
+            fixture,
+            voiceFixture,
+            readAloudFixture,
+          ],
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    for (final label in ['Chat', 'Voice input', 'Read aloud']) {
+      expect(find.text(label), findsOneWidget);
+    }
+    expect(find.text('Qwen3-4B-Instruct-2507'), findsOneWidget);
+    expect(find.text('Fixture Voice'), findsNothing);
+
+    await tester.tap(find.text('Voice input'));
+    await tester.pumpAndSettle();
+    expect(find.text('Fixture Voice'), findsOneWidget);
+    expect(find.text('Qwen3-4B-Instruct-2507'), findsNothing);
+    expect(find.text('Fixture Reader'), findsNothing);
+    expect(find.text('New'), findsOneWidget);
+    expect(find.text('Speech to text'), findsOneWidget);
+    expect(find.text('Download · <1 MB'), findsOneWidget);
+    expect(find.text('Not measured'), findsNWidgets(3));
+
+    await tester.tap(find.text('Download · <1 MB'));
+    await tester.pumpAndSettle();
+    expect(find.text('Download Fixture Voice?'), findsOneWidget);
+    expect(find.textContaining('CC-BY-4.0'), findsOneWidget);
+    await tester.tap(find.text('Not now'));
+    await tester.pumpAndSettle();
+    expect(find.text('Download Fixture Voice?'), findsNothing);
+
+    await tester.tap(find.text('Read aloud'));
+    await tester.pumpAndSettle();
+    expect(find.text('Fixture Reader'), findsOneWidget);
+    expect(find.text('Text to speech'), findsOneWidget);
+    expect(find.text('New'), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
+    await library.close();
   });
 }

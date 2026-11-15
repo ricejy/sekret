@@ -27,7 +27,7 @@ void main() {
         calls.add(call.method);
         if (call.method == 'hasPending') return true;
         if (call.method == 'start') {
-          expect((call.arguments as Map)['sha256'], fixture.artifact!.sha256);
+          expect((call.arguments as Map)['sha256'], fixture.weights!.sha256);
         }
         if (call.method == 'status') {
           polls++;
@@ -38,10 +38,13 @@ void main() {
         }
         return null;
       });
-      expect(await transfer.hasPending(), true);
+      expect(
+        await transfer.hasPending(File('/fixture/download.partial')),
+        true,
+      );
       final progress = <int>[];
       await transfer.transfer(
-        artifact: fixture.artifact!,
+        artifact: fixture.weights!,
         destination: File('/fixture/download.partial'),
         cancel: ModelCancellation(),
         onProgress: progress.add,
@@ -68,7 +71,7 @@ void main() {
     });
     var finished = false;
     final pending = transfer.transfer(
-      artifact: fixture.artifact!,
+      artifact: fixture.weights!,
       destination: File('/fixture/download.partial'),
       cancel: cancel,
       onProgress: (_) {},
@@ -104,7 +107,7 @@ void main() {
         });
         await expectLater(
           transfer.transfer(
-            artifact: fixture.artifact!,
+            artifact: fixture.weights!,
             destination: File('/fixture/download.partial'),
             cancel: ModelCancellation(),
             onProgress: (_) {},

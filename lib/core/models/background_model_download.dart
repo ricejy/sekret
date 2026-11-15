@@ -3,10 +3,13 @@ import 'dart:io';
 import 'model_catalogue.dart';
 import 'model_download.dart';
 
-/// Transfers public, reviewed weights to the store's unverified staging file.
+/// Transfers one public, reviewed file to a store's unverified staging file.
 /// Ownership of network work survives Dart suspension and process recreation.
+/// The system session runs one transfer at a time for every model.
 abstract interface class BackgroundModelDownload {
-  Future<bool> hasPending();
+  /// Whether a transfer into [destination] is running or has completed into
+  /// it and awaits verification.
+  Future<bool> hasPending(File destination);
   Future<void> transfer({
     required ModelArtifact artifact,
     required File destination,
@@ -14,7 +17,8 @@ abstract interface class BackgroundModelDownload {
     required void Function(int) onProgress,
   });
 
-  /// Resolves only after native work can no longer publish a staging file.
+  /// Stops the transfer in flight, whichever file it is. Resolves only after
+  /// native work can no longer publish a staging file.
   Future<void> cancel();
 }
 

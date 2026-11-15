@@ -9,19 +9,28 @@ import 'package:sekret/core/models/model_download.dart';
 import 'package:sekret/core/models/model_store.dart';
 
 final payload = [1, 2, 3, 4];
+const revision = 'a06e946bb6b655725eafa393f4a9745d460374c9';
+
+/// Stands in for Qwen3-4B: same id and legacy single-file layout, tiny bytes.
 final fixture = CatalogueModel(
-  id: 'test-model',
-  name: 'Fixture',
-  kind: CatalogueModelKind.downloadable,
-  integrationReady: false,
+  id: ModelCatalogue.qwen.id,
+  name: ModelCatalogue.qwen.name,
+  kind: ModelKind.chat,
+  runtime: ModelRuntime.llamaCpp,
   capabilities: {ModelCapability.generalText},
-  artifact: ModelArtifact(
-    repository: 'test/model',
-    revision: 'pinned',
-    filename: 'test.gguf',
-    bytes: payload.length,
-    sha256: sha256.convert(payload).toString(),
-  ),
+  summary: ModelCatalogue.qwen.summary,
+  profile: ModelCatalogue.qwen.profile,
+  notice: ModelCatalogue.qwen.notice,
+  legacyStorage: true,
+  artifacts: [
+    ModelArtifact(
+      repository: 'test/model',
+      revision: revision,
+      path: 'test.gguf',
+      bytes: payload.length,
+      sha256: sha256.convert(payload).toString(),
+    ),
+  ],
 );
 
 class Policy implements ModelStoragePolicy {
@@ -133,7 +142,7 @@ void main() {
   }
 
   test('low disk and failed protection never contact network', () async {
-    policy.free = fixture.artifact!.bytes + ModelStore.freeSpaceReserve - 1;
+    policy.free = fixture.weights!.bytes + ModelStore.freeSpaceReserve - 1;
     await expectLater(store.install(), throwsStateError);
     policy.free = 1000000000;
     policy.fail = true;
@@ -251,7 +260,7 @@ void main() {
       model: fixture,
     );
     await expectLater(store.initialize(), throwsException);
-    expect(hasher.hashed.last, endsWith('${fixture.artifact!.sha256}.gguf'));
+    expect(hasher.hashed.last, endsWith('${fixture.weights!.sha256}.gguf'));
     expect(store.acquire, throwsStateError);
     await store.remove();
   });
@@ -280,7 +289,7 @@ void main() {
     ]) {
       expect(HttpsModelTransport.permits(Uri.parse(bad)), false, reason: bad);
     }
-    expect(HttpsModelTransport.permits(fixture.artifact!.downloadUri), true);
+    expect(HttpsModelTransport.permits(fixture.weights!.downloadUri), true);
     expect(
       HttpsModelTransport.permits(
         Uri.parse('https://cas-bridge.xethub.hf.co/x?signature=y'),

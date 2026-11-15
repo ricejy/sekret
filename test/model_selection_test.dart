@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sekret/core/chat/chat_engine.dart';
 import 'package:sekret/core/chat/chat_workspace.dart';
 import 'package:sekret/core/models/model_catalogue.dart';
+import 'package:sekret/core/models/model_library.dart';
 import 'package:sekret/core/models/model_selection.dart';
 import 'package:sekret/core/models/model_store.dart';
 import 'package:sekret/core/platform/apple_foundation_models.dart';
@@ -44,7 +45,11 @@ void main() {
         revision: 'test',
       ),
     );
-    selection = ModelSelection(store: store, engine: engine, apple: apple);
+    selection = ModelSelection(
+      library: ModelLibrary(directory: store.directory, stores: [store]),
+      engine: engine,
+      apple: apple,
+    );
   });
   tearDown(() async {
     await engine.dispose();
@@ -112,7 +117,10 @@ void main() {
         model: fixture,
       );
       final restored = ModelSelection(
-        store: restarted,
+        library: ModelLibrary(
+          directory: restarted.directory,
+          stores: [restarted],
+        ),
         engine: engine,
         apple: apple,
       );

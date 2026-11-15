@@ -1,0 +1,1101 @@
+{
+  "generatedAt": "2026-11-15",
+  "fluidAudio": {
+    "version": "v0.18.3",
+    "commit": "c8b41f98eae668794dd0083bbe028fe7e6585051",
+    "license": "Apache-2.0",
+    "packageURL": "https://github.com/FluidInference/FluidAudio",
+    "minimumPlatforms": "iOS 17 / macOS 14 (Package.swift); Parakeet Redux and Kokoro v3 need iOS 18",
+    "licenseFileSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "notes": "Default ModelHub downloads resolve revision main (unpinned) via ModelRegistry; Sekret should download pinned files itself and load from local directories (AsrModels.loadLocal(from:), KokoroAneManager(directory:), PocketTtsManager directory:). ModelRegistry.baseURL / repoOverrides / revisionOverrides exist if a mirror is needed. Package links a prebuilt binary target NemoTextProcessing.xcframework (text-processing-rs v0.3.1, checksum 5fa8c10d...) unless the NemoTextProcessing trait is disabled (Swift 6.2 manifest)."
+  },
+  "models": [
+    {
+      "id": "qwen3.5-4b-q3km",
+      "name": "Qwen3.5-4B Q3_K_M",
+      "kind": "chat",
+      "runtime": "llama.cpp",
+      "repository": "unsloth/Qwen3.5-4B-GGUF",
+      "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "Qwen3.5-4B-Q3_K_M.gguf",
+          "bytes": 2293388448,
+          "sha256": "d6981ab4d77ba712b48ef69d69042d75b5e39b9dce5fb5a5b054fd08e06afb95",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 78906,
+          "sha256": "28546f5fc4f22ee1b3f17b908957f17fcfa66174032136265bdb27f404bc1e6c",
+          "role": "license"
+        }
+      ],
+      "totalBytes": 2293467354,
+      "notes": "Embedded tokenizer.chat_template (per HF gguf metadata): ChatML (<|im_start|>/<|im_end|>, eos <|im_end|>), arch qwen35, ctx 262144. Thinking: generation prompt appends '<think>\\n\\n</think>\\n\\n' unless enable_thinking is true, i.e. the unsloth-embedded template defaults to NON-thinking; upstream Qwen/Qwen3.5-4B@851bf6e chat_template.jinja defaults to thinking ON (empty think only when enable_thinking=false). Sekret should always pass enable_thinking=false (or prefill the empty <think></think> block itself) rather than rely on either default. Qwen publishes no official Qwen3.5 GGUF repo (Qwen/Qwen3.5-4B-GGUF does not exist). License: tag apache-2.0; GGUF repo has no LICENSE file; retain upstream Qwen/Qwen3.5-4B@851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a/LICENSE (11544 bytes, sha256 bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a).",
+      "chatTemplate": {
+        "embedded": true,
+        "format": "chatml",
+        "disableThinking": "enable_thinking=false -> <think>\\n\\n</think>\\n\\n prefilled; embedded default is already non-thinking"
+      }
+    },
+    {
+      "id": "qwen3.5-2b-q4km",
+      "name": "Qwen3.5-2B Q4_K_M",
+      "kind": "chat",
+      "runtime": "llama.cpp",
+      "repository": "unsloth/Qwen3.5-2B-GGUF",
+      "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "Qwen3.5-2B-Q4_K_M.gguf",
+          "bytes": 1280835840,
+          "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 64059,
+          "sha256": "d6507c9243588d5526ceb08840ebd759b0d05aeb96c8aeb42e59f4727df0143a",
+          "role": "license"
+        }
+      ],
+      "totalBytes": 1280899899,
+      "notes": "Embedded tokenizer.chat_template (per HF gguf metadata): ChatML (<|im_start|>/<|im_end|>, eos <|im_end|>), arch qwen35, ctx 262144. Thinking: embedded and upstream (Qwen/Qwen3.5-2B@15852e8) templates both default to NON-thinking ('<think>\\n\\n</think>\\n\\n' unless enable_thinking=true). Retain upstream Qwen/Qwen3.5-2B@15852e8c16360a2fea060d615a32b45270f8a8fc/LICENSE (11544 bytes, sha256 bbedc3fda3305820b977265f01b8619d87570a6739de3a5582c3464840f1e57a, identical Apache-2.0 text).",
+      "chatTemplate": {
+        "embedded": true,
+        "format": "chatml",
+        "disableThinking": "default off; enable_thinking=false or omit"
+      }
+    },
+    {
+      "id": "minicpm5-2b-q4km",
+      "name": "MiniCPM5-2B Q4_K_M",
+      "kind": "chat",
+      "runtime": "llama.cpp",
+      "repository": "openbmb/MiniCPM5-2B-GGUF",
+      "revision": "8ad02b786ab81e33d465e1c80562640c55ab2877",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "MiniCPM5-2B-Q4_K_M.gguf",
+          "bytes": 1561318368,
+          "sha256": "ec2d5801640099e97d8d7e8003ad4d81f336e757811f03a26173dddf386602fd",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 112758,
+          "sha256": "aa1c0fac166d44aaf0d0529731137028252ff8207eb51e795aeca96195283879",
+          "role": "license"
+        }
+      ],
+      "totalBytes": 1561431126,
+      "notes": "Embedded chat_template: ChatML (<|im_start|>/<|im_end|>), but GGUF bos <s> / eos </s>, arch llama, ctx 131072; Sekret must also stop on <|im_end|>. Thinking: if enable_thinking is undefined NOTHING is appended (model chooses); enable_thinking=false appends '<think>\\n\\n</think>\\n\\n', true appends '<think>\\n'. Matches upstream chat_template.jinja. License: tag apache-2.0 (also on upstream); neither repo ships a LICENSE file, so README.md is the license record to retain.",
+      "chatTemplate": {
+        "embedded": true,
+        "format": "chatml",
+        "disableThinking": "enable_thinking=false (must be explicit)"
+      }
+    },
+    {
+      "id": "minicpm5-1b-q4km",
+      "name": "MiniCPM5-1B Q4_K_M",
+      "kind": "chat",
+      "runtime": "llama.cpp",
+      "repository": "openbmb/MiniCPM5-1B-GGUF",
+      "revision": "5385560dd3e232bcc3577fd9442c332cad2facbd",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "MiniCPM5-1B-Q4_K_M.gguf",
+          "bytes": 688065920,
+          "sha256": "81b64d05a23b17b34c475f42b3e72fbde62d4b92cc34541f7a8031d0752deafa",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 23879,
+          "sha256": "1e0e46b152bc2fdfdb27232bb9a7511d104a67bd8fcedc8321fb755dd68a7ea3",
+          "role": "license"
+        }
+      ],
+      "totalBytes": 688089799,
+      "notes": "Embedded chat_template: ChatML (<|im_start|>/<|im_end|>), but GGUF bos <s> / eos </s>, arch llama, ctx 131072; Sekret must also stop on <|im_end|>. Thinking: if enable_thinking is undefined NOTHING is appended (model chooses); enable_thinking=false appends '<think>\\n\\n</think>\\n\\n', true appends '<think>\\n'. Matches upstream chat_template.jinja. License: tag apache-2.0 (also on upstream); neither repo ships a LICENSE file, so README.md is the license record to retain.",
+      "chatTemplate": {
+        "embedded": true,
+        "format": "chatml",
+        "disableThinking": "enable_thinking=false (must be explicit)"
+      }
+    },
+    {
+      "id": "granite-4.1-3b-q4km",
+      "name": "Granite 4.1 3B Q4_K_M",
+      "kind": "chat",
+      "runtime": "llama.cpp",
+      "repository": "ibm-granite/granite-4.1-3b-GGUF",
+      "revision": "ab4701481089b58a082ef63cc1cee738887293ff",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 450,
+          "sha256": "2c2c51c0bd6f0884c7363b304b2fd7ac89a2db65fa07ff0e1da2b1eb82e613bb",
+          "role": "license"
+        },
+        {
+          "path": "granite-4.1-3b-Q4_K_M.gguf",
+          "bytes": 2099501664,
+          "sha256": "662b0626cd58f443baea23559b469df6576a81d349649c59413b36a9fb32eb29",
+          "role": "weights"
+        }
+      ],
+      "totalBytes": 2099502114,
+      "notes": "Official IBM GGUF. Embedded chat_template is NOT ChatML: Granite role tags <|start_of_role|>role<|end_of_role|>...<|end_of_text|> (bos=eos=<|end_of_text|>), arch granite, ctx 131072. No thinking/reasoning switch in the template (non-reasoning model; nothing to disable). Template has native 'documents' and tools system-prompt support (relevant for grounded Knowledge Vault prompts). License tag apache-2.0; no LICENSE file in GGUF or upstream repo; README.md is the license record.",
+      "chatTemplate": {
+        "embedded": true,
+        "format": "granite (start_of_role/end_of_role)",
+        "disableThinking": "n/a - no thinking mode"
+      }
+    },
+    {
+      "id": "qwen3.5-2b-mmproj-f16",
+      "name": "Qwen3.5-2B vision projector (F16)",
+      "kind": "vision",
+      "runtime": "llama.cpp",
+      "repository": "unsloth/Qwen3.5-2B-GGUF",
+      "revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "mmproj-F16.gguf",
+          "bytes": 668227264,
+          "sha256": "7035e9cb8d7c6a9681d07eef9a364783e86ea4cd73faab2eabb4f43a101830c7",
+          "role": "mmproj"
+        }
+      ],
+      "totalBytes": 668227264,
+      "notes": "Pairs with qwen3.5-2b-q4km (same repo+revision; Q4_K_M is not duplicated here). Only F16/BF16/F32 mmproj are published; F16 is the smallest (668,227,264 B vs BF16 671,372,992). No Q8 mmproj. License file: README.md listed under qwen3.5-2b-q4km. Combined text+mmproj = 1,949,063,104 B."
+    },
+    {
+      "id": "qwen3.5-4b-mmproj-f16",
+      "name": "Qwen3.5-4B vision projector (F16)",
+      "kind": "vision",
+      "runtime": "llama.cpp",
+      "repository": "unsloth/Qwen3.5-4B-GGUF",
+      "revision": "e87f176479d0855a907a41277aca2f8ee7a09523",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "mmproj-F16.gguf",
+          "bytes": 672423616,
+          "sha256": "cd88edcf8d031894960bb0c9c5b9b7e1fea6ebee02b9f7ce925a00d12891f864",
+          "role": "mmproj"
+        }
+      ],
+      "totalBytes": 672423616,
+      "notes": "Pairs with qwen3.5-4b-q3km (same repo+revision). F16 is the smallest published (672,423,616 B); no Q8 mmproj. Combined text+mmproj = 2,965,812,064 B."
+    },
+    {
+      "id": "minicpm-v-4.6-q4km",
+      "name": "MiniCPM-V 4.6 Q4_K_M + mmproj",
+      "kind": "vision",
+      "runtime": "llama.cpp",
+      "repository": "openbmb/MiniCPM-V-4.6-gguf",
+      "revision": "ac0c3e0252360919973176bf63a2dbffdc67d6bd",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "MiniCPM-V-4_6-Q4_K_M.gguf",
+          "bytes": 529101504,
+          "sha256": "6b0c74962c44bc6bf4b655b9b02c13eda9d5a0491543ae976d1ac18e4b7892e2",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 22255,
+          "sha256": "aa991c4635281d309489aece3645432288ce3ebc49b9d57fb600705e14fd9716",
+          "role": "license"
+        },
+        {
+          "path": "mmproj-model-f16.gguf",
+          "bytes": 1108746944,
+          "sha256": "ca931d861d0801d9003e50697cd764721a334107c0e0415a51168ee1938462de",
+          "role": "mmproj"
+        }
+      ],
+      "totalBytes": 1637870703,
+      "notes": "Text LLM arch qwen35 (~0.75B params), ctx 262144; only mmproj published is F16 (1,108,746,944 B, larger than the LLM). Embedded chat_template ChatML; thinking defaults ON ('<think>\\n') unless enable_thinking=false, which prefills '<think>\\n\\n</think>\\n\\n'. Upstream openbmb/MiniCPM-V-4.6 tag apache-2.0, no LICENSE file; README.md is the license record. Requires llama.cpp mtmd support for MiniCPM-V 4.6 (verify against b11429).",
+      "chatTemplate": {
+        "embedded": true,
+        "format": "chatml",
+        "disableThinking": "enable_thinking=false (default is thinking)"
+      }
+    },
+    {
+      "id": "qwen3-asr-0.6b-q8",
+      "name": "Qwen3-ASR-0.6B Q8_0 + mmproj Q8_0",
+      "kind": "stt",
+      "runtime": "llama.cpp",
+      "repository": "ggml-org/Qwen3-ASR-0.6B-GGUF",
+      "revision": "928ab958557df9aa2ef1c93e0e83c7ad0933fae2",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "Qwen3-ASR-0.6B-Q8_0.gguf",
+          "bytes": 804749248,
+          "sha256": "bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 265,
+          "sha256": "9ce5165ae78d9d2c70ca6ed63c156b68e1d31f2a0834bfcfa5244309e0ded0f3",
+          "role": "license"
+        },
+        {
+          "path": "mmproj-Qwen3-ASR-0.6B-Q8_0.gguf",
+          "bytes": 214392480,
+          "sha256": "41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d",
+          "role": "mmproj"
+        }
+      ],
+      "totalBytes": 1019141993,
+      "notes": "Only Q8_0 and bf16 are published (no smaller quant). Audio via llama.cpp mtmd (audio encoder in mmproj). Embedded template is plain ChatML (no thinking). ggml-org repo has no license tag; license taken from upstream Qwen/Qwen3-ASR-0.6B@5eb144179a02acc5e5ba31e748d22b0cf3e303b0 (tag apache-2.0, no LICENSE file there either). GGUF arch reported as qwen3vl.",
+      "chatTemplate": {
+        "embedded": true,
+        "format": "chatml",
+        "disableThinking": "n/a"
+      }
+    },
+    {
+      "id": "parakeet-tdt-0.6b-v3-coreml",
+      "name": "Parakeet TDT 0.6B v3 (Core ML, int8 default encoder)",
+      "kind": "stt",
+      "runtime": "fluidaudio",
+      "repository": "FluidInference/parakeet-tdt-0.6b-v3-coreml",
+      "revision": "7dd20fe6b1797d35f5e3307e8b1732d9a178edfe",
+      "gated": false,
+      "license": "cc-by-4.0",
+      "files": [
+        {
+          "path": "Decoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "4238c4e81ecd0dc94bd7dfbb60f7e2cc824107c1ffe0387b8607b72833dba350",
+          "role": "config"
+        },
+        {
+          "path": "Decoder.mlmodelc/coremldata.bin",
+          "bytes": 554,
+          "sha256": "18647af085d87bd8f3121c8a9b4d4564c1ede038dab63d295b4e745cf2d7fb99",
+          "role": "config"
+        },
+        {
+          "path": "Decoder.mlmodelc/metadata.json",
+          "bytes": 3427,
+          "sha256": "a39e93cd8371b8ded92635c7804fcd0590f0d1dd9415c6d19a0484be073077d9",
+          "role": "config"
+        },
+        {
+          "path": "Decoder.mlmodelc/model.mil",
+          "bytes": 13110,
+          "sha256": "ef2a0a281695398a62fde86ac269c68f73d5b578d7ed3b31f2ba91a2d1ea1f35",
+          "role": "config"
+        },
+        {
+          "path": "Decoder.mlmodelc/weights/weight.bin",
+          "bytes": 23604992,
+          "sha256": "48adf0f0d47c406c8253d4f7fef967436a39da14f5a65e66d5a4b407be355d41",
+          "role": "weights"
+        },
+        {
+          "path": "Encoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "42e638870d73f26b332918a3496ce36793fbb413a81cbd3d16ba01328637a105",
+          "role": "config"
+        },
+        {
+          "path": "Encoder.mlmodelc/coremldata.bin",
+          "bytes": 485,
+          "sha256": "d48034a167a82e88fc3df64f60af963ab3983538271175b8319e7d5720a0fb86",
+          "role": "config"
+        },
+        {
+          "path": "Encoder.mlmodelc/metadata.json",
+          "bytes": 2921,
+          "sha256": "da24da9cca943fb29d7fa8e376d57fca7cb3aa08ca51b956b0b0e56813f087e9",
+          "role": "config"
+        },
+        {
+          "path": "Encoder.mlmodelc/model.mil",
+          "bytes": 959769,
+          "sha256": "ed7b19156ca29fa7dfd6891deb9fda4b0e8893f68597c985d135736546a43808",
+          "role": "config"
+        },
+        {
+          "path": "Encoder.mlmodelc/weights/weight.bin",
+          "bytes": 445187200,
+          "sha256": "e2020f323703477a5b21d7c2d282c403e371afb5962e79877e3033e73ba6f421",
+          "role": "weights"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "26def4bf73dd56d29dee21c8ef97cb8969e62f6120ed1adc91e46828e2737b6c",
+          "role": "config"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/coremldata.bin",
+          "bytes": 521,
+          "sha256": "f5fc08b741400f0088492c9e839418b1e18522f19cba28d361dd030c5f398342",
+          "role": "config"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/metadata.json",
+          "bytes": 3453,
+          "sha256": "d9307211b9a37e0f0ac260c7660b1571a3de25841035cfdf9b58fd40425f890f",
+          "role": "config"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/model.mil",
+          "bytes": 11775,
+          "sha256": "be60732943389a047175111a83f8839f3eb39d4803adafa828a0871b2f39818d",
+          "role": "config"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/weights/weight.bin",
+          "bytes": 12642764,
+          "sha256": "4e0e63d840032f7f07ddb1d64446051166281e5491bf22da8a945c41f6eedb3e",
+          "role": "weights"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "c9beeb989c8d66f8be11df59bc6df277ec76cee404f6865b46243835ef562f6d",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/coremldata.bin",
+          "bytes": 486,
+          "sha256": "dbde3f2300842c1fd51ef3ff948a0bcffe65ffd2dca10707f2509f32c1d65b1d",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/metadata.json",
+          "bytes": 2841,
+          "sha256": "2a98699e22d279dd37fa1d238aeb1c6db1df0d6fad687775324157689d8f3acf",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/model.mil",
+          "bytes": 28181,
+          "sha256": "4b8518a956450fec57f06c2a21bdffc26973f7f1fa6842fb38fe917f896b6b93",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/weights/weight.bin",
+          "bytes": 491072,
+          "sha256": "129b76e3aeafa8afa3ea76d995b964b145fe83700d579f6ff42c4c38fa0968ea",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 4285,
+          "sha256": "4155baa7d7d6f0ada748e1db3c1b91d18c9f7eb7155efc1abfbbe9d4a6507712",
+          "role": "license"
+        },
+        {
+          "path": "config.json",
+          "bytes": 475,
+          "sha256": "97f19ecccd0fdc730d76fb918090fa8bc64bce8ea4ad43715d5e9c2c7350db66",
+          "role": "config"
+        },
+        {
+          "path": "parakeet_vocab.json",
+          "bytes": 151122,
+          "sha256": "7ec60e05f1b24480736ec0eed40900f4626bce1fa9a60fd700ec7e2a59198735",
+          "role": "tokenizer"
+        }
+      ],
+      "totalBytes": 483110405,
+      "notes": "FluidAudio v0.18.3 ModelNames.ASR.requiredModelsV3(precision: .int8) = Preprocessor, Encoder, Decoder, JointDecisionv3 .mlmodelc + parakeet_vocab.json (config.json is swept in by ModelHub). '.int8' (default) is the original 6-bit-LUT palettized Encoder.mlmodelc (445,187,200 B weights); opt-in '.int8-v2' = Encoder_v2.mlmodelc (594,211,328 B weights, fixes token corruption issue #760); '.int4' = EncoderInt4.mlmodelc (297,912,320 B). Load offline with AsrModels.loadLocal(from: <dir>, version: .v3). Base model nvidia/parakeet-tdt-0.6b-v3 cc-by-4.0 (attribution required); no LICENSE file, README.md retained."
+    },
+    {
+      "id": "parakeet-redux-coreml",
+      "name": "Parakeet Redux (Core ML)",
+      "kind": "stt",
+      "runtime": "fluidaudio",
+      "repository": "FluidInference/parakeet-redux-coreml",
+      "revision": "8c5ef97a29cd120dc76b354b3f22b7fec3b486f9",
+      "gated": false,
+      "license": "cc-by-4.0",
+      "files": [
+        {
+          "path": "Decoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "7f24e7248d57024c6f1c5a2ea306f4a6a89db45a363218523bb6410c4b1aecf0",
+          "role": "config"
+        },
+        {
+          "path": "Decoder.mlmodelc/coremldata.bin",
+          "bytes": 560,
+          "sha256": "422da51d983e93a3e48cd6d46a17d6c32844452414c8e242fb0caaca2b8af5ed",
+          "role": "config"
+        },
+        {
+          "path": "Decoder.mlmodelc/model.mil",
+          "bytes": 13110,
+          "sha256": "956f600207f88396017ca5c96cfa3acd5bfee60835a5b44b762e033a8fb28955",
+          "role": "config"
+        },
+        {
+          "path": "Decoder.mlmodelc/weights/weight.bin",
+          "bytes": 23604992,
+          "sha256": "6c6c88c23ee5492a6b229e8cc636ddadb2b01ae0dd559d9cb63123bebf507d77",
+          "role": "weights"
+        },
+        {
+          "path": "Encoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "7862e972e09315df099d4bfd320743bf106acbf7fe4343317f9de45b0635d7b7",
+          "role": "config"
+        },
+        {
+          "path": "Encoder.mlmodelc/coremldata.bin",
+          "bytes": 506,
+          "sha256": "ca0b212fe3c06c3ccd35e508fa61e4dfaad19dd0c55b82e4f5bf8711e7758fd9",
+          "role": "config"
+        },
+        {
+          "path": "Encoder.mlmodelc/model.mil",
+          "bytes": 965906,
+          "sha256": "165487e314ed93c4a44dfec99d57be4e436e7c3dba6eef49fd3f0daf9de6d0d4",
+          "role": "config"
+        },
+        {
+          "path": "Encoder.mlmodelc/weights/weight.bin",
+          "bytes": 182389312,
+          "sha256": "adbb5550dc6488717d3a1407b53122fbdb1af5e99c330ee20f8d8cfd9ec49252",
+          "role": "weights"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "fc857a756b8c9c9f31aa9e1062766cc0a82ac035ef369d6e1cbe97184921479c",
+          "role": "config"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/coremldata.bin",
+          "bytes": 592,
+          "sha256": "611ea653e2adede7cc1cfe70da36296844f97e95e2c7dd961d45230e5599389d",
+          "role": "config"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/model.mil",
+          "bytes": 11777,
+          "sha256": "791b3c3cf3eb2079c84623fc880f6bba008d1366e5f8b03e9a8ed8bd4d7194a0",
+          "role": "config"
+        },
+        {
+          "path": "JointDecisionv3.mlmodelc/weights/weight.bin",
+          "bytes": 12642764,
+          "sha256": "73b0288acd115fc4c36038f66b6cbf49233182488febf5d8c787bea4009535f7",
+          "role": "weights"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "c9beeb989c8d66f8be11df59bc6df277ec76cee404f6865b46243835ef562f6d",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/coremldata.bin",
+          "bytes": 486,
+          "sha256": "dbde3f2300842c1fd51ef3ff948a0bcffe65ffd2dca10707f2509f32c1d65b1d",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/metadata.json",
+          "bytes": 2841,
+          "sha256": "2a98699e22d279dd37fa1d238aeb1c6db1df0d6fad687775324157689d8f3acf",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/model.mil",
+          "bytes": 28181,
+          "sha256": "4b8518a956450fec57f06c2a21bdffc26973f7f1fa6842fb38fe917f896b6b93",
+          "role": "config"
+        },
+        {
+          "path": "Preprocessor.mlmodelc/weights/weight.bin",
+          "bytes": 491072,
+          "sha256": "129b76e3aeafa8afa3ea76d995b964b145fe83700d579f6ff42c4c38fa0968ea",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 4972,
+          "sha256": "be1a6e9deef8036b1eb6095b232fa9602032f4a1a5bac0e09f4918adad13e2db",
+          "role": "license"
+        },
+        {
+          "path": "config.json",
+          "bytes": 458,
+          "sha256": "9b7d788ff3c1970c18a0c91ba1f3e0cc8d8123032dc7b6cd7da70629c4bef2e5",
+          "role": "config"
+        },
+        {
+          "path": "parakeet_vocab.json",
+          "bytes": 151122,
+          "sha256": "7ec60e05f1b24480736ec0eed40900f4626bce1fa9a60fd700ec7e2a59198735",
+          "role": "tokenizer"
+        }
+      ],
+      "totalBytes": 220309623,
+      "notes": "Same file contract as v3 with a single encoder build (requiredModelsV3()). AsrModelVersion.redux requires iOS 18 / macOS 15 (compressed encoder uses iOS 18 Core ML ops). Repo also ships parakeet_v3_vocab.json (identical size), not needed. Base moondream/parakeet-redux cc-by-4.0; README.md retained."
+    },
+    {
+      "id": "kokoro-82m-coreml-en",
+      "name": "Kokoro-82M (Core ML, KokoroAne legacy 7-stage, English)",
+      "kind": "tts",
+      "runtime": "fluidaudio",
+      "repository": "FluidInference/kokoro-82m-coreml",
+      "revision": "51c072023b254cd02368102ab88bcfbff6cad4cd",
+      "gated": false,
+      "license": "apache-2.0",
+      "files": [
+        {
+          "path": "ANE/KokoroAlbert.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "14a61873d8759a38b79c93f9021ae865f408f56301209a0168dbfc2283265ccd",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlbert.mlmodelc/coremldata.bin",
+          "bytes": 433,
+          "sha256": "70b6d2f8429229f6800dda9480341669f7ac0eabf05a82934d8632ab2b4b63a6",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlbert.mlmodelc/metadata.json",
+          "bytes": 2480,
+          "sha256": "fe1d005481f646707a948267ac089dfb2cd2ccea7d5827a14c28587eb4c89930",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlbert.mlmodelc/model.mil",
+          "bytes": 101485,
+          "sha256": "2038154d06a20e399a8ae35ec5c9242702cb23db8dd24dde7679cd53708e4eae",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlbert.mlmodelc/weights/weight.bin",
+          "bytes": 5718848,
+          "sha256": "36089a39359b800d3e2c60e5e8ac9217d8f2d1010a8b9273192290e621f1fabc",
+          "role": "weights"
+        },
+        {
+          "path": "ANE/KokoroAlignment.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "f6074d1039a9151d0f97dc6ec9ee0cd9c7b865f1af646d718ab38b659fa84f3f",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlignment.mlmodelc/coremldata.bin",
+          "bytes": 484,
+          "sha256": "9a0fb4a536f665a052914d7f17b0e6ac80a3614f702e4be87ac0302c1143a4ea",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlignment.mlmodelc/metadata.json",
+          "bytes": 3021,
+          "sha256": "6f610d23b9f93c7f1a968d6a861efa99725a191de696bf1c3be334ead39b7f00",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlignment.mlmodelc/model.mil",
+          "bytes": 8194,
+          "sha256": "eb3a618bda0cdf95cdffab586ef5c76333d0d0a1dcb881190b3ef414f3421b3e",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroAlignment.mlmodelc/weights/weight.bin",
+          "bytes": 4128,
+          "sha256": "2e7d69128b59d615fc3d3cf85637a687235fc086b1eb136359adb11a61615f6b",
+          "role": "weights"
+        },
+        {
+          "path": "ANE/KokoroNoise_v2.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "53af6bf61482f6002bdb6e3a62f30774cde6e96411aebd888222a34b369f3d04",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroNoise_v2.mlmodelc/coremldata.bin",
+          "bytes": 440,
+          "sha256": "9911047f924b41f8b92811c32c50b7c718bd7b0c14842b3bc1b66b9ffe341a19",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroNoise_v2.mlmodelc/metadata.json",
+          "bytes": 3020,
+          "sha256": "eb3102217532d952479c6f1b04d26d7ac4cdbc59875b6a23e8aae86e5e02c2bc",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroNoise_v2.mlmodelc/model.mil",
+          "bytes": 93152,
+          "sha256": "60233949d896f15ef38aea19afda558935d7569fa77a3ca4babddd3ffe845a36",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroNoise_v2.mlmodelc/weights/weight.bin",
+          "bytes": 4580160,
+          "sha256": "1102fc2d31dfcfe3de3978a4c78b65202ff8b0a4d55a9304213bd4e8bda66bc2",
+          "role": "weights"
+        },
+        {
+          "path": "ANE/KokoroPostAlbert.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "6640044c875505382edbc361cdd56f3f1c30f082953e0f9473a31ae3f71e6c43",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroPostAlbert.mlmodelc/coremldata.bin",
+          "bytes": 556,
+          "sha256": "86de3ab0c1e8c6f8842b57bc24695a5099590c49b864e3fa2737b1fb5b15ba3b",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroPostAlbert.mlmodelc/metadata.json",
+          "bytes": 4171,
+          "sha256": "2e3be1af412a76e340120a01cd04a502666371ada86b1fdaf5a622896e0bf979",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroPostAlbert.mlmodelc/model.mil",
+          "bytes": 60047,
+          "sha256": "450b73a3b179e1702e7b2210bad008eac20d58b2d6076e3c2de76290a66e5fef",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroPostAlbert.mlmodelc/weights/weight.bin",
+          "bytes": 13806464,
+          "sha256": "e4f300a23cc2e05d38680d9fc94681cc722d445076d1d248f83255122ba091c8",
+          "role": "weights"
+        },
+        {
+          "path": "ANE/KokoroProsody_v2.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "804d7d2e9a8fed345cedb57da61bd27fdd95db22a070cfa7d42ccd4f8e80a443",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroProsody_v2.mlmodelc/coremldata.bin",
+          "bytes": 421,
+          "sha256": "db8776a4896f690fd254cdb68a4551c168411c9b3fb98219630215bc3c357986",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroProsody_v2.mlmodelc/model.mil",
+          "bytes": 73353,
+          "sha256": "e6acad9f44d70b1dba0aea6a5d25ee4edf68fe8f2933399ee81f70ace61cbc8b",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroProsody_v2.mlmodelc/weights/weight.bin",
+          "bytes": 8513664,
+          "sha256": "70eea4cd2523992fa1fea840e31ab6f4fdd69c1598e220985a2ae6ea5da1e944",
+          "role": "weights"
+        },
+        {
+          "path": "ANE/KokoroTail_v2.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "a06e4b91c2b8a8be3ff701558a5f1f6484921f948202663fe6df78f248d42222",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroTail_v2.mlmodelc/coremldata.bin",
+          "bytes": 392,
+          "sha256": "527271f6df56cc308a5f89374c92108aef7b837ab15f0ba4900d555588dbd905",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroTail_v2.mlmodelc/metadata.json",
+          "bytes": 1872,
+          "sha256": "7708ecc145eecf8e3ef5ef8979ea7a4f77d04c8da787454c6d9190e5300fc50b",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroTail_v2.mlmodelc/model.mil",
+          "bytes": 7014,
+          "sha256": "b0b8fd573bac76ba7eb85730eeb25538fc7f1c666ecbf939fd4b3a4ad4495ad7",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroTail_v2.mlmodelc/weights/weight.bin",
+          "bytes": 81088,
+          "sha256": "8ede31ec20df7d86a124287ac12d13507651e2a693e9d4f35f0e7f92cba422c7",
+          "role": "weights"
+        },
+        {
+          "path": "ANE/KokoroVocoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "1cc4f1e6436597c6d458a845570d9d0ace458813ff90f225d08e0e713496b463",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroVocoder.mlmodelc/coremldata.bin",
+          "bytes": 626,
+          "sha256": "71bac80d2f2f077fefc0d66cdc39c0faaa96540b3a6149093ef29de01b1f8764",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroVocoder.mlmodelc/metadata.json",
+          "bytes": 4331,
+          "sha256": "a8e768f151225a52476d35f6ab90805ae00f1f78b83be4ca21327029c800c183",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroVocoder.mlmodelc/model.mil",
+          "bytes": 309000,
+          "sha256": "52f2febec45094e78a5948a3a47f023be8fc57cfd48cc99e8d4c358a13674ef2",
+          "role": "config"
+        },
+        {
+          "path": "ANE/KokoroVocoder.mlmodelc/weights/weight.bin",
+          "bytes": 48889920,
+          "sha256": "6d1f96eb50218ab687b12d6d862d2ae854c12b7165c3cd9b6b5cef261ef02ff1",
+          "role": "weights"
+        },
+        {
+          "path": "ANE/LICENSE",
+          "bytes": 11339,
+          "sha256": "f29080b0389b53eb15c81fd882c3c71dcbf92b99c5d94ea51df9d7d877fd9fe4",
+          "role": "license"
+        },
+        {
+          "path": "ANE/README.md",
+          "bytes": 4813,
+          "sha256": "a7e69f9c803f7df5b6121c489b1f83b3b261fabd7ed0421d81cb26cb8e387c6f",
+          "role": "license"
+        },
+        {
+          "path": "ANE/af_heart.bin",
+          "bytes": 522240,
+          "sha256": "d583ccff3cdca2f7fae535cb998ac07e9fcb90f09737b9a41fa2734ec44a8f0b",
+          "role": "voice"
+        },
+        {
+          "path": "ANE/vocab.json",
+          "bytes": 1416,
+          "sha256": "8d65b0188b77eafc60751dac42bbac7ab5f5685074af44db91d1877b42dc1d7c",
+          "role": "tokenizer"
+        },
+        {
+          "path": "G2PDecoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "dbf1767747fdc188222d467a45b04608b396c76c71db3abb18a5fb3680ef9827",
+          "role": "config"
+        },
+        {
+          "path": "G2PDecoder.mlmodelc/coremldata.bin",
+          "bytes": 545,
+          "sha256": "607e960f19b4d9a30317a5a11869fcce84b300a909fcab2cc756c0d98e2dacd9",
+          "role": "config"
+        },
+        {
+          "path": "G2PDecoder.mlmodelc/metadata.json",
+          "bytes": 3064,
+          "sha256": "e54e98484fd60d26f22fd3c4e7fe87b0d92a5d2de1f958cc3c4bb36d4ae06a44",
+          "role": "config"
+        },
+        {
+          "path": "G2PDecoder.mlmodelc/model.mil",
+          "bytes": 19737,
+          "sha256": "fe647c598e0d9454d360b8ee49a59ae57ca147fc5330863ba84ccb90dce482ad",
+          "role": "config"
+        },
+        {
+          "path": "G2PDecoder.mlmodelc/weights/weight.bin",
+          "bytes": 828030,
+          "sha256": "cbaeb4e743359f607ab161af0c6d8a817462fdaec622ee788ef8ef952c5f8214",
+          "role": "weights"
+        },
+        {
+          "path": "G2PEncoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "cf7fbd7e7a65529b2d2bf3941e458a0ab6dff7a298bf48e205a1727c81c26a99",
+          "role": "config"
+        },
+        {
+          "path": "G2PEncoder.mlmodelc/coremldata.bin",
+          "bytes": 398,
+          "sha256": "0f14d46ca9fd06c68b4717294575b2b99449e67d40b7a2c56f926bf05cd90b11",
+          "role": "config"
+        },
+        {
+          "path": "G2PEncoder.mlmodelc/metadata.json",
+          "bytes": 2034,
+          "sha256": "c8e0cfd7f494ac1b3662ff8f1914b2b45f79ffb2791724cdc0576981996732e1",
+          "role": "config"
+        },
+        {
+          "path": "G2PEncoder.mlmodelc/model.mil",
+          "bytes": 20392,
+          "sha256": "8c617e569f37286b056dad800d862dc145be9a95fa9ed43857bb646ba199d7da",
+          "role": "config"
+        },
+        {
+          "path": "G2PEncoder.mlmodelc/weights/weight.bin",
+          "bytes": 694592,
+          "sha256": "6926bcd2827d21fec82839487b987e06f85fd8a6a5bb896bc4f6062461d014ec",
+          "role": "weights"
+        },
+        {
+          "path": "README.md",
+          "bytes": 11578,
+          "sha256": "4c937857425dc38e4400114452df4a3c4e44f9286445a674c701f5f175163915",
+          "role": "license"
+        },
+        {
+          "path": "g2p_vocab.json",
+          "bytes": 1665,
+          "sha256": "295ed64b86c2820cd665b0602ae50c6947c0e82ac643082873e0be87dca282ce",
+          "role": "tokenizer"
+        },
+        {
+          "path": "us_lexicon_cache.json",
+          "bytes": 10444631,
+          "sha256": "6b36ba313202227d6914ad32cd684a0304bd2757e9ec4158ea7bc36ec40e224e",
+          "role": "lexicon"
+        },
+        {
+          "path": "voices/af_bella.json",
+          "bytes": 2678538,
+          "sha256": "e7bdbe207b927d1e59556dcda69b976cbbdc87be5e4affeea5bf030fca80e55c",
+          "role": "voice"
+        },
+        {
+          "path": "voices/am_michael.json",
+          "bytes": 2667552,
+          "sha256": "ec6e03f1fc30c11020ade45f587a64e1b8c51c08e8ab6f59bdf089f410c2b924",
+          "role": "voice"
+        },
+        {
+          "path": "voices/bf_emma.json",
+          "bytes": 2679667,
+          "sha256": "2b7f73a1af7bd195d1c4bae834cc96d4e319e26abb4ddbe4c7c43485789dda69",
+          "role": "voice"
+        },
+        {
+          "path": "voices/bm_george.json",
+          "bytes": 2669308,
+          "sha256": "842150816a3503bdb97f9e0e96dd6dbbafc27eec5bb78957da48875cde398f10",
+          "role": "voice"
+        }
+      ],
+      "totalBytes": 105532490,
+      "notes": "FluidAudio v0.18.3 KokoroAneManager(variant: .english, version: .legacy): ModelNames.KokoroAne.requiredModels = 7 bundles under ANE/ (KokoroAlbert, KokoroPostAlbert, KokoroAlignment, KokoroProsody_v2, KokoroNoise_v2, KokoroVocoder, KokoroTail_v2) + ANE/vocab.json + ANE/af_heart.bin (default voice); English G2P from repo root (ModelNames.G2P: G2PEncoder/G2PDecoder .mlmodelc + g2p_vocab.json); us_lexicon_cache.json is a best-effort quality asset (fetched on init if absent, so ship it to avoid a network attempt). Only af_heart ships as .bin; other English voices are root voices/<name>.json converted to .bin on first use (KokoroAneVoicePack.load(fromJSON:).binaryData) - pinned here: af_bella, am_michael, bf_emma, bm_george (convert at install and write <dir>/kokoro-82m-coreml/ANE/<name>.bin). Local layout: ANE files -> <directory>/kokoro-82m-coreml/ANE/, G2P + lexicon -> <directory>/kokoro/. WARNING: FluidAudio flags iOS 26.4+ and all iOS 27 as crash-prone for Kokoro ANE (libBNNS SIGSEGV / MPSGraph abort, issues #844 #889) - likely blocker on current iOS. ANE/LICENSE (Apache-2.0, laishere/kokoro-coreml) and README.md retained."
+    },
+    {
+      "id": "pocket-tts-coreml-en",
+      "name": "Pocket TTS English (Core ML, english_2026-10, preset voices)",
+      "kind": "tts",
+      "runtime": "fluidaudio",
+      "repository": "FluidInference/pocket-tts-coreml",
+      "revision": "c2e998e269e4d4b51f74061faddb8450cd8f9a9a",
+      "gated": false,
+      "license": "cc-by-4.0",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 6789,
+          "sha256": "4bc66101950313a450c7fba294ef616f5a5f4581d63d9658e80dd4ca7a063557",
+          "role": "license"
+        },
+        {
+          "path": "encoder_recover_pinv.bin",
+          "bytes": 131072,
+          "sha256": "45f5dd6690b45600d780cde86878a935502c3fa101bbff5d06ac4499ec9e3b8d",
+          "role": "constants"
+        },
+        {
+          "path": "v2.1/english_2026-10/cond_prefill.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "64b461c467d7cc2cdcaff43010c99c69bc6b0e21efd30dea0952f7cf98552390",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/cond_prefill.mlmodelc/coremldata.bin",
+          "bytes": 1151,
+          "sha256": "42738cb5fdece5760005c15ac5159bf899b83a74cd73c105c1e33b44f070f2eb",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/cond_prefill.mlmodelc/model.mil",
+          "bytes": 228664,
+          "sha256": "a08be7d1c116b538f6a69a7fc34d515452679c333e226dd4a3204002e537996b",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/cond_prefill.mlmodelc/weights/weight.bin",
+          "bytes": 133237248,
+          "sha256": "a11f13c7d54191524ddc7042c557419c3e45996be65cad0b05ab5b8fe2fd757e",
+          "role": "weights"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/alba.safetensors",
+          "bytes": 6244152,
+          "sha256": "5850f417028fb2bf6de31e5e395e56ee7a21ac0e52ef31aebd4a6a2847d72e9c",
+          "role": "voice"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/bos_before_voice.bin",
+          "bytes": 4096,
+          "sha256": "2d05b90a2dd5dfb42f0bbb9a9b2b591f0b5a8b64d7458b93811b3c464d7c266f",
+          "role": "constants"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/bos_emb.bin",
+          "bytes": 128,
+          "sha256": "993398e25df91902674eff02af42bf0a99eddfe5d6bc064d083484360974ce19",
+          "role": "constants"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/george.safetensors",
+          "bytes": 5900088,
+          "sha256": "566330f66e20f95efd4fbea1e399e26dd84cf8e3ab1606e0114604e473dbc9fd",
+          "role": "voice"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/jane.safetensors",
+          "bytes": 7325496,
+          "sha256": "f802b7b0ce91578dc5448e1cdf4827695e64a34cc6b2f95989dc335082522887",
+          "role": "voice"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/michael.safetensors",
+          "bytes": 7128888,
+          "sha256": "9f6538650ed3b664ab847d05244f51f04db22ce7ea00e2b285f51d91d6308ce0",
+          "role": "voice"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/speaker_proj_weight.bin",
+          "bytes": 131072,
+          "sha256": "1c19babcf1e659cce6aa8d850a83c56b53f5472ada32addf9d3b3cb678be49ad",
+          "role": "constants"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/text_embed_table.bin",
+          "bytes": 16388096,
+          "sha256": "337f52cc1fe1ce97a2dd17c33b1f5bbb11f0950625cceb6642a45f3e3d2574e5",
+          "role": "constants"
+        },
+        {
+          "path": "v2.1/english_2026-10/constants_bin/tokenizer.model",
+          "bytes": 59339,
+          "sha256": "d461765ae179566678c93091c5fa6f2984c31bbe990bf1aa62d92c64d91bc3f6",
+          "role": "tokenizer"
+        },
+        {
+          "path": "v2.1/english_2026-10/flow_decoder_fused.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "74331c93e5c59f82454b71e8d9e9bbb391da72e2675008062fff066eb2044013",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/flow_decoder_fused.mlmodelc/coremldata.bin",
+          "bytes": 413,
+          "sha256": "9000e3b727ea6f9b16d969af050ddfd0153768f2500df4b14439f388f7b37a0f",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/flow_decoder_fused.mlmodelc/model.mil",
+          "bytes": 332925,
+          "sha256": "53bd03fc6359d4ceba7908faf2b3eeb6b702ca013b6999ea6e005df10c0ed267",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/flow_decoder_fused.mlmodelc/weights/weight.bin",
+          "bytes": 19012608,
+          "sha256": "0f30fe50f3c4f6f4c9aed7c323621b65a04224efb50068f9252827e80e8ee430",
+          "role": "weights"
+        },
+        {
+          "path": "v2.1/english_2026-10/flowlm_step.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "e463134d2a8609ec30abe3d0ce24b11a9e70915f01c00ccf906df5cb43acb989",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/flowlm_step.mlmodelc/coremldata.bin",
+          "bytes": 1191,
+          "sha256": "8fafa8eff99d080327e3a9eb38ae561e03c0907338a7e8accf99db1d912ad193",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/flowlm_step.mlmodelc/model.mil",
+          "bytes": 236886,
+          "sha256": "cdd4c089701ed8291775643f6ed398ba9ba46771557a5f0ea56c7dff76ee4b2e",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/flowlm_step.mlmodelc/weights/weight.bin",
+          "bytes": 152186240,
+          "sha256": "11d36b2cdf2f20f6b430ddc1d8ddb9d1e5d60aa4896e9114a28f9dc4d8a43343",
+          "role": "weights"
+        },
+        {
+          "path": "v2.1/english_2026-10/manifest.json",
+          "bytes": 572,
+          "sha256": "bc0c73f2015b0109d428fd04df0f9858b5bf345dafd69b6155e74c05d922727e",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/mimi_decoder.mlmodelc/analytics/coremldata.bin",
+          "bytes": 243,
+          "sha256": "be4199b44838e2fb199bb44b7649531d28fe847a1a6633fd9f8ca89576c5a7f8",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/mimi_decoder.mlmodelc/coremldata.bin",
+          "bytes": 1777,
+          "sha256": "9d8644e2caad1513153ac28f1ba8090fcd2facdbd5d2621bf8016186fa932bf8",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/mimi_decoder.mlmodelc/metadata.json",
+          "bytes": 16844,
+          "sha256": "aaca1b55b078095e72ee4826a94297fc070526d9f4cd3507464e7f2afaa73376",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/mimi_decoder.mlmodelc/model.mil",
+          "bytes": 107403,
+          "sha256": "f7176b3b3d800de308ac01cb83d1f3e9b555e70b44d299efd4a21c9c27eecc16",
+          "role": "config"
+        },
+        {
+          "path": "v2.1/english_2026-10/mimi_decoder.mlmodelc/weights/weight.bin",
+          "bytes": 41768256,
+          "sha256": "c93d182f9ad8c1042ec8302093aabb4e310d76616932dd12720e03b5d07f7c64",
+          "role": "weights"
+        }
+      ],
+      "totalBytes": 390452366,
+      "notes": "kyutai/pocket-tts is gated (gated=auto); FluidAudio uses ungated FluidInference/pocket-tts-coreml (cc-by-4.0, same as kyutai). FluidAudio v0.18.3 PocketTtsLanguage.english -> subdir v2.1/english_2026-10; default placement .gpu, precision .fp16 requires cond_prefill, flowlm_step, flow_decoder_fused, mimi_decoder .mlmodelc + constants_bin/. FluidAudio's own download pulls ALL of constants_bin (~30 preset voices, ~190 MB); this pin keeps text constants + 4 preset voices (alba = default, jane, michael, george); add others from the same revision as needed. speaker_proj_weight.bin and root encoder_recover_pinv.bin are only for voice cloning but FluidAudio best-effort fetches them for .english, so they are pinned to keep loads offline. int8 FlowLM alternative: flowlm_stepv2.mlmodelc (76,809,280 B weights). Pass directory: to PocketTtsManager/PocketTtsResourceDownloader.ensureModels; layout <directory>/Models/pocket-tts/v2.1/english_2026-10/. README.md retained (no LICENSE file)."
+    }
+  ]
+}

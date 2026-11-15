@@ -216,7 +216,16 @@ final class LocalModelPlugin: NSObject, FlutterPlugin, FlutterStreamHandler {
         var excluded = URLResourceValues()
         excluded.isExcludedFromBackup = true
         try root.setResourceValues(excluded)
-        let children = try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: [.isSymbolicLinkKey, .isRegularFileKey])
+        // Every model folder and file, at any depth. Links are refused, not followed.
+        var children: [URL] = []
+        var unreadable = false
+        guard let walk = FileManager.default.enumerator(
+            at: root, includingPropertiesForKeys: [.isSymbolicLinkKey], options: [],
+            errorHandler: { _, _ in unreadable = true; return false }) else {
+            throw LocalModelError.invalid("Unreadable storage")
+        }
+        for case let child as URL in walk { children.append(child) }
+        if unreadable { throw LocalModelError.invalid("Unreadable storage") }
         for var file in [root] + children {
             let values = try file.resourceValues(forKeys: [.isSymbolicLinkKey])
             guard values.isSymbolicLink != true else { throw LocalModelError.invalid("Linked model entry") }
