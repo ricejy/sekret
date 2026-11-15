@@ -9,6 +9,8 @@ import '../../core/models/model_selection.dart';
 import '../../core/models/model_download.dart';
 import '../../core/platform/local_model_backend.dart';
 import '../../core/platform/llm_backend.dart';
+import '../../core/platform/speech_recognizer.dart';
+import '../../core/speech/voice_input.dart';
 import '../sekret_brand.dart';
 import '../settings/settings_screen.dart' show modelStatus;
 
@@ -21,8 +23,13 @@ class ModelsScreen extends StatefulWidget {
     this.library,
     this.selection,
     this.supportsLocalModel,
+    this.voiceInput,
     this.catalogue = ModelCatalogue.entries,
   });
+
+  /// Checks voice-input models this iPhone can run, and asks iOS for Apple's
+  /// speech model on an explicit tap. Without it voice entries are hidden.
+  final VoiceInput? voiceInput;
 
   final LlmBackend model;
   final Future<void> Function() openSystemSettings;
@@ -50,6 +57,13 @@ class _ModelsScreenState extends State<ModelsScreen>
   String? _operationError;
   ModelKind _kind = ModelKind.chat;
 
+  /// Voice-input entries this iPhone cannot run (for example Parakeet Redux
+  /// below iOS 18); unknown until checked, and hidden meanwhile.
+  final _speechSupported = <String, bool>{};
+
+  /// Readiness of Apple-managed voice-input entries.
+  final _speech = <String, SpeechAvailability>{};
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +72,7 @@ class _ModelsScreenState extends State<ModelsScreen>
     widget.library?.addListener(_changed);
     widget.selection?.addListener(_changed);
     _checkLocal();
+    _checkSpeech();
   }
 
   @override
@@ -90,6 +105,56 @@ class _ModelsScreenState extends State<ModelsScreen>
 
   void _changed() {
     if (mounted) setState(() {});
+  }
+
+  Future<void> _checkSpeech() async {
+    final voice = widget.voiceInput;
+    if (voice == null) return;
+    for (final model in widget.catalogue) {
+      if (model.kind != ModelKind.voiceInput) continue;
+      final recognizer = voice.probe(model);
+      final supported = await recognizer.supported();
+      final availability = supported && !model.downloadable
+          ? await recognizer.availability()
+          : null;
+      if (!mounted) return;
+      setState(() {
+        _speechSupported[model.id] = supported;
+        if (availability != null) _speech[model.id] = availability;
+      });
+    }
+  }
+
+  /// iOS, not Sekret, fetches Apple's speech model, and only after this tap.
+  Future<void> _installAppleSpeech(CatalogueModel model) async {
+    final approved = await showCupertinoDialog<bool>(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: Text('Download ${model.name}?'),
+        content: const Text(
+          'iOS downloads Apple’s on-device speech model for your language. '
+          'Apple sees your IP address and the language, never chats, sources or audio. '
+          'After it downloads, speech is turned into text on this iPhone.',
+        ),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Not now'),
+          ),
+          CupertinoDialogAction(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Download'),
+          ),
+        ],
+      ),
+    );
+    if (approved != true || !mounted) return;
+    await _run(() async {
+      final recognizer = widget.voiceInput!.probe(model);
+      await recognizer.install();
+      final availability = await recognizer.availability();
+      if (mounted) setState(() => _speech[model.id] = availability);
+    });
   }
 
   Future<void> _checkLocal() async {
@@ -196,9 +261,12 @@ class _ModelsScreenState extends State<ModelsScreen>
     final notice = model.notice;
     final runtime = ModelCatalogue.runtimeNotices[model.runtime];
     final texts = [
-      for (final asset in [...?notice?.assets, ?runtime?.asset])
+      for (final asset in [...?notice?.assets])
         await rootBundle.loadString(asset),
     ];
+    final runtimeText = runtime == null
+        ? null
+        : await rootBundle.loadString(runtime.asset);
     if (!mounted) return;
     final files = model.artifacts;
     await Navigator.of(context).push<void>(
@@ -217,8 +285,8 @@ class _ModelsScreenState extends State<ModelsScreen>
                 '${notice?.attribution == null ? '' : '${notice!.attribution}\n'}'
                 'Artifact revision: ${files.first.revision}\n'
                 '${files.length == 1 ? 'SHA-256: ${files.single.sha256}' : '${files.length} files · ${formatModelSize(model.totalBytes)}, each checked by SHA-256'}\n\n'
-                '${texts.isEmpty ? '' : texts.first}'
-                '${runtime == null ? '' : '\n\n${runtime.credit}\n\n${texts.last}'}',
+                '${texts.join('\n\n')}'
+                '${runtime == null ? '' : '\n\n${runtime.credit}\n\n$runtimeText'}',
               ),
             ),
           ),
@@ -306,6 +374,9 @@ class _ModelsScreenState extends State<ModelsScreen>
     final models = widget.catalogue.where(
       (model) =>
           model.kind == kind &&
+          (kind != ModelKind.voiceInput ||
+              widget.voiceInput == null ||
+              _speechSupported[model.id] == true) &&
           model.name.toLowerCase().contains(_query.trim().toLowerCase()),
     );
     return CupertinoPageScaffold(
@@ -458,11 +529,22 @@ class _ModelsScreenState extends State<ModelsScreen>
         selection != null &&
         (chat ? !active : true) &&
         (apple
-            ? (!chat || _availability is Available)
+            ? (chat
+                  ? _availability is Available
+                  : selected || _speech[model.id] is SpeechReady)
             : installed && supported);
     final status = apple
         ? (!chat
-              ? 'Built into iOS'
+              ? switch (_speech[model.id]) {
+                  SpeechReady() => 'Built into iOS · Tap the circle to use',
+                  SpeechNeedsInstall() =>
+                    'Built into iOS · Speech model not downloaded',
+                  SpeechPermissionDenied() =>
+                    'Microphone access is off in iOS Settings',
+                  SpeechUnsupported() => 'Not available on this iPhone',
+                  null =>
+                    widget.voiceInput == null ? 'Built into iOS' : 'Checking…',
+                }
               : _checking
               ? 'Checking readiness…'
               : _error ??
@@ -693,6 +775,16 @@ class _ModelsScreenState extends State<ModelsScreen>
                       style: TextStyle(fontSize: 13),
                     ),
                   ),
+              ] else if (apple &&
+                  model.kind == ModelKind.voiceInput &&
+                  _speech[model.id] is SpeechNeedsInstall) ...[
+                CupertinoButton(
+                  onPressed: busy ? null : () => _installAppleSpeech(model),
+                  child: const Text(
+                    'Download speech model',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ),
               ] else if (store != null) ...[
                 if (state!.busy)
                   _icon(

@@ -204,6 +204,20 @@ abstract final class ModelCatalogue {
     ],
   );
 
+  /// Apple's on-device speech recognition. iOS fetches its speech model only
+  /// when the person taps Download, outside Sekret's pinned path (ADR 0006).
+  static const appleSpeech = CatalogueModel(
+    id: 'apple-speech',
+    name: 'Apple Speech',
+    kind: ModelKind.voiceInput,
+    runtime: ModelRuntime.apple,
+    capabilities: {},
+    summary:
+        'Built into iOS 26 and later. Turns what you say into text in the message field on this iPhone; nothing is sent until you tap Send. '
+        'The first time, iOS downloads Apple’s speech model for your language after you tap Download. Audio is never saved.',
+    isNew: true,
+  );
+
   /// Runtime notices shown with every model that uses that runtime.
   static const runtimeNotices = {
     ModelRuntime.llamaCpp: (
@@ -215,7 +229,7 @@ abstract final class ModelCatalogue {
   /// Every id that has ever shipped stays listed, so older chat labels and
   /// saved selections still resolve. Entries join only when their runtime
   /// integration has passed a phone smoke test.
-  static const entries = [apple, qwen];
+  static const entries = [apple, qwen, appleSpeech];
 
   static CatalogueModel? byId(String id) =>
       entries.where((model) => model.id == id).firstOrNull;
