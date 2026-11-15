@@ -92,3 +92,14 @@ The Models screen, store and downloader now support many optional models, with n
 - **Selection.** Chat selection resolves the model's store by id. Voice input and read aloud are separate persisted choices (`selected-voice-input`, `selected-read-aloud`), off by default. Each needs a verified install, unless it is an Apple entry.
 - **Models screen.** Chat, Voice input and Read aloud sections appear once more than one kind is offered. Download consent, information and Switch & remove are generic: they take the name, size, licence, credit and attribution from the entry. New entries carry a "New" chip and show "Not measured".
 - **Info.plist.** Adds microphone and speech-recognition usage descriptions for the voice-input phase.
+
+## Voice input — 2026-11-15 (Phase 3)
+
+Apple Speech is an opt-in voice-input entry. It is off by default and is not merged until it passes the airplane-mode phone check.
+
+- **Engine.** Uses Apple's SpeechAnalyzer on iOS 26 and later: SpeechTranscriber where the language supports it, otherwise DictationTranscriber. The entry is hidden on older iOS.
+- **Apple's speech model.** iOS fetches it through `AssetInventory`, and only after the person taps "Download speech model" and confirms a dialog that discloses Apple as the host. Listening never starts a download: a missing model is reported and the person is pointed to Models.
+- **Composer.** A mic button appears beside Send only while a voice-input model is chosen. The transcript is appended to what is already typed. It is never sent, and Send stays off until listening stops. The mic is disabled while a response is generating. Listening stops when the app leaves the foreground, when the app locks, on Erase All, when the chat changes, or when voice input is turned off.
+- **Privacy.** Audio is converted in memory and passed straight to the analyzer. It is never written to disk, sent anywhere, or used as Knowledge Vault evidence. Sekret asks for microphone access only, on the first tap. It does not ask for the Speech Recognition permission, whose iOS prompt mentions sending audio to Apple.
+- **Seam.** `SpeechRecognizer` (`lib/core/platform/speech_recognizer.dart`) has a fake in `lib/demo/`. `VoiceInput` leases a downloaded model's store while listening, so a later downloaded recognizer can plug in.
+- **Not in this phase.** Parakeet TDT 0.6B v3 and Parakeet Redux need the FluidAudio package. On 2026-11-15 the owner declined fetching it for now, so neither entry is offered and there is no `native/SekretSpeech` package yet. Their pins stay in the artifact manifest.

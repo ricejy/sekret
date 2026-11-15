@@ -8,6 +8,8 @@ import '../../core/chat/chat_workspace.dart';
 import '../../core/models/model_catalogue.dart';
 import '../../core/knowledge/knowledge_base.dart';
 import '../../core/platform/llm_backend.dart';
+import '../../core/platform/speech_recognizer.dart';
+import '../../core/speech/voice_input.dart';
 import '../../core/storage/local_data_vault.dart';
 import 'answer_content.dart';
 import 'chat_sheets.dart';
@@ -27,6 +29,7 @@ class ChatScreen extends StatefulWidget {
     this.onImportSource,
     this.onPickPhoto,
     this.modelRevision,
+    this.voiceInput,
   });
   final ChatWorkspace workspace;
   final ChatEngine engine;
@@ -47,6 +50,10 @@ class ChatScreen extends StatefulWidget {
   /// Picks one photo for a question in this chat; it is not imported into
   /// the Knowledge Base. Null when cancelled.
   final Future<Uint8List?> Function()? onPickPhoto;
+
+  /// Dictation into the message field; the mic shows only while a
+  /// voice-input model is chosen. A transcript is never sent automatically.
+  final VoiceInput? voiceInput;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -72,11 +79,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   Uint8List? _photo;
   final _turnPhotos = <String, Future<Uint8List?>>{};
   int _revision = 0;
+  StreamSubscription<String>? _dictation;
+  bool _startingVoice = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    widget.voiceInput?.addListener(_voiceChanged);
     _subscriptions.add(widget.workspace.changes.listen((_) => _load()));
     _subscriptions.add(
       widget.knowledge.changes.listen(
@@ -95,6 +105,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       _availability = null;
       _checkAvailability();
     }
+    if (oldWidget.voiceInput != widget.voiceInput) {
+      _cancelVoice(oldWidget.voiceInput);
+      oldWidget.voiceInput?.removeListener(_voiceChanged);
+      widget.voiceInput?.addListener(_voiceChanged);
+    }
   }
 
   @override
@@ -104,8 +119,99 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) _checkAvailability();
+    if (state == AppLifecycleState.resumed) {
+      _checkAvailability();
+    } else {
+      // Never keep the microphone open behind the app switcher or lock screen.
+      unawaited(widget.voiceInput?.stop());
+    }
   }
+
+  void _voiceChanged() {
+    if (mounted) setState(() {});
+  }
+
+  /// Stops and drops a session whose transcript must not land in this field.
+  void _cancelVoice([VoiceInput? voice]) {
+    final dictation = _dictation;
+    _dictation = null;
+    unawaited(dictation?.cancel());
+    unawaited((voice ?? widget.voiceInput)?.stop());
+  }
+
+  Future<void> _toggleVoice() async {
+    final voice = widget.voiceInput;
+    if (voice == null || _startingVoice) return;
+    if (_dictation != null) {
+      // The final transcript arrives, then the session ends.
+      await voice.stop();
+      return;
+    }
+    setState(() {
+      _startingVoice = true;
+      _error = null;
+    });
+    try {
+      final availability = await voice.availability();
+      if (!mounted || _dictation != null) return;
+      if (availability is! SpeechReady) {
+        _report(_voiceBlocker(availability));
+        return;
+      }
+      final chat = _chat?.id;
+      final typed = _input.text;
+      final prefix = typed.isEmpty || RegExp(r'\s$').hasMatch(typed)
+          ? typed
+          : '$typed ';
+      late final StreamSubscription<String> dictation;
+      void finish() {
+        if (_dictation != dictation) return;
+        _dictation = null;
+        if (mounted) setState(() {});
+      }
+
+      dictation = voice.listen().listen(
+        (transcript) {
+          if (!mounted || _dictation != dictation || _chat?.id != chat) return;
+          final text = transcript.isEmpty ? typed : '$prefix$transcript';
+          setState(
+            () => _input.value = TextEditingValue(
+              text: text,
+              selection: TextSelection.collapsed(offset: text.length),
+            ),
+          );
+        },
+        onError: (Object error) {
+          finish();
+          _report(switch (error) {
+            SpeechException(code: 'permission_denied') =>
+              'Allow microphone access for Sekret in iOS Settings to use voice input.',
+            SpeechException(code: 'not_installed') =>
+              'Download the voice-input model in Models first.',
+            SpeechException(code: 'interrupted') =>
+              'Voice input stopped because another app used the microphone.',
+            _ => 'Voice input stopped. Try again.',
+          });
+        },
+        onDone: finish,
+      );
+      _dictation = dictation;
+    } on Object {
+      _report('Voice input stopped. Try again.');
+    } finally {
+      if (mounted) setState(() => _startingVoice = false);
+    }
+  }
+
+  String _voiceBlocker(
+    SpeechAvailability availability,
+  ) => switch (availability) {
+    SpeechNeedsInstall() =>
+      'Download Apple’s speech model in Models to use voice input.',
+    SpeechPermissionDenied() =>
+      'Allow microphone access for Sekret in iOS Settings to use voice input.',
+    _ => 'This voice-input model is not available on this iPhone.',
+  };
 
   Future<void> _initialize() async {
     try {
@@ -157,6 +263,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           !_scroll.hasClients || _scroll.position.extentAfter < 100;
       setState(() {
         if (switched) {
+          _cancelVoice();
           _photo = null;
           if (_chat != null) _drafts[_chat!.id] = _input.text;
           _input.text = _drafts[chat?.id] ?? '';
@@ -197,6 +304,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     final chat = _chat;
     if (chat == null ||
         _busy ||
+        (regenerate == null && _dictation != null) ||
         _changingSources ||
         _importing ||
         _choosingSources) {
@@ -639,6 +747,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _cancelVoice();
+    widget.voiceInput?.removeListener(_voiceChanged);
     for (final subscription in _subscriptions) {
       subscription.cancel();
     }
@@ -1007,6 +1117,20 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             padding: EdgeInsets.only(bottom: 8),
             child: Text('Adding source…', style: TextStyle(fontSize: 13)),
           ),
+        if (_dictation != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Semantics(
+              liveRegion: true,
+              child: Text(
+                'Listening… Tap stop when you finish. Nothing is sent until you tap Send.',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: CupertinoColors.secondaryLabel.resolveFrom(context),
+                ),
+              ),
+            ),
+          ),
         if (_availability is! Available)
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
@@ -1067,12 +1191,37 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                   minLines: 1,
                   maxLines: 4,
                   enabled: _availability is Available,
+                  // Dictation owns the text until it stops.
+                  readOnly: _dictation != null,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (_) => setState(() {}),
                   padding: const EdgeInsets.all(12),
                 ),
               ),
             ),
+            if (widget.voiceInput?.model != null)
+              CupertinoButton(
+                padding: const EdgeInsets.all(10),
+                onPressed:
+                    _dictation != null ||
+                        (_chat != null &&
+                            !_busy &&
+                            !_startingVoice &&
+                            !_importing &&
+                            !_changingSources &&
+                            !_choosingSources &&
+                            _availability is Available)
+                    ? _toggleVoice
+                    : null,
+                child: Icon(
+                  _dictation != null
+                      ? CupertinoIcons.stop_fill
+                      : CupertinoIcons.mic,
+                  semanticLabel: _dictation != null
+                      ? 'Stop voice input'
+                      : 'Voice input',
+                ),
+              ),
             CupertinoButton(
               padding: const EdgeInsets.all(10),
               onPressed: _busy
@@ -1081,6 +1230,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                       if (mounted) setState(() {});
                     }
                   : _chat != null &&
+                        _dictation == null &&
                         !_importing &&
                         !_changingSources &&
                         !_choosingSources &&

@@ -14,36 +14,38 @@ void main() {
     sha256: digest ?? sha256.convert(utf8.encode('abc')).toString(),
   );
 
-  test(
-    'initial catalogue is Apple first and only the selected Qwen artifact',
-    () {
-      expect(ModelCatalogue.entries, [
-        ModelCatalogue.apple,
-        ModelCatalogue.qwen,
-      ]);
-      expect(ModelCatalogue.apple.artifacts, isEmpty);
-      expect(ModelCatalogue.apple.downloadable, isFalse);
-      expect(ModelCatalogue.qwen.capabilities, {ModelCapability.generalText});
-      expect(ModelCatalogue.qwen.kind, ModelKind.chat);
-      expect(ModelCatalogue.qwen.legacyStorage, isTrue);
-      expect(ModelCatalogue.qwen.artifacts, hasLength(1));
-      final artifact = ModelCatalogue.qwen.weights!;
-      expect(artifact.valid, isTrue);
-      expect(ModelCatalogue.qwen.totalBytes, artifact.bytes);
-      expect(artifact.bytes, 2075618400);
-      expect(
-        artifact.sha256,
-        '9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9',
-      );
-      expect(
-        artifact.downloadUri.toString(),
-        'https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/'
-        'a06e946bb6b655725eafa393f4a9745d460374c9/'
-        'Qwen3-4B-Instruct-2507-Q3_K_M.gguf',
-      );
-      expect(() => ModelCatalogue.entries.clear(), throwsUnsupportedError);
-    },
-  );
+  test('catalogue is Apple first, then Qwen, then opt-in voice input', () {
+    expect(ModelCatalogue.entries, [
+      ModelCatalogue.apple,
+      ModelCatalogue.qwen,
+      ModelCatalogue.appleSpeech,
+    ]);
+    expect(
+      ModelCatalogue.entries.where((model) => model.kind == ModelKind.chat),
+      [ModelCatalogue.apple, ModelCatalogue.qwen],
+    );
+    expect(ModelCatalogue.apple.artifacts, isEmpty);
+    expect(ModelCatalogue.apple.downloadable, isFalse);
+    expect(ModelCatalogue.qwen.capabilities, {ModelCapability.generalText});
+    expect(ModelCatalogue.qwen.kind, ModelKind.chat);
+    expect(ModelCatalogue.qwen.legacyStorage, isTrue);
+    expect(ModelCatalogue.qwen.artifacts, hasLength(1));
+    final artifact = ModelCatalogue.qwen.weights!;
+    expect(artifact.valid, isTrue);
+    expect(ModelCatalogue.qwen.totalBytes, artifact.bytes);
+    expect(artifact.bytes, 2075618400);
+    expect(
+      artifact.sha256,
+      '9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9',
+    );
+    expect(
+      artifact.downloadUri.toString(),
+      'https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/'
+      'a06e946bb6b655725eafa393f4a9745d460374c9/'
+      'Qwen3-4B-Instruct-2507-Q3_K_M.gguf',
+    );
+    expect(() => ModelCatalogue.entries.clear(), throwsUnsupportedError);
+  });
 
   test('artifact paths cannot leave the model folder', () {
     ModelArtifact at(String path) => ModelArtifact(

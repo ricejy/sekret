@@ -60,6 +60,9 @@ import UniformTypeIdentifiers
     ) {
       AppleVisionOcrPlugin.register(with: registrar)
     }
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "AppleSpeechPlugin") {
+      AppleSpeechPlugin.register(with: registrar)
+    }
   }
 }
 

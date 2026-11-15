@@ -12,6 +12,8 @@ import '../core/models/model_library.dart';
 import '../core/models/model_selection.dart';
 import '../core/models/model_catalogue.dart';
 import '../core/platform/local_model_backend.dart';
+import '../core/platform/speech_recognizer.dart';
+import '../core/speech/voice_input.dart';
 import '../core/knowledge/knowledge_base.dart';
 import '../core/platform/apple_embedder.dart';
 import '../core/platform/apple_foundation_models.dart';
@@ -40,6 +42,7 @@ class ChatAppResources {
     DeviceProtection device = const AppleDeviceProtection(),
     this.modelLibrary,
     this.modelSelection,
+    this.voiceInput,
   }) : protection = AppProtection(vault.settings, device);
   final AppProtection protection;
   final LocalDataVault vault;
@@ -49,8 +52,10 @@ class ChatAppResources {
   final AppleFoundationModels models;
   final ModelLibrary? modelLibrary;
   final ModelSelection? modelSelection;
+  final VoiceInput? voiceInput;
   Future<void> close() async {
     protection.dispose();
+    voiceInput?.dispose();
     await engine.dispose();
     await modelSelection?.close();
     await modelLibrary?.close();
@@ -119,6 +124,12 @@ Future<ChatAppResources> openChatApp() async {
       apple: models,
     );
     await modelSelection.restore(storeReady: storeReady);
+    final voiceInput = VoiceInput.forSelection(
+      selection: modelSelection,
+      library: modelLibrary,
+      recognizerFor: (model, directory) =>
+          NativeSpeechRecognizer(model: model.id, directory: directory),
+    );
     return ChatAppResources(
       vault,
       workspace,
@@ -127,6 +138,7 @@ Future<ChatAppResources> openChatApp() async {
       models,
       modelLibrary: modelLibrary,
       modelSelection: modelSelection,
+      voiceInput: voiceInput,
     );
   } on Object {
     await modelSelection?.close();
@@ -247,6 +259,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (locked && !_wasLocked) {
       _rootNavigator.currentState?.popUntil((route) => route.isFirst);
       final resources = _resources!;
+      unawaited(resources.voiceInput?.stop());
       // Public model transfers continue while private app content is locked.
       _lifecycle = Future.wait([
         _lifecycle,
@@ -298,6 +311,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     // before touching data. Admission stops now, not after queued lifecycle work.
     final knowledgeStopped = resources.knowledge.suspend();
     final engineStopped = resources.engine.suspend();
+    await resources.voiceInput?.stop();
     try {
       await WidgetsBinding.instance.endOfFrame;
       await _lifecycle;
@@ -451,6 +465,7 @@ class _SekretChatAppState extends State<SekretChatApp>
                       workspace: resources.workspace,
                       engine: resources.engine,
                       modelRevision: resources.engine.modelIdentifier,
+                      voiceInput: resources.voiceInput,
                       knowledge: resources.knowledge,
                       onKnowledgeBase: () => _tabs.index = _knowledgeTab,
                       onImportSource: (context, type) => importKnowledgeSource(
@@ -486,6 +501,7 @@ class _SekretChatAppState extends State<SekretChatApp>
                       openSystemSettings: resources.models.openSettings,
                       library: resources.modelLibrary,
                       selection: resources.modelSelection,
+                      voiceInput: resources.voiceInput,
                     );
                   }
                   if (index == _knowledgeTab) {
