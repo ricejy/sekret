@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sekret/core/models/model_catalogue.dart';
 import 'package:sekret/core/platform/llm_backend.dart';
 import 'package:sekret/core/platform/local_model_backend.dart';
 
@@ -39,6 +40,7 @@ void main() {
     calls.clear();
     events = StreamController<Object?>.broadcast();
     backend = LocalModelBackend(
+      profile: ModelCatalogue.qwen.profile!,
       path: '/app/models/verified.gguf',
       channel: channel,
       events: events.stream,
@@ -69,6 +71,9 @@ void main() {
         123,
       );
       expect(calls.single.arguments, {
+        'profile': 'qwen3-4b-instruct-2507',
+        'context': 2048,
+        'output': 256,
         'path': '/app/models/verified.gguf',
         'system': localGeneralInstructions,
         'prompt': '{"current_user_message":"Hello"}',
@@ -100,6 +105,35 @@ void main() {
       expect(calls.last.method, 'unload');
     },
   );
+  test('each profile names itself and its own limits to native', () async {
+    for (final model in ModelCatalogue.entries) {
+      final profile = model.profile;
+      if (profile == null) continue;
+      calls.clear();
+      final local = LocalModelBackend(
+        profile: profile,
+        path: '/app/models/${model.id}.gguf',
+        channel: channel,
+        events: events.stream,
+      );
+      expect(await local.contextWindowSize(), profile.context);
+      expect(await local.availability(), isA<Available>());
+      await local.countPromptTokens('fixture');
+      final sub = local.generateGeneral(prompt: 'fixture').listen((_) {});
+      await Future<void>.delayed(Duration.zero);
+      expect(calls.map((call) => call.method), [
+        'ready',
+        'countPrompt',
+        'generate',
+      ]);
+      for (final call in calls) {
+        expect(call.arguments, containsPair('profile', profile.id));
+        expect(call.arguments, containsPair('context', profile.context));
+        expect(call.arguments, containsPair('output', profile.outputCap));
+      }
+      await sub.cancel();
+    }
+  });
   test('native error is typed and does not expose native details', () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async {

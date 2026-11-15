@@ -200,7 +200,10 @@ final class ModelSelection extends ChangeNotifier {
           }
           if (store.state.phase == ModelInstallPhase.installed) {
             nextLease = store.acquire();
-            final local = LocalModelBackend(path: nextLease.path);
+            final local = LocalModelBackend(
+              profile: profile,
+              path: nextLease.path,
+            );
             backend = local;
             probe = local;
           } else if (!persist) {
@@ -221,21 +224,7 @@ final class ModelSelection extends ChangeNotifier {
             revision: isApple
                 ? Platform.operatingSystemVersion
                 : model.weights!.revision,
-            metadata: isApple
-                ? const {}
-                : {
-                    'artifactSHA256': model.weights!.sha256,
-                    if (model.artifacts.length > 1)
-                      'artifactSHA256s': [
-                        for (final file in model.artifacts) file.sha256,
-                      ],
-                    'quantization': profile!.quantization,
-                    'runtime': profile.runtime,
-                    'context': profile.context,
-                    'outputCap': profile.outputCap,
-                    'template': profile.template,
-                    'localInstructions': profile.instructions,
-                  },
+            metadata: isApple ? const {} : localModelProvenance(model),
           ),
           outputTokens: isApple ? 512 : profile!.outputCap,
           beforeChange: persist ? () => _persist(id) : null,
@@ -283,6 +272,22 @@ final class ModelSelection extends ChangeNotifier {
     _lease = null;
     super.dispose();
   }
+}
+
+/// Immutable provenance recorded with each turn of a downloaded chat model.
+Map<String, Object> localModelProvenance(CatalogueModel model) {
+  final profile = model.profile!;
+  return {
+    'artifactSHA256': model.weights!.sha256,
+    if (model.artifacts.length > 1)
+      'artifactSHA256s': [for (final file in model.artifacts) file.sha256],
+    'quantization': profile.quantization,
+    'runtime': profile.runtime,
+    'context': profile.context,
+    'outputCap': profile.outputCap,
+    'template': profile.template,
+    'localInstructions': profile.instructions,
+  };
 }
 
 /// Holds a saved downloaded model's place while startup verification runs.

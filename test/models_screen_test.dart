@@ -380,9 +380,20 @@ void main() {
         rating(ModelCatalogue.qwen.id, 'Speed: 4 out of 5, held-out test'),
         findsOneWidget,
       );
-      expect(find.text('Not measured'), findsNWidgets(2));
-      expect(find.text('Not scored'), findsNWidgets(2));
-      await tester.ensureVisible(find.text('How ratings work'));
+      // Qwen leaves only resources unmeasured.
+      for (final id in [ModelCatalogue.qwen.id]) {
+        Finder within(String text) => find.descendant(
+          of: find.byKey(ValueKey(id)),
+          matching: find.text(text),
+        );
+        expect(within('Not measured'), findsOneWidget);
+        expect(within('Not scored'), findsOneWidget);
+      }
+      await tester.scrollUntilVisible(
+        find.text('How ratings work'),
+        300,
+        scrollable: find.byType(Scrollable).first,
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.text('How ratings work'));
       await tester.pumpAndSettle();
@@ -435,7 +446,13 @@ void main() {
       find.bySemanticsLabel('Photo questions supported on iOS 27'),
       findsOneWidget,
     );
-    expect(find.text('Not available in this version'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(ValueKey(ModelCatalogue.qwen.id)),
+        matching: find.text('Not available in this version'),
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Download'), findsNothing);
     expect(find.text('Use'), findsNothing);
     expect(find.text('Open iOS Settings'), findsNothing);

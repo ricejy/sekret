@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
+import '../models/model_catalogue.dart';
 import '../models/model_store.dart';
 import 'llm_backend.dart';
 import 'token_counter.dart';
@@ -27,9 +28,12 @@ final class AppleModelStoragePolicy implements ModelStoragePolicy {
 }
 
 /// General-only adapter. There is deliberately no grounded inference interface.
+/// [profile] names the native runtime profile (template, sampler, end-of-answer
+/// tokens); native refuses a profile whose context or output cap differ.
 final class LocalModelBackend
     implements GeneralLlmBackend, ModelContextProbe, TurnLlmLifecycle {
   LocalModelBackend({
+    required this.profile,
     required this.path,
     MethodChannel? channel,
     Stream<Object?>? events,
@@ -39,6 +43,7 @@ final class LocalModelBackend
            const EventChannel(
              'com.ricejy.sekret/local_model_stream',
            ).receiveBroadcastStream();
+  final LocalModelProfile profile;
   final String path;
   final MethodChannel _channel;
   final Stream<Object?> _events;
@@ -55,7 +60,8 @@ final class LocalModelBackend
   @override
   Future<LlmAvailability> availability() async {
     try {
-      return await _channel.invokeMethod<bool>('ready') == true
+      return await _channel.invokeMethod<bool>('ready', _profileArguments) ==
+              true
           ? const Available()
           : const ModelNotReady();
     } on Object {
@@ -63,8 +69,14 @@ final class LocalModelBackend
     }
   }
 
+  Map<String, Object> get _profileArguments => {
+    'profile': profile.id,
+    'context': profile.context,
+    'output': profile.outputCap,
+  };
+
   @override
-  Future<int> contextWindowSize() async => 2048;
+  Future<int> contextWindowSize() async => profile.context;
 
   @override
   Future<int> countInstructionTokens(String instructions) async {
@@ -80,6 +92,7 @@ final class LocalModelBackend
   Future<int> countPromptTokens(String prompt) async {
     try {
       final count = await _channel.invokeMethod<int>('countPrompt', {
+        ..._profileArguments,
         'path': path,
         'system': localGeneralInstructions,
         'prompt': prompt,
@@ -135,6 +148,7 @@ final class LocalModelBackend
         unawaited(
           _channel
               .invokeMethod<void>('generate', {
+                ..._profileArguments,
                 'requestId': id,
                 'path': path,
                 'system': localGeneralInstructions,

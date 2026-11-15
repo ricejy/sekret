@@ -112,7 +112,10 @@ class _RatingRunState extends State<_RatingRun> with WidgetsBindingObserver {
         throw StateError('Reviewed download missing');
       }
       final apple = AppleFoundationModels();
-      final qwen = LocalModelBackend(path: path);
+      final qwen = LocalModelBackend(
+        profile: ModelCatalogue.qwen.profile!,
+        path: path,
+      );
       final cases = (fixture['cases'] as List).cast<Map>();
       // A distinct paced run; the initial burst report is preserved separately.
       // Owner-requested cooler unplugged comparison; keep all production guards.

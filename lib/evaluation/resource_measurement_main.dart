@@ -178,7 +178,10 @@ class _RunState extends State<_Run> with WidgetsBindingObserver {
         throw StateError('Reviewed download missing');
       }
       final apple = AppleFoundationModels();
-      final qwen = LocalModelBackend(path: path);
+      final qwen = LocalModelBackend(
+        profile: ModelCatalogue.qwen.profile!,
+        path: path,
+      );
       final cases = (fixture['cases'] as List).cast<Map>();
       report['initialResources'] = await _resources();
       // Start unplugged and nominal: charging heat stopped the first attempt.
