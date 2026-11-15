@@ -14,6 +14,8 @@ import 'package:sekret/core/storage/local_data_vault.dart';
 import 'package:sekret/ui/models/models_screen.dart';
 import 'package:sekret/ui/sekret_brand.dart';
 import 'package:sekret/core/models/model_store.dart';
+import 'package:sekret/core/speech/read_aloud.dart';
+import 'package:sekret/demo/fake_speech_synthesizer.dart';
 import 'model_library_test.dart'
     show PathTransport, readAloudFixture, voiceFixture;
 import 'model_store_test.dart' show Policy, Transport, fixture;
@@ -626,5 +628,147 @@ void main() {
     expect(find.text('New'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
     await library.close();
+  });
+
+  testWidgets('Apple voices: opt in, pick an installed voice, get more', (
+    tester,
+  ) async {
+    phoneSized(tester);
+    final resources = (await tester.runAsync(() async {
+      final directory = await Directory.systemTemp.createTemp(
+        'sekret-read-aloud-ui-',
+      );
+      final store = ModelStore(
+        directory: directory,
+        policy: Policy(),
+        transport: Transport(),
+        model: fixture,
+      );
+      await store.initialize();
+      final vault = await openLocalDataVault(databasePath: ':memory:');
+      final workspace = await ChatWorkspace.open(vault);
+      final apple = AppleFoundationModels(events: const Stream.empty());
+      final engine = ChatEngine(
+        workspace: workspace,
+        backend: apple,
+        contextProbe: apple,
+        groundedBackend: apple,
+        model: const ModelSnapshot(
+          identifier: 'apple-foundation-models',
+          revision: 'test',
+        ),
+      );
+      final library = ModelLibrary(directory: directory, stores: [store]);
+      final selection = ModelSelection(
+        library: library,
+        engine: engine,
+        apple: apple,
+        catalogue: [ModelCatalogue.apple, fixture, ModelCatalogue.appleVoices],
+      );
+      await selection.restore();
+      return (
+        directory: directory,
+        library: library,
+        vault: vault,
+        workspace: workspace,
+        engine: engine,
+        selection: selection,
+      );
+    }))!;
+    final selection = resources.selection;
+    final readAloud = ReadAloud(
+      synthesizers: {ModelCatalogue.appleVoices.id: FakeSpeechSynthesizer()},
+      choice: () => (
+        model: selection.selectedFor(ModelKind.readAloud),
+        voice: selection.readAloudVoice,
+      ),
+      choiceChanges: selection,
+    );
+    Future<void> settle() async {
+      // Choices are written to real files; let that I/O finish.
+      for (var i = 0; i < 200 && (i < 3 || selection.busy); i++) {
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+        await tester.pump();
+      }
+      await tester.pumpAndSettle();
+    }
+
+    await tester.pumpWidget(
+      CupertinoApp(
+        theme: SekretBrand.theme,
+        home: ModelsScreen(
+          model: _Model(),
+          openSystemSettings: () async {},
+          library: resources.library,
+          selection: selection,
+          readAloud: readAloud,
+          supportsLocalModel: () async => true,
+          catalogue: [
+            ModelCatalogue.apple,
+            fixture,
+            ModelCatalogue.appleVoices,
+          ],
+        ),
+      ),
+    );
+    await settle();
+    await tester.tap(find.text('Read aloud'));
+    await settle();
+    expect(find.text('Apple voices'), findsOneWidget);
+    expect(find.text('Built into iOS'), findsOneWidget);
+    expect(find.textContaining('Download'), findsNothing);
+    expect(find.text('Choose voice'), findsNothing, reason: 'off by default');
+
+    await tester.tap(find.text('Get more voices'));
+    await settle();
+    expect(find.textContaining('Apps cannot download Apple voices'), findsOne);
+    expect(find.textContaining('Spoken Content'), findsOneWidget);
+    await tester.tap(find.text('OK'));
+    await settle();
+
+    final selectVoices = find.descendant(
+      of: find.bySemanticsLabel('Select Apple voices'),
+      matching: find.byType(CupertinoButton),
+    );
+    await tester.ensureVisible(selectVoices);
+    await tester.pumpAndSettle();
+    await tester.tap(selectVoices);
+    await settle();
+    expect(
+      selection.selectedFor(ModelKind.readAloud),
+      ModelCatalogue.appleVoices.id,
+    );
+    expect(readAloud.available, isTrue);
+    await tester.tap(find.text('Choose voice'));
+    await settle();
+    expect(find.text('✓ Default voice'), findsOneWidget);
+    expect(find.text('Bo · en-US · Enhanced'), findsOneWidget);
+    await tester.tap(find.text('Ada · en-GB'));
+    await settle();
+    expect(selection.readAloudVoice, 'fake.voice.ada');
+    await tester.tap(find.text('Choose voice'));
+    await settle();
+    expect(find.text('✓ Ada · en-GB'), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await settle();
+
+    await tester.tap(selectVoices);
+    await settle();
+    expect(selection.selectedFor(ModelKind.readAloud), isNull);
+    expect(readAloud.available, isFalse);
+    expect(find.text('Choose voice'), findsNothing);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    readAloud.dispose();
+    await tester.runAsync(() async {
+      await resources.engine.dispose();
+      await selection.close();
+      await resources.library.close();
+      await resources.workspace.dispose();
+      await resources.vault.close();
+      await resources.directory.delete(recursive: true);
+    });
   });
 }

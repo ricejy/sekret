@@ -407,6 +407,51 @@ void main() {
       await off.close();
     });
 
+    test('a read-aloud voice persists and resets with the model', () async {
+      final catalogueWithApple = [...catalogue, ModelCatalogue.appleVoices];
+      ModelSelection openWithApple() => ModelSelection(
+        library: library,
+        engine: engine,
+        apple: apple,
+        catalogue: catalogueWithApple,
+      );
+      final selection = openWithApple();
+      await selection.restore();
+      await expectLater(
+        selection.chooseReadAloudVoice('fake.voice.ada'),
+        throwsStateError,
+      );
+      // Apple voices are built in: no download needed.
+      await selection.choose(
+        ModelKind.readAloud,
+        ModelCatalogue.appleVoices.id,
+      );
+      await expectLater(
+        selection.chooseReadAloudVoice('../escape'),
+        throwsArgumentError,
+      );
+      await selection.chooseReadAloudVoice('fake.voice.ada');
+      expect(selection.readAloudVoice, 'fake.voice.ada');
+      await selection.close();
+
+      final restored = openWithApple();
+      await restored.restore();
+      expect(
+        restored.selectedFor(ModelKind.readAloud),
+        ModelCatalogue.appleVoices.id,
+      );
+      expect(restored.readAloudVoice, 'fake.voice.ada');
+      await library.install(readAloudFixture.id);
+      await restored.choose(ModelKind.readAloud, readAloudFixture.id);
+      expect(restored.readAloudVoice, isNull);
+      await restored.close();
+
+      final reopened = openWithApple();
+      await reopened.restore();
+      expect(reopened.readAloudVoice, isNull);
+      await reopened.close();
+    });
+
     test('an unknown saved choice restores as off', () async {
       await File('${root.path}/selected-read-aloud').writeAsString(fixture.id);
       final selection = open();

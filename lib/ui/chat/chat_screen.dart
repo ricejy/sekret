@@ -8,6 +8,7 @@ import '../../core/chat/chat_workspace.dart';
 import '../../core/models/model_catalogue.dart';
 import '../../core/knowledge/knowledge_base.dart';
 import '../../core/platform/llm_backend.dart';
+import '../../core/speech/read_aloud.dart';
 import '../../core/storage/local_data_vault.dart';
 import 'answer_content.dart';
 import 'chat_sheets.dart';
@@ -27,6 +28,7 @@ class ChatScreen extends StatefulWidget {
     this.onImportSource,
     this.onPickPhoto,
     this.modelRevision,
+    this.readAloud,
   });
   final ChatWorkspace workspace;
   final ChatEngine engine;
@@ -47,6 +49,9 @@ class ChatScreen extends StatefulWidget {
   /// Picks one photo for a question in this chat; it is not imported into
   /// the Knowledge Base. Null when cancelled.
   final Future<Uint8List?> Function()? onPickPhoto;
+
+  /// Reads answers aloud when a read-aloud model is chosen in Models.
+  final ReadAloud? readAloud;
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
@@ -77,6 +82,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    widget.readAloud?.addListener(_readAloudChanged);
     _subscriptions.add(widget.workspace.changes.listen((_) => _load()));
     _subscriptions.add(
       widget.knowledge.changes.listen(
@@ -95,6 +101,26 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       _availability = null;
       _checkAvailability();
     }
+    if (oldWidget.readAloud != widget.readAloud) {
+      oldWidget.readAloud?.removeListener(_readAloudChanged);
+      oldWidget.readAloud?.stop().ignore();
+      widget.readAloud?.addListener(_readAloudChanged);
+    }
+  }
+
+  void _readAloudChanged() {
+    if (mounted) setState(() {});
+  }
+
+  /// Reading stops on a new turn, on leaving the chat and on backgrounding.
+  void _stopReading() => widget.readAloud?.stop().ignore();
+
+  Future<void> _read(TurnRecord turn) async {
+    try {
+      await widget.readAloud!.read(turn.id, turn.assistantText);
+    } on Object {
+      _report('Could not read this answer aloud. Check Read aloud in Models.');
+    }
   }
 
   @override
@@ -105,6 +131,10 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) _checkAvailability();
+    if (state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.paused) {
+      _stopReading();
+    }
   }
 
   Future<void> _initialize() async {
@@ -155,6 +185,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       final switched = _chat?.id != chat?.id;
       final nearBottom =
           !_scroll.hasClients || _scroll.position.extentAfter < 100;
+      final reading = widget.readAloud?.readingTurnId;
+      if (switched ||
+          (reading != null && turns.every((turn) => turn.id != reading))) {
+        _stopReading();
+      }
       setState(() {
         if (switched) {
           _photo = null;
@@ -227,6 +262,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
       _report('This model does not support Knowledge Vault answers.');
       return;
     }
+    _stopReading();
     setState(() {
       _submitting = true;
       _error = null;
@@ -545,6 +581,11 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Future<void> _actions(TurnRecord turn) async {
+    final readAloud = widget.readAloud;
+    final reading = readAloud?.readingTurnId == turn.id;
+    final canRead =
+        readAloud != null &&
+        (reading || (readAloud.available && turn.assistantText.isNotEmpty));
     final action = await showCupertinoModalPopup<String>(
       context: context,
       builder: (context) => CupertinoActionSheet(
@@ -558,6 +599,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
             onPressed: () => Navigator.pop(context, 'select'),
             child: const Text('Select text'),
           ),
+          if (canRead)
+            CupertinoActionSheetAction(
+              onPressed: () =>
+                  Navigator.pop(context, reading ? 'stop-reading' : 'read'),
+              child: Text(reading ? 'Stop reading' : 'Read aloud'),
+            ),
           if (!_busy)
             CupertinoActionSheetAction(
               onPressed: () => Navigator.pop(context, 'regenerate'),
@@ -579,6 +626,14 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     if (!mounted) return;
     if (action == 'copy') {
       await Clipboard.setData(ClipboardData(text: turn.assistantText));
+      return;
+    }
+    if (action == 'read') {
+      unawaited(_read(turn));
+      return;
+    }
+    if (action == 'stop-reading') {
+      _stopReading();
       return;
     }
     if (action == 'select') {
@@ -639,6 +694,8 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    widget.readAloud?.removeListener(_readAloudChanged);
+    _stopReading();
     for (final subscription in _subscriptions) {
       subscription.cancel();
     }
@@ -894,16 +951,30 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               ),
         ],
         if (turn.outcome != TurnOutcome.generating)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => _actions(turn),
-              child: const Icon(
-                CupertinoIcons.ellipsis,
-                semanticLabel: 'Turn actions',
+          Row(
+            children: [
+              CupertinoButton(
+                padding: EdgeInsets.zero,
+                onPressed: () => _actions(turn),
+                child: const Icon(
+                  CupertinoIcons.ellipsis,
+                  semanticLabel: 'Turn actions',
+                ),
               ),
-            ),
+              if (widget.readAloud?.readingTurnId == turn.id)
+                CupertinoButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  onPressed: _stopReading,
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(CupertinoIcons.stop_circle, size: 18),
+                      SizedBox(width: 6),
+                      Text('Stop reading', style: TextStyle(fontSize: 14)),
+                    ],
+                  ),
+                ),
+            ],
           ),
       ],
     ),

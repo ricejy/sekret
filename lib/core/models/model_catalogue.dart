@@ -204,6 +204,19 @@ abstract final class ModelCatalogue {
     ],
   );
 
+  /// Read aloud with the voices installed in iOS. Enhanced and Premium voices
+  /// are added in iOS Settings; apps cannot download them (ADR 0006).
+  static const appleVoices = CatalogueModel(
+    id: 'apple-voices',
+    name: 'Apple voices',
+    kind: ModelKind.readAloud,
+    runtime: ModelRuntime.apple,
+    capabilities: {},
+    summary:
+        'Reads answers aloud with the voices already on this iPhone. Built into iOS; Sekret does not download or remove voices.',
+    isNew: true,
+  );
+
   /// Runtime notices shown with every model that uses that runtime.
   static const runtimeNotices = {
     ModelRuntime.llamaCpp: (
@@ -215,7 +228,7 @@ abstract final class ModelCatalogue {
   /// Every id that has ever shipped stays listed, so older chat labels and
   /// saved selections still resolve. Entries join only when their runtime
   /// integration has passed a phone smoke test.
-  static const entries = [apple, qwen];
+  static const entries = [apple, qwen, appleVoices];
 
   static CatalogueModel? byId(String id) =>
       entries.where((model) => model.id == id).firstOrNull;

@@ -20,7 +20,10 @@ void main() {
       expect(ModelCatalogue.entries, [
         ModelCatalogue.apple,
         ModelCatalogue.qwen,
+        ModelCatalogue.appleVoices,
       ]);
+      expect(ModelCatalogue.appleVoices.kind, ModelKind.readAloud);
+      expect(ModelCatalogue.appleVoices.downloadable, isFalse);
       expect(ModelCatalogue.apple.artifacts, isEmpty);
       expect(ModelCatalogue.apple.downloadable, isFalse);
       expect(ModelCatalogue.qwen.capabilities, {ModelCapability.generalText});
