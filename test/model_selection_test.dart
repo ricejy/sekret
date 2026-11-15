@@ -12,7 +12,10 @@ import 'package:sekret/core/platform/llm_backend.dart';
 import 'package:sekret/core/storage/local_data_vault.dart';
 import 'dart:async';
 
-import 'model_store_test.dart' show Hasher, Policy, Transport, fixture;
+import 'package:crypto/crypto.dart';
+
+import 'model_store_test.dart'
+    show Hasher, Policy, Transport, fixture, payload, revision;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -172,6 +175,103 @@ void main() {
       expect(engine.supportsKnowledgeBase, true);
       expect(selection.selected, ModelCatalogue.apple.id);
       await store.remove();
+    },
+  );
+  test('provenance records each new model\'s own profile and files', () {
+    final templates = <String>{};
+    for (final model in [
+      ModelCatalogue.qwen35FourB,
+      ModelCatalogue.qwen35TwoB,
+      ModelCatalogue.miniCpm5TwoB,
+      ModelCatalogue.miniCpm5OneB,
+      ModelCatalogue.granite41ThreeB,
+    ]) {
+      final profile = model.profile!;
+      final metadata = localModelProvenance(model);
+      expect(metadata, {
+        'artifactSHA256': model.weights!.sha256,
+        'artifactSHA256s': [for (final file in model.artifacts) file.sha256],
+        'quantization': profile.quantization,
+        'runtime': 'llama.cpp-b11429',
+        'context': 2048,
+        'outputCap': 256,
+        'template': profile.template,
+        'localInstructions': 'local-general-v1',
+      });
+      expect(
+        metadata['template'],
+        isNot(ModelCatalogue.qwen.profile!.template),
+      );
+      templates.add(profile.template);
+    }
+    expect(templates, hasLength(3));
+    expect(localModelProvenance(ModelCatalogue.qwen), {
+      'artifactSHA256':
+          '9c6e0763577125a994a9bea0bbd7a737ac4498b8a6a4e0f788727553af1806c9',
+      'quantization': 'Q3_K_M',
+      'runtime': 'llama.cpp-b11429',
+      'context': 2048,
+      'outputCap': 256,
+      'template': 'chatml-general-json-v1',
+      'localInstructions': 'local-general-v1',
+    });
+  });
+  test(
+    'a new chat model is selectable, General only, with its own limits',
+    () async {
+      final base = ModelCatalogue.granite41ThreeB;
+      final model = CatalogueModel(
+        id: base.id,
+        name: base.name,
+        kind: base.kind,
+        runtime: base.runtime,
+        capabilities: base.capabilities,
+        summary: base.summary,
+        profile: base.profile,
+        notice: base.notice,
+        isNew: true,
+        artifacts: [
+          for (final (index, path) in ['README.md', 'model.gguf'].indexed)
+            ModelArtifact(
+              repository: 'test/model',
+              revision: revision,
+              path: path,
+              bytes: payload.length,
+              sha256: sha256.convert(payload).toString(),
+              role: index == 0 ? ArtifactRole.license : ArtifactRole.weights,
+            ),
+        ],
+      );
+      final local = ModelStore(
+        directory: directory,
+        policy: Policy(),
+        transport: Transport(),
+        model: model,
+      );
+      await local.initialize();
+      final chooser = ModelSelection(
+        library: ModelLibrary(directory: directory, stores: [store, local]),
+        engine: engine,
+        apple: apple,
+        catalogue: [ModelCatalogue.apple, fixture, model],
+      );
+      await expectLater(chooser.select(model.id), throwsStateError);
+      await local.install();
+      await chooser.select(model.id);
+      expect(chooser.selected, model.id);
+      expect(engine.modelIdentifier, model.id);
+      expect(engine.supportsKnowledgeBase, isFalse);
+      expect(await engine.supportsPhotoQuestions(), isFalse);
+      expect(engine.outputTokenReserve, 256);
+      expect(
+        await File('${directory.path}/selected-model').readAsString(),
+        model.id,
+      );
+      await expectLater(local.remove(), throwsStateError);
+      await chooser.select(ModelCatalogue.apple.id);
+      await local.remove();
+      await chooser.close();
+      await local.close();
     },
   );
 }

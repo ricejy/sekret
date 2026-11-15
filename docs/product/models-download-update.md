@@ -92,3 +92,19 @@ The Models screen, store and downloader now support many optional models, with n
 - **Selection.** Chat selection resolves the model's store by id. Voice input and read aloud are separate persisted choices (`selected-voice-input`, `selected-read-aloud`), off by default. Each needs a verified install, unless it is an Apple entry.
 - **Models screen.** Chat, Voice input and Read aloud sections appear once more than one kind is offered. Download consent, information and Switch & remove are generic: they take the name, size, licence, credit and attribution from the entry. New entries carry a "New" chip and show "Not measured".
 - **Info.plist.** Adds microphone and speech-recognition usage descriptions for the voice-input phase.
+
+## More chat models — 2026-11-15 (Phase 1)
+
+Five more General-text downloads join the catalogue: Qwen3.5-4B (Q3_K_M), Qwen3.5-2B (Q4_K_M), MiniCPM5-2B, MiniCPM5-1B and Granite 4.1 3B (each Q4_K_M unless named). Each is pinned exactly as in [the artifact manifest](../evaluation/model-expansion-artifacts-2026-11-15.json), with the publisher's README as its licence record. Like Qwen3-4B, they are General only: never Knowledge Vault, never photos, no fallback. Ratings show "Not measured".
+
+- **One runtime, many profiles.** `QwenRuntime` became `LocalRuntime`, driven by a `ModelProfile` (`native/SekretInference/Sources/SekretInference/ModelProfile.swift`). Each profile pins the file's SHA-256 and bytes, its template family, sampler, context and output cap, and its thinking-off rule. The Dart `LocalModelProfile` carries the same id and limits. Native refuses a call whose context or output cap differ.
+- **Templates.** Each family renders the publisher's no-tools subset and must equal llama.cpp's built-in formatter for that family. A new model is also checked at load: llama.cpp must read the GGUF's embedded `chat_template` as the same family and render it identically. This checks the family, not the full Jinja; the phone smoke test is the real check.
+  - Qwen3.5: ChatML, with an empty `<think>\n\n</think>\n\n` prefilled, which is what the template emits when `enable_thinking=false`.
+  - MiniCPM5: ChatML tags, but its EOS is `</s>`, so answers also stop on `<|im_end|>`. Thinking is turned off with the same prefill, because its template lets the model choose when nothing is passed.
+  - Granite 4.1: `<|start_of_role|>role<|end_of_role|>…<|end_of_text|>`. It has no thinking mode.
+- **End of answer.** An answer stops on `llama_vocab_is_eog` or the profile's stop token. At load, the turn markers and EOS must each be one token, and the profile's end-of-generation tokens must be reported as such. Qwen3-4B also keeps its pinned ids (151644/151645/151643). For profiles that turn thinking off, a `<think>` or `</think>` in the answer ends it as a failure rather than showing reasoning.
+- **Sampler.** Qwen3.5 uses the publisher's non-thinking settings (top-k 20, top-p 0.8, temperature 0.7, presence penalty 1.5). MiniCPM5 and Granite use Sekret's Qwen defaults until the held-out ratings run.
+- **Memory admission.** A load needs free memory of at least the weights plus the margin Qwen3-4B was admitted with (608,736,160 bytes; 2.5 GiB for Qwen3-4B). Device support stays the tested `iPhone16,2`.
+- **Unchanged for Qwen3-4B.** Same prompt bytes, token checks, sampler, limits, path and provenance. `PromptTests` and `testQwen3ProfileIsUnchanged` guard this.
+
+**Not yet verified on the phone.** None of the five has run on a device. Before they are offered, each needs a smoke test: download, one fictional General prompt from `experiments/model_comparison`, confirm that no thinking text leaks, then remove it. `swift test` can run a downloaded file on a Mac with `SEKRET_TEST_MODEL_PATH` and `SEKRET_TEST_MODEL_PROFILE`.
