@@ -8,6 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../core/chat/chat_engine.dart';
 import '../core/chat/chat_workspace.dart';
 import '../core/platform/apple_model_download.dart';
+import '../core/platform/apple_speech_synthesizer.dart';
+import '../core/speech/read_aloud.dart';
 import '../core/models/model_library.dart';
 import '../core/models/model_selection.dart';
 import '../core/models/model_catalogue.dart';
@@ -40,6 +42,7 @@ class ChatAppResources {
     DeviceProtection device = const AppleDeviceProtection(),
     this.modelLibrary,
     this.modelSelection,
+    this.readAloud,
   }) : protection = AppProtection(vault.settings, device);
   final AppProtection protection;
   final LocalDataVault vault;
@@ -49,8 +52,10 @@ class ChatAppResources {
   final AppleFoundationModels models;
   final ModelLibrary? modelLibrary;
   final ModelSelection? modelSelection;
+  final ReadAloud? readAloud;
   Future<void> close() async {
     protection.dispose();
+    readAloud?.dispose();
     await engine.dispose();
     await modelSelection?.close();
     await modelLibrary?.close();
@@ -119,6 +124,15 @@ Future<ChatAppResources> openChatApp() async {
       apple: models,
     );
     await modelSelection.restore(storeReady: storeReady);
+    final selection = modelSelection;
+    final readAloud = ReadAloud(
+      synthesizers: {ModelCatalogue.appleVoices.id: AppleSpeechSynthesizer()},
+      choice: () => (
+        model: selection.selectedFor(ModelKind.readAloud),
+        voice: selection.readAloudVoice,
+      ),
+      choiceChanges: selection,
+    );
     return ChatAppResources(
       vault,
       workspace,
@@ -127,6 +141,7 @@ Future<ChatAppResources> openChatApp() async {
       models,
       modelLibrary: modelLibrary,
       modelSelection: modelSelection,
+      readAloud: readAloud,
     );
   } on Object {
     await modelSelection?.close();
@@ -204,6 +219,8 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (state == AppLifecycleState.inactive) resources.protection.inactive();
     if (state == AppLifecycleState.hidden ||
         state == AppLifecycleState.paused) {
+      // Reading aloud never continues in the background.
+      resources.readAloud?.stop().ignore();
       resources.protection.background();
       // Public model transfers continue while private app content is locked.
     }
@@ -247,6 +264,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     if (locked && !_wasLocked) {
       _rootNavigator.currentState?.popUntil((route) => route.isFirst);
       final resources = _resources!;
+      resources.readAloud?.stop().ignore();
       // Public model transfers continue while private app content is locked.
       _lifecycle = Future.wait([
         _lifecycle,
@@ -296,6 +314,7 @@ class _SekretChatAppState extends State<SekretChatApp>
     });
     // Unmount all tab navigators, previews, editors, drafts, and Undo surfaces
     // before touching data. Admission stops now, not after queued lifecycle work.
+    resources.readAloud?.stop().ignore();
     final knowledgeStopped = resources.knowledge.suspend();
     final engineStopped = resources.engine.suspend();
     try {
@@ -478,6 +497,7 @@ class _SekretChatAppState extends State<SekretChatApp>
                         }
                       },
                       onSettings: resources.models.openSettings,
+                      readAloud: resources.readAloud,
                     );
                   }
                   if (index == _modelsTab) {
@@ -486,6 +506,7 @@ class _SekretChatAppState extends State<SekretChatApp>
                       openSystemSettings: resources.models.openSettings,
                       library: resources.modelLibrary,
                       selection: resources.modelSelection,
+                      readAloud: resources.readAloud,
                     );
                   }
                   if (index == _knowledgeTab) {

@@ -7,6 +7,7 @@ import '../chat/chat_engine.dart';
 import '../platform/apple_foundation_models.dart';
 import '../platform/llm_backend.dart';
 import '../platform/local_model_backend.dart';
+import '../platform/speech_synthesizer.dart';
 import '../platform/token_counter.dart';
 import '../storage/local_data_vault.dart';
 import 'model_catalogue.dart';
@@ -50,10 +51,36 @@ final class ModelSelection extends ChangeNotifier {
   File _optionalChoice(ModelKind kind) => File(
     '${_directory.path}/${kind == ModelKind.voiceInput ? 'selected-voice-input' : 'selected-read-aloud'}',
   );
+  File get _voiceChoice => File('${_directory.path}/selected-read-aloud-voice');
+  String? _readAloudVoice;
 
   /// The chosen model of [kind]; null when voice input or read aloud is off.
   String? selectedFor(ModelKind kind) =>
       kind == ModelKind.chat ? _selected : _optional[kind];
+
+  /// The chosen voice of the read-aloud model; null uses its default voice.
+  /// Cleared whenever the read-aloud model changes.
+  String? get readAloudVoice => _readAloudVoice;
+
+  /// Picks a voice of the current read-aloud model, or its default with null.
+  Future<void> chooseReadAloudVoice(String? voice) async {
+    if (_optional[ModelKind.readAloud] == null) {
+      throw StateError('Turn read aloud on first');
+    }
+    if (voice != null && !SpeechVoice.validId(voice)) {
+      throw ArgumentError('Invalid voice');
+    }
+    if (_busy) throw StateError('Another model change is active');
+    _busy = true;
+    notifyListeners();
+    try {
+      await _write(_voiceChoice, voice);
+      _readAloudVoice = voice;
+    } finally {
+      _busy = false;
+      notifyListeners();
+    }
+  }
 
   Future<void> _validateFiles() async {
     if (await FileSystemEntity.type(_directory.path, followLinks: false) !=
@@ -63,6 +90,7 @@ final class ModelSelection extends ChangeNotifier {
     for (final file in [
       _choice,
       _staging,
+      _voiceChoice,
       for (final kind in _optional.keys) _optionalChoice(kind),
     ]) {
       final type = await FileSystemEntity.type(file.path, followLinks: false);
@@ -84,6 +112,14 @@ final class ModelSelection extends ChangeNotifier {
         // An unreadable optional choice restores as off.
         _optional[kind] = null;
       }
+    }
+    try {
+      _readAloudVoice = _optional[ModelKind.readAloud] == null
+          ? null
+          : await _readVoice();
+    } on Object {
+      // An unreadable voice restores as the model's default voice.
+      _readAloudVoice = null;
     }
     try {
       await _validateFiles();
@@ -110,6 +146,14 @@ final class ModelSelection extends ChangeNotifier {
     return id;
   }
 
+  Future<String?> _readVoice() async {
+    await _validateFiles();
+    if (!await _voiceChoice.exists()) return null;
+    if (await _voiceChoice.length() > 120) throw StateError('Invalid voice');
+    final voice = await _voiceChoice.readAsString();
+    return SpeechVoice.validId(voice) ? voice : null;
+  }
+
   /// Turns voice input or read aloud on with an installed model, or off.
   Future<void> choose(ModelKind kind, String? id) async {
     if (kind == ModelKind.chat) throw ArgumentError('Use select for chat');
@@ -126,6 +170,11 @@ final class ModelSelection extends ChangeNotifier {
     _busy = true;
     notifyListeners();
     try {
+      if (kind == ModelKind.readAloud && _optional[kind] != id) {
+        // Voices belong to one model; a new model starts on its default.
+        await _write(_voiceChoice, null);
+        _readAloudVoice = null;
+      }
       await _write(_optionalChoice(kind), id);
       _optional[kind] = id;
     } finally {

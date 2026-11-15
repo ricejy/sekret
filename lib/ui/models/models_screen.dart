@@ -9,6 +9,8 @@ import '../../core/models/model_selection.dart';
 import '../../core/models/model_download.dart';
 import '../../core/platform/local_model_backend.dart';
 import '../../core/platform/llm_backend.dart';
+import '../../core/platform/speech_synthesizer.dart';
+import '../../core/speech/read_aloud.dart';
 import '../sekret_brand.dart';
 import '../settings/settings_screen.dart' show modelStatus;
 
@@ -21,6 +23,7 @@ class ModelsScreen extends StatefulWidget {
     this.library,
     this.selection,
     this.supportsLocalModel,
+    this.readAloud,
     this.catalogue = ModelCatalogue.entries,
   });
 
@@ -32,6 +35,9 @@ class ModelsScreen extends StatefulWidget {
   final List<CatalogueModel> catalogue;
   final ModelSelection? selection;
   final Future<bool> Function()? supportsLocalModel;
+
+  /// Lists the chosen read-aloud model's voices for the voice picker.
+  final ReadAloud? readAloud;
 
   @override
   State<ModelsScreen> createState() => _ModelsScreenState();
@@ -277,6 +283,92 @@ class _ModelsScreenState extends State<ModelsScreen>
         CupertinoDialogAction(
           onPressed: () => Navigator.pop(context),
           child: const Text('Done'),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _chooseVoice() async {
+    final selection = widget.selection!;
+    final readAloud = widget.readAloud;
+    List<SpeechVoice> voices;
+    try {
+      voices = await readAloud?.voices() ?? const [];
+    } on Object {
+      if (mounted) {
+        setState(() => _operationError = 'Could not list voices. Try again.');
+      }
+      return;
+    }
+    if (!mounted) return;
+    final language = View.of(context).platformDispatcher.locale.languageCode;
+    int rank(SpeechVoice voice) =>
+        voice.language.split('-').first == language ? 0 : 1;
+    voices = [...voices]
+      ..sort(
+        (a, b) => rank(a) != rank(b)
+            ? rank(a) - rank(b)
+            : a.language != b.language
+            ? a.language.compareTo(b.language)
+            : b.quality.index != a.quality.index
+            ? b.quality.index - a.quality.index
+            : a.name.compareTo(b.name),
+      );
+    final current = selection.readAloudVoice;
+    Widget label(String text, bool chosen) => Text(
+      '${chosen ? '✓ ' : ''}$text',
+      style: const TextStyle(fontSize: 17),
+    );
+    final picked = await showCupertinoModalPopup<({String? id})>(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        title: const Text('Read-aloud voice'),
+        message: Text(
+          voices.isEmpty
+              ? 'No voices found. Add voices in iOS Settings.'
+              : 'Voices installed on this iPhone.',
+        ),
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () => Navigator.pop(context, (id: null)),
+            child: label('Default voice', current == null),
+          ),
+          for (final voice in voices)
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.pop(context, (id: voice.id)),
+              child: label(
+                '${voice.name} · ${voice.language}'
+                '${switch (voice.quality) {
+                  SpeechVoiceQuality.premium => ' · Premium',
+                  SpeechVoiceQuality.enhanced => ' · Enhanced',
+                  SpeechVoiceQuality.standard => '',
+                }}',
+                current == voice.id,
+              ),
+            ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+      ),
+    );
+    if (picked == null || !mounted) return;
+    await _run(() => selection.chooseReadAloudVoice(picked.id));
+  }
+
+  Future<void> _moreVoices() => showCupertinoDialog<void>(
+    context: context,
+    builder: (context) => CupertinoAlertDialog(
+      title: const Text('Get more voices'),
+      content: const Text(
+        'Apps cannot download Apple voices. To add an Enhanced or Premium voice, open the Settings app, go to Accessibility, open Spoken Content (Read & Speak on newer iOS), tap Voices and download one. '
+        'iOS downloads it from Apple, not Sekret. Then return here and choose it.',
+      ),
+      actions: [
+        CupertinoDialogAction(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('OK'),
         ),
       ],
     ),
@@ -693,6 +785,22 @@ class _ModelsScreenState extends State<ModelsScreen>
                       style: TextStyle(fontSize: 13),
                     ),
                   ),
+              ] else if (apple && model.kind == ModelKind.readAloud) ...[
+                if (selected && widget.readAloud != null)
+                  CupertinoButton(
+                    onPressed: busy ? null : _chooseVoice,
+                    child: const Text(
+                      'Choose voice',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ),
+                CupertinoButton(
+                  onPressed: _moreVoices,
+                  child: const Text(
+                    'Get more voices',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ),
               ] else if (store != null) ...[
                 if (state!.busy)
                   _icon(

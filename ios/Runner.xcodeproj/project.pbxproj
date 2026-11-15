@@ -22,6 +22,7 @@
 		A91000000000000000000001 /* AppleEmbeddingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91000000000000000000002 /* AppleEmbeddingPlugin.swift */; };
 		B92000000000000000000001 /* AppleFoundationModelsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92000000000000000000002 /* AppleFoundationModelsPlugin.swift */; };
 		C93000000000000000000001 /* AppleVisionOcrPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93000000000000000000002 /* AppleVisionOcrPlugin.swift */; };
+		5A1D00000000000000000001 /* AppleSpeechSynthesisPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1D00000000000000000002 /* AppleSpeechSynthesisPlugin.swift */; };
 		D94000000000000000000001 /* Fixtures/fictional_document_clean.png in Resources */ = {isa = PBXBuildFile; fileRef = D94000000000000000000011 /* Fixtures/fictional_document_clean.png */; };
 		D94000000000000000000002 /* Fixtures/fictional_document_rotated.png in Resources */ = {isa = PBXBuildFile; fileRef = D94000000000000000000012 /* Fixtures/fictional_document_rotated.png */; };
 		D94000000000000000000003 /* Fixtures/fictional_document_low_quality.png in Resources */ = {isa = PBXBuildFile; fileRef = D94000000000000000000013 /* Fixtures/fictional_document_low_quality.png */; };
@@ -72,6 +73,7 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A91000000000000000000002 /* AppleEmbeddingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleEmbeddingPlugin.swift; sourceTree = "<group>"; };
 		B92000000000000000000002 /* AppleFoundationModelsPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleFoundationModelsPlugin.swift; sourceTree = "<group>"; };
+		5A1D00000000000000000002 /* AppleSpeechSynthesisPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSpeechSynthesisPlugin.swift; sourceTree = "<group>"; };
 		C93000000000000000000002 /* AppleVisionOcrPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleVisionOcrPlugin.swift; sourceTree = "<group>"; };
 		D94000000000000000000011 /* Fixtures/fictional_document_clean.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fixtures/fictional_document_clean.png; sourceTree = "<group>"; };
 		D94000000000000000000012 /* Fixtures/fictional_document_rotated.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fixtures/fictional_document_rotated.png; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				A91000000000000000000002 /* AppleEmbeddingPlugin.swift */,
 				B92000000000000000000002 /* AppleFoundationModelsPlugin.swift */,
 				C93000000000000000000002 /* AppleVisionOcrPlugin.swift */,
+				5A1D00000000000000000002 /* AppleSpeechSynthesisPlugin.swift */,
 				7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 			);
@@ -318,6 +321,7 @@
 				A91000000000000000000001 /* AppleEmbeddingPlugin.swift in Sources */,
 				B92000000000000000000001 /* AppleFoundationModelsPlugin.swift in Sources */,
 				C93000000000000000000001 /* AppleVisionOcrPlugin.swift in Sources */,
+				5A1D00000000000000000001 /* AppleSpeechSynthesisPlugin.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */,
 			);

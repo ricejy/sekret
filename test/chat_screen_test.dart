@@ -14,7 +14,9 @@ import 'package:sekret/core/knowledge/knowledge_base.dart';
 import 'package:sekret/core/platform/llm_backend.dart';
 import 'package:sekret/core/platform/token_counter.dart';
 import 'package:sekret/core/storage/local_data_vault.dart';
+import 'package:sekret/core/speech/read_aloud.dart';
 import 'package:sekret/demo/fake_native_capabilities.dart';
+import 'package:sekret/demo/fake_speech_synthesizer.dart';
 import 'package:sekret/ui/chat/answer_content.dart';
 import 'package:sekret/ui/chat/chat_screen.dart';
 import 'package:sekret/ui/knowledge/source_preview.dart';
@@ -128,6 +130,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     Future<KnowledgeImportResult?> Function(BuildContext, KnowledgeSourceType)?
     onImportSource,
     Future<Uint8List?> Function()? onPickPhoto,
+    ReadAloud? readAloud,
   }) async {
     if (!physicalDevice) {
       tester.view.physicalSize = const Size(390, 844);
@@ -156,6 +159,7 @@ void registerChatScreenTests({bool physicalDevice = false}) {
             onLink: (uri) async => links.add(uri),
             onImportSource: onImportSource,
             onPickPhoto: onPickPhoto,
+            readAloud: readAloud,
           ),
         ),
       ),
@@ -599,6 +603,101 @@ void registerChatScreenTests({bool physicalDevice = false}) {
     await tester.tap(find.text('Delete'));
     await settle(tester);
     expect((await workspace.transcript(id)).length, 2);
+  });
+
+  runTest('read aloud is opt-in and stops on new turns, chats and background', (
+    tester,
+  ) async {
+    final speech = FakeSpeechSynthesizer();
+    final choice = ValueNotifier<ReadAloudChoice>((model: null, voice: null));
+    final readAloud = ReadAloud(
+      synthesizers: {'fixture-voices': speech},
+      choice: () => choice.value,
+      choiceChanges: choice,
+    );
+    addTearDown(() {
+      readAloud.dispose();
+      choice.dispose();
+    });
+    await mount(tester, readAloud: readAloud);
+    await send(tester, 'Plan a fictional picnic');
+    Future<void> openActions() async {
+      await tester.tap(find.bySemanticsLabel('Turn actions').last);
+      await settle(tester);
+    }
+
+    Future<void> startReading() async {
+      await openActions();
+      await tester.tap(find.text('Read aloud'));
+      await settle(tester);
+      expect(readAloud.readingTurnId, isNotNull);
+      expect(find.text('Stop reading'), findsOneWidget);
+    }
+
+    await openActions();
+    expect(find.text('Read aloud'), findsNothing, reason: 'off by default');
+    await tester.tap(find.text('Cancel'));
+    await settle(tester);
+
+    choice.value = (model: 'fixture-voices', voice: 'fake.voice.ada');
+    await startReading();
+    expect(speech.spoken.single, (
+      text: 'General response.',
+      voice: 'fake.voice.ada',
+    ));
+    await openActions();
+    expect(find.text('Read aloud'), findsNothing);
+    await tester.tap(find.text('Stop reading').last);
+    await settle(tester);
+    expect(readAloud.readingTurnId, isNull);
+    expect(find.text('Stop reading'), findsNothing);
+    expect(speech.stops, 1);
+
+    await startReading();
+    await tester.tap(find.text('Stop reading'));
+    await settle(tester);
+    expect(speech.stops, 2, reason: 'the inline button stops reading');
+
+    await startReading();
+    await send(tester, 'Another fictional question');
+    expect(readAloud.readingTurnId, isNull, reason: 'a new turn stops it');
+    expect(speech.stops, 3);
+
+    await startReading();
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    await settle(tester);
+    expect(readAloud.readingTurnId, isNotNull);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    await settle(tester);
+    expect(readAloud.readingTurnId, isNull, reason: 'background stops it');
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await settle(tester);
+
+    await startReading();
+    await tester.tap(find.bySemanticsLabel('New Chat'));
+    await settle(tester);
+    expect(readAloud.readingTurnId, isNull, reason: 'leaving the chat');
+
+    await tester.tap(find.bySemanticsLabel('Chat history'));
+    await settle(tester);
+    await tester.tap(find.text('Plan a fictional picnic'));
+    await settle(tester);
+    await startReading();
+    choice.value = (model: null, voice: null);
+    await settle(tester);
+    expect(readAloud.readingTurnId, isNull, reason: 'turning it off');
+    await openActions();
+    expect(find.text('Read aloud'), findsNothing);
+    await tester.tap(find.text('Cancel'));
+    await settle(tester);
+
+    choice.value = (model: 'fixture-voices', voice: null);
+    await startReading();
+    await tester.pumpWidget(const SizedBox.shrink());
+    expect(readAloud.readingTurnId, isNull, reason: 'closing the screen');
   });
 
   runTest(
