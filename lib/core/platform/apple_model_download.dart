@@ -31,8 +31,11 @@ final class AppleModelDownload
   }
 
   @override
-  Future<bool> hasPending() async =>
-      await channel.invokeMethod<bool>('hasPending') ?? false;
+  Future<bool> hasPending(File destination) async =>
+      await channel.invokeMethod<bool>('hasPending', {
+        'destination': destination.path,
+      }) ??
+      false;
 
   @override
   Future<void> transfer({
@@ -52,7 +55,9 @@ final class AppleModelDownload
       });
       while (true) {
         cancel.check();
-        final state = await channel.invokeMapMethod<String, Object?>('status');
+        final state = await channel.invokeMapMethod<String, Object?>('status', {
+          'destination': destination.path,
+        });
         cancel.check();
         final bytes = state?['bytes'];
         if (bytes is! int || bytes < 0 || bytes > artifact.bytes) {

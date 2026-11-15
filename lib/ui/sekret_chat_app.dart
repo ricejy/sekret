@@ -7,8 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../core/chat/chat_engine.dart';
 import '../core/chat/chat_workspace.dart';
-import '../core/models/model_store.dart';
 import '../core/platform/apple_model_download.dart';
+import '../core/models/model_library.dart';
 import '../core/models/model_selection.dart';
 import '../core/models/model_catalogue.dart';
 import '../core/platform/local_model_backend.dart';
@@ -38,7 +38,7 @@ class ChatAppResources {
     this.engine,
     this.models, {
     DeviceProtection device = const AppleDeviceProtection(),
-    this.modelStore,
+    this.modelLibrary,
     this.modelSelection,
   }) : protection = AppProtection(vault.settings, device);
   final AppProtection protection;
@@ -47,13 +47,13 @@ class ChatAppResources {
   final KnowledgeBase knowledge;
   final ChatEngine engine;
   final AppleFoundationModels models;
-  final ModelStore? modelStore;
+  final ModelLibrary? modelLibrary;
   final ModelSelection? modelSelection;
   Future<void> close() async {
     protection.dispose();
     await engine.dispose();
     await modelSelection?.close();
-    await modelStore?.close();
+    await modelLibrary?.close();
     await knowledge.dispose();
     await workspace.dispose();
     await vault.close();
@@ -75,7 +75,7 @@ Future<ChatAppResources> openChatApp() async {
   final vault = await openLocalDataVault(databasePath: path);
   ChatWorkspace? workspace;
   KnowledgeBase? knowledge;
-  ModelStore? modelStore;
+  ModelLibrary? modelLibrary;
   ModelSelection? modelSelection;
   try {
     await models.protectStorage(
@@ -103,18 +103,18 @@ Future<ChatAppResources> openChatApp() async {
         revision: Platform.operatingSystemVersion,
       ),
     );
-    modelStore = ModelStore(
+    modelLibrary = ModelLibrary.reviewed(
       directory: Directory('${directory.path}/reviewed-models'),
       policy: const AppleModelStoragePolicy(),
       backgroundDownload: const AppleModelDownload(),
       hasher: const AppleModelDownload(),
     );
-    // Verifying the downloaded model runs after the app opens.
-    final storeReady = modelStore.initialize().catchError((Object _) {
+    // Verifying downloaded models runs after the app opens.
+    final storeReady = modelLibrary.initialize().catchError((Object _) {
       /* Models shows a recoverable storage error. */
     });
     modelSelection = ModelSelection(
-      store: modelStore,
+      library: modelLibrary,
       engine: engine,
       apple: models,
     );
@@ -125,12 +125,12 @@ Future<ChatAppResources> openChatApp() async {
       knowledge,
       engine,
       models,
-      modelStore: modelStore,
+      modelLibrary: modelLibrary,
       modelSelection: modelSelection,
     );
   } on Object {
     await modelSelection?.close();
-    await modelStore?.close();
+    await modelLibrary?.close();
     await knowledge?.dispose();
     await workspace?.dispose();
     await vault.close();
@@ -312,9 +312,12 @@ class _SekretChatAppState extends State<SekretChatApp>
           }
           await resources.protection.device.purgeImportCopies();
         case LocalDataAction.everything:
-          await resources.modelStore?.cancel();
+          await resources.modelLibrary?.cancel();
           await resources.modelSelection?.select(ModelCatalogue.apple.id);
-          await resources.modelStore?.remove();
+          for (final kind in [ModelKind.voiceInput, ModelKind.readAloud]) {
+            await resources.modelSelection?.choose(kind, null);
+          }
+          await resources.modelLibrary?.removeAll();
           await resources.workspace.deleteAllChats();
           await resources.vault.eraseAll();
           await resources.protection.device.purgeImportCopies();
@@ -481,7 +484,7 @@ class _SekretChatAppState extends State<SekretChatApp>
                     return ModelsScreen(
                       model: resources.models,
                       openSystemSettings: resources.models.openSettings,
-                      store: resources.modelStore,
+                      library: resources.modelLibrary,
                       selection: resources.modelSelection,
                     );
                   }

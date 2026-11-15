@@ -10,6 +10,10 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Sekret</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Sekret listens only after you tap the microphone, to turn your speech into text on this iPhone. Audio is never saved or sent anywhere.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Sekret uses Apple’s on-device speech recognition to turn your speech into text. Audio stays on this iPhone.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use Face ID to unlock Sekret and authorize changes to your private local data.</string>
 	<key>CFBundleExecutable</key>

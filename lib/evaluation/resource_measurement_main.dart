@@ -117,7 +117,7 @@ class _RunState extends State<_Run> with WidgetsBindingObserver {
       'instructionsSHA256': sha256
           .convert(utf8.encode(generalInstructions))
           .toString(),
-      'qwenSHA256': ModelCatalogue.qwen.artifact!.sha256,
+      'qwenSHA256': ModelCatalogue.qwen.weights!.sha256,
       'qwenRuntime': 'llama.cpp-b11429',
       'applePromptVersion': 'general-v4',
       'os': Platform.operatingSystemVersion,
@@ -173,7 +173,7 @@ class _RunState extends State<_Run> with WidgetsBindingObserver {
     try {
       final support = await getApplicationSupportDirectory();
       final path =
-          '${support.path}/reviewed-models/${ModelCatalogue.qwen.artifact!.sha256}.gguf';
+          '${support.path}/reviewed-models/${ModelCatalogue.qwen.weights!.sha256}.gguf';
       if (!await File(path).exists()) {
         throw StateError('Reviewed download missing');
       }
